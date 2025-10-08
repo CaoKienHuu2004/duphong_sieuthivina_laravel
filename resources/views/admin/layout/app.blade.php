@@ -1,3 +1,3 @@
 <div>
-    <!-- It always seems impossible until it is done. - Nelson Mandela -->
+    <!-- I have not failed. I've just found 10,000 ways that won't work. - Thomas Edison -->
 </div>

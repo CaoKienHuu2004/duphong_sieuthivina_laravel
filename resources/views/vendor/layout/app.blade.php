@@ -1,3 +1,3 @@
 <div>
-    <!-- The only way to do great work is to love what you do. - Steve Jobs -->
+    <!-- An unexamined life is not worth living. - Socrates -->
 </div>

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\vendor;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class SanphamController extends Controller
+class test extends Controller
 {
     //
 }
