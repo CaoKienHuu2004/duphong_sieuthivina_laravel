@@ -21,7 +21,7 @@ Route::get('/dang-nhap', [client\NguoidungController::class, 'login'])->name('lo
 // Tuyến đường yêu cầu đăng nhập (dành cho mọi người dùng đã đăng nhập)
 Route::middleware('auth:web')->group(function () {
     // Trang danh sách sản phẩm
-    Route::get('/san-pham', [client\SanphamController::class, 'show'])->name('profile');
+    Route::get('/san-pham', [client\SanphamController::class, 'show'])->name('sanpham');
     
 });
 

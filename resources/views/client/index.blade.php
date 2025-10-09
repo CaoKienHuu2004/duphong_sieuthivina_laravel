@@ -768,12 +768,12 @@
                 <div class="flex-between flex-wrap gap-8">
                     <h6 class="mb-0 wow fadeInLeft flex-align gap-8"><i class="ph-bold ph-gift text-main-600"></i> Quà tặng sự kiện</h6>
                     <div class="flex-align gap-16 wow fadeInRight">
-                        <a href="shop.html" class="text-sm fw-semibold text-main-600 hover-text-main-600 hover-text-decoration-underline">Xem tất cả</a>
+                        <a href="{{ route('sanpham') }}" class="text-sm fw-semibold text-main-600 hover-text-main-600 hover-text-decoration-underline">Xem tất cả</a>
                         <div class="flex-align gap-8">
-                            <button type="button" id="deal-week-prev" class="slick-prev slick-arrow flex-center rounded-circle border border-gray-100 hover-border-main-600 text-xl hover-bg-main-600 hover-text-white transition-1" >
+                            <button type="button" id="gift-event-prev" class="slick-prev slick-arrow flex-center rounded-circle border border-gray-100 hover-border-main-600 text-xl hover-bg-main-600 hover-text-white transition-1" >
                                 <i class="ph ph-caret-left"></i>
                             </button>
-                            <button type="button" id="deal-week-next" class="slick-next slick-arrow flex-center rounded-circle border border-gray-100 hover-border-main-600 text-xl hover-bg-main-600 hover-text-white transition-1" >
+                            <button type="button" id="gift-event-next" class="slick-next slick-arrow flex-center rounded-circle border border-gray-100 hover-border-main-600 text-xl hover-bg-main-600 hover-text-white transition-1" >
                                 <i class="ph ph-caret-right"></i>
                             </button>
                         </div>
@@ -781,234 +781,193 @@
                 </div>
             </div>
             
-            <div class="deals-week-slider arrow-style-two">
-                <div data-aos="fade-up" data-aos-duration="200">
+            <div class="gift-event-slider arrow-style-two">
+                <div>
                     <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="product-card__thumb flex-center rounded-8 position-relative">
-                            <img src="{{asset('assets/client')}}/images/thumbs/product-two-img1.png" alt="" class="w-auto max-w-unset">
+                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
+                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
                         </a>
-                        <div class="product-card__content mt-16">
+                        <div class="product-card__content mt-5">
+                          <div class="flex-align gap-4 my-5">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
+                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                            </div>
                             <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Taylor Farms Broccoli Florets Vegetables</a>
+                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </h6>
-                            <div class="flex-align gap-6">
-                                <span class="text-xs fw-medium text-gray-500">4.8</span>
-                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                <span class="text-xs fw-medium text-gray-500">(17k)</span>
+                            <p class="title text-sm mt-12 mb-8">
+                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
+                            </p>
+                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
+                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                            <div class="mt-8">
-                                <div class="progress w-100 bg-color-three rounded-pill h-4" role="progressbar" aria-label="Basic example" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-tertiary-600 rounded-pill" style="width: 35%"></div>
-                                </div>
-                                <span class="text-gray-900 text-xs fw-medium mt-8">Sold: 18/35</span>
-                            </div>
-
-                            <div class="product-card__price my-20">
-                                <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                            </div>
-        
-                            <a href="cart.html" class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium" tabindex="0">
-                                Add To Cart <i class="ph ph-shopping-cart"></i> 
-                            </a>
                         </div>
                     </div>
                 </div>
-                <div data-aos="fade-up" data-aos-duration="400">
+                <div>
                     <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="product-card__thumb flex-center rounded-8 position-relative">
-                            <span class="product-card__badge bg-success-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Best Sale </span>
-                            <img src="{{asset('assets/client')}}/images/thumbs/product-two-img2.png" alt="" class="w-auto max-w-unset">
+                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
+                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
                         </a>
-                        <div class="product-card__content mt-16">
+                        <div class="product-card__content mt-5">
+                          <div class="flex-align gap-4 my-5">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
+                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                            </div>
                             <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Taylor Farms Broccoli Florets Vegetables</a>
+                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </h6>
-                            <div class="flex-align gap-6">
-                                <span class="text-xs fw-medium text-gray-500">4.8</span>
-                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                <span class="text-xs fw-medium text-gray-500">(17k)</span>
+                            <p class="title text-sm mt-12 mb-8">
+                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
+                            </p>
+                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
+                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                            <div class="mt-8">
-                                <div class="progress w-100 bg-color-three rounded-pill h-4" role="progressbar" aria-label="Basic example" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-tertiary-600 rounded-pill" style="width: 35%"></div>
-                                </div>
-                                <span class="text-gray-900 text-xs fw-medium mt-8">Sold: 18/35</span>
-                            </div>
-
-                            <div class="product-card__price my-20">
-                                <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                            </div>
-        
-                            <a href="cart.html" class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium" tabindex="0">
-                                Add To Cart <i class="ph ph-shopping-cart"></i> 
-                            </a>
                         </div>
                     </div>
                 </div>
-                <div data-aos="fade-up" data-aos-duration="600">
+                <div>
                     <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="product-card__thumb flex-center rounded-8 position-relative">
-                            <img src="{{asset('assets/client')}}/images/thumbs/product-two-img3.png" alt="" class="w-auto max-w-unset">
+                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
+                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
                         </a>
-                        <div class="product-card__content mt-16">
+                        <div class="product-card__content mt-5">
+                          <div class="flex-align gap-4 my-5">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
+                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                            </div>
                             <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Taylor Farms Broccoli Florets Vegetables</a>
+                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </h6>
-                            <div class="flex-align gap-6">
-                                <span class="text-xs fw-medium text-gray-500">4.8</span>
-                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                <span class="text-xs fw-medium text-gray-500">(17k)</span>
+                            <p class="title text-sm mt-12 mb-8">
+                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
+                            </p>
+                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
+                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                            <div class="mt-8">
-                                <div class="progress w-100 bg-color-three rounded-pill h-4" role="progressbar" aria-label="Basic example" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-tertiary-600 rounded-pill" style="width: 35%"></div>
-                                </div>
-                                <span class="text-gray-900 text-xs fw-medium mt-8">Sold: 18/35</span>
-                            </div>
-
-                            <div class="product-card__price my-20">
-                                <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                            </div>
-        
-                            <a href="cart.html" class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium" tabindex="0">
-                                Add To Cart <i class="ph ph-shopping-cart"></i> 
-                            </a>
                         </div>
                     </div>
                 </div>
-                <div data-aos="fade-up" data-aos-duration="800">
+                <div>
                     <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="product-card__thumb flex-center rounded-8 position-relative">
-                            <span class="product-card__badge bg-danger-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Sale 50% </span>
-                            <img src="{{asset('assets/client')}}/images/thumbs/product-two-img4.png" alt="" class="w-auto max-w-unset">
+                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
+                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
                         </a>
-                        <div class="product-card__content mt-16">
+                        <div class="product-card__content mt-5">
+                          <div class="flex-align gap-4 my-5">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
+                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                            </div>
                             <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Taylor Farms Broccoli Florets Vegetables</a>
+                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </h6>
-                            <div class="flex-align gap-6">
-                                <span class="text-xs fw-medium text-gray-500">4.8</span>
-                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                <span class="text-xs fw-medium text-gray-500">(17k)</span>
+                            <p class="title text-sm mt-12 mb-8">
+                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
+                            </p>
+                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
+                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                            <div class="mt-8">
-                                <div class="progress w-100 bg-color-three rounded-pill h-4" role="progressbar" aria-label="Basic example" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-tertiary-600 rounded-pill" style="width: 35%"></div>
-                                </div>
-                                <span class="text-gray-900 text-xs fw-medium mt-8">Sold: 18/35</span>
-                            </div>
-
-                            <div class="product-card__price my-20">
-                                <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                            </div>
-        
-                            <a href="cart.html" class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium" tabindex="0">
-                                Add To Cart <i class="ph ph-shopping-cart"></i> 
-                            </a>
                         </div>
                     </div>
                 </div>
-                <div data-aos="fade-up" data-aos-duration="1000">
+                <div>
                     <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="product-card__thumb flex-center rounded-8 position-relative">
-                            <img src="assets/images/thumbs/product-two-img5.png" alt="" class="w-auto max-w-unset">
+                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
+                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
                         </a>
-                        <div class="product-card__content mt-16">
+                        <div class="product-card__content mt-5">
+                          <div class="flex-align gap-4 my-5">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
+                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                            </div>
                             <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Taylor Farms Broccoli Florets Vegetables</a>
+                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </h6>
-                            <div class="flex-align gap-6">
-                                <span class="text-xs fw-medium text-gray-500">4.8</span>
-                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                <span class="text-xs fw-medium text-gray-500">(17k)</span>
+                            <p class="title text-sm mt-12 mb-8">
+                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
+                            </p>
+                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
+                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                            <div class="mt-8">
-                                <div class="progress w-100 bg-color-three rounded-pill h-4" role="progressbar" aria-label="Basic example" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-tertiary-600 rounded-pill" style="width: 35%"></div>
-                                </div>
-                                <span class="text-gray-900 text-xs fw-medium mt-8">Sold: 18/35</span>
-                            </div>
-
-                            <div class="product-card__price my-20">
-                                <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                            </div>
-        
-                            <a href="cart.html" class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium" tabindex="0">
-                                Add To Cart <i class="ph ph-shopping-cart"></i> 
-                            </a>
                         </div>
                     </div>
                 </div>
-                <div data-aos="fade-up" data-aos-duration="1200">
+                <div>
                     <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="product-card__thumb flex-center rounded-8 position-relative">
-                            <img src="assets/images/thumbs/product-two-img6.png" alt="" class="w-auto max-w-unset">
+                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
+                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
                         </a>
-                        <div class="product-card__content mt-16">
+                        <div class="product-card__content mt-5">
+                          <div class="flex-align gap-4 my-5">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
+                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                            </div>
                             <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Taylor Farms Broccoli Florets Vegetables</a>
+                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </h6>
-                            <div class="flex-align gap-6">
-                                <span class="text-xs fw-medium text-gray-500">4.8</span>
-                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                <span class="text-xs fw-medium text-gray-500">(17k)</span>
+                            <p class="title text-sm mt-12 mb-8">
+                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
+                            </p>
+                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
+                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                            <div class="mt-8">
-                                <div class="progress w-100 bg-color-three rounded-pill h-4" role="progressbar" aria-label="Basic example" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-tertiary-600 rounded-pill" style="width: 35%"></div>
-                                </div>
-                                <span class="text-gray-900 text-xs fw-medium mt-8">Sold: 18/35</span>
-                            </div>
-
-                            <div class="product-card__price my-20">
-                                <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                            </div>
-        
-                            <a href="cart.html" class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium" tabindex="0">
-                                Add To Cart <i class="ph ph-shopping-cart"></i> 
-                            </a>
                         </div>
                     </div>
                 </div>
-                <div data-aos="fade-up" data-aos-duration="1400">
+                <div>
                     <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="product-card__thumb flex-center rounded-8 position-relative">
-                            <span class="product-card__badge bg-warning-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">New </span>
-                            <img src="assets/images/thumbs/product-two-img9.png" alt="" class="w-auto max-w-unset">
+                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
+                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
                         </a>
-                        <div class="product-card__content mt-16">
+                        <div class="product-card__content mt-5">
+                          <div class="flex-align gap-4 my-5">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
+                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                            </div>
                             <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Taylor Farms Broccoli Florets Vegetables</a>
+                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </h6>
-                            <div class="flex-align gap-6">
-                                <span class="text-xs fw-medium text-gray-500">4.8</span>
-                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                <span class="text-xs fw-medium text-gray-500">(17k)</span>
+                            <p class="title text-sm mt-12 mb-8">
+                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
+                            </p>
+                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
+                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                            <div class="mt-8">
-                                <div class="progress w-100 bg-color-three rounded-pill h-4" role="progressbar" aria-label="Basic example" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-tertiary-600 rounded-pill" style="width: 35%"></div>
-                                </div>
-                                <span class="text-gray-900 text-xs fw-medium mt-8">Sold: 18/35</span>
-                            </div>
-
-                            <div class="product-card__price my-20">
-                                <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                            </div>
-        
-                            <a href="cart.html" class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium" tabindex="0">
-                                Add To Cart <i class="ph ph-shopping-cart"></i> 
-                            </a>
                         </div>
                     </div>
                 </div>
+                <div>
+                    <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
+                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
+                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
+                        </a>
+                        <div class="product-card__content mt-5">
+                          <div class="flex-align gap-4 my-5">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
+                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                            </div>
+                            <h6 class="title text-lg fw-semibold mt-12 mb-8">
+                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
+                            </h6>
+                            <p class="title text-sm mt-12 mb-8">
+                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
+                            </p>
+                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
+                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
             </div>
         </div>
     </div>
@@ -1047,8 +1006,8 @@
   
 
   <!-- ========================= Trending Products Start ================================ -->
-  <section class="trending-productss overflow-hidden mt-10">
-    <div class="container container-lg">
+  <section class="trending-productss overflow-hidden mt-10 fix-scale-30">
+    <div class="container container-lg px-0">
       <div class="border border-gray-100 p-24 rounded-16">
         <div class="section-heading mb-24">
           <div class="flex-between flex-wrap gap-8">
@@ -1125,8 +1084,7 @@
                   <div class="product-card__content w-100 mt-5">
                     <!--  -->
                     <h6 class="title text-lg fw-semibold my-10">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Instax Mini 12 Instant
-                        Film Camera - Green</a>
+                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Trung Thu Đón Lễ - Nhân dịp 10/10</a>
                     </h6>
 
                     <div class="flex-align gap-6">
@@ -2849,7 +2807,7 @@
     </div>
   </section>
   <!-- ========================= Trending Products End ================================ -->
-  <div class="container container-lg mt-10 mb-70">
+  <div class="container container-lg mt-10 mb-10 px-0">
     <div class="text-center" style="height: 50%;">
       <a href="#" class="p-0 m-0 w-100 h-50">
         <img src="{{asset('assets/client')}}/images/bg/shopee-07.jpg" alt="" class="banner-img w-100 h-100 object-fit-cover rounded-10">
@@ -2858,8 +2816,8 @@
   </div>
 
   <!-- ========================= Top Selling Products Start ================================ -->
-  <section class="top-selling-products pt-20 overflow-hidden">
-    <div class="container container-lg">
+  <section class="top-selling-products overflow-hidden mb-10 fix-scale-30">
+    <div class="container container-lg px-0">
       <div class="rounded-16">
         <div class="section-heading mb-24">
           <div class="flex-between flex-wrap gap-8">
@@ -3092,7 +3050,7 @@
   <!-- ========================= Top Selling Products End ================================ -->
 
   <section class="featured-products overflow-hidden py-10">
-    <div class="container container-lg">
+    <div class="container container-lg px-0">
       <div class="row g-4 flex-wrap-reverse">
         <div class="col-xxl-8">
           <div class="border border-gray-100 p-24 rounded-16">
@@ -3458,7 +3416,7 @@
 
   <!-- Super Discount Start -->
   <div class="">
-    <div class="container container-lg container container-lg-lg">
+    <div class="container container-lg px-0">
       <div
         class="border border-main-500 bg-main-50 border-dashed rounded-8 py-20 d-flex align-items-center justify-content-evenly">
         <p class="h6 text-main-600 fw-normal">
@@ -3487,7 +3445,7 @@
 
   <!-- ========================= Trending Products Start ================================ -->
   <section class="trending-productss pt-60 overflow-hidden">
-    <div class="container container-lg">
+    <div class="container container-lg px-0">
       <div class="">
         <div class="section-heading mb-24">
           <div class="flex-between flex-wrap gap-8">

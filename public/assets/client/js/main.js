@@ -534,21 +534,21 @@
     // ========================= hot deals Slider Js End ===================
 
     // ========================= hot deals Slider Js Start ==============
-    $(".deals-week-slider").slick({
+    $(".gift-event-slider").slick({
       slidesToShow: 6,
       slidesToScroll: 1,
       autoplay: true,
-      autoplaySpeed: 2000,
-      speed: 1500,
+      autoplaySpeed: 1500,
+      speed: 1000,
       dots: false,
-      pauseOnHover: true,
+      pauseOnHover: false,
       arrows: true,
       draggable: true,
       rtl: $("html").attr("dir") === "rtl" ? true : false,
       speed: 900,
       infinite: true,
-      nextArrow: "#deal-week-next",
-      prevArrow: "#deal-week-prev",
+      nextArrow: "#gift-event-next",
+      prevArrow: "#gift-event-prev",
       responsive: [
         {
           breakpoint: 1599,
