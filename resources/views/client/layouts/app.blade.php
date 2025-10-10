@@ -50,22 +50,7 @@
   <!-- ==================== Scroll to Top End Here ==================== -->
 
   <!-- ==================== Search Box Start Here ==================== -->
-  <form action="#" class="search-box">
-    <button type="button"
-      class="search-box__close position-absolute inset-block-start-0 inset-inline-end-0 m-16 w-48 h-48 border border-gray-100 rounded-circle flex-center text-white hover-text-gray-800 hover-bg-white text-2xl transition-1">
-      <i class="ph ph-x"></i>
-    </button>
-    <div class="container container-lg">
-      <div class="position-relative">
-        <input type="text" class="form-control py-16 px-24 text-xl rounded-pill pe-64"
-          placeholder="Search for a product or brand" />
-        <button type="submit"
-          class="w-48 h-48 bg-main-600 rounded-circle flex-center text-xl text-white position-absolute top-50 translate-middle-y inset-inline-end-0 me-8">
-          <i class="ph ph-magnifying-glass"></i>
-        </button>
-      </div>
-    </div>
-  </form>
+  
   <!-- ==================== Search Box End Here ==================== -->
 
   <!-- ==================== Mobile Menu Start Here ==================== -->
@@ -74,7 +59,7 @@
       <i class="ph ph-x"></i>
     </button>
     <div class="mobile-menu__inner logo">
-      <a href="index.html" class="mobile-menu__logo">
+      <a href="{{ route('trang-chu') }}" class="mobile-menu__logo">
         <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt="Logo" />
       </a>
       <div class="mobile-menu__menu">
@@ -116,6 +101,7 @@
             <a href="contact.html" class="nav-menu__link text-heading-two hover-text-main-600"><i
                 class="ph-bold ph-chat-dots text-main-600"></i> Liên hệ hỗ trợ</a>
           </li>
+          @guest
           <li class="nav-menu__item pt-10">
             <a href="javascript:void(0)"
               class="d-flex justify-content-center align-content-around text-center gap-10 fw-medium text-white py-14 px-24 bg-main-600 rounded-pill line-height-1 hover-bg-main-50 hover-text-main-600">
@@ -124,6 +110,8 @@
             </a>
 
           </li>
+          @endguest
+          @auth
           <li class="on-hover-item nav-menu__item has-submenu pt-10">
             <a href="javascript:void(0)"
               class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-white py-10 px-20 bg-success-600 rounded-pill line-height-1 hover-bg-success-500">
@@ -156,6 +144,7 @@
 
             </ul>
           </li>
+          @endauth
 
         </ul>
         <!-- Nav Menu End -->
@@ -182,7 +171,7 @@
                 class="close-responsive-dropdown rounded-circle text-xl position-absolute inset-inline-end-0 inset-block-start-0 mt-4 me-8 d-lg-none d-flex">
                 <i class="ph ph-x"></i> </button>
               <div class="logo px-16 d-lg-none d-block">
-                <a href="index.html" class="link">
+                <a href="{{ route('trang-chu') }}" class="link">
                   <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt="Logo">
                 </a>
               </div>
@@ -278,51 +267,23 @@
               Đăng ký đối tác</a>
           </li>
           <li class="flex-align">
-            <a href="#" class="text-white-6 text-sm hover-text-white pe-1"><i class="ph-bold ph-info text-white-6"></i>
+            <a href="" class="text-white-6 text-sm hover-text-white pe-1"><i class="ph-bold ph-info text-white-6"></i>
               Giới thiệu về Siêu Thị Vina </a>
           </li>
           <li class="flex-align">
-            <a href="contact.html" class="text-white-6 text-sm hover-text-white">
+            <a href="" class="text-white-6 text-sm hover-text-white">
               <i class="ph-bold ph-chat-dots"></i>
               Liên hệ hỗ trợ
             </a>
           </li>
 
         </ul>
-        <!-- <div class="text-white text-sm d-flex align-items-center gap-4">
-                <img src="{{asset('assets/client')}}/images/icon/track-icon.png" alt="Track Icon">
-                <span class="">We deliver to you every day from 7.00 to 23.00</span>
-            </div> -->
-
-        <!-- <div class="d-flex align-items-center gap-6 flex-wrap">
-                <span class="text-md fw-medium text-white">Until the end of the sale:</span>
-                <div class="d-flex align-items-center gap-10" id="countdown25">
-                    <div class="d-flex align-items-center gap-4 text-white">
-                        <strong class="text-md fw-semibold days">35</strong> 
-                        <span class="text-xs">Days</span>
-                    </div>
-                    <div class="d-flex align-items-center gap-4 text-white">
-                        <strong class="text-md fw-semibold hours">14</strong> 
-                        <span class="text-xs">Hours</span>
-                    </div>
-                    <div class="d-flex align-items-center gap-4 text-white">
-                        <strong class="text-md fw-semibold minutes">54</strong> 
-                        <span class="text-xs">Minutes</span>
-                    </div>
-                    <div class="d-flex align-items-center gap-4 text-white">
-                        <strong class="text-md fw-semibold seconds">28 </strong> 
-                        <span class="text-xs">Sec.</span>
-                    </div>
-                </div>
-            </div> -->
-
-
+        
         <ul class="header-top__right flex-align flex-wrap gap-16">
           <li class=" d-block on-hover-item text-white-6 flex-shrink-0">
             <button class="category__button flex-align gap-4 text-sm text-white-6 rounded-top">
               <span class="icon text-sm d-md-flex d-none"><i class="ph ph-squares-four"></i></span>
               <span class="d-sm-flex d-none">Danh mục</span>
-              <!-- <span class="arrow-icon text-sm d-flex"><i class="ph ph-caret-down"></i></span> -->
             </button>
 
             <div class="responsive-dropdown on-hover-dropdown common-dropdown nav-submenu p-0 submenus-submenu-wrapper">
@@ -330,35 +291,21 @@
                 class="close-responsive-dropdown rounded-circle text-xl position-absolute inset-inline-end-0 inset-block-start-0 mt-4 me-8 d-lg-none d-flex">
                 <i class="ph ph-x"></i> </button>
               <div class="logo px-16 d-lg-none d-block">
-                <a href="index.html" class="link">
+                <a href="{{ route('trang-chu') }}" class="link">
                   <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt="Logo">
                 </a>
               </div>
               <ul class="scroll-sm p-0 py-8 w-300 max-h-400 overflow-y-auto">
-                <li class="has-submenus-submenu">
-                  <a href="javascript:void(0)" class="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0">
-                    <span class="text-xl d-flex"><i class="ph ph-carrot"></i></span>
-                    <span>Vegetables &amp; Fruit</span>
-                  </a>
-                </li>
-                <li class="has-submenus-submenu">
-                  <a href="javascript:void(0)" class="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0">
-                    <span class="text-xl d-flex"><i class="ph ph-carrot"></i></span>
-                    <span>Vegetables &amp; Fruit</span>
-                  </a>
-                </li>
-                <li class="has-submenus-submenu">
-                  <a href="javascript:void(0)" class="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0">
-                    <span class="text-xl d-flex"><i class="ph ph-carrot"></i></span>
-                    <span>Vegetables &amp; Fruit</span>
-                  </a>
-                </li>
-                <li class="has-submenus-submenu">
-                  <a href="javascript:void(0)" class="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0">
-                    <span class="text-xl d-flex"><i class="ph ph-carrot"></i></span>
-                    <span>Vegetables &amp; Fruit</span>
-                  </a>
-                </li>
+                @foreach ($danhmuc as $dm)
+                  <li class="has-submenus-submenu">
+                    <a href="" class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
+                      <span class="text-xl d-flex"><img src="{{asset('assets/client')}}/images/categories/{{ $dm->logo }}" alt="{{ $dm->ten }}" width="70%"></span>
+                      <span>{{ $dm->ten }}</span>
+                    </a>
+                  </li>
+                @endforeach
+                
+                
               </ul>
             </div>
 
@@ -389,7 +336,7 @@
       <nav class="header-inner flex-between gap-16">
         <!-- Logo Start -->
         <div class="logo">
-          <a href="index.html" class="link">
+          <a href="{{ route('trang-chu') }}" class="link">
             <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt="Logo" />
           </a>
         </div>
@@ -397,41 +344,12 @@
 
         <!-- Menu Start  -->
         <div class="header-menu w-50 d-lg-block d-none">
-          <!-- Nav Menu Start -->
-          <!-- <ul class="nav-menu flex-align">
-            <li class="nav-menu__item">
-              <a href="contact.html" class="nav-menu__link text-heading-two">Contact Us</a>
-            </li>
-            <li class="nav-menu__item">
-              <a href="contact.html" class="nav-menu__link text-heading-two">Contact Us</a>
-            </li>
-            <li class="nav-menu__item">
-              <a href="contact.html" class="nav-menu__link text-heading-two">Contact Us</a>
-            </li>
-            <li class="on-hover-item nav-menu__item has-submenu">
-              <a href="javascript:void(0)" class="nav-menu__link text-heading-two">Blog</a>
-              <ul class="on-hover-dropdown common-dropdown nav-submenu scroll-sm">
-                <li class="common-dropdown__item nav-submenu__item">
-                  <a href="blog.html"
-                    class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
-                    Blog</a>
-                </li>
-                <li class="common-dropdown__item nav-submenu__item">
-                  <a href="blog-details.html"
-                    class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
-                    Blog Details</a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-menu__item">
-              <a href="contact.html" class="nav-menu__link text-heading-two">Contact Us</a>
-            </li>
-          </ul> -->
+          
           <div class="mx-20">
             <form action="#" class="position-relative w-100 d-md-block d-none">
               <input type="text"
                 class="form-control text-sm fw-normal placeholder-italic shadow-none bg-neutral-30 placeholder-fw-normal placeholder-light py-10 ps-30 pe-60"
-                placeholder="Thuốc giảm cân dành cho người béo....">
+                placeholder="{{ $tukhoaplaceholder }}....">
               <button type="submit"
                 class="position-absolute top-50 translate-middle-y text-main-600 end-0 me-36 text-xl line-height-1">
                 <i class="ph-bold ph-magnifying-glass"></i>
@@ -439,11 +357,13 @@
             </form>
 
             <div class="flex-align mt-10 gap-12 title">
-              <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">Máy massage</a>
-              <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">điện gia dụng</a>
+              @foreach ($tukhoaphobien as $keyword)
+                <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">{{ $keyword->tukhoa }}</a>
+              @endforeach
+              <!-- <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">điện gia dụng</a>
               <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">mẹ và bé</a>
               <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">móc khóa minecraft</a>
-              <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">điện nội thất</a>
+              <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">điện nội thất</a> -->
             </div>
           </div>
 
@@ -455,21 +375,21 @@
 
         <!-- Middle Header Right start -->
         <div class="header-right flex-align">
-
-          <!-- Dropdown Select Start -->
-
+  
+          @guest
           <!-- ============Nút đăng nhập/đăng ký=============== -->
-          <!-- <ul class="header-top__right style-two style-three flex-align flex-wrap d-lg-block d-none">
+          <ul class="header-top__right style-two style-three flex-align flex-wrap d-lg-block d-none">
             <li class="d-sm-flex d-none">
-              <a href="javascript:void(0)"
+              <a href="{{ route('login') }}"
                 class="d-flex align-content-around gap-10 fw-medium text-main-600 py-14 px-24 bg-main-50 rounded-pill line-height-1 hover-bg-main-600 hover-text-white">
                 <span class="d-sm-flex d-none line-height-1"><i class="ph-bold ph-user"></i></span>
                 Đăng nhập
               </a>
             </li>
-          </ul> -->
-
+          </ul>
           <!-- ===============Nút đã đăng nhập============= -->
+          @endguest
+          @auth
           <div
             class="on-hover-item nav-menu__item has-submenu header-top__right style-two style-three flex-align flex-wrap d-lg-block d-none">
             <a href="javascript:void(0)"
@@ -502,7 +422,8 @@
               </li>
 
             </ul>
-          </div>
+          </div>\
+          @endauth
 
           <!-- Dropdown Select End -->
           <button type="button" class="toggle-mobileMenu d-lg-none ms-3n text-gray-800 text-4xl d-flex">
@@ -524,7 +445,7 @@
       <div class="footer-item-two-wrapper d-flex align-items-start flex-wrap">
         <div class="footer-item max-w-275" data-aos="fade-up" data-aos-duration="200">
           <div class="footer-item__logo">
-            <a href="index.html"> <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt=""></a>
+            <a href="{{ route('trang-chu') }}"> <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt=""></a>
           </div>
           <p class="mb-24">Trang thương mại điện tử Siêu Thị Vina cung cấp các sản phẩm đa dạng đến với khách hàng và
             đăng ký đối tác với các cửa hàng.

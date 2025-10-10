@@ -13,7 +13,7 @@ use App\Http\Controllers\vendor;
 */
 
 // Tuyến đường công khai (Không cần đăng nhập)
-Route::get('/', [client\HomeController::class, 'index'])->name('trangchu');
+Route::get('/', [client\HomeController::class, 'index'])->name('trang-chu');
 Route::get('/trang-chu', [client\HomeController::class, 'index']);
 
 Route::get('/dang-nhap', [client\NguoidungController::class, 'login'])->name('login'); 

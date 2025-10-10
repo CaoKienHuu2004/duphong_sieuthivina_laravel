@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 10, 2025 at 07:50 AM
+-- Generation Time: Oct 10, 2025 at 09:25 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.26
 
@@ -157,17 +157,17 @@ CREATE TABLE `danhmuc` (
 --
 
 INSERT INTO `danhmuc` (`id`, `ten`, `slug`, `logo`, `created_at`, `updated_at`) VALUES
-(1, 'Sức khỏe', 'suc-khoe', 'danhmuc.jpg', '2025-10-10 07:22:53', '2025-10-10 07:22:53'),
-(2, 'Thực phẩm chức năng', 'thuc-pham-chuc-nang', 'danhmuc.jpg', '2025-10-10 07:24:35', '2025-10-10 07:24:35'),
-(3, 'Chăm sóc cá nhân', 'cham-soc-ca-nhan', 'danhmuc.jpg', '2025-10-10 07:45:15', '2025-10-10 07:45:15'),
-(4, 'Làm đẹp', 'lam-dep', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
-(5, 'Điện máy', 'dien-may', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
-(6, 'Thiết bị y tế', 'thiet-bi-y-te', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
-(7, 'Bách hóa', 'bach-hoa', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
-(8, 'Nội thất - Trang trí', 'noi-that-trang-tri', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
-(9, 'Mẹ & bé', 'me-va-be', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
-(10, 'Thời trang', 'thoi-trang', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
-(11, 'Thực phẩm - đồ ăn', 'thuc-pham-do-an', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26');
+(1, 'Sức khỏe', 'suc-khoe', 'suc-khoe.svg', '2025-10-10 07:22:53', '2025-10-10 07:22:53'),
+(2, 'Thực phẩm chức năng', 'thuc-pham-chuc-nang', 'thuc-pham-chuc-nang.svg', '2025-10-10 07:24:35', '2025-10-10 07:24:35'),
+(3, 'Chăm sóc cá nhân', 'cham-soc-ca-nhan', 'cham-soc-ca-nhan.svg', '2025-10-10 07:45:15', '2025-10-10 07:45:15'),
+(4, 'Làm đẹp', 'lam-dep', 'lam-dep.svg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(5, 'Điện máy', 'dien-may', 'dien-may.svg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(6, 'Thiết bị y tế', 'thiet-bi-y-te', 'thiet-bi-y-te.svg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(7, 'Bách hóa', 'bach-hoa', 'bach-hoa.svg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(8, 'Nội thất - Trang trí', 'noi-that-trang-tri', 'noi-that-trang-tri.svg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(9, 'Mẹ & bé', 'me-va-be', 'me-va-be.svg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(10, 'Thời trang', 'thoi-trang', 'thoi-trang.svg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(11, 'Thực phẩm - đồ ăn', 'thuc-pham-do-an', 'thuc-pham-do-an.svg', '2025-10-10 07:48:26', '2025-10-10 07:48:26');
 
 -- --------------------------------------------------------
 
@@ -498,6 +498,19 @@ CREATE TABLE `tukhoa` (
   `luottruycap` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `tukhoa`
+--
+
+INSERT INTO `tukhoa` (`id`, `tukhoa`, `luottruycap`) VALUES
+(1, 'Máy massage', 5),
+(2, 'Điện gia dụng', 1),
+(3, 'Đồ chơi minecraft', 152),
+(4, 'Sách hán ngữ 3', 585),
+(5, 'Huyndai decor', 62),
+(6, 'Điện nội thất', 125),
+(7, 'Móc khóa genshin', 246);
+
 -- --------------------------------------------------------
 
 --
@@ -723,6 +736,12 @@ ALTER TABLE `nguoidung`
 --
 ALTER TABLE `sanpham`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `tukhoa`
+--
+ALTER TABLE `tukhoa`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
