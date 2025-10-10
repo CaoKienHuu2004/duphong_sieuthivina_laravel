@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 6.0.0-dev+20251008.967007883e
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 09, 2025 at 01:33 PM
+-- Generation Time: Oct 10, 2025 at 07:50 AM
 -- Server version: 8.4.3
--- PHP Version: 8.3.16
+-- PHP Version: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,12 +30,12 @@ SET time_zone = "+00:00";
 CREATE TABLE `baiviet` (
   `id` int NOT NULL,
   `id_nguoidung` int NOT NULL,
-  `tieude` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `noidung` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tieude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `noidung` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `luotxem` int NOT NULL DEFAULT '0',
-  `hinhanh` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
+  `hinhanh` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -59,6 +59,17 @@ CREATE TABLE `bienthe` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bienthe`
+--
+
+INSERT INTO `bienthe` (`id`, `id_loaibienthe`, `id_sanpham`, `giagoc`, `giamgia`, `soluong`, `trangthai`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, 270000, NULL, 10, 'Hiển thị', '2025-10-10 06:56:49', '2025-10-10 06:56:49', NULL),
+(2, 2, 2, 385000, NULL, 10, 'Hiển thị', '2025-10-10 07:05:14', '2025-10-10 07:05:14', NULL),
+(3, 1, 3, 466560, NULL, 10, 'Hiển thị', '2025-10-10 07:06:58', '2025-10-10 07:06:58', NULL),
+(4, 1, 4, 260000, NULL, 10, 'Hiển thị', '2025-10-10 07:06:58', '2025-10-10 07:06:58', NULL),
+(5, 2, 5, 512000, NULL, 10, 'Hiển thị', '2025-10-10 07:19:41', '2025-10-10 07:19:41', NULL);
 
 -- --------------------------------------------------------
 
@@ -85,21 +96,28 @@ CREATE TABLE `chitiet_donhang` (
 CREATE TABLE `cuahang` (
   `id` int NOT NULL,
   `id_nguoidung` int NOT NULL,
-  `ten` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mota` text COLLATE utf8mb4_unicode_ci,
-  `logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'logo_shop.jpg',
-  `bianen` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'bianen-shop.jpg',
-  `giayphep` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ten` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mota` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'logo_shop.jpg',
+  `bianen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'bianen-shop.jpg',
+  `giayphep` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `luottheodoi` int NOT NULL DEFAULT '0',
   `luotban` int NOT NULL DEFAULT '0',
-  `sodienthoai` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `diachi` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sodienthoai` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `diachi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cuahang`
+--
+
+INSERT INTO `cuahang` (`id`, `id_nguoidung`, `ten`, `slug`, `mota`, `logo`, `bianen`, `giayphep`, `luottheodoi`, `luotban`, `sodienthoai`, `diachi`, `trangthai`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'Trung Tâm Bán Hàng Siêu Thị Vina', 'trung-tam-ban-hang-sieu-thi-vina', 'Chào mừng đến với Trung Tâm Bán Hàng Siêu Thị Vina, nơi hội tụ hàng ngàn sản phẩm chất lượng cao, đáp ứng mọi nhu cầu sinh hoạt, ẩm thực và tiêu dùng của gia đình bạn. Chúng tôi tự hào mang đến một không gian mua sắm hiện đại, tiện nghi và thân thiện, giúp bạn tiết kiệm tối đa thời gian và chi phí.', 'logo_shop.jpg', 'bianen-shop.jpg', NULL, 0, 0, '0845381121', 'Đài Loan', 'Hoạt động', '2025-10-10 06:48:11', '2025-10-10 06:48:11', NULL);
 
 -- --------------------------------------------------------
 
@@ -112,8 +130,8 @@ CREATE TABLE `danhgia` (
   `id_sanpham` int NOT NULL,
   `id_nguoidung` int NOT NULL,
   `diem` int NOT NULL,
-  `noidung` text COLLATE utf8mb4_unicode_ci,
-  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
+  `noidung` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -127,12 +145,29 @@ CREATE TABLE `danhgia` (
 
 CREATE TABLE `danhmuc` (
   `id` int NOT NULL,
-  `ten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'danhmuc.jpg',
-  `created_at` timestamp NOT NULL,
-  `updated_at` timestamp NOT NULL
+  `ten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'danhmuc.jpg',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `danhmuc`
+--
+
+INSERT INTO `danhmuc` (`id`, `ten`, `slug`, `logo`, `created_at`, `updated_at`) VALUES
+(1, 'Sức khỏe', 'suc-khoe', 'danhmuc.jpg', '2025-10-10 07:22:53', '2025-10-10 07:22:53'),
+(2, 'Thực phẩm chức năng', 'thuc-pham-chuc-nang', 'danhmuc.jpg', '2025-10-10 07:24:35', '2025-10-10 07:24:35'),
+(3, 'Chăm sóc cá nhân', 'cham-soc-ca-nhan', 'danhmuc.jpg', '2025-10-10 07:45:15', '2025-10-10 07:45:15'),
+(4, 'Làm đẹp', 'lam-dep', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(5, 'Điện máy', 'dien-may', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(6, 'Thiết bị y tế', 'thiet-bi-y-te', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(7, 'Bách hóa', 'bach-hoa', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(8, 'Nội thất - Trang trí', 'noi-that-trang-tri', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(9, 'Mẹ & bé', 'me-va-be', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(10, 'Thời trang', 'thoi-trang', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26'),
+(11, 'Thực phẩm - đồ ăn', 'thuc-pham-do-an', 'danhmuc.jpg', '2025-10-10 07:48:26', '2025-10-10 07:48:26');
 
 -- --------------------------------------------------------
 
@@ -148,6 +183,17 @@ CREATE TABLE `danhmuc_sanpham` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `danhmuc_sanpham`
+--
+
+INSERT INTO `danhmuc_sanpham` (`id`, `id_danhmuc`, `id_sanpham`, `created_at`, `updated_at`) VALUES
+(1, 1, 5, '2025-10-10 07:27:45', '2025-10-10 07:27:45'),
+(2, 1, 4, '2025-10-10 07:27:45', '2025-10-10 07:27:45'),
+(3, 2, 1, '2025-10-10 07:27:45', '2025-10-10 07:27:45'),
+(4, 2, 3, '2025-10-10 07:27:45', '2025-10-10 07:27:45'),
+(5, 1, 2, '2025-10-10 07:27:45', '2025-10-10 07:27:45');
+
 -- --------------------------------------------------------
 
 --
@@ -157,10 +203,10 @@ CREATE TABLE `danhmuc_sanpham` (
 CREATE TABLE `diachi_nguoidung` (
   `id` int NOT NULL,
   `id_nguoidung` int NOT NULL,
-  `hoten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sodienthoai` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `diachi` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `trangthai` enum('Mặc định','Khác','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hoten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sodienthoai` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `diachi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Mặc định','Khác','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -177,7 +223,7 @@ CREATE TABLE `donhang` (
   `id_nguoidung` int NOT NULL,
   `id_phuongthuc` int NOT NULL,
   `id_magiamgia` int DEFAULT NULL,
-  `madon` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `madon` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tongsoluong` int NOT NULL,
   `thanhtien` int NOT NULL,
   `trangthai` enum('Chờ xử lý','Đã chấp nhận','Đang giao hàng','Đã giao hàng','Đã hủy đơn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Chờ xử lý',
@@ -198,7 +244,7 @@ CREATE TABLE `giohang` (
   `id_nguoidung` int NOT NULL,
   `soluong` int NOT NULL,
   `thanhtien` int NOT NULL,
-  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -212,12 +258,39 @@ CREATE TABLE `giohang` (
 CREATE TABLE `hinhanh_sanpham` (
   `id` int NOT NULL,
   `id_sanpham` int NOT NULL,
-  `hinhanh` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hinhanh` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `hinhanh_sanpham`
+--
+
+INSERT INTO `hinhanh_sanpham` (`id`, `id_sanpham`, `hinhanh`, `trangthai`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-1.webp', 'Hiển thị', '2025-10-10 07:10:24', '2025-10-10 07:10:24', NULL),
+(2, 1, 'keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp', 'Hiển thị', '2025-10-10 07:10:24', '2025-10-10 07:10:24', NULL),
+(3, 1, 'keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-3.webp', 'Hiển thị', '2025-10-10 07:10:24', '2025-10-10 07:10:24', NULL),
+(4, 1, 'keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-4.webp', 'Hiển thị', '2025-10-10 07:10:24', '2025-10-10 07:10:24', NULL),
+(5, 2, 'mat-ong-tay-bac-dong-trung-ha-thao-x3-hu-240g-1.webp', 'Hiển thị', '2025-10-10 07:13:57', '2025-10-10 07:13:57', NULL),
+(6, 2, 'mat-ong-tay-bac-dong-trung-ha-thao-x3-hu-240g-2.webp', 'Hiển thị', '2025-10-10 07:13:57', '2025-10-10 07:13:57', NULL),
+(7, 2, 'mat-ong-tay-bac-dong-trung-ha-thao-x3-hu-240g-3.webp', 'Hiển thị', '2025-10-10 07:13:57', '2025-10-10 07:13:57', NULL),
+(8, 3, 'sam-ngoc-linh-truong-sinh-do-thung-24lon-1.webp', 'Hiển thị', '2025-10-10 07:16:36', '2025-10-10 07:16:36', NULL),
+(9, 3, 'sam-ngoc-linh-truong-sinh-do-thung-24lon-2.webp', 'Hiển thị', '2025-10-10 07:16:36', '2025-10-10 07:16:36', NULL),
+(10, 3, 'sam-ngoc-linh-truong-sinh-do-thung-24lon-3.webp', 'Hiển thị', '2025-10-10 07:16:36', '2025-10-10 07:16:36', NULL),
+(11, 3, 'sam-ngoc-linh-truong-sinh-do-thung-24lon-4.webp', 'Hiển thị', '2025-10-10 07:16:36', '2025-10-10 07:16:36', NULL),
+(12, 3, 'sam-ngoc-linh-truong-sinh-do-thung-24lon-5.webp', 'Hiển thị', '2025-10-10 07:16:36', '2025-10-10 07:16:36', NULL),
+(13, 4, 'tinh-dau-tram-tu-nhien-eco-ho-tro-giam-ho-cam-cum-so-mui-cam-lanh-lo-30ml-1.webp', 'Hiển thị', '2025-10-10 07:18:38', '2025-10-10 07:18:38', NULL),
+(14, 4, 'tinh-dau-tram-tu-nhien-eco-ho-tro-giam-ho-cam-cum-so-mui-cam-lanh-lo-30ml-2.webp', 'Hiển thị', '2025-10-10 07:18:38', '2025-10-10 07:18:38', NULL),
+(15, 4, 'tinh-dau-tram-tu-nhien-eco-ho-tro-giam-ho-cam-cum-so-mui-cam-lanh-lo-30ml-3.webp', 'Hiển thị', '2025-10-10 07:18:38', '2025-10-10 07:18:38', NULL),
+(16, 5, 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g-1.webp', 'Hiển thị', '2025-10-10 07:22:36', '2025-10-10 07:22:36', NULL),
+(17, 5, 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g-2.webp', 'Hiển thị', '2025-10-10 07:22:36', '2025-10-10 07:22:36', NULL),
+(18, 5, 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g-3.webp', 'Hiển thị', '2025-10-10 07:22:36', '2025-10-10 07:22:36', NULL),
+(19, 5, 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g-4.webp', 'Hiển thị', '2025-10-10 07:22:36', '2025-10-10 07:22:36', NULL),
+(20, 5, 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g-5.webp', 'Hiển thị', '2025-10-10 07:22:36', '2025-10-10 07:22:36', NULL),
+(21, 5, 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g-6.webp', 'Hiển thị', '2025-10-10 07:22:36', '2025-10-10 07:22:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -227,11 +300,19 @@ CREATE TABLE `hinhanh_sanpham` (
 
 CREATE TABLE `loaibienthe` (
   `id` int NOT NULL,
-  `ten` int NOT NULL,
-  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
+  `ten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `loaibienthe`
+--
+
+INSERT INTO `loaibienthe` (`id`, `ten`, `trangthai`, `created_at`, `updated_at`) VALUES
+(1, 'Lọ', 'Hiển thị', '2025-10-10 06:55:28', '2025-10-10 06:55:28'),
+(2, 'Hộp', 'Hiển thị', '2025-10-10 07:04:13', '2025-10-10 07:04:13');
 
 -- --------------------------------------------------------
 
@@ -242,12 +323,12 @@ CREATE TABLE `loaibienthe` (
 CREATE TABLE `magiamgia` (
   `id` int NOT NULL,
   `magiamgia` int NOT NULL,
-  `dieukien` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mota` text COLLATE utf8mb4_unicode_ci,
+  `dieukien` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mota` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `giatri` int NOT NULL,
   `ngaybatdau` date NOT NULL,
   `ngayketthuc` date NOT NULL,
-  `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hoạt động',
+  `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hoạt động',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -261,19 +342,26 @@ CREATE TABLE `magiamgia` (
 
 CREATE TABLE `nguoidung` (
   `id` int NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sodienthoai` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hoten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gioitinh` enum('Nam','Nữ') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sodienthoai` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hoten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gioitinh` enum('Nam','Nữ') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `ngaysinh` date NOT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'khachhang.jpg',
-  `vaitro` enum('admin','seller','client') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'khachhang.jpg',
+  `vaitro` enum('admin','seller','client') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `nguoidung`
+--
+
+INSERT INTO `nguoidung` (`id`, `username`, `password`, `sodienthoai`, `hoten`, `gioitinh`, `ngaysinh`, `avatar`, `vaitro`, `trangthai`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'lyhuu123', '123@#', '0845381121', 'Cao Kiến Hựu', 'Nam', '2004-10-13', 'khachhang.jpg', 'seller', 'Hoạt động', '2025-10-10 06:43:52', '2025-10-10 06:43:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -283,9 +371,9 @@ CREATE TABLE `nguoidung` (
 
 CREATE TABLE `phuongthuc` (
   `id` int NOT NULL,
-  `ten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `maphuongthuc` text COLLATE utf8mb4_unicode_ci,
-  `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hoạt động',
+  `ten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `maphuongthuc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hoạt động',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -298,11 +386,11 @@ CREATE TABLE `phuongthuc` (
 
 CREATE TABLE `quangcao` (
   `id` int NOT NULL,
-  `vitri` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hinhanh` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lienket` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mota` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
+  `vitri` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hinhanh` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lienket` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mota` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -319,12 +407,12 @@ CREATE TABLE `quatang_sukien` (
   `id_cuahang` int NOT NULL,
   `id_sukien` int NOT NULL,
   `soluongapdung` int NOT NULL,
-  `thongtin` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `soluong` int NOT NULL,
+  `tieude` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `thongtin` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị'
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -336,18 +424,29 @@ CREATE TABLE `quatang_sukien` (
 CREATE TABLE `sanpham` (
   `id` int NOT NULL,
   `id_cuahang` int NOT NULL,
-  `ten` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mota` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `xuatxu` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sanxuat` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ten` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mota` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `xuatxu` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sanxuat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `trangthai` enum('Công khai','Chờ duyệt','Tạm ẩn','Tạm khóa') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Chờ duyệt',
   `luotxem` int NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `thuonghieu` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `thuonghieu` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Sản phẩm';
+
+--
+-- Dumping data for table `sanpham`
+--
+
+INSERT INTO `sanpham` (`id`, `id_cuahang`, `ten`, `slug`, `mota`, `xuatxu`, `sanxuat`, `trangthai`, `luotxem`, `created_at`, `updated_at`, `deleted_at`, `thuonghieu`) VALUES
+(1, 1, 'Keo ong xanh Tracybee Propolis Mint & Honey – Giảm đau rát họng, ho, viêm họng (Vị Bạc Hà)', 'keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha', 'Bạn đang tìm kiếm giải pháp kháng khuẩn tự nhiên và giảm đau họng tức thì? Keo ong xanh Tracybee Propolis Mint & Honey là sự kết hợp hoàn hảo giữa dược liệu quý từ thiên nhiên và hương vị the mát, giúp bạn vượt qua những cơn đau rát họng, ho và viêm họng khó chịu một cách nhanh chóng.', 'Brazil', 'Nhập khẩu chính ngạch bởi Siêu Thị Vina', 'Công khai', 0, '2025-10-10 06:52:46', '2025-10-10 06:52:46', NULL, 'TRACBEE'),
+(2, 1, 'Mật ong Tây Bắc đông trùng hạ thảo X3 (Hũ 240g)', 'mat-ong-tay-bac-dong-trung-ha-thao-x3-hu-240g', 'Mật ong Tây Bắc Đông Trùng Hạ Thảo X3 là siêu phẩm bồi bổ sức khỏe, kết hợp giữa mật ong rừng Tây Bắc nguyên chất và hàm lượng Đông Trùng Hạ Thảo được tăng cường gấp 3 lần (X3). Sản phẩm mang đến giải pháp tiện lợi và hiệu quả tối ưu để nâng cao thể trạng, tăng cường đề kháng và phục hồi sức khỏe.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, '2025-10-10 07:03:55', '2025-10-10 07:03:55', NULL, 'TRUNG NHÂN'),
+(3, 1, 'Sâm Ngọc Linh trường sinh đỏ (Thùng 24lon)', 'sam-ngoc-linh-truong-sinh-do-thung-24lon', 'Sâm Ngọc Linh Trường Sinh Đỏ là tinh hoa của dược liệu quý hiếm, mang đến giải pháp tiện lợi để bồi bổ sức khỏe và nâng cao thể trạng mỗi ngày. Được chiết xuất từ Sâm Ngọc Linh quý giá – \"Quốc bảo của Việt Nam\" – sản phẩm ở dạng lon uống liền giúp bạn hấp thu trọn vẹn dưỡng chất một cách nhanh chóng và hiệu quả.', 'Việt Nam', 'Việt Nam', 'Chờ duyệt', 0, '2025-10-10 07:03:55', '2025-10-10 07:03:55', NULL, '\r\nTRUONG SINH GROUP'),
+(4, 1, 'Tinh dầu tràm tự nhiên ECO - Hỗ trợ giảm ho, cảm cúm, sổ mũi, cảm lạnh (Lọ 30ml)', 'tinh-dau-tram-tu-nhien-eco-ho-tro-giam-ho-cam-cum-so-mui-cam-lanh-lo-30ml', 'Tinh Dầu Tràm Tự Nhiên ECO là sản phẩm chiết xuất 100% từ lá tràm nguyên chất, mang trong mình những công dụng truyền thống tuyệt vời trong việc bảo vệ sức khỏe, đặc biệt là hệ hô hấp. Với khả năng kháng khuẩn, làm ấm và thư giãn, Tinh dầu Tràm ECO là người bạn đồng hành không thể thiếu trong tủ thuốc gia đình, giúp đối phó hiệu quả với các triệu chứng cảm thông thường.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, '2025-10-10 07:03:55', '2025-10-10 07:03:55', NULL, 'ECO'),
+(5, 1, 'Sữa non tổ yến Papamilk Height & Gain giúp tăng cân tăng chiều cao cho Trẻ từ 1-19 tuổi - Lon 830G', 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g', 'Sữa Non Tổ Yến Papamilk Height & Gain là công thức dinh dưỡng đột phá được thiết kế chuyên biệt để hỗ trợ tăng cân khỏe mạnh và tối ưu hóa chiều cao cho trẻ em và thanh thiếu niên từ 1 đến 19 tuổi. Sự kết hợp độc đáo giữa Sữa Non cao cấp, Tổ Yến quý giá cùng hệ dưỡng chất khoa học giúp con bạn xây dựng nền tảng vững chắc cho một tương lai phát triển vượt trội.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, '2025-10-10 07:03:55', '2025-10-10 07:03:55', NULL, '\r\nVKAIZEN');
 
 -- --------------------------------------------------------
 
@@ -357,13 +456,13 @@ CREATE TABLE `sanpham` (
 
 CREATE TABLE `sukien` (
   `id` int NOT NULL,
-  `tieude` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hinhanh` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `noidung` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tieude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hinhanh` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `noidung` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `ngaybatdau` date NOT NULL,
   `ngayketthuc` date NOT NULL,
-  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -378,10 +477,10 @@ CREATE TABLE `sukien` (
 CREATE TABLE `thongbao` (
   `id` int NOT NULL,
   `id_nguoidung` int NOT NULL,
-  `tieude` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `noidung` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lienket` text COLLATE utf8mb4_unicode_ci,
-  `trangthai` enum('Đã đọc','Chưa đọc','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tieude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `noidung` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lienket` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `trangthai` enum('Đã đọc','Chưa đọc','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -395,7 +494,7 @@ CREATE TABLE `thongbao` (
 
 CREATE TABLE `tukhoa` (
   `id` int NOT NULL,
-  `tukhoa` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tukhoa` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `luottruycap` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -409,7 +508,7 @@ CREATE TABLE `yeuthich` (
   `id` int NOT NULL,
   `id_nguoidung` int NOT NULL,
   `id_sanpham` int NOT NULL,
-  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -572,6 +671,58 @@ ALTER TABLE `yeuthich`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_nguoidung` (`id_nguoidung`,`id_sanpham`),
   ADD KEY `id_sanpham` (`id_sanpham`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `bienthe`
+--
+ALTER TABLE `bienthe`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `cuahang`
+--
+ALTER TABLE `cuahang`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `danhmuc`
+--
+ALTER TABLE `danhmuc`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `danhmuc_sanpham`
+--
+ALTER TABLE `danhmuc_sanpham`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `hinhanh_sanpham`
+--
+ALTER TABLE `hinhanh_sanpham`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `loaibienthe`
+--
+ALTER TABLE `loaibienthe`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `nguoidung`
+--
+ALTER TABLE `nguoidung`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `sanpham`
+--
+ALTER TABLE `sanpham`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
