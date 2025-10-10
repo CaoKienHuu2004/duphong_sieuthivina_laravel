@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 6.0.0-dev+20251008.967007883e
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 10, 2025 at 09:25 AM
+-- Generation Time: Oct 10, 2025 at 01:34 PM
 -- Server version: 8.4.3
--- PHP Version: 8.3.26
+-- PHP Version: 8.3.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -300,7 +300,7 @@ INSERT INTO `hinhanh_sanpham` (`id`, `id_sanpham`, `hinhanh`, `trangthai`, `crea
 
 CREATE TABLE `loaibienthe` (
   `id` int NOT NULL,
-  `ten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -407,7 +407,7 @@ CREATE TABLE `quatang_sukien` (
   `id_cuahang` int NOT NULL,
   `id_sukien` int NOT NULL,
   `soluongapdung` int NOT NULL,
-  `tieude` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tieude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `thongtin` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -506,10 +506,13 @@ INSERT INTO `tukhoa` (`id`, `tukhoa`, `luottruycap`) VALUES
 (1, 'Máy massage', 5),
 (2, 'Điện gia dụng', 1),
 (3, 'Đồ chơi minecraft', 152),
-(4, 'Sách hán ngữ 3', 585),
+(4, 'Sách hán ngữ 3', 594),
 (5, 'Huyndai decor', 62),
 (6, 'Điện nội thất', 125),
-(7, 'Móc khóa genshin', 246);
+(7, 'Móc khóa genshin', 246),
+(8, 'Phiền Muộn Của Afratu', 9),
+(9, 'Kẹo', 502),
+(10, 'Sâm Ngọc Linh', 602);
 
 -- --------------------------------------------------------
 
@@ -741,7 +744,7 @@ ALTER TABLE `sanpham`
 -- AUTO_INCREMENT for table `tukhoa`
 --
 ALTER TABLE `tukhoa`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables

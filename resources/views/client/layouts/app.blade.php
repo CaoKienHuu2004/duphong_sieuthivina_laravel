@@ -346,10 +346,11 @@
         <div class="header-menu w-50 d-lg-block d-none">
           
           <div class="mx-20">
-            <form action="#" class="position-relative w-100 d-md-block d-none">
+            <form action="{{ route('tim-kiem') }}" method="GET" class="position-relative w-100 d-md-block d-none">
               <input type="text"
                 class="form-control text-sm fw-normal placeholder-italic shadow-none bg-neutral-30 placeholder-fw-normal placeholder-light py-10 ps-30 pe-60"
-                placeholder="{{ $tukhoaplaceholder }}....">
+                placeholder="{{ $tukhoaplaceholder }}...."
+                name="query">
               <button type="submit"
                 class="position-absolute top-50 translate-middle-y text-main-600 end-0 me-36 text-xl line-height-1">
                 <i class="ph-bold ph-magnifying-glass"></i>
@@ -358,7 +359,7 @@
 
             <div class="flex-align mt-10 gap-12 title">
               @foreach ($tukhoaphobien as $keyword)
-                <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">{{ $keyword->tukhoa }}</a>
+                <a href="{{route('tim-kiem',['query'=>$keyword->tukhoa])}}" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">{{ $keyword->tukhoa }}</a>
               @endforeach
               <!-- <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">điện gia dụng</a>
               <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">mẹ và bé</a>

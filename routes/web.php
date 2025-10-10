@@ -16,6 +16,9 @@ use App\Http\Controllers\vendor;
 Route::get('/', [client\HomeController::class, 'index'])->name('trang-chu');
 Route::get('/trang-chu', [client\HomeController::class, 'index']);
 
+// Route xử lý yêu cầu tìm kiếm từ form hoặc từ khóa click
+Route::get('/tim-kiem', [client\HomeController::class, 'index'])->name('tim-kiem');
+
 Route::get('/dang-nhap', [client\NguoidungController::class, 'login'])->name('login'); 
 
 // Tuyến đường yêu cầu đăng nhập (dành cho mọi người dùng đã đăng nhập)
