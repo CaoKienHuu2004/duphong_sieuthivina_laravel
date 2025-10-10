@@ -22,6 +22,9 @@ Route::get('/dang-nhap', [client\NguoidungController::class, 'login'])->name('lo
 Route::middleware('auth:web')->group(function () {
     // Trang danh sách sản phẩm
     Route::get('/san-pham', [client\SanphamController::class, 'show'])->name('sanpham');
+
+    Route::get('/san-pham',[return('client.sanpham.chitiet');])->name('sanpham');
+
     
 });
 
