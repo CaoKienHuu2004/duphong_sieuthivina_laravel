@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 6.0.0-dev+20251008.967007883e
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 10, 2025 at 01:34 PM
+-- Generation Time: Oct 11, 2025 at 06:13 AM
 -- Server version: 8.4.3
--- PHP Version: 8.3.16
+-- PHP Version: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -387,7 +387,7 @@ CREATE TABLE `phuongthuc` (
 CREATE TABLE `quangcao` (
   `id` int NOT NULL,
   `vitri` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hinhanh` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hinhanh` enum('home_banner_slider','home_banner_event_1','home_banner_event_2','home_banner_event_3','home_banner_event_4','home_banner_promotion_1','home_banner_promotion_2','home_banner_promotion_3','home_banner_ads','home_banner_product') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `lienket` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `mota` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
@@ -506,13 +506,14 @@ INSERT INTO `tukhoa` (`id`, `tukhoa`, `luottruycap`) VALUES
 (1, 'Máy massage', 5),
 (2, 'Điện gia dụng', 1),
 (3, 'Đồ chơi minecraft', 152),
-(4, 'Sách hán ngữ 3', 594),
+(4, 'Sách hán ngữ 3', 596),
 (5, 'Huyndai decor', 62),
 (6, 'Điện nội thất', 125),
 (7, 'Móc khóa genshin', 246),
 (8, 'Phiền Muộn Của Afratu', 9),
-(9, 'Kẹo', 502),
-(10, 'Sâm Ngọc Linh', 602);
+(9, 'Kẹo', 50),
+(10, 'Sâm Ngọc Linh', 606),
+(11, 'Thầy Hộ', 1);
 
 -- --------------------------------------------------------
 
@@ -744,7 +745,7 @@ ALTER TABLE `sanpham`
 -- AUTO_INCREMENT for table `tukhoa`
 --
 ALTER TABLE `tukhoa`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables

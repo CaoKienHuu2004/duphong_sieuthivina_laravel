@@ -792,7 +792,7 @@
         <div class="">
             <div class="section-heading mb-24">
                 <div class="flex-between flex-wrap gap-8">
-                    <h6 class="mb-0 wow fadeInLeft flex-align gap-8"><i class="ph-bold ph-gift text-main-600"></i> Quà tặng sự kiện</h6>
+                    <h6 class="mb-0 wow fadeInLeft flex-align gap-8"><i class="ph-bold ph-gift text-main-600"></i> Quà tặng</h6>
                     <div class="flex-align gap-16 wow fadeInRight">
                         <a href="{{ route('sanpham') }}" class="text-sm fw-semibold text-main-600 hover-text-main-600 hover-text-decoration-underline">Xem tất cả</a>
                         <div class="flex-align gap-8">

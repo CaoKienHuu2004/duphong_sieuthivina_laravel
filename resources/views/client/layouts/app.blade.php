@@ -67,10 +67,11 @@
         <ul class="nav-menu flex-align nav-menu--mobile">
 
           <li class="nav-menu__item">
-            <form action="#" class="position-relative w-100">
+            <form action="{{ route('tim-kiem') }}" class="position-relative w-100">
               <input type="text"
+                name="query"
                 class="form-control text-sm fw-medium placeholder-italic shadow-none bg-neutral-30 placeholder-fw-medium placeholder-light py-10 ps-20 pe-60"
-                placeholder="Tìm kiếm sản phẩm, danh mục hoặc cửa hàng...">
+                placeholder="{{ $tukhoaplaceholder }}...">
               <button type="submit"
                 class="position-absolute top-50 translate-middle-y text-main-600 end-0 me-36 text-xl line-height-1">
                 <i class="ph-bold ph-magnifying-glass"></i>
@@ -176,34 +177,14 @@
                 </a>
               </div>
               <ul class="scroll-sm p-0 py-8 w-300 max-h-400 overflow-y-auto">
-                <li class="has-submenus-submenu">
-                  <a href="product-details-two.html"
-                    class="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0">
-                    <span class="text-xl d-flex"><i class="ph ph-carrot"></i></span>
-                    <span>Vegetables &amp; Fruit</span>
-                  </a>
-                </li>
-                <li class="has-submenus-submenu">
-                  <a href="product-details-two.html"
-                    class="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0">
-                    <span class="text-xl d-flex"><i class="ph ph-package"></i></span>
-                    <span>Vegetables &amp; Fruit</span>
-                  </a>
-                </li>
-                <li class="has-submenus-submenu">
-                  <a href="product-details-two.html"
-                    class="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0">
-                    <span class="text-xl d-flex"><i class="ph ph-carrot"></i></span>
-                    <span>Vegetables &amp; Fruit</span>
-                  </a>
-                </li>
-                <li class="has-submenus-submenu">
-                  <a href="product-details-two.html"
-                    class="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0">
-                    <span class="text-xl d-flex"><i class="ph ph-carrot"></i></span>
-                    <span>Vegetables &amp; Fruit</span>
-                  </a>
-                </li>
+                @foreach ($danhmuc as $dm)
+                  <li class="has-submenus-submenu">
+                    <a href="" class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
+                      <span class="text-xl d-flex"><img src="{{asset('assets/client')}}/images/categories/{{ $dm->logo }}" alt="{{ $dm->ten }}" width="70%"></span>
+                      <span>{{ $dm->ten }}</span>
+                    </a>
+                  </li>
+                @endforeach
               </ul>
             </div>
           </li>
