@@ -322,13 +322,13 @@
         {
           breakpoint: 1699,
           settings: {
-            slidesToShow: 9,
+            slidesToShow: 10,
           },
         },
         {
           breakpoint: 1599,
           settings: {
-            slidesToShow: 8,
+            slidesToShow: 10,
           },
         },
         {
@@ -340,25 +340,25 @@
         {
           breakpoint: 992,
           settings: {
-            slidesToShow: 5,
+            slidesToShow: 6,
           },
         },
         {
           breakpoint: 768,
           settings: {
-            slidesToShow: 4,
+            slidesToShow: 5,
           },
         },
         {
           breakpoint: 575,
           settings: {
-            slidesToShow: 3,
+            slidesToShow: 5,
           },
         },
         {
           breakpoint: 424,
           settings: {
-            slidesToShow: 2,
+            slidesToShow: 4,
           },
         },
         {

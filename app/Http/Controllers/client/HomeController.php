@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
+use App\Models\BientheModel;
 use App\Models\SanphamModel;
+use App\Models\HinhanhsanphamModel;
+use App\Models\DanhgiaModel;
+use App\Models\CuahangModel;
 use Illuminate\Http\Request;
 use App\Models\TukhoaModel;
 use App\Models\DanhmucModel;
 use App\Models\QuangcaoModel;
+
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -57,8 +62,18 @@ class HomeController extends Controller
         $banners['home_banner_ads'] = $this->vitriBanner(self::BANNER_POSITIONS[8], 1);
         $banners['home_banner_product'] = $this->vitriBanner(self::BANNER_POSITIONS[9], 1);
 
-        return view('client.index', compact('banners')); 
+
+        // ==========SHOW TẤT CẢ DANH MỤC========== //
+        $danhsachdanhmuc = DanhmucModel::select('ten', 'logo', 'slug')->get();
+
+        // ==========SHOW SẢN PHẨM TOPDEAL========== //
+        $
+
+        $data = array_merge($banners, compact('danhsachdanhmuc','topDeals'));
+        return view('client.index', $data); 
     }
+
+    
 
     public function search(Request $request)
     {  

@@ -26,35 +26,23 @@
               </div>
 
               <div class="banner-item-two__slider">
-                <a href="cart.html"
-                  class="d-flex align-items-center justify-content-between flex-wrap-reverse flex-sm-nowrap gap-32">
-
-                  <img src="{{asset('assets/client')}}/images/bg/banner-droppii-1.png" alt="Thumb" class=" d-lg-block d-none rounded-5"
-                    style="width: 100%; height: 350px; object-fit: cover;" />
-                  <img src="{{asset('assets/client')}}/images/bg/banner-droppii-1.png" alt="Thumb" class=" d-block d-lg-none rounded-5"
-                    style="width: 100%; height: 300px; object-fit: cover;" />
-
-                </a>
-                <a href="checkout.html"
-                  class="d-flex align-items-center justify-content-between flex-wrap-reverse flex-sm-nowrap gap-32">
-
-                  <img src="{{asset('assets/client')}}/images/bg/banner-droppii-2.png" alt="Thumb" class=" d-lg-block d-none rounded-5"
-                    style="width: 100%; height: 350px; object-fit: cover;" />
-                  <img src="{{asset('assets/client')}}/images/bg/banner-droppii-2.png" alt="Thumb" class=" d-block d-lg-none rounded-5"
-                    style="width: 100%; height: 300px; object-fit: cover;" />
-
-                </a>
-                <a href="product-details-two.html"
-                  class="d-flex align-items-center justify-content-between flex-wrap-reverse flex-sm-nowrap gap-32">
-
-                  <img src="{{asset('assets/client')}}/images/bg/banner-droppii-3.png" alt="Thumb" class=" d-lg-block d-none rounded-5"
-                    style="width: 100%; height: 350px; object-fit: cover;" />
-                  <img src="{{asset('assets/client')}}/images/bg/banner-droppii-3.png" alt="Thumb" class=" d-block d-lg-none rounded-5"
-                    style="width: 100%; height: 300px; object-fit: cover;" />
-
-                </a>
-
-
+                @if ($home_banner_slider->isNotEmpty())
+                  @foreach ($home_banner_slider as $banner)
+                    <a href="{{ $banner->lienket }}" class="d-flex align-items-center justify-content-between flex-wrap-reverse flex-sm-nowrap gap-32">
+                    <img src="{{asset('assets/client')}}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" class=" d-lg-block d-none rounded-5"
+                      style="width: 100%; height: 350px; object-fit: cover;" />
+                    <img src="{{asset('assets/client')}}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" class=" d-block d-lg-none rounded-5"
+                      style="width: 100%; height: 300px; object-fit: cover;" />
+                  </a>
+                  @endforeach
+                @else
+                  <a href="#" class="d-flex align-items-center justify-content-between flex-wrap-reverse flex-sm-nowrap gap-32">
+                    <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class=" d-lg-block d-none rounded-5"
+                      style="width: 100%; height: 350px; object-fit: cover;" />
+                    <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class=" d-block d-lg-none rounded-5"
+                      style="width: 100%; height: 300px; object-fit: cover;" />
+                  </a>
+                @endif
               </div>
             </div>
           </div>
@@ -62,70 +50,130 @@
 
         <div class="col-12 col-lg-3 mt-20 ps-10 pe-5 d-lg-block d-none">
           <div class="row g-24 me-0">
-            <a href="#" class="p-0 m-0">
-              <img src="{{asset('assets/client')}}/images/bg/shopee-04.webp" alt="Thumb" class="p-0 rounded-5"
-                style="width: 100%; height: 170px; object-fit: cover;" />
-            </a>
+            @if ($home_banner_event_1)
+              <a href="{{ $home_banner_event_1->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_1->hinhanh }}" alt="{{ $home_banner_event_1->hinhanh }}" class="p-0 rounded-5"
+                  style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @else
+              <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class="p-0 rounded-5"
+                  style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @endif
+            
           </div>
           <div class="row g-24 mt-10 me-0">
-            <a href="#" class="p-0 m-0">
-              <img src="{{asset('assets/client')}}/images/bg/shopee-1.jpg" alt="Thumb" class="p-0 rounded-5"
-                style="width: 100%; height: 170px; object-fit: cover;" />
-            </a>
+            @if ($home_banner_event_2)
+              <a href="{{ $home_banner_event_2->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_2->hinhanh }}" alt="{{ $home_banner_event_2->hinhanh }}" class="p-0 rounded-5"
+                  style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @else
+              <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class="p-0 rounded-5"
+                  style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @endif
           </div>
         </div>
         <div class="col-12 col-lg-3 mt-20 px-5 d-lg-block d-none">
           <div class="row g-24 ms-0 w-100">
-            <a href="#" class="p-0 m-0">
-              <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="Thumb" class="p-0 rounded-5"
-                style="width: 100%; height: 170px; object-fit: cover;" />
-            </a>
+            @if ($home_banner_event_3)
+              <a href="{{ $home_banner_event_3->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_3->hinhanh }}" alt="{{ $home_banner_event_3->hinhanh }}" class="p-0 rounded-5"
+                  style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @else
+              <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class="p-0 rounded-5"
+                  style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @endif
           </div>
           <div class="row g-24 mt-10 ms-0 w-100">
-            <a href="#" class="p-0 m-0">
-              <img src="{{asset('assets/client')}}/images/bg/shopee-05.jpg" alt="Thumb" class="p-0 rounded-5"
-                style="width: 100%; height: 170px; object-fit: cover;" />
-            </a>
+            @if ($home_banner_event_4)
+              <a href="{{ $home_banner_event_4->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_4->hinhanh }}" alt="{{ $home_banner_event_4->hinhanh }}" class="p-0 rounded-5"
+                  style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @else
+              <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class="p-0 rounded-5"
+                  style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @endif
           </div>
         </div>
 
-        <!-- ============================ 4 ảnh thumb tĩnh dành cho mobile=============================== -->
-        <div class="col-12 col-lg-3 mt-20 px-10 d-lg-none d-block">
-          <div class="row g-24 mx-0">
-            <a href="#" class="p-0 m-0">
-              <img src="{{asset('assets/client')}}/images/bg/shopee-04.webp" alt="Thumb" class="p-0 rounded-5"
-                style="width: 100%; height: 163px; object-fit: cover;" />
-            </a>
+        
+      </div>
+    </div>
+    <div class="container">
+      <!-- ============================ 4 ảnh thumb tĩnh dành cho mobile=============================== -->
+        <div class="col-12 col-lg-3 mt-20 d-lg-none d-block">
+          <div class="">
+            @if ($home_banner_event_1)
+              <a href="{{ $home_banner_event_1->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_1->hinhanh }}" alt="{{ $home_banner_event_1->hinhanh }}" class="p-0 rounded-5"
+                  style="width: 100%; object-fit: cover;" />
+              </a>
+            @else 
+                <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="Thumb" class="p-0 rounded-5"
+                  style="width: 100%; object-fit: cover;" />
+              </a>
+            @endif
           </div>
-          <div class="row g-24 mt-24 mx-0">
-            <a href="#" class="p-0 m-0">
-              <img src="{{asset('assets/client')}}/images/bg/shopee-1.jpg" alt="Thumb" class="p-0 rounded-5"
-                style="width: 100%; height: 163px; object-fit: cover;" />
-            </a>
+          <div class=" mt-24">
+            @if ($home_banner_event_2)
+              <a href="{{ $home_banner_event_2->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_2->hinhanh }}" alt="{{ $home_banner_event_2->hinhanh }}" class="p-0 rounded-5"
+                  style="width: 100%; object-fit: cover;" />
+              </a>
+            @else
+              <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-2.jpg" alt="Thumb" class="p-0 rounded-5"
+                  style="width: 100%; object-fit: cover;" />
+              </a>
+            @endif
           </div>
         </div>
-        <div class="col-12 col-lg-3 mt-20 px-10 d-lg-none d-block">
-          <div class="row g-24 mx-0">
-            <a href="#" class="p-0 m-0">
-              <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="Thumb" class="p-0 rounded-5"
-                style="width: 100%; height: 163px; object-fit: cover;" />
-            </a>
+        <div class="col-12 col-lg-3 mt-20 pe-0  d-lg-none d-block">
+          <div class="">
+            @if ($home_banner_event_3)
+              <a href="{{ $home_banner_event_3->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_3->hinhanh }}" alt="{{ $home_banner_event_3->hinhanh }}" class="p-0 rounded-5"
+                  style="width: 100%; object-fit: cover;" />
+              </a>
+            @else
+              <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="Thumb" class="p-0 rounded-5"
+                  style="width: 100%; object-fit: cover;" />
+              </a> 
+            @endif
           </div>
-          <div class="row g-24 mt-24 mx-0">
-            <a href="#" class="p-0 m-0">
-              <img src="{{asset('assets/client')}}/images/bg/shopee-05.jpg" alt="Thumb" class="p-0 rounded-5"
-                style="width: 100%; height: 163px; object-fit: cover;" />
-            </a>
+          <div class=" mt-24">
+            @if ($home_banner_event_4)
+              <a href="{{ $home_banner_event_4->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_4->hinhanh }}" alt="{{ $home_banner_event_4->hinhanh }}" class="p-0 rounded-5"
+                  style="width: 100%; object-fit: cover;" />
+              </a>
+            @else
+              <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="Thumb" class="p-0 rounded-5"
+                  style="width: 100%; object-fit: cover;" />
+              </a>
+            @endif
           </div>
         </div>
         <!-- ============================endsection ảnh thumb tĩnh dành cho mobile=============================== -->
-      </div>
     </div>
   </div>
   <!-- ============================ Banner Section End =============================== -->
 
   <!-- ============================ promotional banner Start ========================== -->
-  <div class="feature mt-5 fix-scale-20" id="featureSection">
+  <div class="feature mt-10 fix-scale-20 " id="featureSection">
     <div class="container container-lg px-0">
       <div class="position-relative arrow-center">
         <div class="flex-align">
@@ -139,127 +187,19 @@
           </button>
         </div>
         <div class="feature-item-wrapper">
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="400">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
+          @foreach ($danhsachdanhmuc as $dsdm)
+            <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="400">
+              <div class="feature-item__thumb rounded-circle">
+                <a href="{{ route('trang-chu',$dsdm->slug) }}" class="w-100 h-100 p-10 flex-center">
+                  <img src="{{asset('assets/client')}}/images/categories/{{ $dsdm->logo }}" alt="{{ $dsdm->ten }}">
+                </a>
+              </div>
+              <div class="feature-item__content mt-16">
+                <h6 class="text-md fw-medium mb-8"><a href="#" class="text-inherit">{{ $dsdm->ten }}</a></h6>
+              </div>
             </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Vegetables</a></h6>
-
-            </div>
-          </div>
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="600">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
-            </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Fish & Meats</a></h6>
-
-            </div>
-          </div>
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="800">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
-            </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Desserts</a></h6>
-
-            </div>
-          </div>
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="1000">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
-            </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Drinks & Juice</a></h6>
-
-            </div>
-          </div>
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="1200">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
-            </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Animals Food</a></h6>
-
-            </div>
-          </div>
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="1400">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
-            </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Fresh Fruits</a></h6>
-
-            </div>
-          </div>
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="1600">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
-            </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Yummy Candy</a></h6>
-
-            </div>
-          </div>
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="1800">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
-            </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Fish & Meats</a></h6>
-
-            </div>
-          </div>
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="2000">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
-            </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Dairy & Eggs</a></h6>
-
-            </div>
-          </div>
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="2200">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
-            </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Snacks</a></h6>
-
-            </div>
-          </div>
-          <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="2400">
-            <div class="feature-item__thumb rounded-circle">
-              <a href="shop.html" class="w-100 h-100 p-10 flex-center">
-                <img src="{{asset('assets/client')}}/images/thumbs/cyber-monday-img1.png" alt="">
-              </a>
-            </div>
-            <div class="feature-item__content mt-16">
-              <h6 class="text-md mb-8"><a href="shop.html" class="text-inherit">Frozen Foods</a></h6>
-
-            </div>
-          </div>
+          @endforeach
+          
         </div>
       </div>
     </div>
@@ -269,11 +209,12 @@
   <!-- ========================= Top Selling Products Start ================================ -->
   <section class="top-selling-products pt-20 overflow-hidden fix-scale-30">
     <div class="container container-lg px-0">
-      <div class="border border-gray-100 p-24 rounded-10 bg-hotsales">
+      <div class="border border-gray-100 pr-20 p-16 rounded-10 bg-hotsales">
         <div class="section-heading mb-24">
           <div class="flex-between flex-wrap gap-8">
             <h6 class="mb-0 wow fadeInLeft text-white">
-              <img src="{{asset('assets/client')}}/images/thumbs/top-deal-sieu-re.png" alt="" class="w-50 py-10">
+              <img src="{{asset('assets/client')}}/images/thumbs/top-deal-sieu-re.png" alt="" class="w-50 py-10 d-lg-block d-none">
+              <img src="{{asset('assets/client')}}/images/thumbs/top-deal-sieu-re.png" alt="" class="py-10 d-lg-none d-block" width="70%">
             </h6>
             <div class="flex-align gap-16 wow fadeInRight" style="visibility: visible; animation-name: fadeInRight;">
               <a href="shop.html"
@@ -295,7 +236,8 @@
         <div class="row g-12">
           <div class="col-md-12">
             <div class="top-selling-product-slider arrow-style-two">
-              <div data-aos="fade-up" data-aos-duration="1000">
+              @foreach ($topDeals as $td)
+                <div class="d-lg-block d-none" data-aos="fade-up" data-aos-duration="1000">
                 <div
                   class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
 
@@ -355,14 +297,14 @@
                   </div>
                 </div>
               </div>
-              <div data-aos="fade-up" data-aos-duration="1000">
+              <div class="d-lg-none d-block" data-aos="fade-up" data-aos-duration="1000">
                 <div
-                  class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
+                  class="product-card bg-white hover-card-shadows h-100 p-10 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
 
                   <a href="product-details-two.html"
                     class=" flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
                     <span
-                      class="product-card__badge bg-success-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
+                      class="product-card__badge bg-success-600 px-8 py-4 text-xs text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
                       10%</span>
                     <img src="{{asset('assets/client')}}/images/thumbs/sanpham-1.webp" alt="" class="rounded-8" />
                   </a>
@@ -373,12 +315,6 @@
                       <div class="flex-align gap-4">
                         <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
                         <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                      </div>
-                      <div class="flex-align gap-4">
-
-                        <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                        <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                        <span class="text-xs fw-medium text-gray-500">25k</span>
                       </div>
                     </div>
 
@@ -415,366 +351,9 @@
                   </div>
                 </div>
               </div>
-              <div data-aos="fade-up" data-aos-duration="1000">
-                <div
-                  class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class=" flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
-                    <span
-                      class="product-card__badge bg-success-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
-                      10%</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/sanpham-1.webp" alt="" class="rounded-8" />
-                  </a>
-                  <div class="product-card__content w-100  mt-5">
-
-                    
-                    <div class="flex-align justify-content-between mt-5">
-                      <div class="flex-align gap-4">
-                        <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                        <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                      </div>
-                      <div class="flex-align gap-4">
-
-                        <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                        <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                        <span class="text-xs fw-medium text-gray-500">25k</span>
-                      </div>
-                    </div>
-
-                    <h6 class="title text-lg fw-semibold mt-5 mb-8">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
-                        Nhất - tăng cường lưu thông máu lên não</a>
-                    </h6>
-                    
-                    <div class="flex-align gap-6">
-
-                      <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                      <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                      <span class="text-xs fw-medium text-gray-500">4.8 <i
-                          class="ph-fill ph-star text-warning-600"></i></span>
-                      <!-- <span class="text-xs fw-medium  d-flex"></span> -->
-                      <span class="text-xs fw-medium text-gray-500">(17k)</span>
-                    </div>
-
-                    
-
-
-                    <div class="product-card__price mt-5">
-                      <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                        400.000 đ</span>
-                      <span class="text-heading text-md fw-semibold">350.000 đ</span>
-                    </div>
-                    
-
-                    <!-- <a href="cart.html"
-                      class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium"
-                      tabindex="0">
-                      Thêm <i class="ph ph-shopping-cart"></i>
-                    </a> -->
-                  </div>
-                </div>
-              </div>
-              <div data-aos="fade-up" data-aos-duration="1000">
-                <div
-                  class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class=" flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
-                    <span
-                      class="product-card__badge bg-success-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
-                      10%</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/sanpham-1.webp" alt="" class="rounded-8" />
-                  </a>
-                  <div class="product-card__content w-100  mt-5">
-
-                    
-                    <div class="flex-align justify-content-between mt-5">
-                      <div class="flex-align gap-4">
-                        <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                        <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                      </div>
-                      <div class="flex-align gap-4">
-
-                        <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                        <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                        <span class="text-xs fw-medium text-gray-500">25k</span>
-                      </div>
-                    </div>
-
-                    <h6 class="title text-lg fw-semibold mt-5 mb-8">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
-                        Nhất - tăng cường lưu thông máu lên não</a>
-                    </h6>
-                    
-                    <div class="flex-align gap-6">
-
-                      <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                      <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                      <span class="text-xs fw-medium text-gray-500">4.8 <i
-                          class="ph-fill ph-star text-warning-600"></i></span>
-                      <!-- <span class="text-xs fw-medium  d-flex"></span> -->
-                      <span class="text-xs fw-medium text-gray-500">(17k)</span>
-                    </div>
-
-                    
-
-
-                    <div class="product-card__price mt-5">
-                      <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                        400.000 đ</span>
-                      <span class="text-heading text-md fw-semibold">350.000 đ</span>
-                    </div>
-                    
-
-                    <!-- <a href="cart.html"
-                      class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium"
-                      tabindex="0">
-                      Thêm <i class="ph ph-shopping-cart"></i>
-                    </a> -->
-                  </div>
-                </div>
-              </div>
-              <div data-aos="fade-up" data-aos-duration="1000">
-                <div
-                  class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class=" flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
-                    <span
-                      class="product-card__badge bg-success-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
-                      10%</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/sanpham-1.webp" alt="" class="rounded-8" />
-                  </a>
-                  <div class="product-card__content w-100  mt-5">
-
-                    
-                    <div class="flex-align justify-content-between mt-5">
-                      <div class="flex-align gap-4">
-                        <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                        <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                      </div>
-                      <div class="flex-align gap-4">
-
-                        <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                        <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                        <span class="text-xs fw-medium text-gray-500">25k</span>
-                      </div>
-                    </div>
-
-                    <h6 class="title text-lg fw-semibold mt-5 mb-8">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
-                        Nhất - tăng cường lưu thông máu lên não</a>
-                    </h6>
-                    
-                    <div class="flex-align gap-6">
-
-                      <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                      <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                      <span class="text-xs fw-medium text-gray-500">4.8 <i
-                          class="ph-fill ph-star text-warning-600"></i></span>
-                      <!-- <span class="text-xs fw-medium  d-flex"></span> -->
-                      <span class="text-xs fw-medium text-gray-500">(17k)</span>
-                    </div>
-
-                    
-
-
-                    <div class="product-card__price mt-5">
-                      <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                        400.000 đ</span>
-                      <span class="text-heading text-md fw-semibold">350.000 đ</span>
-                    </div>
-                    
-
-                    <!-- <a href="cart.html"
-                      class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium"
-                      tabindex="0">
-                      Thêm <i class="ph ph-shopping-cart"></i>
-                    </a> -->
-                  </div>
-                </div>
-              </div>
-              <div data-aos="fade-up" data-aos-duration="1000">
-                <div
-                  class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class=" flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
-                    <span
-                      class="product-card__badge bg-success-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
-                      10%</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/sanpham-1.webp" alt="" class="rounded-8" />
-                  </a>
-                  <div class="product-card__content w-100  mt-5">
-
-                    
-                    <div class="flex-align justify-content-between mt-5">
-                      <div class="flex-align gap-4">
-                        <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                        <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                      </div>
-                      <div class="flex-align gap-4">
-
-                        <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                        <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                        <span class="text-xs fw-medium text-gray-500">25k</span>
-                      </div>
-                    </div>
-
-                    <h6 class="title text-lg fw-semibold mt-5 mb-8">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
-                        Nhất - tăng cường lưu thông máu lên não</a>
-                    </h6>
-                    
-                    <div class="flex-align gap-6">
-
-                      <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                      <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                      <span class="text-xs fw-medium text-gray-500">4.8 <i
-                          class="ph-fill ph-star text-warning-600"></i></span>
-                      <!-- <span class="text-xs fw-medium  d-flex"></span> -->
-                      <span class="text-xs fw-medium text-gray-500">(17k)</span>
-                    </div>
-
-                    
-
-
-                    <div class="product-card__price mt-5">
-                      <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                        400.000 đ</span>
-                      <span class="text-heading text-md fw-semibold">350.000 đ</span>
-                    </div>
-                    
-
-                    <!-- <a href="cart.html"
-                      class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium"
-                      tabindex="0">
-                      Thêm <i class="ph ph-shopping-cart"></i>
-                    </a> -->
-                  </div>
-                </div>
-              </div>
-              <div data-aos="fade-up" data-aos-duration="1000">
-                <div
-                  class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class=" flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
-                    <span
-                      class="product-card__badge bg-success-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
-                      10%</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/sanpham-1.webp" alt="" class="rounded-8" />
-                  </a>
-                  <div class="product-card__content w-100  mt-5">
-
-                    
-                    <div class="flex-align justify-content-between mt-5">
-                      <div class="flex-align gap-4">
-                        <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                        <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                      </div>
-                      <div class="flex-align gap-4">
-
-                        <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                        <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                        <span class="text-xs fw-medium text-gray-500">25k</span>
-                      </div>
-                    </div>
-
-                    <h6 class="title text-lg fw-semibold mt-5 mb-8">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
-                        Nhất - tăng cường lưu thông máu lên não</a>
-                    </h6>
-                    
-                    <div class="flex-align gap-6">
-
-                      <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                      <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                      <span class="text-xs fw-medium text-gray-500">4.8 <i
-                          class="ph-fill ph-star text-warning-600"></i></span>
-                      <!-- <span class="text-xs fw-medium  d-flex"></span> -->
-                      <span class="text-xs fw-medium text-gray-500">(17k)</span>
-                    </div>
-
-                    
-
-
-                    <div class="product-card__price mt-5">
-                      <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                        400.000 đ</span>
-                      <span class="text-heading text-md fw-semibold">350.000 đ</span>
-                    </div>
-                    
-
-                    <!-- <a href="cart.html"
-                      class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium"
-                      tabindex="0">
-                      Thêm <i class="ph ph-shopping-cart"></i>
-                    </a> -->
-                  </div>
-                </div>
-              </div>
-              <div data-aos="fade-up" data-aos-duration="1000">
-                <div
-                  class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class=" flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
-                    <span
-                      class="product-card__badge bg-success-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
-                      10%</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/sanpham-1.webp" alt="" class="rounded-8" />
-                  </a>
-                  <div class="product-card__content w-100  mt-5">
-
-                    
-                    <div class="flex-align justify-content-between mt-5">
-                      <div class="flex-align gap-4">
-                        <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                        <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                      </div>
-                      <div class="flex-align gap-4">
-
-                        <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                        <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                        <span class="text-xs fw-medium text-gray-500">25k</span>
-                      </div>
-                    </div>
-
-                    <h6 class="title text-lg fw-semibold mt-5 mb-8">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
-                        Nhất - tăng cường lưu thông máu lên não</a>
-                    </h6>
-                    
-                    <div class="flex-align gap-6">
-
-                      <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                      <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                      <span class="text-xs fw-medium text-gray-500">4.8 <i
-                          class="ph-fill ph-star text-warning-600"></i></span>
-                      <!-- <span class="text-xs fw-medium  d-flex"></span> -->
-                      <span class="text-xs fw-medium text-gray-500">(17k)</span>
-                    </div>
-
-                    
-
-
-                    <div class="product-card__price mt-5">
-                      <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                        400.000 đ</span>
-                      <span class="text-heading text-md fw-semibold">350.000 đ</span>
-                    </div>
-                    
-
-                    <!-- <a href="cart.html"
-                      class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium"
-                      tabindex="0">
-                      Thêm <i class="ph ph-shopping-cart"></i>
-                    </a> -->
-                  </div>
-                </div>
-              </div>
+              @endforeach
+              
+              
               
               
 

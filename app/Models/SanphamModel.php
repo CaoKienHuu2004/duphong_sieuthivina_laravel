@@ -23,6 +23,7 @@ class SanphamModel extends Model
         'sanxuat',
         'trangthai',
         'luotxem',
+        'luotban',
         'thuonghieu'
     ];
 

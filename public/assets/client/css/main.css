@@ -4352,6 +4352,10 @@ input:focus-visible {
     .container-lg {
     transform: scale(0.9);
     transform-origin: top center;}
+
+    .pr-20{
+        padding: var(--size-20) !important;
+    }
     
     .fix-scale-20{
         margin-bottom: -20px
@@ -9642,7 +9646,7 @@ input:focus-visible {
     border: 1px solid var(--gray-100);
     visibility: hidden;
     opacity: 0;
-    top: 54px;
+    top: 25px;
 }
 
 .feature .arrow-center .slick-arrow.slick-next {
@@ -9704,8 +9708,8 @@ input:focus-visible {
 }
 
 .feature-item__thumb {
-    max-width: 120px;
-    max-height: 120px;
+    max-width: 70px;
+    max-height: 70px;
     background-color: var(--main-50);
     aspect-ratio: 1;
     margin: 0 auto;
