@@ -15,7 +15,6 @@ class BientheModel extends Model
         'id_loaibienthe',
         'id_sanpham',
         'giagoc',
-        'giamgia',
         'soluong',
         'trangthai',
     ];

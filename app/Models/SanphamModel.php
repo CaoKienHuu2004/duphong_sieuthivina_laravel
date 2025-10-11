@@ -22,6 +22,7 @@ class SanphamModel extends Model
         'xuatxu',
         'sanxuat',
         'trangthai',
+        'giamgia',
         'luotxem',
         'luotban',
         'thuonghieu'
@@ -45,5 +46,10 @@ class SanphamModel extends Model
     public function cuahang(): BelongsTo
     {
         return $this->belongsTo(CuahangModel::class, 'id_cuahang');
+    }
+
+    public function hinhanhsanpham(): HasMany
+    {
+        return $this->hasMany(HinhanhsanphamModel::class, 'id_sanpham');
     }
 }

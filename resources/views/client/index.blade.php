@@ -237,109 +237,57 @@
           <div class="col-md-12">
             <div class="top-selling-product-slider arrow-style-two">
               @foreach ($topDeals as $td)
-                <div class="d-lg-block d-none" data-aos="fade-up" data-aos-duration="1000">
+                <div data-aos="fade-up" data-aos-duration="1000">
                 <div
                   class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
 
                   <a href="product-details-two.html"
-                    class=" flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
+                    class="flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
+                    @if($td->giamgia > 0)
                     <span
-                      class="product-card__badge bg-success-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
-                      10%</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/sanpham-1.webp" alt="" class="rounded-8" />
+                      class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
+                      {{ $td->giamgia }}%
+                    </span>
+                    @endif
+                    <div class="w-100">
+                      <img src="{{asset('assets/client')}}/images/thumbs/{{ $td->hinhanhsanpham->first()->hinhanh }}" alt="{{ $td->hinhanhsanpham->first()->hinhanh }}" class="rounded-8" style="width: 100%; height: 200px; object-fit: cover;" />
+                    </div>
                   </a>
                   <div class="product-card__content w-100  mt-5">
 
                     
                     <div class="flex-align justify-content-between mt-5">
-                      <div class="flex-align gap-4">
+                      <div class="flex-align gap-4 w-100">
                         <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                        <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                        <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="{{ $td->cuahang->ten }}">{{ $td->cuahang->ten }}</span>
+                      </div>
+                      
+                    </div>
+
+                    <h6 class="title text-lg fw-semibold mt-5 mb-8">
+                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">{{ $td->ten }}</a>
+                    </h6>
+                    
+                    <div class="flex-wrap flex-align justify-content-between mt-5">
+                      <div class="flex-align gap-6">
+                        <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
+                        <span class="text-xs fw-medium text-gray-500">nullable <i
+                            class="ph-fill ph-star text-warning-600"></i></span>
                       </div>
                       <div class="flex-align gap-4">
-
-                        <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
                         <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                        <span class="text-xs fw-medium text-gray-500">25k</span>
+                        <span class="text-xs fw-medium text-gray-500">{{ $td->luotban }}</span>
                       </div>
                     </div>
-
-                    <h6 class="title text-lg fw-semibold mt-5 mb-8">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
-                        Nhất - tăng cường lưu thông máu lên não</a>
-                    </h6>
                     
-                    <div class="flex-align gap-6">
-
-                      <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                      <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                      <span class="text-xs fw-medium text-gray-500">4.8 <i
-                          class="ph-fill ph-star text-warning-600"></i></span>
-                      <!-- <span class="text-xs fw-medium  d-flex"></span> -->
-                      <span class="text-xs fw-medium text-gray-500">(17k)</span>
-                    </div>
 
                     
 
 
                     <div class="product-card__price mt-5">
                       <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                        400.000 đ</span>
-                      <span class="text-heading text-md fw-semibold">350.000 đ</span>
-                    </div>
-                    
-
-                    <!-- <a href="cart.html"
-                      class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium"
-                      tabindex="0">
-                      Thêm <i class="ph ph-shopping-cart"></i>
-                    </a> -->
-                  </div>
-                </div>
-              </div>
-              <div class="d-lg-none d-block" data-aos="fade-up" data-aos-duration="1000">
-                <div
-                  class="product-card bg-white hover-card-shadows h-100 p-10 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class=" flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
-                    <span
-                      class="product-card__badge bg-success-600 px-8 py-4 text-xs text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
-                      10%</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/sanpham-1.webp" alt="" class="rounded-8" />
-                  </a>
-                  <div class="product-card__content w-100  mt-5">
-
-                    
-                    <div class="flex-align justify-content-between mt-5">
-                      <div class="flex-align gap-4">
-                        <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                        <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                      </div>
-                    </div>
-
-                    <h6 class="title text-lg fw-semibold mt-5 mb-8">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
-                        Nhất - tăng cường lưu thông máu lên não</a>
-                    </h6>
-                    
-                    <div class="flex-align gap-6">
-
-                      <!-- <span class="text-xs fw-medium text-gray-500">|</span> -->
-                      <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                      <span class="text-xs fw-medium text-gray-500">4.8 <i
-                          class="ph-fill ph-star text-warning-600"></i></span>
-                      <!-- <span class="text-xs fw-medium  d-flex"></span> -->
-                      <span class="text-xs fw-medium text-gray-500">(17k)</span>
-                    </div>
-
-                    
-
-
-                    <div class="product-card__price mt-5">
-                      <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                        400.000 đ</span>
-                      <span class="text-heading text-md fw-semibold">350.000 đ</span>
+                        {{ number_format($td->giagoc, 0, ',', '.') }} ₫</span>
+                      <span class="text-heading text-md fw-semibold">{{ number_format($td->gia_dagiam, 0, ',', '.') }} ₫</span>
                     </div>
                     
 
