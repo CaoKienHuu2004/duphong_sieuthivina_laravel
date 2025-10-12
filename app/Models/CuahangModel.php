@@ -29,7 +29,7 @@ class CuahangModel extends Model
     ];
     protected $casts = [
         'luottheodoi' => 'integer',
-        'luotban'     => 'integer', 
+        'luotban'     => 'integer',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 11, 2025 at 03:00 PM
+-- Generation Time: Oct 12, 2025 at 04:00 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.26
 
@@ -69,7 +69,9 @@ INSERT INTO `bienthe` (`id`, `id_loaibienthe`, `id_sanpham`, `giagoc`, `soluong`
 (3, 1, 3, 466560, 10, 'Còn hàng', '2025-10-10 07:06:58', '2025-10-10 07:06:58', NULL),
 (4, 1, 4, 260000, 10, 'Còn hàng', '2025-10-10 07:06:58', '2025-10-10 07:06:58', NULL),
 (5, 2, 5, 512000, 10, 'Còn hàng', '2025-10-10 07:19:41', '2025-10-10 07:19:41', NULL),
-(6, 1, 6, 270000, 2, 'Còn hàng', '2025-10-11 14:57:46', '2025-10-11 14:57:46', NULL);
+(6, 1, 6, 270000, 2, 'Còn hàng', '2025-10-11 14:57:46', '2025-10-11 14:57:46', NULL),
+(7, 2, 9, 360000, 253, 'Còn hàng', '2025-10-12 04:53:19', '2025-10-12 04:53:19', NULL),
+(8, 1, 9, 260000, 5, 'Còn hàng', '2025-10-12 04:53:19', '2025-10-12 04:53:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -259,7 +261,7 @@ CREATE TABLE `hinhanh_sanpham` (
   `id` int NOT NULL,
   `id_sanpham` int NOT NULL,
   `hinhanh` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -291,7 +293,12 @@ INSERT INTO `hinhanh_sanpham` (`id`, `id_sanpham`, `hinhanh`, `trangthai`, `crea
 (19, 5, 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g-4.webp', 'Hiển thị', '2025-10-10 07:22:36', '2025-10-10 07:22:36', NULL),
 (20, 5, 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g-5.webp', 'Hiển thị', '2025-10-10 07:22:36', '2025-10-10 07:22:36', NULL),
 (21, 5, 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g-6.webp', 'Hiển thị', '2025-10-10 07:22:36', '2025-10-10 07:22:36', NULL),
-(22, 6, 'sam-ngoc-linh-truong-sinh-do-thung-24lon-1.webp', 'Tạm ẩn', '2025-10-11 14:58:11', '2025-10-11 14:58:11', NULL);
+(22, 6, 'sam-ngoc-linh-truong-sinh-do-thung-24lon-1.webp', 'Hiển thị', '2025-10-11 14:58:11', '2025-10-11 14:58:11', NULL),
+(23, 9, 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg-1.webp', 'Hiển thị', '2025-10-12 04:57:44', '2025-10-12 04:57:44', NULL),
+(24, 9, 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg-2.webp', 'Hiển thị', '2025-10-12 04:57:44', '2025-10-12 04:57:44', NULL),
+(25, 9, 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg-3.webp', 'Hiển thị', '2025-10-12 04:57:44', '2025-10-12 04:57:44', NULL),
+(26, 9, 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg-4.webp', 'Hiển thị', '2025-10-12 04:57:44', '2025-10-12 04:57:44', NULL),
+(27, 9, 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg-5.webp', 'Hiển thị', '2025-10-12 04:57:44', '2025-10-12 04:57:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -434,6 +441,13 @@ CREATE TABLE `quatang_sukien` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `quatang_sukien`
+--
+
+INSERT INTO `quatang_sukien` (`id`, `id_bienthe`, `id_cuahang`, `id_sukien`, `soluongapdung`, `tieude`, `thongtin`, `trangthai`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, 1, 2, 'Ưu đãi sinh nhật 13/10 - Tặng 1 sản phẩm bất kỳ', 'Mua 2 sản phẩm từ Trung Tâm Bán Hàng Siêu Thị Vina để nhận được ưu đãi tặng 1 sản phẩm nhân ngày sinh nhật 13/10', 'Hiển thị', '2025-10-12 05:36:17', '2025-10-12 05:36:17', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -468,7 +482,8 @@ INSERT INTO `sanpham` (`id`, `id_cuahang`, `ten`, `slug`, `mota`, `xuatxu`, `san
 (3, 1, 'Sâm Ngọc Linh trường sinh đỏ (Thùng 24lon)', 'sam-ngoc-linh-truong-sinh-do-thung-24lon', 'Sâm Ngọc Linh Trường Sinh Đỏ là tinh hoa của dược liệu quý hiếm, mang đến giải pháp tiện lợi để bồi bổ sức khỏe và nâng cao thể trạng mỗi ngày. Được chiết xuất từ Sâm Ngọc Linh quý giá – \"Quốc bảo của Việt Nam\" – sản phẩm ở dạng lon uống liền giúp bạn hấp thu trọn vẹn dưỡng chất một cách nhanh chóng và hiệu quả.', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 0, 0, '2025-10-10 07:03:55', '2025-10-10 07:03:55', NULL, '\r\nTRUONG SINH GROUP'),
 (4, 1, 'Tinh dầu tràm tự nhiên ECO - Hỗ trợ giảm ho, cảm cúm, sổ mũi, cảm lạnh (Lọ 30ml)', 'tinh-dau-tram-tu-nhien-eco-ho-tro-giam-ho-cam-cum-so-mui-cam-lanh-lo-30ml', 'Tinh Dầu Tràm Tự Nhiên ECO là sản phẩm chiết xuất 100% từ lá tràm nguyên chất, mang trong mình những công dụng truyền thống tuyệt vời trong việc bảo vệ sức khỏe, đặc biệt là hệ hô hấp. Với khả năng kháng khuẩn, làm ấm và thư giãn, Tinh dầu Tràm ECO là người bạn đồng hành không thể thiếu trong tủ thuốc gia đình, giúp đối phó hiệu quả với các triệu chứng cảm thông thường.', 'Việt Nam', 'Việt Nam', 'Công khai', 85, 0, 0, '2025-10-10 07:03:55', '2025-10-10 07:03:55', NULL, 'ECO'),
 (5, 1, 'Sữa non tổ yến Papamilk Height & Gain giúp tăng cân tăng chiều cao cho Trẻ từ 1-19 tuổi - Lon 830G', 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g', 'Sữa Non Tổ Yến Papamilk Height & Gain là công thức dinh dưỡng đột phá được thiết kế chuyên biệt để hỗ trợ tăng cân khỏe mạnh và tối ưu hóa chiều cao cho trẻ em và thanh thiếu niên từ 1 đến 19 tuổi. Sự kết hợp độc đáo giữa Sữa Non cao cấp, Tổ Yến quý giá cùng hệ dưỡng chất khoa học giúp con bạn xây dựng nền tảng vững chắc cho một tương lai phát triển vượt trội.', 'Việt Nam', 'Việt Nam', 'Công khai', 20, 0, 0, '2025-10-10 07:03:55', '2025-10-10 07:03:55', NULL, '\r\nVKAIZEN'),
-(6, 1, 'hahaha', 'hahahaha', 'ádasdasd', 'ss', 'ss', 'Công khai', 20, 1, 2, '2025-10-11 14:57:25', '2025-10-11 14:57:25', NULL, 'ghaa');
+(6, 1, 'hahaha', 'hahahaha', 'ádasdasd', 'ss', 'ss', 'Công khai', 20, 1, 2, '2025-10-11 14:57:25', '2025-10-11 14:57:25', NULL, 'ghaa'),
+(9, 1, 'Thực phẩm bảo vệ sức khỏe: Midu MenaQ7 180mcg', 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg', 'Midu MenaQ7 180mcg bổ sung canxi, Vitamin D3, Vitamin K2 dạng MenaQ7 và Arginine phù hợp với tất cả độ tuổi từ 1 đến 100 tuổi. Đặc biệt giúp phát triển chiều cao cho trẻ em 1-15 tuổi; mẹ bầu bổ sung canxi trong giai đoạn thai kì không gây tiểu đường, không gây táo bón và giúp con cao ngay từ trong bụng mẹ.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 23, 100, '2025-10-12 04:51:39', '2025-10-12 04:51:39', NULL, 'Midu MenaQ7');
 
 -- --------------------------------------------------------
 
@@ -489,6 +504,13 @@ CREATE TABLE `sukien` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sukien`
+--
+
+INSERT INTO `sukien` (`id`, `tieude`, `slug`, `hinhanh`, `noidung`, `ngaybatdau`, `ngayketthuc`, `trangthai`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Sinh Nhật 13/10', 'sinh-nhat-13-10', 'sinhnhat13102025.png', 'không có', '2025-10-12', '2025-10-31', 'Hiển thị', '2025-10-12 05:31:27', '2025-10-12 05:31:27', NULL);
 
 -- --------------------------------------------------------
 
@@ -719,7 +741,7 @@ ALTER TABLE `yeuthich`
 -- AUTO_INCREMENT for table `bienthe`
 --
 ALTER TABLE `bienthe`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `cuahang`
@@ -743,7 +765,7 @@ ALTER TABLE `danhmuc_sanpham`
 -- AUTO_INCREMENT for table `hinhanh_sanpham`
 --
 ALTER TABLE `hinhanh_sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `loaibienthe`
@@ -767,7 +789,13 @@ ALTER TABLE `quangcao`
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `sukien`
+--
+ALTER TABLE `sukien`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tukhoa`
@@ -851,7 +879,7 @@ ALTER TABLE `hinhanh_sanpham`
 --
 ALTER TABLE `quatang_sukien`
   ADD CONSTRAINT `quatang_sukien_ibfk_1` FOREIGN KEY (`id_bienthe`) REFERENCES `bienthe` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `quatang_sukien_ibfk_2` FOREIGN KEY (`id_cuahang`) REFERENCES `danhmuc` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `quatang_sukien_ibfk_2` FOREIGN KEY (`id_cuahang`) REFERENCES `cuahang` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `quatang_sukien_ibfk_3` FOREIGN KEY (`id_sukien`) REFERENCES `sukien` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --

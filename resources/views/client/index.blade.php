@@ -61,7 +61,7 @@
                   style="width: 100%; height: 170px; object-fit: cover;" />
               </a>
             @endif
-            
+
           </div>
           <div class="row g-24 mt-10 me-0">
             @if ($home_banner_event_2)
@@ -106,7 +106,7 @@
           </div>
         </div>
 
-        
+
       </div>
     </div>
     <div class="container">
@@ -118,7 +118,7 @@
                 <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_1->hinhanh }}" alt="{{ $home_banner_event_1->hinhanh }}" class="p-0 rounded-5"
                   style="width: 100%; object-fit: cover;" />
               </a>
-            @else 
+            @else
                 <a href="#" class="p-0 m-0">
                 <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="Thumb" class="p-0 rounded-5"
                   style="width: 100%; object-fit: cover;" />
@@ -150,7 +150,7 @@
               <a href="#" class="p-0 m-0">
                 <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="Thumb" class="p-0 rounded-5"
                   style="width: 100%; object-fit: cover;" />
-              </a> 
+              </a>
             @endif
           </div>
           <div class=" mt-24">
@@ -199,7 +199,7 @@
               </div>
             </div>
           @endforeach
-          
+
         </div>
       </div>
     </div>
@@ -255,19 +255,19 @@
                   </a>
                   <div class="product-card__content w-100  mt-5">
 
-                    
+
                     <div class="flex-align justify-content-between mt-5">
                       <div class="flex-align gap-4 w-100">
                         <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
                         <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="{{ $td->cuahang->ten }}">{{ $td->cuahang->ten }}</span>
                       </div>
-                      
+
                     </div>
 
                     <h6 class="title text-lg fw-semibold mt-5 mb-8">
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">{{ $td->ten }}</a>
                     </h6>
-                    
+
                     <div class="flex-wrap flex-align justify-content-between mt-5">
                       <div class="flex-align gap-6">
                         <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
@@ -279,9 +279,9 @@
                         <span class="text-xs fw-medium text-gray-500">{{ $td->luotban }}</span>
                       </div>
                     </div>
-                    
 
-                    
+
+
 
 
                     <div class="product-card__price mt-5">
@@ -289,7 +289,7 @@
                         {{ number_format($td->giagoc, 0, ',', '.') }} ₫</span>
                       <span class="text-heading text-md fw-semibold">{{ number_format($td->gia_dagiam, 0, ',', '.') }} ₫</span>
                     </div>
-                    
+
 
                     <!-- <a href="cart.html"
                       class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium"
@@ -300,10 +300,10 @@
                 </div>
               </div>
               @endforeach
-              
-              
-              
-              
+
+
+
+
 
             </div>
           </div>
@@ -318,8 +318,9 @@
     <div class="container container-lg px-0">
         <div class="">
             <div class="section-heading mb-24">
-                <div class="flex-between flex-wrap gap-8">
+                <div class="flex-between flex-align flex-wrap gap-8 w-100">
                     <h6 class="mb-0 wow fadeInLeft flex-align gap-8"><i class="ph-bold ph-gift text-main-600"></i> Quà tặng</h6>
+                    <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 77%;"></div>
                     <div class="flex-align gap-16 wow fadeInRight">
                         <a href="{{ route('sanpham') }}" class="text-sm fw-semibold text-main-600 hover-text-main-600 hover-text-decoration-underline">Xem tất cả</a>
                         <div class="flex-align gap-8">
@@ -333,191 +334,159 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="gift-event-slider arrow-style-two">
                 <div>
-                    <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
-                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
-                        </a>
-                        <div class="product-card__content mt-5">
-                          <div class="flex-align gap-4 my-5">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
+                      <a href="">
+                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
+                          <div class="card-overlay rounded-16 transition-1"></div> </div>
+                      <div class="card-content mt-210 p-14 w-100">
+                          
+                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
+                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </div>
-                            <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </h6>
-                            <p class="title text-sm mt-12 mb-8">
-                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
-                            </p>
-                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                            
+                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
                               <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
                               <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                        </div>
-                    </div>
+                      </div>
+                      </a>
+                  </div>
                 </div>
                 <div>
-                    <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
-                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
-                        </a>
-                        <div class="product-card__content mt-5">
-                          <div class="flex-align gap-4 my-5">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
+                      <a href="">
+                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
+                          <div class="card-overlay rounded-16 transition-1"></div> </div>
+                      <div class="card-content mt-210 p-14 w-100">
+                          
+                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
+                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </div>
-                            <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </h6>
-                            <p class="title text-sm mt-12 mb-8">
-                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
-                            </p>
-                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                            
+                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
                               <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
                               <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                        </div>
-                    </div>
+                      </div>
+                      </a>
+                  </div>
                 </div>
                 <div>
-                    <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
-                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
-                        </a>
-                        <div class="product-card__content mt-5">
-                          <div class="flex-align gap-4 my-5">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
+                      <a href="">
+                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
+                          <div class="card-overlay rounded-16 transition-1"></div> </div>
+                      <div class="card-content mt-210 p-14 w-100">
+                          
+                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
+                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </div>
-                            <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </h6>
-                            <p class="title text-sm mt-12 mb-8">
-                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
-                            </p>
-                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                            
+                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
                               <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
                               <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                        </div>
-                    </div>
+                      </div>
+                      </a>
+                  </div>
                 </div>
                 <div>
-                    <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
-                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
-                        </a>
-                        <div class="product-card__content mt-5">
-                          <div class="flex-align gap-4 my-5">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
+                      <a href="">
+                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
+                          <div class="card-overlay rounded-16 transition-1"></div> </div>
+                      <div class="card-content mt-210 p-14 w-100">
+                          
+                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
+                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </div>
-                            <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </h6>
-                            <p class="title text-sm mt-12 mb-8">
-                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
-                            </p>
-                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                            
+                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
                               <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
                               <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                        </div>
-                    </div>
+                      </div>
+                      </a>
+                  </div>
                 </div>
                 <div>
-                    <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
-                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
-                        </a>
-                        <div class="product-card__content mt-5">
-                          <div class="flex-align gap-4 my-5">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
+                      <a href="">
+                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
+                          <div class="card-overlay rounded-16 transition-1"></div> </div>
+                      <div class="card-content mt-210 p-14 w-100">
+                          
+                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
+                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </div>
-                            <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </h6>
-                            <p class="title text-sm mt-12 mb-8">
-                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
-                            </p>
-                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                            
+                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
                               <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
                               <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                        </div>
-                    </div>
+                      </div>
+                      </a>
+                  </div>
                 </div>
                 <div>
-                    <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
-                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
-                        </a>
-                        <div class="product-card__content mt-5">
-                          <div class="flex-align gap-4 my-5">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
+                      <a href="">
+                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
+                          <div class="card-overlay rounded-16 transition-1"></div> </div>
+                      <div class="card-content mt-210 p-14 w-100">
+                          
+                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
+                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </div>
-                            <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </h6>
-                            <p class="title text-sm mt-12 mb-8">
-                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
-                            </p>
-                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                            
+                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
                               <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
                               <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                        </div>
-                    </div>
+                      </div>
+                      </a>
+                  </div>
                 </div>
                 <div>
-                    <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
-                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
-                        </a>
-                        <div class="product-card__content mt-5">
-                          <div class="flex-align gap-4 my-5">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
+                      <a href="">
+                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
+                          <div class="card-overlay rounded-16 transition-1"></div> </div>
+                      <div class="card-content mt-210 p-14 w-100">
+                          
+                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
+                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </div>
-                            <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </h6>
-                            <p class="title text-sm mt-12 mb-8">
-                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
-                            </p>
-                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                            
+                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
                               <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
                               <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                        </div>
-                    </div>
+                      </div>
+                      </a>
+                  </div>
                 </div>
                 <div>
-                    <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="product-details-two.html" class="flex-center rounded-8 position-relative">
-                            <img src="{{asset('assets/client')}}/images/thumbs/sukien-1.webp" alt="" class="rounded-8">
-                        </a>
-                        <div class="product-card__content mt-5">
-                          <div class="flex-align gap-4 my-5">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                              <span class="text-gray-500 text-xs">Siêu thị Vina</span>
+                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
+                      <a href="">
+                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
+                          <div class="card-overlay rounded-16 transition-1"></div> </div>
+                      <div class="card-content mt-210 p-14 w-100">
+                          
+                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
+                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
                             </div>
-                            <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                <a href="product-details-two.html" class="link text-line-2" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </h6>
-                            <p class="title text-sm mt-12 mb-8">
-                                Khi mua 2 sản phẩm bất kỳ đến từ cửa hàng Siêu thị Vina
-                            </p>
-                            <div class="flex-align gap-4 my-5 bg-gray-50 p-5 rounded-8">
+                            
+                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
                               <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
                               <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
                             </div>
-                        </div>
-                    </div>
+                      </div>
+                      </a>
+                  </div>
                 </div>
                 
                 
@@ -556,16 +525,16 @@
     </div>
   </div>
 
-  
+
 
   <!-- ========================= Trending Products Start ================================ -->
   <section class="trending-productss overflow-hidden mt-10 fix-scale-80">
     <div class="container container-lg px-0">
       <div class="border border-gray-100 p-24 rounded-16">
         <div class="section-heading mb-24">
-          <div class="flex-between flex-wrap gap-8">
+          <div class="flex-between flex-align flex-wrap gap-8">
             <h6 class="mb-0 wow fadeInLeft"><i class="ph-bold ph-squares-four text-main-600"></i> Danh mục hàng đầu</h6>
-            <ul class="nav common-tab style-two nav-pills wow fadeInRight" id="pills-tab" role="tablist">
+            <ul class="nav common-tab style-two nav-pills wow fadeInRight m-0" id="pills-tab" role="tablist">
               <li class="nav-item" role="presentation">
                 <button class="nav-link fw-medium text-sm hover-border-main-600 active" id="pills-all-tab"
                   data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-controls="pills-all"
@@ -652,7 +621,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -705,7 +674,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -758,7 +727,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -811,7 +780,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -864,7 +833,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -917,7 +886,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -970,7 +939,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -1023,7 +992,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -1047,7 +1016,7 @@
                   </div>
                 </div>
               </div>
-              
+
 
 
 
@@ -2580,7 +2549,7 @@
             </div>
           </div>
         </div>
-        <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200"> 
+        <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200">
             <a href="shop.html"
               class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 mt-40">
               Xem thêm sản phẩm
@@ -3684,7 +3653,7 @@
               </div>
             </div>
           </div>
-          <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200"> 
+          <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200">
             <a href="shop.html"
               class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 mt-40">
               Xem thêm sản phẩm
