@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         <div class="my-48">
-                            <p class="text-gray-500">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our 
+                            <p class="text-gray-500">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our
                                 <a href="#" class="text-main-600 text-decoration-underline"> privacy policy</a>
                             .</p>
                         </div>

@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class NguoidungModel extends Model
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class NguoidungModel extends Authenticatable
+// class NguoidungModel extends User
 {
     use HasFactory, SoftDeletes;
 
@@ -16,6 +21,7 @@ class NguoidungModel extends Model
 
     protected $fillable = [
         'username',
+        'password',
         'sodienthoai',
         'hoten',
         'gioitinh',
@@ -26,12 +32,14 @@ class NguoidungModel extends Model
     ];
 
     protected $hidden = [
-        'password', // ⬅️ QUAN TRỌNG: Ẩn mật khẩu khi chuyển sang JSON
+        'password',
+        'remember_token',
     ];
 
     protected $casts = [
-        'ngaysinh'   => 'date:Y-m-d', // ⬅️ Ép kiểu ngày sinh
+        'ngaysinh'   => 'date:Y-m-d',
         'trangthai'  => 'boolean',
+        'password'   => 'hashed',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
@@ -44,8 +52,14 @@ class NguoidungModel extends Model
         return $this->hasMany(DiachinguoidungModel::class, 'id_nguoidung');
     }
 
+
     public function cuahang(): HasOne
     {
         return $this->hasOne(CuahangModel::class, 'id_nguoidung');
+    }
+
+    public function baiviet(): HasMany
+    {
+        return $this->hasMany(BaivietModel::class, 'id_nguoidung');
     }
 }

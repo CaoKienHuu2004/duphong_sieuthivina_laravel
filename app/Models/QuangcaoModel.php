@@ -11,10 +11,10 @@ class QuangcaoModel extends Model
     protected $table = 'quangcao';
 
     protected $fillable = [
-        'vitri', 
-        'hinhanh', 
-        'lienket', 
-        'mota', 
+        'vitri',
+        'hinhanh',
+        'lienket',
+        'mota',
         'trangthai'
     ];
     protected $casts = [

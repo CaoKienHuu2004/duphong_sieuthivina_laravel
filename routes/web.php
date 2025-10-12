@@ -19,15 +19,22 @@ Route::get('/trang-chu', [client\HomeController::class, 'index']);
 // Route xử lý yêu cầu tìm kiếm từ form hoặc từ khóa click
 Route::get('/tim-kiem', [client\HomeController::class, 'search'])->name('tim-kiem');
 
-Route::get('/dang-nhap', [client\NguoidungController::class, 'login'])->name('login'); 
+Route::get('/dang-nhap', [client\NguoidungController::class, 'login'])->name('login');
+Route::post('/xac-thuc-dang-nhap', [client\NguoidungController::class, 'handleLogin'])->name('handleLogin');
+Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('logout');
+
+Route::get('/dang-ky', [client\NguoidungController::class, 'register'])->name('register');
+Route::post('/xac-thuc-dang-ky', [client\NguoidungController::class, 'handleRegister'])->name('handleRegister');
 
 // Tuyến đường yêu cầu đăng nhập (dành cho mọi người dùng đã đăng nhập)
-Route::middleware('auth:web')->group(function () {
+Route::middleware('auth')->group(function () {
+// Route::middleware('auth:web')->group(function () {
     // Trang danh sách sản phẩm
     Route::get('/san-pham', [client\SanphamController::class, 'show'])->name('sanpham');
-
-
     
+    // Trang cá nhân
+    Route::get('/tai-khoan', [client\NguoidungController::class, 'profile'])->name('profile');
+    Route::put('/tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('updateProfile');
 });
 
 // /*
@@ -48,7 +55,7 @@ Route::middleware('auth:web')->group(function () {
 
 //     // Duyệt sản phẩm và cấu hình hệ thống
 //     Route::resource('products-management', Admin\ProductManagementController::class)->only(['index', 'edit', 'update', 'destroy']);
-    
+
 //     // Quản lý các loại báo cáo/khiếu nại từ người dùng
 //     Route::resource('reports', Admin\ReportController::class);
 // });

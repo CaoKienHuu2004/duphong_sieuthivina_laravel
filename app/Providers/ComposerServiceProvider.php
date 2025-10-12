@@ -25,20 +25,20 @@ class ComposerServiceProvider extends ServiceProvider
         // ⬅️ Áp dụng cho các Views cần dữ liệu chung (Layout, Trang chủ, Kết quả tìm kiếm)
         View::composer(
             [
-                'client.layouts.app', 
+                'client.layouts.app',
                 // Thêm các Views khác nếu cần
-            ], 
+            ],
             function ($view) {
                 // 1. Lấy danh sách Danh mục
                 $danhmuc = DanhmucModel::select('ten', 'logo')->get();
-                
+
                 // 2. Lấy Từ khóa Placeholder ngẫu nhiên từ TOP 20
                 $tukhoaplaceholder = null;
                 $top20tukhoa = TukhoaModel::orderBy('luottruycap', 'desc')->take(20)->get();
                 if ($top20tukhoa->isNotEmpty()) {
                     $tukhoaplaceholder = $top20tukhoa->random()->tukhoa;
                 }
-                
+
                 // 3. Lấy 5 Từ khóa Phổ biến (Top 5)
                 $tukhoaphobien = TukhoaModel::select('tukhoa')->orderBy('luottruycap', 'desc')->take(5)->get();
 

@@ -61,7 +61,7 @@
                   style="width: 100%; height: 170px; object-fit: cover;" />
               </a>
             @endif
-            
+
           </div>
           <div class="row g-24 mt-10 me-0">
             @if ($home_banner_event_2)
@@ -106,7 +106,7 @@
           </div>
         </div>
 
-        
+
       </div>
     </div>
     <div class="container">
@@ -118,7 +118,7 @@
                 <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_1->hinhanh }}" alt="{{ $home_banner_event_1->hinhanh }}" class="p-0 rounded-5"
                   style="width: 100%; object-fit: cover;" />
               </a>
-            @else 
+            @else
                 <a href="#" class="p-0 m-0">
                 <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="Thumb" class="p-0 rounded-5"
                   style="width: 100%; object-fit: cover;" />
@@ -150,7 +150,7 @@
               <a href="#" class="p-0 m-0">
                 <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="Thumb" class="p-0 rounded-5"
                   style="width: 100%; object-fit: cover;" />
-              </a> 
+              </a>
             @endif
           </div>
           <div class=" mt-24">
@@ -199,7 +199,7 @@
               </div>
             </div>
           @endforeach
-          
+
         </div>
       </div>
     </div>
@@ -255,19 +255,19 @@
                   </a>
                   <div class="product-card__content w-100  mt-5">
 
-                    
+
                     <div class="flex-align justify-content-between mt-5">
                       <div class="flex-align gap-4 w-100">
                         <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
                         <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="{{ $td->cuahang->ten }}">{{ $td->cuahang->ten }}</span>
                       </div>
-                      
+
                     </div>
 
                     <h6 class="title text-lg fw-semibold mt-5 mb-8">
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">{{ $td->ten }}</a>
                     </h6>
-                    
+
                     <div class="flex-wrap flex-align justify-content-between mt-5">
                       <div class="flex-align gap-6">
                         <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
@@ -279,9 +279,9 @@
                         <span class="text-xs fw-medium text-gray-500">{{ $td->luotban }}</span>
                       </div>
                     </div>
-                    
 
-                    
+
+
 
 
                     <div class="product-card__price mt-5">
@@ -289,7 +289,7 @@
                         {{ number_format($td->giagoc, 0, ',', '.') }} ₫</span>
                       <span class="text-heading text-md fw-semibold">{{ number_format($td->gia_dagiam, 0, ',', '.') }} ₫</span>
                     </div>
-                    
+
 
                     <!-- <a href="cart.html"
                       class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium"
@@ -300,10 +300,10 @@
                 </div>
               </div>
               @endforeach
-              
-              
-              
-              
+
+
+
+
 
             </div>
           </div>
@@ -333,7 +333,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="gift-event-slider arrow-style-two">
                 <div>
                     <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
@@ -519,8 +519,8 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
             </div>
         </div>
     </div>
@@ -556,7 +556,7 @@
     </div>
   </div>
 
-  
+
 
   <!-- ========================= Trending Products Start ================================ -->
   <section class="trending-productss overflow-hidden mt-10 fix-scale-80">
@@ -652,7 +652,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -705,7 +705,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -758,7 +758,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -811,7 +811,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -864,7 +864,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -917,7 +917,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -970,7 +970,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -1023,7 +1023,7 @@
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">Thuốc hoạt huyết Nhất
                         Nhất - tăng cường lưu thông máu lên não</a>
                     </h6>
-                    
+
                     <div class="flex-align gap-6">
                       <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                       <span class="text-xs fw-medium text-gray-500">4.8 <i
@@ -1047,7 +1047,7 @@
                   </div>
                 </div>
               </div>
-              
+
 
 
 
@@ -2580,7 +2580,7 @@
             </div>
           </div>
         </div>
-        <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200"> 
+        <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200">
             <a href="shop.html"
               class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 mt-40">
               Xem thêm sản phẩm
@@ -3684,7 +3684,7 @@
               </div>
             </div>
           </div>
-          <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200"> 
+          <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200">
             <a href="shop.html"
               class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 mt-40">
               Xem thêm sản phẩm
