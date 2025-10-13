@@ -30,9 +30,9 @@ class NguoidungController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            
+
             $user = Auth::user();
-            
+
             // Kiểm tra trạng thái tài khoản
             if (!$user->trangthai) {
                 Auth::logout();
@@ -40,12 +40,12 @@ class NguoidungController extends Controller
                     'username' => 'Tài khoản của bạn đã bị khóa.',
                 ]);
             }
-            
+
             // Chuyển hướng theo vai trò
             if ($user->vaitro === 'admin') {
-                return redirect()->intended(route('admin.dashboard'));
+                return redirect()->intended(route('quan-tri-vien.trang-chu'));
             } elseif ($user->vaitro === 'seller') {
-                return redirect()->intended(route('seller.dashboard'));
+                return redirect()->intended(route('nguoi-ban-hang.trang-chu'));
             } else {
                 return redirect()->intended(route('trang-chu'));
             }
@@ -61,10 +61,10 @@ class NguoidungController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
+
         return redirect()->route('trang-chu');
     }
 
@@ -114,7 +114,7 @@ class NguoidungController extends Controller
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
-        
+
         $request->validate([
             'hoten' => 'required|string|max:255',
             'sodienthoai' => 'required|string|max:20|unique:nguoidung,sodienthoai,' . $user->id,

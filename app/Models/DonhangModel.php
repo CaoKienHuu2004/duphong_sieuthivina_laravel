@@ -74,4 +74,6 @@ class DonhangModel extends Model
     {
         return $this->hasMany(ChitietdonhangModel::class, 'id_donhang', 'id');
     }
+
+
 }

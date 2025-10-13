@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DanhmucModel extends Model
 {
-    use HasFactory;
+    use HasFactory; // thiếu xóa mềm rồi
     protected $table = 'danhmuc';
     protected $primaryKey = 'id';
     protected $fillable = ['ten', 'slug','logo','created_at','updated_at'];

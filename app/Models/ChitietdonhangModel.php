@@ -47,4 +47,12 @@ class ChitietdonhangModel extends Model
     {
         return $this->belongsTo(BientheModel::class, 'id_bienthe', 'id');
     }
+
+    public function sanpham()
+    {
+        // Nếu Chitietdonhang có khóa id_bienthe trỏ tới BientheModel
+        // Và BientheModel trỏ tới SanphamModel
+        return $this->belongsTo(BientheModel::class, 'id_bienthe')
+                    ->with('sanpham'); // hoặc dùng belongsToThrough nếu có package
+    }
 }

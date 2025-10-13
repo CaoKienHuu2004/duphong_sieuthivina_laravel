@@ -10,23 +10,35 @@ use Symfony\Component\HttpFoundation\Response;
 class Vaitro
 {
     /**
-     * Handle an incoming request.
+     * Xử lý yêu cầu vào middleware.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
      * @param  string  ...$roles
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
+        // Nếu chưa đăng nhập thì chuyển hướng về trang login
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
-        
-        if (!in_array($user->vaitro, $roles)) {
-            abort(403, 'Bạn không có quyền truy cập trang này.');
-        }
 
+        // Nếu vai trò KHÔNG nằm trong danh sách cho phép
+        if (!in_array($user->vaitro, $roles)) {
+            // Nếu là admin thì chuyển về trang chủ admin
+            if ($user->vaitro === 'admin') {
+                return redirect()->route('quan-tri-vien.trang-chu');
+            }
+
+            if ($user->vaitro === 'seller') {
+                return redirect()->route('nguoi-ban-hang.trang-chu');
+            }
+
+            return redirect()->route('trang-chu');
+        }
         return $next($request);
     }
 }
