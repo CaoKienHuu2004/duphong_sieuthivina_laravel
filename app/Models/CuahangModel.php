@@ -43,5 +43,9 @@ class CuahangModel extends Model
     {
         return $this->hasMany(SanphamModel::class, 'id_cuahang');
     }
+    public function sanpham(): HasMany
+    {
+        return $this->hasMany(SanphamModel::class, 'id_cuahang');
+    }
 
 }

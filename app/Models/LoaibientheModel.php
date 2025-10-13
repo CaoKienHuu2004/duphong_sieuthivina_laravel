@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LoaibientheModel extends Model
 {
-    use HasFactory;
+    use HasFactory; /// thieu xóa mềm rồi
 
     protected $table = 'loaibienthe';
     protected $fillable = [
