@@ -220,13 +220,13 @@
               <a href="shop.html"
                 class="text-sm fw-semibold text-white hover-text-gray-100 hover-text-decoration-underline">Xem tất
                 cả</a>
-              <div class="flex-align gap-8">
+              <div class="flex-align gap-4">
                 <button type="button" id="top-selling-prev"
-                  class="slick-prev slick-arrow flex-center rounded-circle border border-white-100 hover-border-neutral-600 text-xl hover-bg-neutral-600 text-white hover-text-white transition-1 ">
+                  class="slick-prev slick-arrow flex-center rounded-circle text-xl text-white hover-text-white transition-1 w-50">
                   <i class="ph ph-caret-left"></i>
                 </button>
                 <button type="button" id="top-selling-next"
-                  class="slick-next slick-arrow flex-center rounded-circle border border-white-100 hover-border-neutral-600 text-xl hover-bg-neutral-600 text-white hover-text-white transition-1 ">
+                  class="slick-next slick-arrow flex-center rounded-circle text-xl text-white hover-text-white transition-1 w-50">
                   <i class="ph ph-caret-right"></i>
                 </button>
               </div>
@@ -259,7 +259,7 @@
                     <div class="flex-align justify-content-between mt-5">
                       <div class="flex-align gap-4 w-100">
                         <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                        <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="{{ $td->cuahang->ten }}">{{ $td->cuahang->ten }}</span>
+                        <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="{{ $td->thuonghieu->ten }}">{{ $td->thuonghieu->ten }}</span>
                       </div>
 
                     </div>

@@ -15,7 +15,7 @@ class SanphamModel extends Model
 
     protected $table = 'sanpham';
     protected $fillable = [
-        'id_cuahang',
+        'id_thuonghieu',
         'ten',
         'slug',
         'mota',
@@ -43,9 +43,9 @@ class SanphamModel extends Model
         return $this->hasMany(BientheModel::class, 'id_sanpham');
     }
 
-    public function cuahang(): BelongsTo
+    public function thuonghieu(): BelongsTo
     {
-        return $this->belongsTo(CuahangModel::class, 'id_cuahang');
+        return $this->belongsTo(CuahangModel::class, 'id_thuonghieu');
     }
 
     public function hinhanhsanpham(): HasMany

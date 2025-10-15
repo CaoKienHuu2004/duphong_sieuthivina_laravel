@@ -67,8 +67,6 @@ class HomeController extends Controller
         $danhsachdanhmuc = DanhmucModel::select('ten', 'logo', 'slug')->get();
 
         // ==============================SHOW SẢN PHẨM TOPDEALS============================== //
-        // 1. Subquery: Tìm giá gốc THẤP NHẤT trong các biến thể còn hàng (dùng cho giá hiển thị)
-        // Dùng Query Builder để giữ tính đơn giản và hiệu quả của Subquery
         $minPriceVariantSubquery = BientheModel::query()
             ->select('id_sanpham', 'giagoc')
             ->where('soluong', '>', 0)
@@ -77,34 +75,21 @@ class HomeController extends Controller
             ->orderBy('giagoc')
             ->distinct('id_sanpham'); 
 
-        // 2. Truy vấn Chính: Lấy TOP 10 sản phẩm (Sử dụng Model SanphamModel)
         $topDeals = SanphamModel::query()
-            // ✅ Eager Load Hình ảnh và Cửa hàng
-            ->with(['hinhanhsanpham', 'cuahang']) 
-            
-            // SELECT các cột cần thiết, bao gồm cột tính toán giá
+            ->with(['hinhanhsanpham', 'thuonghieu']) 
             ->select(
                 'sanpham.*',  
-                // Lấy giá gốc thấp nhất từ Subquery
-                'min_variant.giagoc AS giagoc', 
-                
-                // Tính toán Giá đã giảm
+                'min_variant.giagoc AS giagoc',
+
                 DB::raw('ROUND(min_variant.giagoc * (1 - sanpham.giamgia / 100)) AS gia_dagiam') 
             )
-            
-            // Điều kiện lọc
             ->where('sanpham.trangthai', 'Công khai')
             ->where('sanpham.giamgia', '>', 0) 
-            
-            // LEFT JOIN Subquery giá thấp nhất
             ->leftJoinSub($minPriceVariantSubquery, 'min_variant', function ($join) {
                 $join->on('sanpham.id', '=', 'min_variant.id_sanpham');
             })
-
-            // LOGIC SẮP XẾP CUỐI CÙNG
             ->orderByDesc('sanpham.giamgia') 
             ->orderByDesc('sanpham.luotban') 
-            
             ->limit(10)
             ->get();
 

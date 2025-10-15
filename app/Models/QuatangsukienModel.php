@@ -22,7 +22,7 @@ class QuatangsukienModel extends Model
     // Các cột có thể gán hàng loạt
     protected $fillable = [
         'id_bienthe',
-        'id_cuahang',
+        'id_thuonghieu',
         'id_sukien',
         'soluongapdung',
         'tieude',
@@ -52,9 +52,9 @@ class QuatangsukienModel extends Model
     }
 
     // Quan hệ: Quà tặng thuộc về Cửa hàng
-    public function cuahang()
+    public function thuonghieu()
     {
-        return $this->belongsTo(CuahangModel::class, 'id_cuahang');
+        return $this->belongsTo(CuahangModel::class, 'id_thuonghieu');
     }
 
     // Quan hệ: Quà tặng thuộc về Sự kiện

@@ -52,12 +52,6 @@ class NguoidungModel extends Authenticatable
         return $this->hasMany(DiachinguoidungModel::class, 'id_nguoidung');
     }
 
-
-    public function cuahang(): HasOne
-    {
-        return $this->hasOne(CuahangModel::class, 'id_nguoidung');
-    }
-
     public function baiviet(): HasMany
     {
         return $this->hasMany(BaivietModel::class, 'id_nguoidung');
