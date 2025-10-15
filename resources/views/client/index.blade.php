@@ -5,7 +5,7 @@
 @section('content')
 
   <div class="page">
-      <!-- ============================ Banner Section start =============================== -->
+      <!-- ============================ BANNER start =============================== -->
   <div class="banner-two fix-scale-20">
     <div class="container container-lg px-0">
 
@@ -47,7 +47,6 @@
             </div>
           </div>
         </div>
-
         <div class="col-12 col-lg-3 mt-20 ps-10 pe-5 d-lg-block d-none">
           <div class="row g-24 me-0">
             @if ($home_banner_event_1)
@@ -105,12 +104,10 @@
             @endif
           </div>
         </div>
-
-
       </div>
     </div>
+    <!-- ============================ 4 ảnh thumb tĩnh dành cho mobile=============================== -->
     <div class="container">
-      <!-- ============================ 4 ảnh thumb tĩnh dành cho mobile=============================== -->
         <div class="col-12 col-lg-3 mt-20 d-lg-none d-block">
           <div class="">
             @if ($home_banner_event_1)
@@ -167,12 +164,12 @@
             @endif
           </div>
         </div>
-        <!-- ============================endsection ảnh thumb tĩnh dành cho mobile=============================== -->
     </div>
+    <!-- ============================endsection ảnh thumb tĩnh dành cho mobile=============================== -->
   </div>
-  <!-- ============================ Banner Section End =============================== -->
+  <!-- ============================ BANNER End =============================== -->
 
-  <!-- ============================ promotional banner Start ========================== -->
+  <!-- ============================ DANH MỤC Start ========================== -->
   <div class="feature mt-10 fix-scale-20 " id="featureSection">
     <div class="container container-lg px-0">
       <div class="position-relative arrow-center">
@@ -204,9 +201,9 @@
       </div>
     </div>
   </div>
-  <!-- ============================ promotional banner End ========================== -->
+  <!-- ============================ DANH MỤC End ========================== -->
 
-  <!-- ========================= Top Selling Products Start ================================ -->
+  <!-- ========================= TOP DEALS * SIÊU RẺ ================================ -->
   <section class="top-selling-products pt-20 overflow-hidden fix-scale-30">
     <div class="container container-lg px-0">
       <div class="border border-gray-100 pr-20 p-16 rounded-10 bg-hotsales">
@@ -311,9 +308,9 @@
       </div>
     </div>
   </section>
-  <!-- ========================= Top Selling Products End ================================ -->
+  <!-- ========================= TOP DEALS * SIÊU RẺ End ================================ -->
 
-  <!-- ========================= Deals Week Start ================================ -->
+<!-- ========================= QUÀ TẶNG ================================ -->
 <section class="deals-weeek pt-10 overflow-hidden fix-scale-30">
     <div class="container container-lg px-0">
         <div class="">
@@ -336,158 +333,28 @@
             </div>
 
             <div class="gift-event-slider arrow-style-two">
+              @foreach ($quatangphobien as $quatang)
                 <div>
                     <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
                       <a href="">
-                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
+                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/{{ $quatang->hinhanh }}'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
                           <div class="card-overlay rounded-16 transition-1"></div> </div>
                       <div class="card-content mt-210 p-14 w-100">
                           
                             <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
-                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
+                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">{{ $quatang->tieude }}</a>
                             </div>
                             
                             <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
                               <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
-                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
+                              <span class="text-gray-500 text-xs">Kết thúc vào <strong>{{$quatang->ngayketthuc}}</strong></span>
                             </div>
                       </div>
                       </a>
                   </div>
                 </div>
-                <div>
-                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
-                      <a href="">
-                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
-                          <div class="card-overlay rounded-16 transition-1"></div> </div>
-                      <div class="card-content mt-210 p-14 w-100">
-                          
-                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
-                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </div>
-                            
-                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
-                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
-                            </div>
-                      </div>
-                      </a>
-                  </div>
-                </div>
-                <div>
-                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
-                      <a href="">
-                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
-                          <div class="card-overlay rounded-16 transition-1"></div> </div>
-                      <div class="card-content mt-210 p-14 w-100">
-                          
-                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
-                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </div>
-                            
-                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
-                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
-                            </div>
-                      </div>
-                      </a>
-                  </div>
-                </div>
-                <div>
-                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
-                      <a href="">
-                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
-                          <div class="card-overlay rounded-16 transition-1"></div> </div>
-                      <div class="card-content mt-210 p-14 w-100">
-                          
-                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
-                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </div>
-                            
-                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
-                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
-                            </div>
-                      </div>
-                      </a>
-                  </div>
-                </div>
-                <div>
-                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
-                      <a href="">
-                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
-                          <div class="card-overlay rounded-16 transition-1"></div> </div>
-                      <div class="card-content mt-210 p-14 w-100">
-                          
-                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
-                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </div>
-                            
-                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
-                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
-                            </div>
-                      </div>
-                      </a>
-                  </div>
-                </div>
-                <div>
-                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
-                      <a href="">
-                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
-                          <div class="card-overlay rounded-16 transition-1"></div> </div>
-                      <div class="card-content mt-210 p-14 w-100">
-                          
-                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
-                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </div>
-                            
-                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
-                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
-                            </div>
-                      </div>
-                      </a>
-                  </div>
-                </div>
-                <div>
-                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
-                      <a href="">
-                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
-                          <div class="card-overlay rounded-16 transition-1"></div> </div>
-                      <div class="card-content mt-210 p-14 w-100">
-                          
-                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
-                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </div>
-                            
-                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
-                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
-                            </div>
-                      </div>
-                      </a>
-                  </div>
-                </div>
-                <div>
-                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
-                      <a href="">
-                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha-2.webp'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
-                          <div class="card-overlay rounded-16 transition-1"></div> </div>
-                      <div class="card-content mt-210 p-14 w-100">
-                          
-                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
-                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">Tặng 1 sản phẩm bất kỳ</a>
-                            </div>
-                            
-                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
-                              <span class="text-gray-500 text-xs">Còn lại <strong>2</strong> ngày <strong>11</strong> giờ</span>
-                            </div>
-                      </div>
-                      </a>
-                  </div>
-                </div>
+              @endforeach
+                
 
 
             </div>

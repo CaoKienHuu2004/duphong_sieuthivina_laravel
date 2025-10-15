@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,8 +31,10 @@ class QuatangsukienModel extends Model
         'trangthai',
     ];
 
-    // Ép kiểu dữ liệu
     protected $casts = [
+        'ngaybatdau' => 'date:d/m/Y',
+        'ngayketthuc' => 'date:d/m/Y',
+        'luotxem' => 'integer',
         'id_bienthe' => 'integer',
         'id_cuahang' => 'integer',
         'id_sukien' => 'integer',
@@ -40,24 +43,18 @@ class QuatangsukienModel extends Model
         'thongtin' => 'string',
     ];
 
-    // Giá trị mặc định
     protected $attributes = [
         'trangthai' => 'Hiển thị',
     ];
 
-    // Quan hệ: Quà tặng thuộc về Biến thể
     public function bienthe()
     {
         return $this->belongsTo(BientheModel::class, 'id_bienthe');
     }
-
-    // Quan hệ: Quà tặng thuộc về Cửa hàng
     public function thuonghieu()
     {
         return $this->belongsTo(CuahangModel::class, 'id_thuonghieu');
     }
-
-    // Quan hệ: Quà tặng thuộc về Sự kiện
     public function sukien()
     {
         return $this->belongsTo(SukienModel::class, 'id_sukien');

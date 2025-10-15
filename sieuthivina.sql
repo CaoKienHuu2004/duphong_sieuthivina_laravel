@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 6.0.0-dev+20251008.967007883e
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 13, 2025 at 07:38 AM
+-- Generation Time: Oct 15, 2025 at 10:02 AM
 -- Server version: 8.4.3
--- PHP Version: 8.3.26
+-- PHP Version: 8.3.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -403,6 +403,10 @@ CREATE TABLE `quatang_sukien` (
   `soluongapdung` int NOT NULL,
   `tieude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `thongtin` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hinhanh` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `luotxem` int NOT NULL DEFAULT '0',
+  `ngaybatdau` date DEFAULT NULL,
+  `ngayketthuc` date DEFAULT NULL,
   `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -413,8 +417,8 @@ CREATE TABLE `quatang_sukien` (
 -- Dumping data for table `quatang_sukien`
 --
 
-INSERT INTO `quatang_sukien` (`id`, `id_bienthe`, `id_thuonghieu`, `id_sukien`, `soluongapdung`, `tieude`, `thongtin`, `trangthai`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 1, 2, 'Ưu đãi sinh nhật 13/10 - Tặng 1 sản phẩm bất kỳ', 'Mua 2 sản phẩm từ Trung Tâm Bán Hàng Siêu Thị Vina để nhận được ưu đãi tặng 1 sản phẩm nhân ngày sinh nhật 13/10', 'Hiển thị', '2025-10-12 05:36:17', '2025-10-12 05:36:17', NULL);
+INSERT INTO `quatang_sukien` (`id`, `id_bienthe`, `id_thuonghieu`, `id_sukien`, `soluongapdung`, `tieude`, `thongtin`, `hinhanh`, `luotxem`, `ngaybatdau`, `ngayketthuc`, `trangthai`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, 1, 2, 'Ưu đãi sinh nhật 13/10 - Tặng 1 sản phẩm bất kỳ', 'Mua 2 sản phẩm từ Trung Tâm Bán Hàng Siêu Thị Vina để nhận được ưu đãi tặng 1 sản phẩm nhân ngày sinh nhật 13/10', 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg-2.webp', 0, '2025-10-15', '2025-12-01', 'Hiển thị', '2025-10-12 05:36:17', '2025-10-12 05:36:17', NULL);
 
 -- --------------------------------------------------------
 
@@ -679,6 +683,7 @@ ALTER TABLE `quangcao`
 -- Indexes for table `quatang_sukien`
 --
 ALTER TABLE `quatang_sukien`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `id_bienthe` (`id_bienthe`),
   ADD KEY `id_sukien` (`id_sukien`),
   ADD KEY `id_thuonghieu` (`id_thuonghieu`) USING BTREE;
@@ -768,6 +773,12 @@ ALTER TABLE `nguoidung`
 --
 ALTER TABLE `quangcao`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `quatang_sukien`
+--
+ALTER TABLE `quatang_sukien`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sanpham`

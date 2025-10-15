@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 use App\Models\TukhoaModel;
 use App\Models\DanhmucModel;
 use App\Models\QuangcaoModel;
-
+use App\Models\QuatangsukienModel;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -38,19 +39,20 @@ class HomeController extends Controller
                               ->orderBy('updated_at', 'desc');
 
         if ($limit === 1) {
-            return $query->first(); // Lấy 1 đối tượng duy nhất
+            return $query->first();
         } elseif ($limit > 1) {
-            return $query->take($limit)->get(); // Lấy một nhóm
+            return $query->take($limit)->get();
         }
         
-        return $query->get(); // Lấy tất cả nếu không giới hạn
+        return $query->get();
     }
     public function index()
     {
-        // ⬅️ Khai báo mảng để chứa tất cả kết quả banner
+        //============================================================
+        // KHAI BÁO BANNER
+        //============================================================
         $banners = [];
         
-        // 1. Lấy dữ liệu cho từng vị trí theo tên
         $banners['home_banner_slider'] = $this->vitriBanner(self::BANNER_POSITIONS[0], 5);
         $banners['home_banner_event_1'] = $this->vitriBanner(self::BANNER_POSITIONS[1], 1);
         $banners['home_banner_event_2'] = $this->vitriBanner(self::BANNER_POSITIONS[2], 1); 
@@ -63,42 +65,61 @@ class HomeController extends Controller
         $banners['home_banner_product'] = $this->vitriBanner(self::BANNER_POSITIONS[9], 1);
 
 
-        // ==============================SHOW TẤT CẢ DANH MỤC============================== //
-        $danhsachdanhmuc = DanhmucModel::select('ten', 'logo', 'slug')->get();
+        //============================================================
+        // SHOW TẤT CẢ DANH MỤC
+        //============================================================
+            $danhsachdanhmuc = DanhmucModel::select('ten', 'logo', 'slug')->get();
 
-        // ==============================SHOW SẢN PHẨM TOPDEALS============================== //
-        $minPriceVariantSubquery = BientheModel::query()
-            ->select('id_sanpham', 'giagoc')
-            ->where('soluong', '>', 0)
-            ->whereIn('trangthai', ['Còn hàng', 'Sắp hết hàng'])
-            ->whereNull('deleted_at')
-            ->orderBy('giagoc')
-            ->distinct('id_sanpham'); 
+        //============================================================
+        // SHOW SẢN PHẨM TOPDEALS
+        //============================================================
+            $minPriceVariantSubquery = BientheModel::query()
+                ->select('id_sanpham', 'giagoc')
+                ->where('soluong', '>', 0)
+                ->whereIn('trangthai', ['Còn hàng', 'Sắp hết hàng'])
+                ->whereNull('deleted_at')
+                ->orderBy('giagoc')
+                ->distinct('id_sanpham'); 
 
-        $topDeals = SanphamModel::query()
-            ->with(['hinhanhsanpham', 'thuonghieu']) 
-            ->select(
-                'sanpham.*',  
-                'min_variant.giagoc AS giagoc',
+            $topDeals = SanphamModel::query()
+                ->with(['hinhanhsanpham', 'thuonghieu']) 
+                ->select(
+                    'sanpham.*',  
+                    'min_variant.giagoc AS giagoc',
 
-                DB::raw('ROUND(min_variant.giagoc * (1 - sanpham.giamgia / 100)) AS gia_dagiam') 
-            )
-            ->where('sanpham.trangthai', 'Công khai')
-            ->where('sanpham.giamgia', '>', 0) 
-            ->leftJoinSub($minPriceVariantSubquery, 'min_variant', function ($join) {
-                $join->on('sanpham.id', '=', 'min_variant.id_sanpham');
-            })
-            ->orderByDesc('sanpham.giamgia') 
-            ->orderByDesc('sanpham.luotban') 
-            ->limit(10)
-            ->get();
+                    DB::raw('ROUND(min_variant.giagoc * (1 - sanpham.giamgia / 100)) AS gia_dagiam') 
+                )
+                ->where('sanpham.trangthai', 'Công khai')
+                ->where('sanpham.giamgia', '>', 0) 
+                ->leftJoinSub($minPriceVariantSubquery, 'min_variant', function ($join) {
+                    $join->on('sanpham.id', '=', 'min_variant.id_sanpham');
+                })
+                ->orderByDesc('sanpham.giamgia') 
+                ->orderByDesc('sanpham.luotban') 
+                ->limit(10)
+                ->get();
 
-        // return response()->json([
-        //     'success' => true,
-        //     'data' => $topDeals
-        // ]);
+                // return response()->json([
+                //     'success' => true,
+                //     'data' => $topDeals
+                // ]);
 
-        $data = array_merge($banners, compact('danhsachdanhmuc','topDeals'));
+        //============================================================
+        // HIỂN THỊ QUÀ TẶNG SỰ KIỆN
+        //============================================================
+            $today = Carbon::now();
+            $quatangphobien = QuatangsukienModel::where('ngaybatdau', '<=', $today)
+                                                ->where('ngayketthuc', '>=', $today)
+                                                ->orderBy('luotxem','desc')
+                                                ->limit(8)
+                                                ->get();
+
+           
+
+        //============================================================
+        // TRUYỀN DATA VÀO TRANG CHỦ
+        //============================================================
+        $data = array_merge($banners, compact('danhsachdanhmuc','topDeals', 'quatangphobien'));
         return view('client.index', $data); 
     }
 
