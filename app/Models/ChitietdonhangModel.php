@@ -4,55 +4,46 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ChitietdonhangModel extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    // Tên bảng trong database
     protected $table = 'chitiet_donhang';
-
-    // Khóa chính
     protected $primaryKey = 'id';
-
-    // Các cột được phép gán hàng loạt
     protected $fillable = [
         'id_bienthe',
         'id_donhang',
         'soluong',
         'dongia',
     ];
-
-    // Laravel tự xử lý created_at và updated_at
-    public $timestamps = true;
-
-    // Ép kiểu dữ liệu
+    public $timestamps = false;
     protected $casts = [
         'id_bienthe' => 'integer',
         'id_donhang' => 'integer',
         'soluong' => 'integer',
         'dongia' => 'integer',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
-    // Quan hệ: Chi tiết đơn hàng thuộc về 1 đơn hàng
+    // =========================================
+    // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
+    // =========================================
     public function donhang()
     {
         return $this->belongsTo(DonhangModel::class, 'id_donhang', 'id');
     }
 
-    // Quan hệ: Chi tiết đơn hàng thuộc về 1 biến thể sản phẩm
     public function bienthe()
     {
         return $this->belongsTo(BientheModel::class, 'id_bienthe', 'id');
     }
 
+
+    // ???===
     public function sanpham()
     {
-        // Nếu Chitietdonhang có khóa id_bienthe trỏ tới BientheModel
-        // Và BientheModel trỏ tới SanphamModel
         return $this->belongsTo(BientheModel::class, 'id_bienthe')
-                    ->with('sanpham'); // hoặc dùng belongsToThrough nếu có package
+                    ->with('sanpham');
     }
 }

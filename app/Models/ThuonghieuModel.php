@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CuahangModel extends Model
+class ThuonghieuModel extends Model
 {
     use HasFactory, SoftDeletes;
 

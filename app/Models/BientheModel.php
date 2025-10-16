@@ -16,21 +16,27 @@ class BientheModel extends Model
         'id_sanpham',
         'giagoc',
         'soluong',
+        'luottang',
+        'luotban',
         'trangthai',
     ];
     protected $casts = [
         'soluong' => 'integer',
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'luottang' => 'integer',
+        'luotban' => 'integer',
     ];
+    public $timestamps = false;
 
+    // ===========================================================================================================================
+    // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
+    // ===========================================================================================================================
     public function sanpham(): BelongsTo
     {
-        return $this->belongsTo(SanphamModel::class, 'id_sanpham');
+        return $this->belongsTo(SanphamModel::class, 'id_sanpham','id');
     }
 
     public function loaibienthe(): BelongsTo
     {
-        return $this->belongsTo(LoaibientheModel::class, 'id_loaibienthe');
+        return $this->belongsTo(LoaibientheModel::class, 'id_loaibienthe','id');
     }
 }
