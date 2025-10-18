@@ -11,6 +11,7 @@ class BientheModel extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'bienthe';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'id_loaibienthe',
         'id_sanpham',
@@ -19,11 +20,6 @@ class BientheModel extends Model
         'luottang',
         'luotban',
         'trangthai',
-    ];
-    protected $casts = [
-        'soluong' => 'integer',
-        'luottang' => 'integer',
-        'luotban' => 'integer',
     ];
     public $timestamps = false;
 

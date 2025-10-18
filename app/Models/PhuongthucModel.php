@@ -10,39 +10,22 @@ class PhuongthucModel extends Model
 {
     use HasFactory;
 
-    // Tên bảng trong cơ sở dữ liệu
     protected $table = 'phuongthuc';
-
-    // Khóa chính
     protected $primaryKey = 'id';
-
-    // Laravel sẽ tự động quản lý created_at và updated_at
-    public $timestamps = true;
-
-    // Các cột cho phép gán giá trị hàng loạt
     protected $fillable = [
         'ten',
         'maphuongthuc',
         'trangthai',
     ];
+    public $timestamps = false;
 
-    // Ép kiểu dữ liệu cho các trường
-    protected $casts = [
-        'ten' => 'string',
-        'maphuongthuc' => 'string',
-    ];
-
-    // Giá trị mặc định
-    protected $attributes = [
-        'trangthai' => 'Hoạt động',
-    ];
-
-
+    // ===========================================================================================================================
+    // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
+    // ===========================================================================================================================
     public function donhang(): HasMany
     {
         return $this->hasMany(DonhangModel::class, 'id_phuongthuc');
     }
-
 
     // Scope: Lấy các phương thức đang hoạt động
     public function scopeHoatDong($query)

@@ -22,15 +22,6 @@ class BaivietModel extends Model
     ];
     public $timestamps = false;
 
-    protected $casts = [
-        'luotxem' => 'integer',
-    ];
-
-    protected $attributes = [
-        'trangthai' => 'Hiển thị',
-        'luotxem' => 0,
-    ];
-
     // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
     // ===========================================================================================================================

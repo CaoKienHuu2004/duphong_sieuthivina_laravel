@@ -20,15 +20,6 @@ class DanhgiaModel extends Model
         'trangthai',
     ];
     public $timestamps = false;
-    protected $casts = [
-        'id_sanpham' => 'integer',
-        'id_nguoidung' => 'integer',
-        'id_chitietdonhang' => 'integer',
-        'diem' => 'integer',
-    ];
-    protected $attributes = [
-        'trangthai' => 'Hiển thị',
-    ];
 
     // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)

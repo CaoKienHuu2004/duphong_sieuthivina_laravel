@@ -7,16 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TukhoaModel extends Model
 {
-    // Kích hoạt tính năng Factory nếu bạn muốn dùng để tạo dữ liệu mẫu
     use HasFactory;
 
-    // Tên bảng trong cơ sở dữ liệu (đã được định nghĩa trong migration)
     protected $table = 'tukhoa';
-    public $timestamps = false;
-
-    // Xác định các cột có thể được gán giá trị hàng loạt (Mass Assignment)
+    protected $primaryKey = 'id';
     protected $fillable = [
         'tukhoa',
         'luottruycap',
     ];
+    public $timestamps = false;
+    
 }

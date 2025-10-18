@@ -19,16 +19,10 @@ class ChitietdonhangModel extends Model
         'dongia',
     ];
     public $timestamps = false;
-    protected $casts = [
-        'id_bienthe' => 'integer',
-        'id_donhang' => 'integer',
-        'soluong' => 'integer',
-        'dongia' => 'integer',
-    ];
 
-    // =========================================
+    // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
-    // =========================================
+    // ===========================================================================================================================
     public function donhang()
     {
         return $this->belongsTo(DonhangModel::class, 'id_donhang', 'id');

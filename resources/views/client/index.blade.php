@@ -2,45 +2,52 @@
 
 @section('title','Siêu Thị Vina | Sàn thương mại điện tử bán hàng trực tuyến Siêu Thị Vina')
 
+@php
+  $eventBanner1 = $banner['home_banner_event_1'] ?? null;
+  $eventBanner2 = $banner['home_banner_event_2'] ?? null;
+  $eventBanner3 = $banner['home_banner_event_3'] ?? null;
+  $eventBanner4 = $banner['home_banner_event_4'] ?? null;
+
+  $promotionBanner1 = $banner['home_banner_promotion_1'] ?? null;
+  $promotionBanner2 = $banner['home_banner_promotion_2'] ?? null;
+  $promotionBanner3 = $banner['home_banner_promotion_3'] ?? null;
+
+  $adsBanner = $banner['home_banner_ads'] ?? null;
+  $productBanner = $banner['home_banner_product'] ?? null;
+@endphp
+
 @section('content')
 
   <div class="page">
       <!-- ============================ BANNER start =============================== -->
   <div class="banner-two fix-scale-20">
     <div class="container container-lg px-0">
-
       <div class="row g-20">
         <div class="col-lg-6">
           <div class="banner-two-wrapper d-flex align-items-start">
             <div
               class="banner-item-two-wrapper rounded-5 overflow-hidden position-relative arrow-center flex-grow-1 mb-0 mt-20 ms-0">
               <div class="flex-align">
-                <button type="button" id="banner-prev"
-                  class="slick-prev flex-center rounded-circle bg-white text-xl hover-bg-main-600 hover-text-white transition-1 slick-arrow">
+                <button type="button" id="banner-prev" class="slick-prev flex-center rounded-circle bg-white text-xl hover-bg-main-600 hover-text-white transition-1 slick-arrow">
                   <i class="ph-bold ph-caret-left"></i>
                 </button>
-                <button type="button" id="banner-next"
-                  class="slick-next flex-center rounded-circle bg-white text-xl hover-bg-main-600 hover-text-white transition-1 slick-arrow">
+                <button type="button" id="banner-next" class="slick-next flex-center rounded-circle bg-white text-xl hover-bg-main-600 hover-text-white transition-1 slick-arrow">
                   <i class="ph-bold ph-caret-right"></i>
                 </button>
               </div>
 
               <div class="banner-item-two__slider">
-                @if ($home_banner_slider->isNotEmpty())
-                  @foreach ($home_banner_slider as $banner)
+                @if(isset($banner['home_banner_slider']) && $banner['home_banner_slider']->isNotEmpty())
+                  @foreach ($banner['home_banner_slider'] as $banner)
                     <a href="{{ $banner->lienket }}" class="d-flex align-items-center justify-content-between flex-wrap-reverse flex-sm-nowrap gap-32">
-                    <img src="{{asset('assets/client')}}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" class=" d-lg-block d-none rounded-5"
-                      style="width: 100%; height: 350px; object-fit: cover;" />
-                    <img src="{{asset('assets/client')}}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" class=" d-block d-lg-none rounded-5"
-                      style="width: 100%; height: 300px; object-fit: cover;" />
+                    <img src="{{asset('assets/client')}}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" class=" d-lg-block d-none rounded-5" style="width: 100%; height: 350px; object-fit: cover;" />
+                    <img src="{{asset('assets/client')}}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" class=" d-block d-lg-none rounded-5" style="width: 100%; height: 300px; object-fit: cover;" />
                   </a>
                   @endforeach
                 @else
                   <a href="#" class="d-flex align-items-center justify-content-between flex-wrap-reverse flex-sm-nowrap gap-32">
-                    <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class=" d-lg-block d-none rounded-5"
-                      style="width: 100%; height: 350px; object-fit: cover;" />
-                    <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class=" d-block d-lg-none rounded-5"
-                      style="width: 100%; height: 300px; object-fit: cover;" />
+                    <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class=" d-lg-block d-none rounded-5" style="width: 100%; height: 350px; object-fit: cover;" />
+                    <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class=" d-block d-lg-none rounded-5" style="width: 100%; height: 300px; object-fit: cover;" />
                   </a>
                 @endif
               </div>
@@ -49,9 +56,52 @@
         </div>
         <div class="col-12 col-lg-3 mt-20 ps-10 pe-5 d-lg-block d-none">
           <div class="row g-24 me-0">
-            @if ($home_banner_event_1)
-              <a href="{{ $home_banner_event_1->lienket }}" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_1->hinhanh }}" alt="{{ $home_banner_event_1->hinhanh }}" class="p-0 rounded-5"
+
+            @if(!empty($eventBanner1))
+              <a href="{{ $eventBanner1->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $eventBanner1->hinhanh }}" alt="{{ $eventBanner1->hinhanh }}" class="p-0 rounded-5" style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @else
+              <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class="p-0 rounded-5" style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @endif
+
+          </div>
+          <div class="row g-24 mt-10 me-0">
+
+            @if(isset($eventBanner2))
+              <a href="{{ $eventBanner2->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $eventBanner2->hinhanh }}" alt="{{ $eventBanner2->hinhanh }}" class="p-0 rounded-5" style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @else
+              <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class="p-0 rounded-5" style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @endif
+
+          </div>
+        </div>
+        <div class="col-12 col-lg-3 mt-20 px-5 d-lg-block d-none">
+          <div class="row g-24 ms-0 w-100">
+
+            @if(isset($eventBanner3))
+              <a href="{{ $eventBanner3->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $eventBanner3->hinhanh }}" alt="{{ $eventBanner3->hinhanh }}" class="p-0 rounded-5" style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @else
+              <a href="#" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class="p-0 rounded-5"
+                  style="width: 100%; height: 170px; object-fit: cover;" />
+              </a>
+            @endif
+
+          </div>
+          <div class="row g-24 mt-10 ms-0 w-100">
+
+            @if(isset($eventBanner4))
+              <a href="{{ $eventBanner4->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $eventBanner4->hinhanh }}" alt="{{ $eventBanner4->hinhanh }}" class="p-0 rounded-5"
                   style="width: 100%; height: 170px; object-fit: cover;" />
               </a>
             @else
@@ -62,47 +112,6 @@
             @endif
 
           </div>
-          <div class="row g-24 mt-10 me-0">
-            @if ($home_banner_event_2)
-              <a href="{{ $home_banner_event_2->lienket }}" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_2->hinhanh }}" alt="{{ $home_banner_event_2->hinhanh }}" class="p-0 rounded-5"
-                  style="width: 100%; height: 170px; object-fit: cover;" />
-              </a>
-            @else
-              <a href="#" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class="p-0 rounded-5"
-                  style="width: 100%; height: 170px; object-fit: cover;" />
-              </a>
-            @endif
-          </div>
-        </div>
-        <div class="col-12 col-lg-3 mt-20 px-5 d-lg-block d-none">
-          <div class="row g-24 ms-0 w-100">
-            @if ($home_banner_event_3)
-              <a href="{{ $home_banner_event_3->lienket }}" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_3->hinhanh }}" alt="{{ $home_banner_event_3->hinhanh }}" class="p-0 rounded-5"
-                  style="width: 100%; height: 170px; object-fit: cover;" />
-              </a>
-            @else
-              <a href="#" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class="p-0 rounded-5"
-                  style="width: 100%; height: 170px; object-fit: cover;" />
-              </a>
-            @endif
-          </div>
-          <div class="row g-24 mt-10 ms-0 w-100">
-            @if ($home_banner_event_4)
-              <a href="{{ $home_banner_event_4->lienket }}" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_4->hinhanh }}" alt="{{ $home_banner_event_4->hinhanh }}" class="p-0 rounded-5"
-                  style="width: 100%; height: 170px; object-fit: cover;" />
-              </a>
-            @else
-              <a href="#" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg" class="p-0 rounded-5"
-                  style="width: 100%; height: 170px; object-fit: cover;" />
-              </a>
-            @endif
-          </div>
         </div>
       </div>
     </div>
@@ -110,9 +119,10 @@
     <div class="container">
         <div class="col-12 col-lg-3 mt-20 d-lg-none d-block">
           <div class="">
-            @if ($home_banner_event_1)
-              <a href="{{ $home_banner_event_1->lienket }}" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_1->hinhanh }}" alt="{{ $home_banner_event_1->hinhanh }}" class="p-0 rounded-5"
+
+            @if(isset($eventBanner1))
+              <a href="{{ $eventBanner1->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $eventBanner1->hinhanh }}" alt="{{ $eventBanner1->hinhanh }}" class="p-0 rounded-5"
                   style="width: 100%; object-fit: cover;" />
               </a>
             @else
@@ -121,11 +131,13 @@
                   style="width: 100%; object-fit: cover;" />
               </a>
             @endif
+
           </div>
           <div class=" mt-24">
-            @if ($home_banner_event_2)
-              <a href="{{ $home_banner_event_2->lienket }}" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_2->hinhanh }}" alt="{{ $home_banner_event_2->hinhanh }}" class="p-0 rounded-5"
+
+            @if(isset($eventBanner2))
+              <a href="{{ $eventBanner2->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $eventBanner2->hinhanh }}" alt="{{ $eventBanner2->hinhanh }}" class="p-0 rounded-5"
                   style="width: 100%; object-fit: cover;" />
               </a>
             @else
@@ -134,13 +146,15 @@
                   style="width: 100%; object-fit: cover;" />
               </a>
             @endif
+            
           </div>
         </div>
         <div class="col-12 col-lg-3 mt-20 pe-0  d-lg-none d-block">
           <div class="">
-            @if ($home_banner_event_3)
-              <a href="{{ $home_banner_event_3->lienket }}" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_3->hinhanh }}" alt="{{ $home_banner_event_3->hinhanh }}" class="p-0 rounded-5"
+
+            @if(isset($eventBanner3))
+              <a href="{{ $eventBanner3->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $eventBanner3->hinhanh }}" alt="{{ $eventBanner3->hinhanh }}" class="p-0 rounded-5"
                   style="width: 100%; object-fit: cover;" />
               </a>
             @else
@@ -149,11 +163,13 @@
                   style="width: 100%; object-fit: cover;" />
               </a>
             @endif
+            
           </div>
           <div class=" mt-24">
-            @if ($home_banner_event_4)
-              <a href="{{ $home_banner_event_4->lienket }}" class="p-0 m-0">
-                <img src="{{asset('assets/client')}}/images/bg/{{ $home_banner_event_4->hinhanh }}" alt="{{ $home_banner_event_4->hinhanh }}" class="p-0 rounded-5"
+
+            @if(isset($eventBanner4))
+              <a href="{{ $eventBanner4->lienket }}" class="p-0 m-0">
+                <img src="{{asset('assets/client')}}/images/bg/{{ $eventBanner4->hinhanh }}" alt="{{ $eventBanner4->hinhanh }}" class="p-0 rounded-5"
                   style="width: 100%; object-fit: cover;" />
               </a>
             @else
@@ -162,6 +178,7 @@
                   style="width: 100%; object-fit: cover;" />
               </a>
             @endif
+
           </div>
         </div>
     </div>
@@ -184,7 +201,7 @@
           </button>
         </div>
         <div class="feature-item-wrapper">
-          @foreach ($danhsachdanhmuc as $dsdm)
+          @foreach ($alldanhmuc as $dsdm)
             <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="400">
               <div class="feature-item__thumb rounded-circle">
                 <a href="{{ route('trang-chu',$dsdm->slug) }}" class="w-100 h-100 p-10 flex-center">
@@ -233,7 +250,7 @@
         <div class="row g-12">
           <div class="col-md-12">
             <div class="top-selling-product-slider arrow-style-two">
-              @foreach ($topDeals as $td)
+              @foreach ($topdeals as $td)
                 <div data-aos="fade-up" data-aos-duration="1000">
                 <div
                   class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
@@ -268,12 +285,12 @@
                     <div class="flex-wrap flex-align justify-content-between mt-5">
                       <div class="flex-align gap-6">
                         <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                        <span class="text-xs fw-medium text-gray-500">nullable <i
-                            class="ph-fill ph-star text-warning-600"></i></span>
+                        <span class="text-xs fw-medium text-gray-500">nullable
+                          <i class="ph-fill ph-star text-warning-600"></i></span>
                       </div>
                       <div class="flex-align gap-4">
                         <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                        <span class="text-xs fw-medium text-gray-500">{{ $td->luotban }}</span>
+                        <span class="text-xs fw-medium text-gray-500">{{ $td->bienthe_sum_luotban }}</span>
                       </div>
                     </div>
 
@@ -283,8 +300,8 @@
 
                     <div class="product-card__price mt-5">
                       <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                        {{ number_format($td->giagoc, 0, ',', '.') }} ₫</span>
-                      <span class="text-heading text-md fw-semibold">{{ number_format($td->gia_dagiam, 0, ',', '.') }} ₫</span>
+                        {{ number_format($td->bienthe->giagoc, 0, ',', '.') }} ₫</span>
+                      <span class="text-heading text-md fw-semibold">{{ number_format($td->giadagiam, 0, ',', '.') }} ₫</span>
                     </div>
 
 
@@ -333,27 +350,63 @@
             </div>
 
             <div class="gift-event-slider arrow-style-two">
-              @foreach ($quatangphobien as $quatang)
-                <div>
-                    <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
-                      <a href="">
-                      <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/{{ $quatang->hinhanh }}'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
-                          <div class="card-overlay rounded-16 transition-1"></div> </div>
-                      <div class="card-content mt-210 p-14 w-100">
-                          
-                            <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
-                                <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">{{ $quatang->tieude }}</a>
-                            </div>
+              @if ($quatang->isNotEmpty())
+                @foreach ($quatang as $qt)
+                @php
+                    try {
+                        $ketthucngay = \Carbon\Carbon::parse($qt->ngayketthuc);
+                        $hientai = \Carbon\Carbon::now();
+                        
+                        $ngayconlai = max(0, $ketthucngay->timestamp - $hientai->timestamp); // Tính ngược từ kết thúc đến hiện tại
+
+                        if ($ngayconlai > 0) {
+                            $days = floor($ngayconlai / (60 * 60 * 24));
+                            $remaining_after_days = $ngayconlai % (60 * 60 * 24);
                             
-                            <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
-                              <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
-                              <span class="text-gray-500 text-xs">Kết thúc vào <strong>{{$quatang->ngayketthuc}}</strong></span>
-                            </div>
-                      </div>
-                      </a>
+                            $hours = floor($remaining_after_days / (60 * 60));
+                            $remaining_after_hours = $remaining_after_days % (60 * 60);
+                            
+                            $minutes = floor($remaining_after_hours / 60);
+                            $seconds = $remaining_after_hours % 60;
+
+                            if ($days > 0) {
+                                $countdownDisplay = "{$days} ngày {$hours} giờ";
+                            } elseif ($hours > 0) {
+                                $countdownDisplay = "{$hours} giờ {$minutes} phút";
+                            } elseif ($minutes > 0) {
+                                $countdownDisplay = "{$minutes} phút {$seconds} giây";
+                            } else {
+                                $countdownDisplay = "{$seconds} giây";
+                            }
+                        } else {
+                            $countdownDisplay = "Đã Hết Hạn";
+                        }
+
+                    } catch (\Exception $e) {
+                        $countdownDisplay = "Ngày không hợp lệ";
+                    }
+                @endphp
+                  <div>
+                      <div class="product-card p-card border border-gray-100 rounded-16 position-relative transition-2">
+                        <a href="">
+                        <div class="rounded-16 " style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/client/images/thumbs/{{ $qt->hinhanh }}'); background-size: cover; background-repeat: no-repeat; z-index: 1; background-position: center;">
+                            <div class="card-overlay rounded-16 transition-1"></div> </div>
+                        <div class="card-content mt-210 p-14 w-100">
+                            
+                              <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
+                                  <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">{{ $qt->tieude }}</a>
+                              </div>
+                              
+                              <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
+                                <span class="text-main-600 text-md d-flex"><i class="ph-bold ph-timer"></i></span>
+                                <span class="text-gray-500 text-xs">Còn lại <strong>{{ $countdownDisplay }}</strong></span>
+                              </div>
+                        </div>
+                        </a>
+                    </div>
                   </div>
-                </div>
-              @endforeach
+                @endforeach
+              @endif
                 
 
 
@@ -361,39 +414,43 @@
         </div>
     </div>
 </section>
-<!-- ========================= Deals Week End ================================ -->
+<!-- ========================= QUÀ TẶNG End ================================ -->
 
   <div class="container container-lg mt-10 mb-70 px-0">
     <div class="row">
       <div class="col-lg-4">
         <div class="rounded-5">
-          <a href="#" class="p-0 m-0">
-            <img src="{{asset('assets/client')}}/images/bg/shopee-04.webp" alt=""
+          @if($promotionBanner1)
+          <a href="{{ $promotionBanner1->lienket }}" class="p-0 m-0">
+            <img src="{{asset('assets/client')}}/images/bg/{{ $promotionBanner1->hinhanh }}" alt=""
               class="banner-img w-100 h-100 object-fit-cover rounded-10 mb-10">
           </a>
+          @endif
         </div>
       </div>
       <div class="col-lg-4">
         <div class="rounded-5">
-          <a href="#" class="p-0 m-0">
-            <img src="{{asset('assets/client')}}/images/bg/shopee-06.jpg" alt=""
+          @if($promotionBanner2)
+          <a href="{{ $promotionBanner2->lienket }}" class="p-0 m-0">
+            <img src="{{asset('assets/client')}}/images/bg/{{ $promotionBanner2->hinhanh }}" alt=""
               class="banner-img w-100 h-100 object-fit-cover rounded-10 mb-10">
           </a>
+          @endif
         </div>
       </div>
       <div class="col-lg-4">
         <div class="rounded-5">
-          <a href="#" class="p-0 m-0">
-            <img src="{{asset('assets/client')}}/images/bg/shopee-07.jpg" alt=""
+          @if($promotionBanner3)
+          <a href="{{ $promotionBanner3->lienket }}" class="p-0 m-0">
+            <img src="{{asset('assets/client')}}/images/bg/{{ $promotionBanner3->hinhanh }}" alt=""
               class="banner-img w-100 h-100 object-fit-cover rounded-10 mb-10">
           </a>
+          @endif
         </div>
       </div>
     </div>
   </div>
-
-
-
+  
   <!-- ========================= Trending Products Start ================================ -->
   <section class="trending-productss overflow-hidden mt-10 fix-scale-80">
     <div class="container container-lg px-0">

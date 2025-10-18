@@ -9,41 +9,22 @@ class YeuthichModel extends Model
 {
     use SoftDeletes;
 
-    // Tên bảng
     protected $table = 'yeuthich';
-
-    // Khóa chính
     protected $primaryKey = 'id';
-
-    // Laravel sẽ tự động quản lý created_at và updated_at
-    public $timestamps = true;
-
-    // Các cột cho phép gán hàng loạt
     protected $fillable = [
         'id_nguoidung',
         'id_sanpham',
         'trangthai',
     ];
+    public $timestamps = false;
 
-    // Giá trị mặc định
-    protected $attributes = [
-        'trangthai' => 'Hiển thị',
-    ];
-
-    // Ép kiểu dữ liệu
-    protected $casts = [
-        'id_nguoidung' => 'integer',
-        'id_sanpham' => 'integer',
-        'trangthai' => 'string',
-    ];
-
-    // Quan hệ: Một yêu thích thuộc về một người dùng
+    // ===========================================================================================================================
+    // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
+    // ===========================================================================================================================
     public function nguoidung()
     {
         return $this->belongsTo(NguoidungModel::class, 'id_nguoidung');
     }
-
-    // Quan hệ: Một yêu thích thuộc về một sản phẩm
     public function sanpham()
     {
         return $this->belongsTo(SanphamModel::class, 'id_sanpham');

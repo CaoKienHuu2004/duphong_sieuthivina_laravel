@@ -18,7 +18,7 @@ class NguoidungModel extends Authenticatable
     use HasFactory, SoftDeletes;
 
     protected $table = 'nguoidung';
-
+    protected $primaryKey = 'id';
     protected $fillable = [
         'username',
         'password',
@@ -30,28 +30,19 @@ class NguoidungModel extends Authenticatable
         'vaitro',
         'trangthai',
     ];
-
     protected $hidden = [
         'password',
         'remember_token',
     ];
+    public $timestamps = false;
 
-    protected $casts = [
-        'ngaysinh'   => 'date:Y-m-d',
-        'trangthai'  => 'boolean',
-        'password'   => 'hashed',
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
-    //============================================================
-    // MỐI QUAN HỆ (RELATIONSHIPS)
-    //===========================================================
+    // ===========================================================================================================================
+    // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
+    // ===========================================================================================================================
     public function diachi(): HasMany
     {
         return $this->hasMany(DiachinguoidungModel::class, 'id_nguoidung');
     }
-
     public function baiviet(): HasMany
     {
         return $this->hasMany(BaivietModel::class, 'id_nguoidung');

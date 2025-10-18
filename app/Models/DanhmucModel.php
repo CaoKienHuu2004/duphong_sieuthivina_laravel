@@ -13,12 +13,13 @@ class DanhmucModel extends Model
     protected $table = 'danhmuc';
     protected $primaryKey = 'id';
     protected $fillable = ['ten', 'slug','logo','parent'];
+    public $timestamps = false;
 
     // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
     // ===========================================================================================================================
     public function sanpham(): BelongsToMany
     {
-        return $this->belongsToMany(SanphamModel::class);
+        return $this->belongsToMany(SanphamModel::class, 'danhmuc_sanpham', 'id_danhmuc', 'id_sanpham');
     }
 }

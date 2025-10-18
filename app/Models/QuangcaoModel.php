@@ -9,7 +9,7 @@ class QuangcaoModel extends Model
 {
     use HasFactory;
     protected $table = 'quangcao';
-
+    protected $primaryKey = 'id';
     protected $fillable = [
         'vitri',
         'hinhanh',
@@ -17,8 +17,5 @@ class QuangcaoModel extends Model
         'mota',
         'trangthai'
     ];
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
+    public $timestamps = false;
 }

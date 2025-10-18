@@ -14,6 +14,7 @@ class SanphamModel extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'sanpham';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'id_thuonghieu',
         'ten',
@@ -24,30 +25,24 @@ class SanphamModel extends Model
         'trangthai',
         'giamgia',
         'luotxem',
-        'luotban',
-        'thuonghieu'
     ];
+    public $timestamps = false;
 
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
+    // ===========================================================================================================================
+    // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
+    // ===========================================================================================================================
     public function danhmuc(): BelongsToMany
     {
-        return $this->belongsToMany(DanhmucModel::class);
+        return $this->belongsToMany(DanhmucModel::class, 'danhmuc_sanpham', 'id_sanpham', 'id_danhmuc');
     }
-
     public function bienthe(): HasMany
     {
         return $this->hasMany(BientheModel::class, 'id_sanpham');
     }
-
     public function thuonghieu(): BelongsTo
     {
-        return $this->belongsTo(CuahangModel::class, 'id_thuonghieu');
+        return $this->belongsTo(ThuonghieuModel::class, 'id_thuonghieu');
     }
-
     public function hinhanhsanpham(): HasMany
     {
         return $this->hasMany(HinhanhsanphamModel::class, 'id_sanpham');

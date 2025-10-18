@@ -11,53 +11,32 @@ class QuatangsukienModel extends Model
 {
     use HasFactory,SoftDeletes;
 
-    // Tên bảng trong cơ sở dữ liệu
     protected $table = 'quatang_sukien';
-
-    // Khóa chính
     protected $primaryKey = 'id';
-
-    // Tự động quản lý created_at, updated_at
-    public $timestamps = true;
-
-    // Các cột có thể gán hàng loạt
     protected $fillable = [
         'id_bienthe',
-        'id_thuonghieu',
         'id_sukien',
-        'soluongapdung',
+        'dieukien',
         'tieude',
         'thongtin',
+        'hinhanh',
+        'luotxem',
+        'ngaybatdau',
+        'ngayketthuc',
         'trangthai',
     ];
+    public $timestamps = false;
 
-    protected $casts = [
-        'ngaybatdau' => 'date:d/m/Y',
-        'ngayketthuc' => 'date:d/m/Y',
-        'luotxem' => 'integer',
-        'id_bienthe' => 'integer',
-        'id_cuahang' => 'integer',
-        'id_sukien' => 'integer',
-        'soluongapdung' => 'integer',
-        'tieude' => 'string',
-        'thongtin' => 'string',
-    ];
-
-    protected $attributes = [
-        'trangthai' => 'Hiển thị',
-    ];
-
+    // ===========================================================================================================================
+    // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
+    // ===========================================================================================================================
     public function bienthe()
     {
         return $this->belongsTo(BientheModel::class, 'id_bienthe');
     }
-    public function thuonghieu()
-    {
-        return $this->belongsTo(CuahangModel::class, 'id_thuonghieu');
-    }
     public function sukien()
     {
-        return $this->belongsTo(SukienModel::class, 'id_sukien');
+        return $this->belongsTo(ChuongtrinhModel::class, 'id_chuongtrinh');
     }
 
     // Scope: chỉ lấy quà tặng đang hiển thị

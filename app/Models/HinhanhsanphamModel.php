@@ -16,11 +16,11 @@ class HinhanhsanphamModel extends Model
         'hinhanh',
         'trangthai',
     ];
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
+    public $timestamps = false;
 
+    // ===========================================================================================================================
+    // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
+    // ===========================================================================================================================
     public function sanpham()
     {
         return $this->belongsTo(SanphamModel::class, 'id_sanpham');

@@ -8,18 +8,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LoaibientheModel extends Model
 {
-    use HasFactory; /// thieu xóa mềm rồi
+    use HasFactory;
 
     protected $table = 'loaibienthe';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'ten',
         'trangthai',
     ];
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
+    public $timestamps = false;
 
+    // ===========================================================================================================================
+    // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
+    // ===========================================================================================================================
     public function bienthe(): HasMany
     {
         return $this->hasMany(BientheModel::class, 'id_loaibienthe');
