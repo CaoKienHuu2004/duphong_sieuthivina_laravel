@@ -9775,6 +9775,11 @@ input:focus-visible {
 .p-card:hover .card-content {
     opacity: 0;
 }
+
+.hover-card-shadows:hover{
+    box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
 /* ============================ Feature Section Css End =============================== */
 /* ======================== promotional banner Css Start ============================== */
 @media screen and (max-width: 1399px) {
@@ -9809,7 +9814,7 @@ input:focus-visible {
 }
 
 .product-card__badge {
-    border-radius: 9px 0 16px 0;
+    border-radius: 10px 0 16px 0;
 }
 
 .product-card__thumb {

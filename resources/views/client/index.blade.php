@@ -253,10 +253,9 @@
               @foreach ($topdeals as $td)
                 <div data-aos="fade-up" data-aos-duration="1000">
                 <div
-                  class="product-card bg-white hover-card-shadows h-100 p-16 border border-gray-100 hover-border-main-600 rounded-10 position-relative transition-2">
+                  class="product-card bg-white hover-card-shadows h-100 rounded-10 position-relative transition-2">
 
-                  <a href="product-details-two.html"
-                    class="flex-center rounded-8 position-relative bg-gray-50 border border-gray-200">
+                  <a href="product-details-two.html" class="thumbhover flex-center rounded-10 position-relative bg-gray-50 w-100">
                     @if($td->giamgia > 0)
                     <span
                       class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
@@ -264,22 +263,19 @@
                     </span>
                     @endif
                     <div class="w-100">
-                      <img src="{{asset('assets/client')}}/images/thumbs/{{ $td->hinhanhsanpham->first()->hinhanh }}" alt="{{ $td->hinhanhsanpham->first()->hinhanh }}" class="rounded-8" style="width: 100%; height: 200px; object-fit: cover;" />
+                      <img src="{{asset('assets/client')}}/images/thumbs/{{ $td->hinhanhsanpham->first()->hinhanh }}" alt="{{ $td->hinhanhsanpham->first()->hinhanh }}" class="" style="width: 100%; height: 210px; object-fit: cover; border-top-left-radius:10px; border-top-right-radius:10px;" />
                     </div>
                   </a>
-                  <div class="product-card__content w-100  mt-5">
+                  <div class="product-card__content w-100 px-16 pb-16 mt-5">
                     <div class="flex-align justify-content-between mt-5">
                       <div class="flex-align gap-4 w-100">
                         <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
                         <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="{{ $td->thuonghieu->ten }}">{{ $td->thuonghieu->ten }}</span>
                       </div>
-
                     </div>
-
                     <h6 class="title text-lg fw-semibold mt-5 mb-8">
                       <a href="product-details-two.html" class="link text-line-2" tabindex="0">{{ $td->ten }}</a>
                     </h6>
-
                     <div class="flex-wrap flex-align justify-content-between mt-5">
                       <div class="flex-align gap-6">
                         <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
@@ -291,23 +287,11 @@
                         <span class="text-xs fw-medium text-gray-500">{{ $td->bienthe_sum_luotban }}</span>
                       </div>
                     </div>
-
-
-
-
-
                     <div class="product-card__price mt-5">
                       <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
                         {{ number_format($td->bienthe->giagoc, 0, ',', '.') }} ₫</span>
                       <span class="text-heading text-md fw-semibold">{{ number_format($td->giadagiam, 0, ',', '.') }} ₫</span>
                     </div>
-
-
-                    <!-- <a href="cart.html"
-                      class="product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-center gap-8 fw-medium"
-                      tabindex="0">
-                      Thêm <i class="ph ph-shopping-cart"></i>
-                    </a> -->
                   </div>
                 </div>
               </div>
@@ -479,26 +463,15 @@
         </div>
 
         <div class="tab-content" id="pills-tabContent">
-          <!-- ========================================================================================== -->
-          <!-- ForEach Data (Nơi hiển thị dữ liệu danh sách sản phẩm thuộc những danh mục hàng đầu của website) -->
-          <!-- ===========================================================================================-->
-          
           @if($sanphamthuocdanhmuc->isNotEmpty())
             @foreach ($sanphamthuocdanhmuc as $categoryId => $products)
-              <div 
-                  class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" 
-                  id="content-{{ $categoryId }}" 
-                  role="tabpanel" 
-                  aria-labelledby="tab-{{ $categoryId }}" 
-                  tabindex="0">
-                
+              <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="content-{{ $categoryId }}" role="tabpanel" aria-labelledby="tab-{{ $categoryId }}" tabindex="0">
                 <div class="row g-12">
                   @foreach ($products as $product)
                       <div class="col-xxl-2 col-xl-3 col-lg-4 col-xs-6" data-aos="fade-up" data-aos-duration="200">
                         <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
                           <a href="{{ $product->slug }}" class="flex-center rounded-8 bg-gray-50 position-relative">
                             <img src="{{ asset('assets/client/images/thumbs/' . $product->hinhanhsanpham->first()->hinhanh) }}" 
-                                 onerror="this.src='{{ asset('assets/client') }}/images/placeholder.webp';" 
                                  alt="{{ $product->ten }}" 
                                  class="w-100 rounded-top-2" />
                           </a>
@@ -541,7 +514,14 @@
                       </div>
                   @endforeach
                 </div>
+                <div class="mx-auto w-100 text-center">
+                  <a href="{{ $danhsachdmhangdau->firstWhere('id', $categoryId)->slug }}"
+                    class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 mt-40">
+                    Xem thêm sản phẩm
+                  </a>
+                </div>
               </div>
+              
             @endforeach
           @else
               <div class="w-100 text-center py-10">
@@ -549,12 +529,7 @@
               </div>
           @endif
           
-          <div class="mx-auto w-100 text-center">
-            <a href="shop.html"
-              class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 mt-40">
-              Xem thêm sản phẩm
-            </a>
-          </div>
+          
         </div>
       </div>
     </div>
@@ -618,7 +593,7 @@
   </section>
   <!-- ========================= THƯƠNG HIỆU HÀNG ĐẦU End ================================ -->
 
-  <section class="featured-products overflow-hidden py-10">
+  <section class="featured-products overflow-hidden py-10 fix-scale-30">
     <div class="container container-lg px-0">
       <div class="row g-4 flex-wrap-reverse">
         <div class="col-xxl-9">
@@ -657,7 +632,7 @@
                           <div>
                             <div class="flex-align gap-4 mb-5">
                               <span class="text-main-two-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                              <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 180px; display: inline-block;">Trung Tâm Bán Hàng Siêu Thị Vina</span>
+                              <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 200px; display: inline-block;">{{ $sp->thuonghieu->ten }}</span>
                             </div>
                             <h6 class="title text-lg fw-semibold mb-5">
                             <a href="{{ $sp->slug }}" class="link text-line-2" title="iPhone 15 Pro Warp Charge 30W Power Adapter">
@@ -725,7 +700,7 @@
           Áp dụng mã giảm giá ưu đãi cho
           <a href="#"
             class="fw-bold text-decoration-underline text-main-600 hover-text-decoration-none hover-text-primary-600">
-            mọi thành viên</a>
+            thành viên mới</a>
         </p>
         <div class="position-relative">
           <button
@@ -751,59 +726,14 @@
       <div class="">
         <div class="section-heading mb-24">
           <div class="flex-between flex-wrap gap-8">
-            <h6 class="mb-0 wow fadeInLeft"><i class="ph-bold ph-hand-withdraw text-main-600"></i> Có thể bạn quan tâm
+            <h6 class="mb-0 wow fadeInLeft"><i class="ph-bold ph-hand-withdraw text-main-600"></i> Có thể bạn yêu thích
             </h6>
-            <!-- <ul class="nav common-tab style-two nav-pills wow fadeInRight" id="pills-tab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link fw-medium text-sm hover-border-main-600 active" id="pills-all-tab"
-                  data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-controls="pills-all"
-                  aria-selected="true">
-                  All
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link fw-medium text-sm hover-border-main-600" id="pills-mobile-tab"
-                  data-bs-toggle="pill" data-bs-target="#pills-mobile" type="button" role="tab"
-                  aria-controls="pills-mobile" aria-selected="false">
-                  Mobile
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link fw-medium text-sm hover-border-main-600" id="pills-headphone-tab"
-                  data-bs-toggle="pill" data-bs-target="#pills-headphone" type="button" role="tab"
-                  aria-controls="pills-headphone" aria-selected="false">
-                  Headphone
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link fw-medium text-sm hover-border-main-600" id="pills-usb-tab"
-                  data-bs-toggle="pill" data-bs-target="#pills-usb" type="button" role="tab" aria-controls="pills-usb"
-                  aria-selected="false">
-                  USB
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link fw-medium text-sm hover-border-main-600" id="pills-camera-tab"
-                  data-bs-toggle="pill" data-bs-target="#pills-camera" type="button" role="tab"
-                  aria-controls="pills-camera" aria-selected="false">
-                  Camera
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link fw-medium text-sm hover-border-main-600" id="pills-laptop-tab"
-                  data-bs-toggle="pill" data-bs-target="#pills-laptop" type="button" role="tab"
-                  aria-controls="pills-laptop" aria-selected="false">
-                  Laptop
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link fw-medium text-sm hover-border-main-600" id="pills-accessories-tab"
-                  data-bs-toggle="pill" data-bs-target="#pills-accessories" type="button" role="tab"
-                  aria-controls="pills-accessories" aria-selected="false">
-                  Accessories
-                </button>
-              </li>
-            </ul> -->
+            
+            <div class="flex-align gap-16 wow fadeInRight">
+              <a href="shop.html" class="text-sm fw-semibold text-gray-700 hover-text-main-600 hover-text-decoration-underline">
+                Xem tất cả
+              </a>
+              </div>
           </div>
         </div>
 
@@ -811,398 +741,50 @@
           <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab"
             tabindex="0">
             <div class="row g-12">
-              <div class="col-xxl-3 col-xl-3 col-lg-4 col-sm-6 py-10" data-aos="fade-up" data-aos-duration="200">
-                <div
-                  class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
+              <div class="col-xxl-2 col-xl-3 col-lg-4 col-xs-6" data-aos="fade-up" data-aos-duration="200">
+                        <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
+                          <a href="#" class="flex-center rounded-8 bg-gray-50 position-relative">
+                            <img src="{{ asset('assets/client/images/thumbs/banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra-1.webp') }}" 
+                                 alt="Tên sản phẩm" 
+                                 class="w-100 rounded-top-2" />
+                          </a>
+                          <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                            <div>
+                              <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                              <a href="#" class="link text-line-2" tabindex="0">Tên</a>
+                              </h6>
+                              <div class="flex-align justify-content-between mt-2">
+                                <div class="flex-align gap-6">
+                                  <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
+                                  <span class="text-xs fw-medium text-gray-500">4.8 
+                                    <i class="ph-fill ph-star text-warning-600"></i></span>
+                                </div>
+                                <div class="flex-align gap-4">
+                                  <span class="text-xs fw-medium text-gray-500">Đã bán</span>
+                                  <!-- Hiển thị tổng lượt bán từ Controller -->
+                                  <span class="text-xs fw-medium text-gray-500">21</span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="product-card__price mt-5">
+                              
+                                <div class="flex-align gap-4 text-main-two-600">
+                                  <i class="ph-fill ph-seal-percent text-sm"></i> -21% 
+                                  <span class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
+                                   20 đ
+                                  </span>
+                                </div>
+                              
 
-                  <a href="product-details-two.html"
-                    class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                    <span
-                      class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Top
-                      deal</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/product-two-img1.png" alt="" class="w-auto max-w-unset" />
-                  </a>
-                  <div class="product-card__content w-100 mt-5">
-                    <!--  -->
-                    <h6 class="title text-lg fw-semibold my-10">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Instax Mini 12 Instant
-                        Film Camera - Green</a>
-                    </h6>
+                              <span class="text-heading text-lg fw-semibold">
+                                20 đ
+                              </span>
+                            </div>
 
-                    <div class="flex-align gap-6">
-                      <div class="flex-align gap-2">
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
+                          </div>
+                        </div>
                       </div>
-                      <span class="text-xs fw-medium text-gray-500">4.8</span>
-                      <span class="text-xs fw-medium text-gray-500">(12K)</span>
-                    </div>
-                    <div class="flex-align gap-4 my-5">
-                      <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                      <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                    </div>
-
-                    <div class="product-card__price mt-10">
-                      <div class="flex-align gap-4 text-main-two-600">
-                        <i class="ph-fill ph-seal-percent text-xl"></i> -10% <span
-                          class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
-                          450.000 đ</span>
-                      </div>
-
-                      <span class="text-heading text-lg fw-semibold">300.000 đ
-
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-xxl-3 col-xl-3 col-lg-4 col-sm-6 py-10" data-aos="fade-up" data-aos-duration="200">
-                <div
-                  class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                    <span
-                      class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Top
-                      deal</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/product-two-img1.png" alt="" class="w-auto max-w-unset" />
-                  </a>
-                  <div class="product-card__content w-100 mt-5">
-                    <!--  -->
-                    <h6 class="title text-lg fw-semibold my-10">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Instax Mini 12 Instant
-                        Film Camera - Green</a>
-                    </h6>
-
-                    <div class="flex-align gap-6">
-                      <div class="flex-align gap-2">
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                      </div>
-                      <span class="text-xs fw-medium text-gray-500">4.8</span>
-                      <span class="text-xs fw-medium text-gray-500">(12K)</span>
-                    </div>
-                    <div class="flex-align gap-4 my-5">
-                      <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                      <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                    </div>
-
-                    <div class="product-card__price mt-10">
-                      <div class="flex-align gap-4 text-main-two-600">
-                        <i class="ph-fill ph-seal-percent text-xl"></i> -10% <span
-                          class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
-                          450.000 đ</span>
-                      </div>
-
-                      <span class="text-heading text-lg fw-semibold">300.000 đ
-
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-xxl-3 col-xl-3 col-lg-4 col-sm-6 py-10" data-aos="fade-up" data-aos-duration="200">
-                <div
-                  class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                    <span
-                      class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Top
-                      deal</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/product-two-img1.png" alt="" class="w-auto max-w-unset" />
-                  </a>
-                  <div class="product-card__content w-100 mt-5">
-                    <!--  -->
-                    <h6 class="title text-lg fw-semibold my-10">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Instax Mini 12 Instant
-                        Film Camera - Green</a>
-                    </h6>
-
-                    <div class="flex-align gap-6">
-                      <div class="flex-align gap-2">
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                      </div>
-                      <span class="text-xs fw-medium text-gray-500">4.8</span>
-                      <span class="text-xs fw-medium text-gray-500">(12K)</span>
-                    </div>
-                    <div class="flex-align gap-4 my-5">
-                      <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                      <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                    </div>
-
-                    <div class="product-card__price mt-10">
-                      <div class="flex-align gap-4 text-main-two-600">
-                        <i class="ph-fill ph-seal-percent text-xl"></i> -10% <span
-                          class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
-                          450.000 đ</span>
-                      </div>
-
-                      <span class="text-heading text-lg fw-semibold">300.000 đ
-
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-xxl-3 col-xl-3 col-lg-4 col-sm-6 py-10" data-aos="fade-up" data-aos-duration="200">
-                <div
-                  class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                    <span
-                      class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Top
-                      deal</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/product-two-img1.png" alt="" class="w-auto max-w-unset" />
-                  </a>
-                  <div class="product-card__content w-100 mt-5">
-                    <!--  -->
-                    <h6 class="title text-lg fw-semibold my-10">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Instax Mini 12 Instant
-                        Film Camera - Green</a>
-                    </h6>
-
-                    <div class="flex-align gap-6">
-                      <div class="flex-align gap-2">
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                      </div>
-                      <span class="text-xs fw-medium text-gray-500">4.8</span>
-                      <span class="text-xs fw-medium text-gray-500">(12K)</span>
-                    </div>
-                    <div class="flex-align gap-4 my-5">
-                      <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                      <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                    </div>
-
-                    <div class="product-card__price mt-10">
-                      <div class="flex-align gap-4 text-main-two-600">
-                        <i class="ph-fill ph-seal-percent text-xl"></i> -10% <span
-                          class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
-                          450.000 đ</span>
-                      </div>
-
-                      <span class="text-heading text-lg fw-semibold">300.000 đ
-
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-xxl-3 col-xl-3 col-lg-4 col-sm-6 py-10" data-aos="fade-up" data-aos-duration="200">
-                <div
-                  class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                    <span
-                      class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Top
-                      deal</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/product-two-img1.png" alt="" class="w-auto max-w-unset" />
-                  </a>
-                  <div class="product-card__content w-100 mt-5">
-                    <!--  -->
-                    <h6 class="title text-lg fw-semibold my-10">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Instax Mini 12 Instant
-                        Film Camera - Green</a>
-                    </h6>
-
-                    <div class="flex-align gap-6">
-                      <div class="flex-align gap-2">
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                      </div>
-                      <span class="text-xs fw-medium text-gray-500">4.8</span>
-                      <span class="text-xs fw-medium text-gray-500">(12K)</span>
-                    </div>
-                    <div class="flex-align gap-4 my-5">
-                      <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                      <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                    </div>
-
-                    <div class="product-card__price mt-10">
-                      <div class="flex-align gap-4 text-main-two-600">
-                        <i class="ph-fill ph-seal-percent text-xl"></i> -10% <span
-                          class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
-                          450.000 đ</span>
-                      </div>
-
-                      <span class="text-heading text-lg fw-semibold">300.000 đ
-
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-xxl-3 col-xl-3 col-lg-4 col-sm-6 py-10" data-aos="fade-up" data-aos-duration="200">
-                <div
-                  class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                    <span
-                      class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Top
-                      deal</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/product-two-img1.png" alt="" class="w-auto max-w-unset" />
-                  </a>
-                  <div class="product-card__content w-100 mt-5">
-                    <!--  -->
-                    <h6 class="title text-lg fw-semibold my-10">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Instax Mini 12 Instant
-                        Film Camera - Green</a>
-                    </h6>
-
-                    <div class="flex-align gap-6">
-                      <div class="flex-align gap-2">
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                      </div>
-                      <span class="text-xs fw-medium text-gray-500">4.8</span>
-                      <span class="text-xs fw-medium text-gray-500">(12K)</span>
-                    </div>
-                    <div class="flex-align gap-4 my-5">
-                      <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                      <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                    </div>
-
-                    <div class="product-card__price mt-10">
-                      <div class="flex-align gap-4 text-main-two-600">
-                        <i class="ph-fill ph-seal-percent text-xl"></i> -10% <span
-                          class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
-                          450.000 đ</span>
-                      </div>
-
-                      <span class="text-heading text-lg fw-semibold">300.000 đ
-
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-xxl-3 col-xl-3 col-lg-4 col-sm-6 py-10" data-aos="fade-up" data-aos-duration="200">
-                <div
-                  class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                    <span
-                      class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Top
-                      deal</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/product-two-img1.png" alt="" class="w-auto max-w-unset" />
-                  </a>
-                  <div class="product-card__content w-100 mt-5">
-                    <!--  -->
-                    <h6 class="title text-lg fw-semibold my-10">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Instax Mini 12 Instant
-                        Film Camera - Green</a>
-                    </h6>
-
-                    <div class="flex-align gap-6">
-                      <div class="flex-align gap-2">
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                      </div>
-                      <span class="text-xs fw-medium text-gray-500">4.8</span>
-                      <span class="text-xs fw-medium text-gray-500">(12K)</span>
-                    </div>
-                    <div class="flex-align gap-4 my-5">
-                      <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                      <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                    </div>
-
-                    <div class="product-card__price mt-10">
-                      <div class="flex-align gap-4 text-main-two-600">
-                        <i class="ph-fill ph-seal-percent text-xl"></i> -10% <span
-                          class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
-                          450.000 đ</span>
-                      </div>
-
-                      <span class="text-heading text-lg fw-semibold">300.000 đ
-
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-xxl-3 col-xl-3 col-lg-4 col-sm-6 py-10" data-aos="fade-up" data-aos-duration="200">
-                <div
-                  class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-
-                  <a href="product-details-two.html"
-                    class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                    <span
-                      class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Top
-                      deal</span>
-                    <img src="{{asset('assets/client')}}/images/thumbs/product-two-img1.png" alt="" class="w-auto max-w-unset" />
-                  </a>
-                  <div class="product-card__content w-100 mt-5">
-                    <!--  -->
-                    <h6 class="title text-lg fw-semibold my-10">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">Instax Mini 12 Instant
-                        Film Camera - Green</a>
-                    </h6>
-
-                    <div class="flex-align gap-6">
-                      <div class="flex-align gap-2">
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                        <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                      </div>
-                      <span class="text-xs fw-medium text-gray-500">4.8</span>
-                      <span class="text-xs fw-medium text-gray-500">(12K)</span>
-                    </div>
-                    <div class="flex-align gap-4 my-5">
-                      <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                      <span class="text-gray-500 text-xs">Siêu thị Vina</span>
-                    </div>
-
-                    <div class="product-card__price mt-10">
-                      <div class="flex-align gap-4 text-main-two-600">
-                        <i class="ph-fill ph-seal-percent text-xl"></i> -10% <span
-                          class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
-                          450.000 đ</span>
-                      </div>
-
-                      <span class="text-heading text-lg fw-semibold">300.000 đ
-
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200">

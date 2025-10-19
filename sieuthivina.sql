@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 6.0.0-dev+20251008.967007883e
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 18, 2025 at 03:40 PM
+-- Generation Time: Oct 19, 2025 at 07:11 AM
 -- Server version: 8.4.3
--- PHP Version: 8.3.16
+-- PHP Version: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -66,15 +66,22 @@ INSERT INTO `bienthe` (`id`, `id_loaibienthe`, `id_sanpham`, `giagoc`, `soluong`
 (3, 1, 3, 466560, 10, 0, 23, 'Còn hàng', NULL),
 (4, 1, 4, 260000, 10, 0, 0, 'Còn hàng', NULL),
 (5, 2, 5, 512000, 10, 0, 0, 'Còn hàng', NULL),
-(6, 1, 6, 270000, 2, 0, 0, 'Còn hàng', NULL),
+(6, 1, 6, 270000, 2, 0, 0, 'Sắp hết hàng', NULL),
 (7, 2, 9, 360000, 253, 0, 28, 'Còn hàng', NULL),
-(8, 1, 9, 260000, 5, 0, 2, 'Còn hàng', NULL),
+(8, 1, 9, 260000, 5, 0, 2, 'Sắp hết hàng', NULL),
 (9, 1, 10, 795000, 200, 0, 10, 'Còn hàng', NULL),
 (10, 2, 11, 950000, 27, 0, 124, 'Còn hàng', NULL),
 (11, 1, 11, 500000, 5, 0, 10, 'Sắp hết hàng', NULL),
 (12, 1, 12, 330000, 63, 0, 12, 'Còn hàng', NULL),
 (13, 2, 12, 330000, 92, 0, 72, 'Còn hàng', NULL),
-(14, 3, 12, 512000, 12, 0, 0, 'Còn hàng', NULL);
+(14, 3, 12, 512000, 12, 0, 0, 'Còn hàng', NULL),
+(15, 4, 13, 90000, 240, 7, 142, 'Còn hàng', NULL),
+(16, 2, 14, 369000, 75, 20, 472, 'Còn hàng', NULL),
+(17, 5, 15, 282000, 25, 0, 782, 'Còn hàng', NULL),
+(18, 6, 15, 282000, 23, 0, 0, 'Còn hàng', NULL),
+(19, 3, 16, 249000, 2, 0, 187, 'Sắp hết hàng', NULL),
+(20, 3, 17, 220800, 12, 0, 17, 'Còn hàng', NULL),
+(21, 8, 18, 69000, 76, 5, 76, 'Còn hàng', NULL);
 
 -- --------------------------------------------------------
 
@@ -140,8 +147,8 @@ CREATE TABLE `danhmuc` (
   `ten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'danhmuc.jpg',
-  `parent` enum('Cha','Con') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Cha',
-  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị'
+  `parent` enum('Cha','Con') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Cha',
+  `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -159,7 +166,7 @@ INSERT INTO `danhmuc` (`id`, `ten`, `slug`, `logo`, `parent`, `trangthai`) VALUE
 (8, 'Nội thất - Trang trí', 'noi-that-trang-tri', 'noi-that-trang-tri.svg', 'Cha', 'Hiển thị'),
 (9, 'Mẹ & bé', 'me-va-be', 'me-va-be.svg', 'Cha', 'Hiển thị'),
 (10, 'Thời trang', 'thoi-trang', 'thoi-trang.svg', 'Cha', 'Hiển thị'),
-(11, 'Thực phẩm - đồ ăn', 'thuc-pham-do-an', 'thuc-pham-do-an.svg', 'Cha', 'Hiển thị');
+(11, 'Thực phẩm - đồ ăn', 'thuc-pham-do-an', 'thuc-pham-do-an.svg', 'Con', 'Hiển thị');
 
 -- --------------------------------------------------------
 
@@ -186,11 +193,19 @@ INSERT INTO `danhmuc_sanpham` (`id`, `id_danhmuc`, `id_sanpham`) VALUES
 (6, 2, 9),
 (7, 3, 9),
 (8, 1, 9),
-(9, 4, 6),
+(9, 7, 6),
 (10, 1, 10),
 (11, 4, 10),
 (12, 4, 11),
-(13, 4, 12);
+(13, 4, 12),
+(14, 7, 15),
+(15, 7, 14),
+(16, 7, 13),
+(17, 11, 14),
+(18, 11, 15),
+(23, 7, 16),
+(24, 7, 17),
+(25, 7, 18);
 
 -- --------------------------------------------------------
 
@@ -302,7 +317,27 @@ INSERT INTO `hinhanh_sanpham` (`id`, `id_sanpham`, `hinhanh`, `trangthai`, `dele
 (37, 12, 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum-1.webp', 'Hiển thị', NULL),
 (38, 12, 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum-2.webp', 'Hiển thị', NULL),
 (39, 12, 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum-3.webp', 'Hiển thị', NULL),
-(40, 12, 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum-4.webp', 'Hiển thị', NULL);
+(40, 12, 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum-4.webp', 'Hiển thị', NULL),
+(41, 13, 'nuoc-rua-bat-bio-formula-bo-va-lo-hoi-tui-500ml-1.webp', 'Hiển thị', NULL),
+(42, 13, 'nuoc-rua-bat-bio-formula-bo-va-lo-hoi-tui-500ml-2.webp', 'Hiển thị', NULL),
+(43, 13, 'nuoc-rua-bat-bio-formula-bo-va-lo-hoi-tui-500ml-3.webp', 'Hiển thị', NULL),
+(44, 14, 'banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra-1.webp', 'Hiển thị', NULL),
+(45, 14, 'banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra-2.webp', 'Hiển thị', NULL),
+(46, 14, 'banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra-3.webp', 'Hiển thị', NULL),
+(47, 14, 'banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra-4.webp', 'Hiển thị', NULL),
+(48, 14, 'banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra-5.webp', 'Hiển thị', NULL),
+(49, 15, 'hat-dieu-rang-muoi-loai-1-con-vo-lua-happy-nuts-500g-1.webp', 'Hiển thị', NULL),
+(50, 15, 'hat-dieu-rang-muoi-loai-1-con-vo-lua-happy-nuts-500g-2.webp', 'Hiển thị', NULL),
+(51, 15, 'hat-dieu-rang-muoi-loai-1-con-vo-lua-happy-nuts-500g-3.webp', 'Hiển thị', NULL),
+(52, 16, 'keo-qua-sam-khong-duong-free-suger-ginseng-berry-s-candy-200g-1.webp', 'Hiển thị', NULL),
+(53, 16, 'keo-qua-sam-khong-duong-free-suger-ginseng-berry-s-candy-200g-2.webp', 'Hiển thị', NULL),
+(54, 16, 'keo-qua-sam-khong-duong-free-suger-ginseng-berry-s-candy-200g-3.webp', 'Hiển thị', NULL),
+(55, 16, 'keo-qua-sam-khong-duong-free-suger-ginseng-berry-s-candy-200g-4.webp', 'Hiển thị', NULL),
+(56, 17, 'bot-matcha-gao-rang-nhat-ban-onelife-goi-100g-1.webp', 'Hiển thị', NULL),
+(57, 17, 'bot-matcha-gao-rang-nhat-ban-onelife-goi-100g-2.webp', 'Hiển thị', NULL),
+(58, 17, 'bot-matcha-gao-rang-nhat-ban-onelife-goi-100g-3.webp', 'Hiển thị', NULL),
+(59, 18, 'nuoc-rua-chen-sa-chanh-come-on-lam-sach-bat-dia-an-toan-da-tay-1-lit-1.webp', 'Hiển thị', NULL),
+(60, 18, 'nuoc-rua-chen-sa-chanh-come-on-lam-sach-bat-dia-an-toan-da-tay-1-lit-2.webp', 'Hiển thị', NULL);
 
 -- --------------------------------------------------------
 
@@ -323,7 +358,12 @@ CREATE TABLE `loaibienthe` (
 INSERT INTO `loaibienthe` (`id`, `ten`, `trangthai`) VALUES
 (1, 'Lọ', 'Hiển thị'),
 (2, 'Hộp', 'Hiển thị'),
-(3, 'Gói', 'Hiển thị');
+(3, 'Gói', 'Hiển thị'),
+(4, 'Túi 500ml', 'Hiển thị'),
+(5, 'Hộp (Vỏ lụa) 500g', 'Hiển thị'),
+(6, 'Hộp (đã lột vỏ) 500g', 'Hiển thị'),
+(7, 'Chai', 'Hiển thị'),
+(8, 'Bình xịt', 'Hiển thị');
 
 -- --------------------------------------------------------
 
@@ -426,10 +466,10 @@ CREATE TABLE `quatang_sukien` (
   `id` int NOT NULL,
   `id_bienthe` int NOT NULL,
   `id_chuongtrinh` int NOT NULL,
-  `dieukien` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dieukien` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tieude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `thongtin` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hinhanh` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hinhanh` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `luotxem` int NOT NULL DEFAULT '0',
   `ngaybatdau` date DEFAULT NULL,
   `ngayketthuc` date DEFAULT NULL,
@@ -479,7 +519,13 @@ INSERT INTO `sanpham` (`id`, `id_thuonghieu`, `ten`, `slug`, `mota`, `xuatxu`, `
 (9, 1, 'Thực phẩm bảo vệ sức khỏe: Midu MenaQ7 180mcg', 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg', 'Midu MenaQ7 180mcg bổ sung canxi, Vitamin D3, Vitamin K2 dạng MenaQ7 và Arginine phù hợp với tất cả độ tuổi từ 1 đến 100 tuổi. Đặc biệt giúp phát triển chiều cao cho trẻ em 1-15 tuổi; mẹ bầu bổ sung canxi trong giai đoạn thai kì không gây tiểu đường, không gây táo bón và giúp con cao ngay từ trong bụng mẹ.', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 23, NULL),
 (10, 3, 'Collagen thủy phân hỗ trợ Da Móng Tóc Acai Labs Marine Collagen Beauty Australia 90v', 'collagen-thuy-phan-ho-tro-da-mong-toc-acai-labs-marine-collagen-beauty-australia-90v', 'Acacia Labs, với trụ sở chính tại Sydney, Australia, là thương hiệu hàng đầu trong lĩnh vực sản xuất thực phẩm chức năng, vitamin và khoáng chất. Chúng tôi tập trung vào việc nghiên cứu và phát triển các sản phẩm chăm sóc sức khỏe và sắc đẹp, mang đến cho khách hàng những giải pháp toàn diện cho một cuộc sống khỏe mạnh, tràn đầy năng lượng và hạnh phúc.\r\n\r\nKhởi nguồn từ vẻ đẹp thật sự đến từ bên trong, phòng thí nghiệm Acaci Labs với đội ngũ các chuyên gia hàng đầu thế giới đã không ngừng nghiên cứu tìm ra công thức và sản phẩm chất lượng tốt nhất để mang đến hạnh phúc lâu dài cho người sử dụng.', 'Australia', 'Australia', 'Công khai', 0, 67, NULL),
 (11, 1, 'Viên uống Bishin Tripeptide Collagen Nhật Bản 60v', 'vien-uong-bishin-tripeptide-collagen-nhat-ban-60v', 'BISHIN chứa tinh chất Collagen tripeptide giúp tăng cường khả năng hấp thụ cho cơ thể, cấu trúc da, giúp da giữ được sự săn chắc, đàn hồi, tươi trẻ, hạn chế được các nếp nhăn (dấu hiệu của sự lão hóa) xuất hiện.', 'Nhật Bản', 'Phân phối tại Việt Nam', 'Công khai', 0, 2, NULL),
-(12, 2, 'Dưỡng mi tế bào gốc C’Choi - Bio Placenta Lash Serum', 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum', 'DƯỠNG MI TẾ BÀO GỐC C’CHOI Bio-Placenta Lash Serum', 'Việt Nam', 'Việt Nam', 'Công khai', 30, 23, NULL);
+(12, 2, 'Dưỡng mi tế bào gốc C’Choi - Bio Placenta Lash Serum', 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum', 'DƯỠNG MI TẾ BÀO GỐC C’CHOI Bio-Placenta Lash Serum', 'Việt Nam', 'Việt Nam', 'Công khai', 30, 23, NULL),
+(13, 1, 'Nước rửa bát Bio Formula - Bơ và Lô Hội (Túi 500ml)', 'nuoc-rua-bat-bio-formula-bo-va-lo-hoi-tui-500ml', 'Chiết xuất lô hội giúp làm dịu da tay khi tiếp xúc với chất tẩy rửa, đặc biệt dịu nhẹ với những người có da nhạy cảm. Dầu quả bơ dưỡng ẩm, bảo vệ da tay nhờ các acid béo thiết yếu trong dầu bơ. Chiết xuất rễ cây lá giang hỗ trợ làm sạch an toàn, giảm vi khuẩn bám trên bề mặt bát đĩa.', 'Ukraine', 'Ukraine', 'Công khai', 0, 1200, NULL),
+(14, 1, 'Bánh Trung Thu 2025 - Thu An Nhiên (bánh chay hộp 2 bánh 1 trà)', 'banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra', 'Tết Trung Thu - Tết Đoàn Viên là dịp lý tưởng để gửi tặng những món quà ý nghĩa cho bạn bè, gia đình hay đối tác. Không chỉ đơn thuần là một nét đẹp văn hóa, quà tặng Trung Thu còn là biểu hiện của tấm chân tình và lời chúc mọi điều viên mãn. \r\n\r\nThấu hiểu và trân trọng giá trị truyền thống, Nonglamfood gửi đến quý khách hàng bộ quà tặng Trung Thu cao cấp “Thu An Nhiên”. Bánh được tinh tuyển từ dược liệu thượng hạng, làm hoàn toàn thủ công bởi các nghệ nhân có hơn 30 năm kinh nghiệm.\r\n\r\nNonglamfood ra mắt set “Thu An Nhiên” với hai loại bánh trung thu chay đặc biệt, được làm từ các nguyên liệu thượng hạng như blueberry, đông trùng hạ thảo kết hợp với các loại hạt dinh dưỡng như hạt macca, hạt sen,... hứa hẹn không chỉ mang đến những trải nghiệm tuyệt vời khi thưởng thức mà còn mang lại những lợi ích tuyệt vời về sức khỏe.\r\n\r\nTrung thu này, hãy để Nonglamfood đồng hành cùng bạn trên hành trình gửi trao “mỹ vị” mùa trăng đến những người yêu thương của mình nhé! ', 'Việt Nam', 'Việt Nam', 'Công khai', 70, 30, NULL),
+(15, 1, 'Hạt điều rang muối loại 1 (còn vỏ lụa) Happy Nuts 500g', 'hat-dieu-rang-muoi-loai-1-con-vo-lua-happy-nuts-500g', 'Hạt điều rang muối Happy Nuts là một trong những loại hạt có hàm lượng carbohydrate, chất xơ thấp, nhưng chúng lại chứa nhiều vitamin, khoáng chất và chất chống oxy hóa. Chúng bao gồm vitamin E, K và B6, cùng với các khoáng chất như đồng, phốt pho, kẽm, magiê, sắt và selen.', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 37345, NULL),
+(16, 1, 'Kẹo Quả Sâm không đường Free Suger Ginseng Berry S candy 200g', 'keo-qua-sam-khong-duong-free-suger-ginseng-berry-s-candy-200g', 'Giảm đau họng. (không nên ngậm quá 3 viên/ ngày)\r\n\r\nTăng sinh Collagen.\r\n\r\nCân bằng huyết áp, ổn định thần kinh (khi nhức đầu hay mệt mỏi hãy dùng 1 viên và nghỉ ngơi sau 30 phút sẽ thấy giảm các triệu chứng khó chịu).\r\n\r\nGiảm triệu chứng chóng mặt, buồn nôn do say tàu xe\r\n\r\nBổ sung năng lượng nhanh, giảm stress, lo lắng, nhức đầu, chóng mặt.\r\n\r\nHạn chế cơn thèm ngọt, cung cấp năng lượng cho người bị tiểu đường', 'Hàn Quốc', 'KORYO CONFECTIONERY CO., LTD', 'Công khai', 25, 12, NULL),
+(17, 1, 'Bột Matcha Gạo Rang Nhật Bản ONELIFE (Gói 100g)', 'bot-matcha-gao-rang-nhat-ban-onelife-goi-100g', 'Bột Matcha Gạo Rang Nhật Bản Onelife Onlife (Gói 100g) là loại bột trà cao cấp, nhuyễn mịn, được kết hợp giữa bột trà xanh Matcha Nhật Bản và chiết xuất gạo Nhật Niigata Koshihikari rang chín theo tỉ lệ đặc biệt, tạo nên vị trà ngọt hậu tự nhiên, không thêm đường hay bất kỳ thành phần hương liệu nào khác.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 115, NULL),
+(18, 1, 'Nước rửa chén sả chanh COME ON làm sạch bát đĩa, an toàn da tay 1 lít', 'nuoc-rua-chen-sa-chanh-come-on-lam-sach-bat-dia-an-toan-da-tay-1-lit', 'Tên sản phẩm: Nước rửa chén sả chanh COME ON làm sạch bát đĩa, an toàn da tay 1 lít\r\nDung tích: 1 lít\r\nThương hiệu: COME ON', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 67, NULL);
 
 -- --------------------------------------------------------
 
@@ -729,7 +775,7 @@ ALTER TABLE `yeuthich`
 -- AUTO_INCREMENT for table `bienthe`
 --
 ALTER TABLE `bienthe`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `chuongtrinh`
@@ -747,19 +793,19 @@ ALTER TABLE `danhmuc`
 -- AUTO_INCREMENT for table `danhmuc_sanpham`
 --
 ALTER TABLE `danhmuc_sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `hinhanh_sanpham`
 --
 ALTER TABLE `hinhanh_sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `loaibienthe`
 --
 ALTER TABLE `loaibienthe`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `nguoidung`
@@ -783,7 +829,7 @@ ALTER TABLE `quatang_sukien`
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `thuonghieu`
