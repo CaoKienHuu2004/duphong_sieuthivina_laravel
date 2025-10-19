@@ -28,9 +28,9 @@
 
 <body>
   <!--==================== Preloader Start ====================-->
-  <div class="preloader">
+  {{-- <div class="preloader">
     <img src="{{asset('assets/client')}}/images/icon/preloader.gif" alt="" />
-  </div>
+  </div> --}}
   <!--==================== Preloader End ====================-->
 
   <!--==================== Overlay Start ====================-->
@@ -86,14 +86,14 @@
 
 
           </li>
-          <li class="nav-menu__item">
+          {{-- <li class="nav-menu__item">
             <a href="#" class="nav-menu__link text-heading-two hover-text-main-600"><i
                 class="ph-bold ph-storefront text-main-600"></i> Truy cập bán hàng</a>
           </li>
           <li class="nav-menu__item">
             <a href="#" class="nav-menu__link text-heading-two hover-text-main-600"><i
                 class="ph-bold ph-handshake text-main-600"></i> Đăng ký đối tác</a>
-          </li>
+          </li> --}}
           <li class="nav-menu__item">
             <a href="#" class="nav-menu__link text-heading-two hover-text-main-600"><i
                 class="ph-bold ph-info text-main-600"></i> Giới thiệu về Siêu Thị Vina</a>
@@ -190,34 +190,6 @@
           </li>
 
         </ul>
-        <!-- <div class="text-white text-sm d-flex align-items-center gap-4">
-                <img src="{{asset('assets/client')}}/images/icon/track-icon.png" alt="Track Icon">
-                <span class="">We deliver to you every day from 7.00 to 23.00</span>
-            </div> -->
-
-        <!-- <div class="d-flex align-items-center gap-6 flex-wrap">
-                <span class="text-md fw-medium text-white">Until the end of the sale:</span>
-                <div class="d-flex align-items-center gap-10" id="countdown25">
-                    <div class="d-flex align-items-center gap-4 text-white">
-                        <strong class="text-md fw-semibold days">35</strong> 
-                        <span class="text-xs">Days</span>
-                    </div>
-                    <div class="d-flex align-items-center gap-4 text-white">
-                        <strong class="text-md fw-semibold hours">14</strong> 
-                        <span class="text-xs">Hours</span>
-                    </div>
-                    <div class="d-flex align-items-center gap-4 text-white">
-                        <strong class="text-md fw-semibold minutes">54</strong> 
-                        <span class="text-xs">Minutes</span>
-                    </div>
-                    <div class="d-flex align-items-center gap-4 text-white">
-                        <strong class="text-md fw-semibold seconds">28 </strong> 
-                        <span class="text-xs">Sec.</span>
-                    </div>
-                </div>
-            </div> -->
-
-
         <ul class="header-top__right flex-align justify-content-end flex-wrap gap-16">
 
           <li class="flex-align">
@@ -239,13 +211,17 @@
       <div class="flex-between flex-wrap gap-8">
 
         <ul class="header-top__right flex-align flex-wrap gap-16">
-          <li class="flex-align">
+          {{-- <li class="flex-align">
             <a href="" class="text-white-6 text-sm hover-text-white text-center"><i
                 class="ph-bold ph-storefront text-white-6"></i> Truy cập bán hàng</a>
           </li>
           <li class="flex-align">
             <a href="" class="text-white-6 text-sm hover-text-white"><i class="ph-bold ph-handshake text-white-6"></i>
               Đăng ký đối tác</a>
+          </li> --}}
+          <li class="flex-align">
+            <a href="" class="text-white-6 text-sm hover-text-white"><i class="ph-bold ph-user text-white-6"></i>
+              Đăng ký thành viên</a>
           </li>
           <li class="flex-align">
             <a href="" class="text-white-6 text-sm hover-text-white pe-1"><i class="ph-bold ph-info text-white-6"></i>
@@ -298,13 +274,16 @@
               Tra cứu đơn hàng</a>
           </li>
 
-          <li class="flex-align">
-            <a href="wishlist.html" class="text-white-6 text-sm hover-text-white">
-              <i class="ph-bold ph-shopping-cart"></i>
-              Giỏ hàng
-              <span class="badge bg-success-600 rounded-circle">6</span>
-            </a>
-          </li>
+          @auth
+            <li class="flex-align">
+              <a href="wishlist.html" class="text-white-6 text-sm hover-text-white">
+                <i class="ph-bold ph-shopping-cart"></i>
+                Giỏ hàng
+                <span class="badge bg-success-600 rounded-circle">6</span>
+              </a>
+            </li>
+          @endauth
+          
         </ul>
       </div>
     </div>
@@ -422,21 +401,20 @@
   
 
   <!-- ==================== Footer Two Start Here ==================== -->
-  <footer class="footer py-10 overflow-hidden">
+  <footer class="footer pt-30 overflow-hidden border-top fix-scale-20">
     <div class="container container-lg">
       <div class="footer-item-two-wrapper d-flex align-items-start flex-wrap">
         <div class="footer-item max-w-275" data-aos="fade-up" data-aos-duration="200">
           <div class="footer-item__logo">
             <a href="{{ route('trang-chu') }}"> <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt=""></a>
           </div>
-          <p class="mb-24">Trang thương mại điện tử Siêu Thị Vina cung cấp các sản phẩm đa dạng đến với khách hàng và
-            đăng ký đối tác với các cửa hàng.
+          <p class="mb-24">Trang thương mại điện tử Siêu Thị Vina cung cấp các sản phẩm đa dạng đến với khách hàng
           </p>
           <div class="flex-align gap-16 mb-16">
             <span
               class="w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0"><i
                 class="ph-fill ph-phone-call"></i></span>
-            <a href="tel:++884911975996" class="text-md text-gray-900 hover-text-main-600">+884 0911 975 996</a>
+            <a href="tel:++886911975996" class="text-md text-gray-900 hover-text-main-600">+886 0911 975 996</a>
           </div>
           <div class="flex-align gap-16 mb-16">
             <span
@@ -524,7 +502,7 @@
 
           <ul class="flex-align gap-16">
             <li>
-              <a href="https://www.facebook.com"
+              <a href="https://www.facebook.com/sieuthivina"
                 class="w-44 h-44 flex-center bg-main-two-50 text-main-two-600 text-xl rounded-8 hover-bg-main-two-600 hover-text-white">
                 <i class="ph-fill ph-facebook-logo"></i>
               </a>

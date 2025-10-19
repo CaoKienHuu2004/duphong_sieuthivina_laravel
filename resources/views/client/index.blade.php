@@ -468,7 +468,7 @@
               <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="content-{{ $categoryId }}" role="tabpanel" aria-labelledby="tab-{{ $categoryId }}" tabindex="0">
                 <div class="row g-12">
                   @foreach ($products as $product)
-                      <div class="col-xxl-2 col-xl-3 col-lg-4 col-xs-6" data-aos="fade-up" data-aos-duration="200">
+                      <div class="col-xxl-2 col-xl-3 col-lg-4 col-xs-6">
                         <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
                           <a href="{{ $product->slug }}" class="flex-center rounded-8 bg-gray-50 position-relative">
                             <img src="{{ asset('assets/client/images/thumbs/' . $product->hinhanhsanpham->first()->hinhanh) }}" 
@@ -691,7 +691,7 @@
     </div>
   </section>
 
-  <!-- Super Discount Start -->
+  <!-- MÃ GIẢM GIÁ -->
   <div class="">
     <div class="container container-lg px-0">
       <div
@@ -720,20 +720,15 @@
   </div>
   <!-- Super Discount End -->
 
-  <!-- ========================= Trending Products Start ================================ -->
-  <section class="trending-productss pt-60 overflow-hidden">
+  <!-- ========================= HÀNG MỚI CHÀO SÂN ================================ -->
+  <section class="trending-productss pt-16 overflow-hidden fix-scale-100">
     <div class="container container-lg px-0">
       <div class="">
         <div class="section-heading mb-24">
-          <div class="flex-between flex-wrap gap-8">
-            <h6 class="mb-0 wow fadeInLeft"><i class="ph-bold ph-hand-withdraw text-main-600"></i> Có thể bạn yêu thích
+          <div class="flex-between flex-wrap gap-2">
+            <h6 class="mb-0 wow fadeInLeft"><i class="ph-bold ph-hand-waving text-main-600"></i> Hàng mới chào sân
             </h6>
-            
-            <div class="flex-align gap-16 wow fadeInRight">
-              <a href="shop.html" class="text-sm fw-semibold text-gray-700 hover-text-main-600 hover-text-decoration-underline">
-                Xem tất cả
-              </a>
-              </div>
+            <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 80%;"></div>
           </div>
         </div>
 
@@ -741,17 +736,24 @@
           <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab"
             tabindex="0">
             <div class="row g-12">
-              <div class="col-xxl-2 col-xl-3 col-lg-4 col-xs-6" data-aos="fade-up" data-aos-duration="200">
+              @foreach ($hangmoichaosan as $product)
+              <div class="col-xxl-2 col-xl-3 col-lg-4 col-xs-6">
                         <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
                           <a href="#" class="flex-center rounded-8 bg-gray-50 position-relative">
-                            <img src="{{ asset('assets/client/images/thumbs/banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra-1.webp') }}" 
-                                 alt="Tên sản phẩm" 
+                            <img src="{{ asset('assets/client/images/thumbs/' . $product->hinhanhsanpham->first()->hinhanh) }}" 
+                                 alt="{{ $product->ten }}" 
                                  class="w-100 rounded-top-2" />
                           </a>
                           <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
                             <div>
+                              <div class="flex-align justify-content-between mt-5">
+                                <div class="flex-align gap-4 w-100">
+                                  <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
+                                  <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="{{ $product->thuonghieu->ten }}">{{ $product->thuonghieu->ten }}</span>
+                                </div>
+                              </div>
                               <h6 class="title text-lg fw-semibold mt-2 mb-2">
-                              <a href="#" class="link text-line-2" tabindex="0">Tên</a>
+                              <a href="#" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
                               </h6>
                               <div class="flex-align justify-content-between mt-2">
                                 <div class="flex-align gap-6">
@@ -761,30 +763,108 @@
                                 </div>
                                 <div class="flex-align gap-4">
                                   <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                                  <!-- Hiển thị tổng lượt bán từ Controller -->
-                                  <span class="text-xs fw-medium text-gray-500">21</span>
+                                  <span class="text-xs fw-medium text-gray-500">{{ $product->bienthe_sum_luotban }}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="product-card__price mt-5">
+                                @if ($product->giamgia > 0)
+                                  <div class="flex-align gap-4 text-main-two-600">
+                                    <i class="ph-fill ph-seal-percent text-sm"></i> -{{ $product->giamgia }}% 
+                                    <span class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
+                                    {{ number_format($product->bienthe->giagoc, 0, ',', '.')}} đ
+                                    </span>
+                                  </div>
+                                @endif
+                              <span class="text-heading text-lg fw-semibold">
+                                {{ number_format($product->giadagiam, 0, ',', '.')}} đ
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      @endforeach
+            </div>
+          </div>
+          <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200">
+            <a href="#"
+              class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 mt-40">
+              Xem thêm sản phẩm
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ========================= HÀNG MỚI CHÀO SÂN End ================================ -->
+
+  <!-- ========================= CÓ THỂ BẠN YÊU THÍCH ================================ -->
+  <section class="trending-productss pt-16 overflow-hidden fix-scale-80">
+    <div class="container container-lg px-0">
+      <div class="">
+        <div class="section-heading mb-24">
+          <div class="flex-between flex-wrap gap-2">
+            <h6 class="mb-0 wow fadeInLeft"><i class="ph-bold ph-hand-withdraw text-main-600"></i> Được quan tâm nhiều nhất
+            </h6>
+            <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 75%;"></div>
+            
+          </div>
+        </div>
+
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab"
+            tabindex="0">
+            <div class="row g-12">
+              @foreach ($likeProducts as $product)
+              <div class="col-xxl-2 col-xl-3 col-lg-4 col-xs-6">
+                        <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
+                          <a href="#" class="flex-center rounded-8 bg-gray-50 position-relative">
+                            <img src="{{ asset('assets/client/images/thumbs/' . $product->hinhanhsanpham->first()->hinhanh) }}" 
+                                 alt="{{ $product->ten }}" 
+                                 class="w-100 rounded-top-2" />
+                          </a>
+                          <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                            <div>
+                              <div class="flex-align justify-content-between mt-5">
+                                <div class="flex-align gap-4 w-100">
+                                  <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
+                                  <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="{{ $product->thuonghieu->ten }}">{{ $product->thuonghieu->ten }}</span>
+                                </div>
+                              </div>
+                              <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                              <a href="#" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
+                              </h6>
+                              <div class="flex-align justify-content-between mt-2">
+                                <div class="flex-align gap-6">
+                                  <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
+                                  <span class="text-xs fw-medium text-gray-500">4.8 
+                                    <i class="ph-fill ph-star text-warning-600"></i></span>
+                                </div>
+                                <div class="flex-align gap-4">
+                                  <span class="text-xs fw-medium text-gray-500">Đã bán</span>
+                                  <span class="text-xs fw-medium text-gray-500">{{ $product->bienthe_sum_luotban }}</span>
                                 </div>
                               </div>
                             </div>
                             
                             <div class="product-card__price mt-5">
-                              
-                                <div class="flex-align gap-4 text-main-two-600">
-                                  <i class="ph-fill ph-seal-percent text-sm"></i> -21% 
-                                  <span class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
-                                   20 đ
-                                  </span>
-                                </div>
-                              
-
+                                @if ($product->giamgia > 0)
+                                  <div class="flex-align gap-4 text-main-two-600">
+                                    <i class="ph-fill ph-seal-percent text-sm"></i> -{{ $product->giamgia }}% 
+                                    <span class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
+                                    {{ number_format($product->bienthe->giagoc, 0, ',', '.')}} đ
+                                    </span>
+                                  </div>
+                                @endif
                               <span class="text-heading text-lg fw-semibold">
-                                20 đ
+                                {{ number_format($product->giadagiam, 0, ',', '.')}} đ
                               </span>
                             </div>
-
                           </div>
                         </div>
                       </div>
+                      @endforeach
             </div>
           </div>
           <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200">
@@ -798,7 +878,7 @@
       </div>
     </div>
   </section>
-  <!-- ========================= Trending Products End ================================ -->
+  <!-- ========================= CÓ THỂ BẠN YÊU THÍCH end ================================ -->
 </div>
 
 @endsection

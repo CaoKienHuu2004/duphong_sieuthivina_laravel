@@ -24,6 +24,8 @@ class HomeController extends Controller
             $sanphamthuocdanhmuc = $topCategoriesResult['sanphamthuocdanhmuc'];
         $topbrands = $this->thuonghieuhangdau();
         $topproducts = $this->sanphamhangdau();
+        $hangmoichaosan = $this->hangmoichaosan();
+        $likeProducts = $this->cothebanyeuThich();
 
         // return response()->json([
         //     'banner' => $banner,
@@ -41,6 +43,8 @@ class HomeController extends Controller
                     'sanphamthuocdanhmuc',
                     'topbrands',
                     'topproducts',
+                    'hangmoichaosan',
+                    'likeProducts'
         )); 
     }
 
@@ -95,6 +99,7 @@ class HomeController extends Controller
                                 ->where('ngaybatdau', '<=', now())
                                 ->where('ngayketthuc', '>=', now())
                                 ->orderBy('luotxem', 'desc')
+                                ->limit(10)
                                 ->get();
         return $quatang;
     }
@@ -206,5 +211,53 @@ class HomeController extends Controller
                 });
             });
         return $topProducts;
+    }
+    protected function hangmoichaosan()
+    {
+        $newProducts = SanPhamModel::where('trangthai', 'Công khai')
+            ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
+            ->withSum('bienthe', 'luotban')
+            ->orderBy('id', 'desc')
+            ->limit(18)
+            ->get()
+            ->tap(function ($collection) {
+                $collection->each(function ($sanpham) {
+                    if ($sanpham->bienthe->isNotEmpty()) {
+                        $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
+                        $sanpham->bienthe = $cheapestVariant;
+                        $giagoc = $cheapestVariant->giagoc;
+                        $giamgiaPercent = $sanpham->giamgia / 100;
+                        $sanpham->giadagiam = $giagoc * (1 - $giamgiaPercent);
+                    } else {
+                        $sanpham->bienthe = null;
+                        $sanpham->giadagiam = null;
+                    }
+                });
+            });
+        return $newProducts;
+    }
+    protected function cothebanyeuThich()
+    {
+        $likeProducts = SanPhamModel::where('trangthai', 'Công khai')
+            ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
+            ->withSum('bienthe', 'luotban')
+            ->orderBy('luotxem', 'desc')
+            ->limit(18)
+            ->get()
+            ->tap(function ($collection) {
+                $collection->each(function ($sanpham) {
+                    if ($sanpham->bienthe->isNotEmpty()) {
+                        $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
+                        $sanpham->bienthe = $cheapestVariant;
+                        $giagoc = $cheapestVariant->giagoc;
+                        $giamgiaPercent = $sanpham->giamgia / 100;
+                        $sanpham->giadagiam = $giagoc * (1 - $giamgiaPercent);
+                    } else {
+                        $sanpham->bienthe = null;
+                        $sanpham->giadagiam = null;
+                    }
+                });
+            });
+        return $likeProducts;
     }
 }

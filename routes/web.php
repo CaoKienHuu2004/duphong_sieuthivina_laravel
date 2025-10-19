@@ -17,7 +17,7 @@ Route::get('/', [client\HomeController::class, 'index'])->name('trang-chu');
 Route::get('/trang-chu', [client\HomeController::class, 'index']);
 
 // Route xử lý yêu cầu tìm kiếm từ form hoặc từ khóa click
-Route::get('/tim-kiem', [client\HomeController::class, 'search'])->name('tim-kiem');
+Route::get('/tim-kiem', [client\SanphamController::class, 'search'])->name('tim-kiem');
 
 Route::get('/dang-nhap', [client\NguoidungController::class, 'login'])->name('login');
 Route::post('/xac-thuc-dang-nhap', [client\NguoidungController::class, 'handleLogin'])->name('handleLogin');

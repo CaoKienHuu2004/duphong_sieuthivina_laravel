@@ -4381,6 +4381,9 @@ input:focus-visible {
         margin-bottom: -80px
     }
 
+    .fix-scale-100{
+        margin-bottom: -100px
+    }
 
     .pz99{
         position: relative;
