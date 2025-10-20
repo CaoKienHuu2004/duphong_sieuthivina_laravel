@@ -142,7 +142,7 @@
                                     <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
                                         <div>
                                         <h6 class="title text-lg fw-semibold mt-2 mb-2">
-                                        <a href="{{ $product->slug }}" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
+                                        <a href="{{ route('chi-tiet-san-pham',$product->slug) }}" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
                                         </h6>
                                         <div class="flex-align justify-content-between mt-10">
                                             <div class="flex-align gap-6">
