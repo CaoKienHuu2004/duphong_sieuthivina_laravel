@@ -1,6 +1,6 @@
 @extends('client.layouts.app')
 
-@section('title','Siêu Thị Vina | Sàn thương mại điện tử bán hàng trực tuyến Siêu Thị Vina')
+@section('title','Siêu Thị Vina - Nền Tảng Bán Hàng Trực Tuyến Siêu Thị Vina')
 
 @php
   $eventBanner1 = $banner['home_banner_event_1'] ?? null;
@@ -204,12 +204,12 @@
           @foreach ($alldanhmuc as $dsdm)
             <div class="feature-item text-center wow bounceIn" data-aos="fade-up" data-aos-duration="400">
               <div class="feature-item__thumb rounded-circle">
-                <a href="{{ route('trang-chu',$dsdm->slug) }}" class="w-100 h-100 p-10 flex-center">
+                <a href="{{ url('san-pham?danhmuc=' . $dsdm->slug) }}" class="w-100 h-100 p-10 flex-center">
                   <img src="{{asset('assets/client')}}/images/categories/{{ $dsdm->logo }}" alt="{{ $dsdm->ten }}">
                 </a>
               </div>
               <div class="feature-item__content mt-16">
-                <h6 class="text-md fw-medium mb-8"><a href="#" class="text-inherit">{{ $dsdm->ten }}</a></h6>
+                <h6 class="text-md fw-medium mb-8"><a href="{{ url('san-pham?danhmuc=' . $dsdm->slug) }}" class="text-inherit">{{ $dsdm->ten }}</a></h6>
               </div>
             </div>
           @endforeach
@@ -231,7 +231,7 @@
               <img src="{{asset('assets/client')}}/images/thumbs/top-deal-sieu-re.png" alt="" class="py-10 d-lg-none d-block" width="70%">
             </h6>
             <div class="flex-align gap-16 wow fadeInRight" style="visibility: visible; animation-name: fadeInRight;">
-              <a href="shop.html"
+              <a href="{{ url('san-pham?sortby=topdeals') }}"
                 class="text-sm fw-semibold text-white hover-text-gray-100 hover-text-decoration-underline">Xem tất
                 cả</a>
               <div class="flex-align gap-4">
@@ -255,7 +255,7 @@
                 <div
                   class="product-card bg-white hover-card-shadows h-100 rounded-10 position-relative transition-2">
 
-                  <a href="product-details-two.html" class="thumbhover flex-center rounded-10 position-relative bg-gray-50 w-100">
+                  <a href="{{ route('chi-tiet-san-pham', $td->slug) }}" class="thumbhover flex-center rounded-10 position-relative bg-gray-50 w-100">
                     @if($td->giamgia > 0)
                     <span
                       class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
@@ -274,7 +274,7 @@
                       </div>
                     </div>
                     <h6 class="title text-lg fw-semibold mt-5 mb-8">
-                      <a href="product-details-two.html" class="link text-line-2" tabindex="0">{{ $td->ten }}</a>
+                      <a href="{{ route('chi-tiet-san-pham', $td->slug) }}" class="link text-line-2" tabindex="0">{{ $td->ten }}</a>
                     </h6>
                     <div class="flex-wrap flex-align justify-content-between mt-5">
                       <div class="flex-align gap-6">
@@ -296,11 +296,6 @@
                 </div>
               </div>
               @endforeach
-
-
-
-
-
             </div>
           </div>
         </div>
@@ -318,7 +313,7 @@
                     <h6 class="mb-0 wow fadeInLeft flex-align gap-8"><i class="ph-bold ph-gift text-main-600"></i> Quà tặng</h6>
                     <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 77%;"></div>
                     <div class="flex-align gap-16 wow fadeInRight">
-                        <a href="{{ route('sanpham') }}" class="text-sm fw-semibold text-main-600 hover-text-main-600 hover-text-decoration-underline">Xem tất cả</a>
+                        <a href="#" class="text-sm fw-semibold text-main-600 hover-text-main-600 hover-text-decoration-underline">Xem tất cả</a>
                         <div class="flex-align gap-8">
                             <button type="button" id="gift-event-prev" class="slick-prev slick-arrow flex-center rounded-circle border border-gray-100 hover-border-main-600 text-xl hover-bg-main-600 hover-text-white transition-1" >
                                 <i class="ph ph-caret-left"></i>
@@ -376,7 +371,7 @@
                         <div class="card-content mt-210 p-14 w-100">
                             
                               <div class="title text-white-500 text-lg fw-semibold mt-5 mb-5">
-                                  <a href="product-details-two.html" class="link text-line-2" style="color: white !important;" tabindex="0">{{ $qt->tieude }}</a>
+                                  <a href="#" class="link text-line-2" style="color: white !important;" tabindex="0">{{ $qt->tieude }}</a>
                               </div>
                               
                               <div class="flex-align gap-4 bg-gray-50 p-5 rounded-8">
@@ -470,7 +465,7 @@
                   @foreach ($products as $product)
                       <div class="col-xxl-2 col-xl-3 col-lg-4 col-xs-6">
                         <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
-                          <a href="{{ $product->slug }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                          <a href="{{ route('chi-tiet-san-pham', $product->slug) }}" class="flex-center rounded-8 bg-gray-50 position-relative">
                             <img src="{{ asset('assets/client/images/thumbs/' . $product->hinhanhsanpham->first()->hinhanh) }}" 
                                  alt="{{ $product->ten }}" 
                                  class="w-100 rounded-top-2" />
@@ -478,7 +473,7 @@
                           <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
                             <div>
                               <h6 class="title text-lg fw-semibold mt-2 mb-2">
-                              <a href="{{ $product->slug }}" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
+                              <a href="{{ route('chi-tiet-san-pham', $product->slug) }}" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
                               </h6>
                               <div class="flex-align justify-content-between mt-2">
                                 <div class="flex-align gap-6">
@@ -487,9 +482,8 @@
                                     <i class="ph-fill ph-star text-warning-600"></i></span>
                                 </div>
                                 <div class="flex-align gap-4">
-                                  <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                                  <!-- Hiển thị tổng lượt bán từ Controller -->
                                   <span class="text-xs fw-medium text-gray-500">{{ number_format($product->product_total_sales) }}</span>
+                                  <span class="text-xs fw-medium text-gray-500">Đã bán</span>
                                 </div>
                               </div>
                             </div>
@@ -515,7 +509,7 @@
                   @endforeach
                 </div>
                 <div class="mx-auto w-100 text-center">
-                  <a href="{{ $danhsachdmhangdau->firstWhere('id', $categoryId)->slug }}"
+                  <a href="{{ url('san-pham?sortby=top-'.$danhsachdmhangdau->firstWhere('id', $categoryId)->slug) }}"
                     class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 mt-40">
                     Xem thêm sản phẩm
                   </a>
@@ -603,7 +597,7 @@
                 <h6 class="mb-0 wow fadeInLeft"><i class="ph-bold ph-package text-main-600"></i> Sản phẩm hàng đầu</h6>
                 <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 55%;"></div>
                 <div class="flex-align gap-16 wow fadeInRight">
-                  <a href="shop.html" class="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline">
+                  <a href="{{ url('san-pham?sortby=sanphamhangdau') }}" class="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline">
                     Xem tất cả
                   </a>
                   <div class="flex-align gap-8">
@@ -625,7 +619,7 @@
                     @foreach ($product as $sp)
                       <div class="" data-aos="fade-up" data-aos-duration="800">
                       <div class="mt-24 product-card d-flex gap-16 p-0 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                        <a href="{{ $sp->slug }}" class="flex-center rounded-8 position-relative w-unset flex-shrink-0 " tabindex="0">
+                        <a href="{{ route('chi-tiet-san-pham', $sp->slug) }}" class="flex-center rounded-8 position-relative w-unset flex-shrink-0 " tabindex="0">
                           <img src="{{ asset('assets/client') }}/images/thumbs/{{ $sp->hinhanhsanpham->first()->hinhanh }}" alt="{{ $sp->hinhanhsanpham->first()->hinhanh }}" class="rounded-start-4" style="width: 180px; height: 180px; object-fit: cover;"/>
                         </a>
                         <div class="product-card__content w-100 mt-20 mb-10 flex-grow-1 pe-10 align-items-stretch flex-column justify-content-between d-flex">
@@ -635,7 +629,7 @@
                               <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 200px; display: inline-block;">{{ $sp->thuonghieu->ten }}</span>
                             </div>
                             <h6 class="title text-lg fw-semibold mb-5">
-                            <a href="{{ $sp->slug }}" class="link text-line-2" title="iPhone 15 Pro Warp Charge 30W Power Adapter">
+                            <a href="{{ route('chi-tiet-san-pham', $sp->slug) }}" class="link text-line-2" title="iPhone 15 Pro Warp Charge 30W Power Adapter">
                               {{ $sp->ten }}
                             </a>
                           </h6>
@@ -646,8 +640,8 @@
                                   class="ph-fill ph-star text-warning-600"></i></span>
                             </div>
                             <div class="flex-align gap-4">
-                              <span class="text-xs fw-medium text-gray-500">Đã bán</span>
                               <span class="text-xs fw-medium text-gray-500">{{ $sp->bienthe_sum_luotban }}</span>
+                              <span class="text-xs fw-medium text-gray-500">Đã bán</span>
                             </div>
                           </div>
                           </div>
@@ -739,7 +733,7 @@
               @foreach ($hangmoichaosan as $product)
               <div class="col-xxl-2 col-xl-3 col-lg-4 col-xs-6">
                         <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
-                          <a href="#" class="flex-center rounded-8 bg-gray-50 position-relative">
+                          <a href="{{ route('chi-tiet-san-pham', $product->slug) }}" class="flex-center rounded-8 bg-gray-50 position-relative">
                             <img src="{{ asset('assets/client/images/thumbs/' . $product->hinhanhsanpham->first()->hinhanh) }}" 
                                  alt="{{ $product->ten }}" 
                                  class="w-100 rounded-top-2" />
@@ -753,7 +747,7 @@
                                 </div>
                               </div>
                               <h6 class="title text-lg fw-semibold mt-2 mb-2">
-                              <a href="#" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
+                              <a href="{{ route('chi-tiet-san-pham', $product->slug) }}" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
                               </h6>
                               <div class="flex-align justify-content-between mt-2">
                                 <div class="flex-align gap-6">
@@ -762,8 +756,8 @@
                                     <i class="ph-fill ph-star text-warning-600"></i></span>
                                 </div>
                                 <div class="flex-align gap-4">
-                                  <span class="text-xs fw-medium text-gray-500">Đã bán</span>
                                   <span class="text-xs fw-medium text-gray-500">{{ $product->bienthe_sum_luotban }}</span>
+                                  <span class="text-xs fw-medium text-gray-500">Đã bán</span>
                                 </div>
                               </div>
                             </div>
@@ -787,7 +781,7 @@
             </div>
           </div>
           <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200">
-            <a href="#"
+            <a href="{{ url('san-pham?sortby=latest') }}"
               class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 mt-40">
               Xem thêm sản phẩm
             </a>
@@ -819,7 +813,7 @@
               @foreach ($likeProducts as $product)
               <div class="col-xxl-2 col-xl-3 col-lg-4 col-xs-6">
                         <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
-                          <a href="#" class="flex-center rounded-8 bg-gray-50 position-relative">
+                          <a href="{{ route('chi-tiet-san-pham', $product->slug) }}" class="flex-center rounded-8 bg-gray-50 position-relative">
                             <img src="{{ asset('assets/client/images/thumbs/' . $product->hinhanhsanpham->first()->hinhanh) }}" 
                                  alt="{{ $product->ten }}" 
                                  class="w-100 rounded-top-2" />
@@ -833,7 +827,7 @@
                                 </div>
                               </div>
                               <h6 class="title text-lg fw-semibold mt-2 mb-2">
-                              <a href="#" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
+                              <a href="{{ route('chi-tiet-san-pham', $product->slug) }}" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
                               </h6>
                               <div class="flex-align justify-content-between mt-2">
                                 <div class="flex-align gap-6">
@@ -842,8 +836,8 @@
                                     <i class="ph-fill ph-star text-warning-600"></i></span>
                                 </div>
                                 <div class="flex-align gap-4">
-                                  <span class="text-xs fw-medium text-gray-500">Đã bán</span>
                                   <span class="text-xs fw-medium text-gray-500">{{ $product->bienthe_sum_luotban }}</span>
+                                  <span class="text-xs fw-medium text-gray-500">Đã bán</span>
                                 </div>
                               </div>
                             </div>
@@ -868,7 +862,7 @@
             </div>
           </div>
           <div class="mx-auto w-100 text-center" data-aos="fade-up" data-aos-duration="200">
-            <a href="shop.html"
+            <a href="{{ url('san-pham?sortby=quantamnhieunhat') }}"
               class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 mt-40">
               Xem thêm sản phẩm
             </a>

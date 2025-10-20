@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 19, 2025 at 01:43 PM
+-- Generation Time: Oct 20, 2025 at 12:14 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.16
 
@@ -624,19 +624,20 @@ CREATE TABLE `tukhoa` (
 INSERT INTO `tukhoa` (`id`, `tukhoa`, `luottruycap`) VALUES
 (1, 'Máy massage', 5),
 (2, 'Điện gia dụng', 1),
-(3, 'Đồ chơi minecraft', 152),
-(4, 'Sách hán ngữ 3', 596),
+(3, 'Đồ chơi minecraft', 153),
+(4, 'Sách hán ngữ 3', 597),
 (5, 'Huyndai decor', 62),
 (6, 'Điện nội thất', 125),
 (7, 'Móc khóa genshin', 246),
-(8, 'Phiền Muộn Của Afratu', 11),
+(8, 'Phiền Muộn Của Afratu', 13),
 (9, 'Kẹo', 50),
-(10, 'Sâm Ngọc Linh', 611),
+(10, 'Sâm Ngọc Linh', 625),
 (11, 'Thầy Hộ', 1),
 (12, 'y tế', 1),
-(13, 'abena', 75),
-(14, 'a', 20),
-(15, 'abena pad', 6);
+(13, 'abena', 77),
+(14, 'a', 39),
+(15, 'abena pad', 6),
+(16, 'thiết bị y tế', 3);
 
 -- --------------------------------------------------------
 
@@ -885,7 +886,7 @@ ALTER TABLE `thuonghieu`
 -- AUTO_INCREMENT for table `tukhoa`
 --
 ALTER TABLE `tukhoa`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables

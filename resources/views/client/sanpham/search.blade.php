@@ -1,7 +1,7 @@
 @extends('client.layouts.app')
 
 @section('title')
-    Tìm kiếm: {{ $keyword }} | Sàn thương mại điện tử bán hàng trực tuyến Siêu Thị Vina
+    Siêu Thị Vina - Nền Tảng Bán Hàng Trực Tuyến Siêu Thị Vina
 @endsection
 
 @section('content')
@@ -26,8 +26,8 @@
                 <div class="container container-lg">
                     <div class="row">
                         <div class="col-lg-3">
-                            <form class="shop-sidebar" action="" method="post">
-                                @csrf
+                            <form class="shop-sidebar" action="{{ route('danhsachsanpham') }}" method="get">
+                                {{-- @csrf --}}
                                 <button type="button"
                                     class="shop-sidebar__close d-lg-none d-flex w-32 h-32 flex-center border border-gray-100 rounded-circle hover-bg-main-600 position-absolute inset-inline-end-0 me-10 mt-8 hover-text-white hover-border-main-600">
                                     <i class="ph ph-x"></i>
@@ -38,7 +38,7 @@
                                         @foreach($danhsachdanhmuc as $danhmuc)
                                         <li class="mb-20">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="danhmuc[]" id="danhmuc-{{ $danhmuc->id }}" value="{{ $danhmuc->id }}">
+                                                <input class="form-check-input" type="radio" name="danhmuc" id="danhmuc-{{ $danhmuc->id }}" value="{{ $danhmuc->slug }}">
                                                 <label class="form-check-label" for="danhmuc-{{ $danhmuc->id }}">{{ $danhmuc->ten }} ({{ $danhmuc->sanpham_count }})</label>
                                             </div>         
                                         </li>
@@ -50,43 +50,43 @@
                                     <ul class="max-h-540 overflow-y-auto scroll-sm">
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="low100" id="low100">
+                                                <input class="form-check-input" type="radio" name="locgia" value="low100" id="low100">
                                                 <label class="form-check-label" for="low100">Dưới 100.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="to200" id="100-200">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to200" id="100-200">
                                                 <label class="form-check-label" for="100-200">100.000đ - 200.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="to300" id="200-300">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to300" id="200-300">
                                                 <label class="form-check-label" for="200-300">200.000đ - 300.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="to500" id="300-500">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to500" id="300-500">
                                                 <label class="form-check-label" for="300-500">300.000đ - 500.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="to700" id="500-700">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to700" id="500-700">
                                                 <label class="form-check-label" for="500-700">500.000đ - 700.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="to1000" id="700-1000">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to1000" id="700-1000">
                                                 <label class="form-check-label" for="700-1000">700.000đ - 1.000.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="high1000" id="high1000">
+                                                <input class="form-check-input" type="radio" name="locgia" value="high1000" id="high1000">
                                                 <label class="form-check-label" for="high1000">Trên 1.000.000đ</label>
                                             </div>
                                         </li>
@@ -98,7 +98,7 @@
                                         @foreach ($danhsachthuonghieu as $thuonghieu)
                                             <li class="mb-16">
                                                 <div class="form-check common-check common-radio">
-                                                    <input class="form-check-input" type="radio" name="color" id="thuonghieu{{ $thuonghieu->id }}">
+                                                    <input class="form-check-input" type="radio" name="thuonghieu" id="thuonghieu{{ $thuonghieu->id }}" value="{{ $thuonghieu->slug }}">
                                                     <label class="form-check-label" for="thuonghieu{{ $thuonghieu->id }}">{{ $thuonghieu->ten }}</label>
                                                 </div>
                                             </li>
@@ -135,43 +135,45 @@
                             <div class="row g-12">
                                 @foreach ($products as $product)
                                 <div class="col-xxl-3 col-xl-3 col-lg-4 col-xs-6">
-                                    <div class="product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                                        <a href="product-details.html" class="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative">
-                                            <img src="assets/images/thumbs/product-two-img1.png" alt="" class="w-auto max-w-unset">
-                                            <span class="product-card__badge bg-primary-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Best
-                                                Sale
-                                            </span>
-                                        </a>
-                                        <div class="product-card__content mt-16">
-                                            <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                                <a href="product-details.html" class="link text-line-2" tabindex="0">Taylor Farms
-                                                    Broccoli Florets Vegetables</a>
-                                            </h6>
-                                            <div class="flex-align mb-20 mt-16 gap-6">
-                                                <span class="text-xs fw-medium text-gray-500">4.8</span>
-                                                <span class="text-xs fw-medium text-warning-600 d-flex">
-                                                    <i class="ph-fill ph-star"></i>
-                                                </span>
-                                                <span class="text-xs fw-medium text-gray-500">(17k)</span>
+                                    <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
+                                    <a href="hat-dieu-rang-muoi-loai-1-con-vo-lua-happy-nuts-500g" class="flex-center rounded-8 bg-gray-50 position-relative">
+                                        <img src="{{ asset('assets/client') }}/images/thumbs/{{ $product->hinhanhsanpham->first()->hinhanh }}" alt="{{ $product->ten }}" class="w-100 rounded-top-2">
+                                    </a>
+                                    <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                                        <div>
+                                        <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                                        <a href="{{ $product->slug }}" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
+                                        </h6>
+                                        <div class="flex-align justify-content-between mt-10">
+                                            <div class="flex-align gap-6">
+                                            <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
+                                            <span class="text-xs fw-medium text-gray-500">4.8 
+                                                <i class="ph-fill ph-star text-warning-600"></i></span>
                                             </div>
-                                            <div class="mt-8">
-                                                <div class="progress w-100 bg-color-three rounded-pill h-4" role="progressbar" aria-label="Basic example" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                                    <div class="progress-bar bg-main-two-600 rounded-pill" style="width: 35%"></div>
-                                                </div>
-                                                <span class="text-gray-900 text-xs fw-medium mt-8">Sold: 18/35</span>
-                                            </div>
-
-                                            <div class="product-card__price my-20">
-                                                <span class="text-gray-400 text-md fw-semibold text-decoration-line-through">
-                                                    $28.99</span>
-                                                <span class="text-heading text-md fw-semibold ">$14.99 
-                                                    <span class="text-gray-500 fw-normal">/Qty</span>
-                                                </span>
+                                            <div class="flex-align gap-4">
+                                            <span class="text-xs fw-medium text-gray-500">{{ $product->bienthe_sum_luotban }}</span>
+                                            <span class="text-xs fw-medium text-gray-500">Đã bán</span>
                                             </div>
                                         </div>
+                                        </div>
+                                        
+                                        <div class="product-card__price mt-5">
+                                            @if ($product->giamgia > 0)
+                                                <div class="flex-align gap-4 text-main-two-600">
+                                                    <i class="ph-fill ph-seal-percent text-sm"></i> -10% 
+                                                    <span class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
+                                                        {{ number_format($product->bienthe->giagoc, 0, ',', '.') }} đ
+                                                    </span>
+                                                </div>
+                                            @endif
+                                        <span class="text-heading text-lg fw-semibold">
+                                            {{ number_format($product->giadagiam, 0, ',', '.') }} đ
+                                        </span>
+                                        </div>
+
                                     </div>
-                                </div>
-                                    
+                                    </div>
+                                </div>    
                                 @endforeach
                                 
                                 

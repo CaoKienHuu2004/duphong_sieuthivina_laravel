@@ -30,13 +30,13 @@ class ComposerServiceProvider extends ServiceProvider
             ],
             function ($view) {
                 // 1. Lấy danh sách Danh mục
-                $danhmuc = DanhmucModel::select('ten', 'logo')->get();
+                $danhmuc = DanhmucModel::select('ten', 'logo','slug')->get();
 
-                // 2. Lấy Từ khóa Placeholder ngẫu nhiên từ TOP 20
+                // 2. Lấy Từ khóa Placeholder ngẫu nhiên từ TOP 15
                 $tukhoaplaceholder = null;
-                $top20tukhoa = TukhoaModel::orderBy('luottruycap', 'desc')->take(20)->get();
-                if ($top20tukhoa->isNotEmpty()) {
-                    $tukhoaplaceholder = $top20tukhoa->random()->tukhoa;
+                $top15tukhoa = TukhoaModel::orderBy('luottruycap', 'desc')->take(15)->get();
+                if ($top15tukhoa->isNotEmpty()) {
+                    $tukhoaplaceholder = $top15tukhoa->random()->tukhoa;
                 }
 
                 // 3. Lấy 5 Từ khóa Phổ biến (Top 5)

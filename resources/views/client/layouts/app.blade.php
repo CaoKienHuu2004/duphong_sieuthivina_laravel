@@ -71,7 +71,8 @@
               <input type="text"
                 name="query"
                 class="form-control text-sm fw-medium placeholder-italic shadow-none bg-neutral-30 placeholder-fw-medium placeholder-light py-10 ps-20 pe-60"
-                placeholder="{{ $tukhoaplaceholder }}...">
+                placeholder="{{ $tukhoaplaceholder }}..."
+                required>
               <button type="submit"
                 class="position-absolute top-50 translate-middle-y text-main-600 end-0 me-36 text-xl line-height-1">
                 <i class="ph-bold ph-magnifying-glass"></i>
@@ -179,7 +180,7 @@
               <ul class="scroll-sm p-0 py-8 w-300 max-h-400 overflow-y-auto">
                 @foreach ($danhmuc as $dm)
                   <li class="has-submenus-submenu">
-                    <a href="" class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
+                    <a href="{{ url('san-pham?danhmuc=' . $dm->slug) }}" class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
                       <span class="text-xl d-flex"><img src="{{asset('assets/client')}}/images/categories/{{ $dm->logo }}" alt="{{ $dm->ten }}" width="70%"></span>
                       <span>{{ $dm->ten }}</span>
                     </a>
@@ -255,7 +256,7 @@
               <ul class="scroll-sm p-0 py-8 w-300 max-h-400 overflow-y-auto">
                 @foreach ($danhmuc as $dm)
                   <li class="has-submenus-submenu">
-                    <a href="" class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
+                    <a href="{{ url('san-pham?danhmuc=' . $dm->slug) }}" class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
                       <span class="text-xl d-flex"><img src="{{asset('assets/client')}}/images/categories/{{ $dm->logo }}" alt="{{ $dm->ten }}" width="70%"></span>
                       <span>{{ $dm->ten }}</span>
                     </a>
@@ -310,7 +311,7 @@
               <input type="text"
                 class="form-control text-sm fw-normal placeholder-italic shadow-none bg-neutral-30 placeholder-fw-normal placeholder-light py-10 ps-30 pe-60"
                 placeholder="{{ $tukhoaplaceholder }}...."
-                name="query">
+                name="query" required>
               <button type="submit"
                 class="position-absolute top-50 translate-middle-y text-main-600 end-0 me-36 text-xl line-height-1">
                 <i class="ph-bold ph-magnifying-glass"></i>
@@ -321,18 +322,9 @@
               @foreach ($tukhoaphobien as $keyword)
                 <a href="{{route('tim-kiem',['query'=>$keyword->tukhoa])}}" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">{{ $keyword->tukhoa }}</a>
               @endforeach
-              <!-- <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">điện gia dụng</a>
-              <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">mẹ và bé</a>
-              <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">móc khóa minecraft</a>
-              <a href="#" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">điện nội thất</a> -->
             </div>
           </div>
-
-          <!-- Nav Menu End -->
         </div>
-        <!-- Menu End  -->
-
-
 
         <!-- Middle Header Right start -->
         <div class="header-right flex-align">

@@ -48,17 +48,4 @@ class SanphamModel extends Model
         return $this->hasMany(HinhanhsanphamModel::class, 'id_sanpham');
     }
 
-    public function chitietdonhang()
-    {
-        return $this->hasManyThrough(
-            ChitietdonhangModel::class, // bảng cuối
-            BientheModel::class,        // bảng trung gian
-            'id_sanpham',          // khóa ngoại ở bảng BienThe trỏ tới SanPham
-            'id_bienthe',          // khóa ngoại ở bảng ChiTietDonHang trỏ tới BienThe
-            'id',                  // khóa chính ở SanPham
-            'id'                   // khóa chính ở BienThe
-        );
-    }
-
-
 }
