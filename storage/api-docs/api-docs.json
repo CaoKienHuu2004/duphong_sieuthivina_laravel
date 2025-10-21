@@ -1319,90 +1319,179 @@
                 ]
             }
         },
-        "/api/sanphams-selection": {
+        "/api/sanphams-all": {
             "get": {
                 "tags": [
-                    "Sản phẩm (trang-chu)"
+                    "Tất Cả Sản phẩm (Trang Tất Cả Sản Phẩm)"
                 ],
-                "summary": "Danh sách sản phẩm theo selection",
-                "description": "Trả về sản phẩm dựa trên selection",
-                "operationId": "cac206f8ec931a9421b1222f57fe7848",
+                "summary": "Lấy danh sách sản phẩm",
+                "description": "Hiển thị danh sách sản phẩm theo nhiều tiêu chí như phổ biến, mới nhất, xu hướng,...",
+                "operationId": "779af28c25e1a7c83d9c6eea63ab4b19",
                 "parameters": [
                     {
-                        "name": "selection",
+                        "name": "filter",
                         "in": "query",
-                        "description": "Loại danh sách",
+                        "description": "Bộ lọc sản phẩm (popular, latest, trending, matches, default)",
                         "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "popular"
+                        }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Từ khóa tìm kiếm",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "bánh"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Số lượng sản phẩm trên mỗi trang (mặc định 20)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Danh sách sản phẩm",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer"
-                                            },
-                                            "ten": {
-                                                "type": "string"
-                                            },
-                                            "slug": {
-                                                "type": "string"
-                                            },
-                                            "hinh_anh": {
-                                                "type": "string",
-                                                "nullable": true
-                                            },
-                                            "gia": {
-                                                "properties": {
-                                                    "current": {
-                                                        "type": "number",
-                                                        "format": "float"
-                                                    },
-                                                    "before_discount": {
-                                                        "type": "number",
-                                                        "format": "float"
-                                                    },
-                                                    "discount_percent": {
-                                                        "type": "integer"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            },
-                                            "store": {
-                                                "properties": {
-                                                    "name": {
-                                                        "type": "string"
-                                                    },
-                                                    "icon_url": {
-                                                        "type": "string",
-                                                        "nullable": true
-                                                    }
-                                                },
-                                                "type": "object"
-                                            },
-                                            "rating": {
-                                                "properties": {
-                                                    "average": {
-                                                        "type": "number",
-                                                        "format": "float"
-                                                    },
-                                                    "count": {
-                                                        "type": "integer"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
                                         },
-                                        "type": "object"
-                                    }
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Danh sách sản phẩm"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SanPhamAllResources"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sanphams-all/{id}": {
+            "get": {
+                "tags": [
+                    "Tất Cả Sản phẩm (Trang Tất Cả Sản Phẩm)"
+                ],
+                "summary": "Lấy chi tiết sản phẩm",
+                "description": "Hiển thị chi tiết sản phẩm bao gồm hình ảnh, thương hiệu, danh mục, đánh giá và biến thể có giá cao nhất.",
+                "operationId": "b38d357af371cfe4cae8c46d44734503",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID sản phẩm cần xem chi tiết",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 5
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Chi tiết sản phẩm",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SanPhamAllDetailResources"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy sản phẩm"
+                    }
+                }
+            }
+        },
+        "/api/sanphams-selection": {
+            "get": {
+                "tags": [
+                    "Sản phẩm (trang-chu)"
+                ],
+                "summary": "Danh sách sản phẩm trang chủ",
+                "description": "Trả về tất cả nhóm sản phẩm bao gồm: hot_sales, top_categories, top_brands, best_products, recommend và default.",
+                "operationId": "cac206f8ec931a9421b1222f57fe7848",
+                "responses": {
+                    "200": {
+                        "description": "Danh sách sản phẩm trang chủ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Danh sách sản phẩm trang chủ"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "hot_sales": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/SanphamItem"
+                                                    }
+                                                },
+                                                "top_categories": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/SanphamItem"
+                                                    }
+                                                },
+                                                "top_brands": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/SanphamItem"
+                                                    }
+                                                },
+                                                "best_products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/SanphamItem"
+                                                    }
+                                                },
+                                                "recommend": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/SanphamItem"
+                                                    }
+                                                },
+                                                "default": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/SanphamItem"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -2113,143 +2202,9 @@
                         "bearerAuth": []
                     }
                 ]
-            },
-            "post": {
-                "tags": [
-                    "Thông báo (tôi)"
-                ],
-                "summary": "Thêm mới thông báo",
-                "description": "Tạo thông báo mới cho người dùng đang đăng nhập",
-                "operationId": "30b2d04b3a45ce3c5143803d49df361f",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "tieude",
-                                    "noidung"
-                                ],
-                                "properties": {
-                                    "tieude": {
-                                        "type": "string",
-                                        "example": "Thông báo mới"
-                                    },
-                                    "noidung": {
-                                        "type": "string",
-                                        "example": "Nội dung thông báo"
-                                    },
-                                    "lienket": {
-                                        "type": "string",
-                                        "example": "https://example.com"
-                                    },
-                                    "trangthai": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Đã đọc",
-                                            "Chưa đọc",
-                                            "Tạm ẩn"
-                                        ],
-                                        "example": "Chưa đọc"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Tạo thông báo thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Thongbao"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
         "/toi/thongbaos/{id}": {
-            "put": {
-                "tags": [
-                    "Thông báo (tôi)"
-                ],
-                "summary": "Cập nhật thông báo",
-                "description": "Cập nhật thông tin thông báo của người dùng",
-                "operationId": "d449cb4ac8ba9ef94bfb6c0deb91c852",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID thông báo",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "tieude": {
-                                        "type": "string",
-                                        "example": "Thông báo mới"
-                                    },
-                                    "noidung": {
-                                        "type": "string",
-                                        "example": "Nội dung mới"
-                                    },
-                                    "lienket": {
-                                        "type": "string",
-                                        "example": "https://example.com"
-                                    },
-                                    "trangthai": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Đã đọc",
-                                            "Chưa đọc",
-                                            "Tạm ẩn"
-                                        ],
-                                        "example": "Đã đọc"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Cập nhật thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Thongbao"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy thông báo"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
             "delete": {
                 "tags": [
                     "Thông báo (tôi)"
@@ -3707,6 +3662,76 @@
                 },
                 "type": "object"
             },
+            "SanphamItem": {
+                "title": "Sản phẩm",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "ten": {
+                        "type": "string",
+                        "example": "Điện thoại iPhone 15 Pro Max"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "iphone-15-pro-max"
+                    },
+                    "hinh_anh": {
+                        "type": "string",
+                        "example": "https://example.com/images/iphone15.jpg",
+                        "nullable": true
+                    },
+                    "gia": {
+                        "properties": {
+                            "current": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 27990000
+                            },
+                            "before_discount": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 30990000
+                            },
+                            "discount_percent": {
+                                "type": "integer",
+                                "example": 10
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "store": {
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "example": "Apple Store"
+                            },
+                            "icon_url": {
+                                "type": "string",
+                                "example": "https://example.com/store-logo.png",
+                                "nullable": true
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "rating": {
+                        "properties": {
+                            "average": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 4.8
+                            },
+                            "count": {
+                                "type": "integer",
+                                "example": 128
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
             "Thongbao": {
                 "title": "Thông báo",
                 "description": "Thông tin chi tiết một thông báo của người dùng",
@@ -3823,6 +3848,267 @@
                     }
                 },
                 "type": "object"
+            },
+            "SanPhamAllDetailResources": {
+                "title": "Chi tiết sản phẩm",
+                "description": "Thông tin chi tiết của sản phẩm bao gồm giá, biến thể, hình ảnh và đánh giá",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 12
+                    },
+                    "ten": {
+                        "type": "string",
+                        "example": "Bánh quy ABC"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "banh-quy-abc"
+                    },
+                    "rating": {
+                        "properties": {
+                            "average": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 4.8
+                            },
+                            "count": {
+                                "type": "integer",
+                                "example": 134
+                            },
+                            "sao_5": {
+                                "type": "integer",
+                                "example": 100
+                            },
+                            "sao_4": {
+                                "type": "integer",
+                                "example": 20
+                            },
+                            "sao_3": {
+                                "type": "integer",
+                                "example": 10
+                            },
+                            "sao_2": {
+                                "type": "integer",
+                                "example": 3
+                            },
+                            "sao_1": {
+                                "type": "integer",
+                                "example": 1
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "sold": {
+                        "properties": {
+                            "total_sold": {
+                                "type": "integer",
+                                "example": 350
+                            },
+                            "total_quantity": {
+                                "type": "integer",
+                                "example": 120
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "gia": {
+                        "properties": {
+                            "current": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 180000
+                            },
+                            "before_discount": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 250000
+                            },
+                            "discount_percent": {
+                                "type": "integer",
+                                "example": 28
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "trangthai": {
+                        "properties": {
+                            "active": {
+                                "type": "boolean",
+                                "example": true
+                            },
+                            "in_stock": {
+                                "type": "boolean",
+                                "example": true
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "loai_bien_the": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "ten": {
+                                    "type": "string",
+                                    "example": "Màu đỏ"
+                                },
+                                "trangthai": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "anh_san_pham": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 3
+                                },
+                                "hinhanh": {
+                                    "type": "string",
+                                    "example": "uploads/sp1.jpg"
+                                },
+                                "trangthai": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "danh_gia": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 8
+                                },
+                                "diem": {
+                                    "type": "integer",
+                                    "example": 5
+                                },
+                                "noidung": {
+                                    "type": "string",
+                                    "example": "Sản phẩm rất tốt"
+                                },
+                                "hoten": {
+                                    "type": "string",
+                                    "example": "Nguyễn Văn A"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "mota": {
+                        "type": "string",
+                        "example": "Bánh quy hương bơ, giòn tan, vị thơm béo nhẹ."
+                    }
+                },
+                "type": "object"
+            },
+            "SanPhamAllResources": {
+                "title": "SanPhamAllResources",
+                "description": "Dữ liệu chi tiết sản phẩm cho trang chủ hoặc danh sách sản phẩm",
+                "properties": {
+                    "id": {
+                        "description": "ID sản phẩm",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "ten": {
+                        "description": "Tên sản phẩm",
+                        "type": "string",
+                        "example": "Bánh quy ABC"
+                    },
+                    "slug": {
+                        "description": "Slug của sản phẩm",
+                        "type": "string",
+                        "example": "banh-quy-abc"
+                    },
+                    "hinh_anh": {
+                        "description": "Ảnh đại diện sản phẩm",
+                        "type": "string",
+                        "example": "https://example.com/images/banh-quy.jpg"
+                    },
+                    "rating": {
+                        "properties": {
+                            "average": {
+                                "description": "Điểm đánh giá trung bình",
+                                "type": "number",
+                                "format": "float",
+                                "example": 4.8
+                            },
+                            "count": {
+                                "description": "Tổng số lượng đánh giá",
+                                "type": "integer",
+                                "example": 17000
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "sold": {
+                        "properties": {
+                            "total_sold": {
+                                "description": "Tổng số lượng đã bán",
+                                "type": "integer",
+                                "example": 500
+                            },
+                            "total_quantity": {
+                                "description": "Tổng tồn kho",
+                                "type": "integer",
+                                "example": 1000
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "gia": {
+                        "properties": {
+                            "current": {
+                                "description": "Giá hiện tại sau khi giảm",
+                                "type": "number",
+                                "format": "float",
+                                "example": 45000
+                            },
+                            "before_discount": {
+                                "description": "Giá gốc trước khi giảm",
+                                "type": "number",
+                                "format": "float",
+                                "example": 60000
+                            },
+                            "discount_percent": {
+                                "description": "Phần trăm giảm giá",
+                                "type": "integer",
+                                "example": 25
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "trangthai": {
+                        "properties": {
+                            "active": {
+                                "description": "Trạng thái sản phẩm (đang hoạt động)",
+                                "type": "boolean",
+                                "example": true
+                            },
+                            "in_stock": {
+                                "description": "Còn hàng hay không",
+                                "type": "boolean",
+                                "example": true
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
             }
         }
     },
@@ -3882,6 +4168,10 @@
         {
             "name": "Đơn hàng (tôi)",
             "description": "Đơn hàng (tôi)"
+        },
+        {
+            "name": "Tất Cả Sản phẩm (Trang Tất Cả Sản Phẩm)",
+            "description": "Tất Cả Sản phẩm (Trang Tất Cả Sản Phẩm)"
         },
         {
             "name": "Thông báo (tôi)",

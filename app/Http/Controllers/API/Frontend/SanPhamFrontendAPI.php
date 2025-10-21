@@ -34,82 +34,100 @@ use Illuminate\Support\Facades\DB;
 class SanPhamFrontendAPI extends SanphamAPI
 {
     /**
-     *
      * @OA\Get(
      *     path="/api/sanphams-selection",
-     *     summary="Danh sách sản phẩm theo selection",
-     *     description="Trả về sản phẩm dựa trên selection",
+     *     summary="Danh sách sản phẩm trang chủ",
+     *     description="Trả về tất cả nhóm sản phẩm bao gồm: hot_sales, top_categories, top_brands, best_products, recommend và default.",
      *     tags={"Sản phẩm (trang-chu)"},
-     *     @OA\Parameter(
-     *         name="selection",
-     *         in="query",
-     *         description="Loại danh sách",
-     *         required=false,
-     *         @OA\Schema(type="string")
-     *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="OK",
+     *         description="Danh sách sản phẩm trang chủ",
      *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(
+     *             type="object",
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Danh sách sản phẩm trang chủ"),
+     *             @OA\Property(
+     *                 property="data",
      *                 type="object",
-     *                 @OA\Property(property="id", type="integer"),
-     *                 @OA\Property(property="ten", type="string"),
-     *                 @OA\Property(property="slug", type="string"),
-     *                 @OA\Property(property="hinh_anh", type="string", nullable=true),
      *                 @OA\Property(
-     *                     property="gia",
-     *                     type="object",
-     *                     @OA\Property(property="current", type="number", format="float"),
-     *                     @OA\Property(property="before_discount", type="number", format="float"),
-     *                     @OA\Property(property="discount_percent", type="integer")
+     *                     property="hot_sales",
+     *                     type="array",
+     *                     @OA\Items(ref="#/components/schemas/SanphamItem")
      *                 ),
      *                 @OA\Property(
-     *                     property="store",
-     *                     type="object",
-     *                     @OA\Property(property="name", type="string"),
-     *                     @OA\Property(property="icon_url", type="string", nullable=true)
+     *                     property="top_categories",
+     *                     type="array",
+     *                     @OA\Items(ref="#/components/schemas/SanphamItem")
      *                 ),
      *                 @OA\Property(
-     *                     property="rating",
-     *                     type="object",
-     *                     @OA\Property(property="average", type="number", format="float"),
-     *                     @OA\Property(property="count", type="integer")
+     *                     property="top_brands",
+     *                     type="array",
+     *                     @OA\Items(ref="#/components/schemas/SanphamItem")
+     *                 ),
+     *                 @OA\Property(
+     *                     property="best_products",
+     *                     type="array",
+     *                     @OA\Items(ref="#/components/schemas/SanphamItem")
+     *                 ),
+     *                 @OA\Property(
+     *                     property="recommend",
+     *                     type="array",
+     *                     @OA\Items(ref="#/components/schemas/SanphamItem")
+     *                 ),
+     *                 @OA\Property(
+     *                     property="default",
+     *                     type="array",
+     *                     @OA\Items(ref="#/components/schemas/SanphamItem")
      *                 )
      *             )
      *         )
      *     )
      * )
+     *
+     * @OA\Schema(
+     *     schema="SanphamItem",
+     *     type="object",
+     *     title="Sản phẩm",
+     *     @OA\Property(property="id", type="integer", example=1),
+     *     @OA\Property(property="ten", type="string", example="Điện thoại iPhone 15 Pro Max"),
+     *     @OA\Property(property="slug", type="string", example="iphone-15-pro-max"),
+     *     @OA\Property(property="hinh_anh", type="string", nullable=true, example="https://example.com/images/iphone15.jpg"),
+     *     @OA\Property(
+     *         property="gia",
+     *         type="object",
+     *         @OA\Property(property="current", type="number", format="float", example=27990000),
+     *         @OA\Property(property="before_discount", type="number", format="float", example=30990000),
+     *         @OA\Property(property="discount_percent", type="integer", example=10)
+     *     ),
+     *     @OA\Property(
+     *         property="store",
+     *         type="object",
+     *         @OA\Property(property="name", type="string", example="Apple Store"),
+     *         @OA\Property(property="icon_url", type="string", nullable=true, example="https://example.com/store-logo.png")
+     *     ),
+     *     @OA\Property(
+     *         property="rating",
+     *         type="object",
+     *         @OA\Property(property="average", type="number", format="float", example=4.8),
+     *         @OA\Property(property="count", type="integer", example=128)
+     *     )
+     * )
      */
     public function index(Request $request)
     {
-        $selection = $request->get('selection');
-
-        switch ($selection) {
-            case 'hot_sales':
-                $data = $this->getHotSales($request);
-                break;
-            case 'top_categories':
-                $data = $this->getTopCategories($request);
-                break;
-            case 'top_brands':
-                $data = $this->getTopBrands($request);
-                break;
-            case 'best_products':
-                $data = $this->getBestProducts($request);
-                break;
-            case 'recommend':
-                $data = $this->getRecommend($request, $request->get('danhmuc_id'));
-                break;
-            default:
-                $data = $this->getDefaultProducts($request);
-        }
+        $data = [
+            'hot_sales'      => $this->getHotSales($request),
+            'top_categories' => $this->getTopCategories($request),
+            'top_brands'     => $this->getTopBrands($request),
+            'best_products'  => $this->getBestProducts($request),
+            'recommend'      => $this->getRecommend($request, $request->get('danhmuc_id')),
+            'default'        => $this->getDefaultProducts($request),
+        ];
 
         return $this->jsonResponse([
             'status'  => true,
-            'message' => 'Danh sách sản phẩm',
-            'data'    => $data
+            'message' => 'Danh sách sản phẩm trang chủ',
+            'data'    => $data,
         ], Response::HTTP_OK);
     }
 

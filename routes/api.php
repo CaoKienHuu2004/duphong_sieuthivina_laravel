@@ -149,8 +149,6 @@ use App\Http\Controllers\client\BaivietController;
     });
     Route::middleware(['auth.api'])->prefix('toi')->group(function () {
         Route::get('/thongbaos', [ThongBaoFrontendAPI::class, 'index']);       // Lấy danh sách
-        Route::post('/thongbaos', [ThongBaoFrontendAPI::class, 'store']);      // Thêm mới
-        Route::put('/thongbaos/{id}', [ThongBaoFrontendAPI::class, 'update']); // Cập nhật
         Route::delete('/thongbaos/{id}', [ThongBaoFrontendAPI::class, 'destroy']); // Xóa soft
         Route::patch('/thongbaos/{id}/daxem', [ThongBaoFrontendAPI::class, 'markAsRead']); // Optional
         Route::patch('/thongbaos/{id}/tam-an', [ThongBaoFrontendAPI::class, 'toggleStatus']); // Optional
