@@ -36,6 +36,7 @@ use App\Http\Controllers\API\Frontend\GioHangFrontendAPI;
 use App\Http\Controllers\API\Frontend\SanPhamAllFrontendAPI;
 use App\Http\Controllers\API\Frontend\SanPhamFrontendAPI;
 use App\Http\Controllers\API\Frontend\ThongBaoFrontendAPI;
+use App\Http\Controllers\API\Frontend\TrangShopFrontendAPI;
 use App\Http\Controllers\API\Frontend\TukhoaFrontendAPI;
 use App\Http\Controllers\API\LoaiBienTheAPI;
 use App\Http\Controllers\API\QuaTangSuKienAPI;
@@ -95,8 +96,9 @@ use App\Http\Controllers\client\BaivietController;
 
     // Route::apiResource('loaibienthes', LoaiBienTheAPI::class)->only(['index','show']); // làm menu khi hover list products da cấp
     Route::apiResource('danhmucs', DanhmucAPI::class)->only(['index','show']);
-        Route::apiResource('danhmucs-selection', DanhmucFrontendAPI::class)->only(['index','show']); // selection: ở home // limit 10 // orderby theo danh mục có tổng lượt xem và có lượt mua nhiều nhất
+        // Route::apiResource('danhmucs-selection', DanhmucFrontendAPI::class)->only(['index','show']); // selection: ở home // limit 10 // orderby theo danh mục có tổng lượt xem và có lượt mua nhiều nhất
         Route::apiResource('danhmucs-all', DanhmucAllFrontendAPI::class)->only(['index','show']); // thanh menu aside lọc sản phẩm
+    Route::apiResource('trang-shop', TrangShopFrontendAPI::class)->only(['index','show']);
 
     Route::apiResource('chuongtrinhsukiens', SuKienAPI::class)->only(['index','show']);
     Route::apiResource('quatangkhuyenmais', QuaTangSuKienAPI::class)->only(['index','show']);

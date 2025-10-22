@@ -47,6 +47,10 @@ class ChitietdonhangModel extends Model
     {
         return $this->belongsTo(BientheModel::class, 'id_bienthe', 'id');
     }
+    public function danhgia()
+    {
+        return $this->hasMany(DanhgiaModel::class, 'id_chitietdonhang', 'id');
+    }
 
     // public function sanpham()
     // {

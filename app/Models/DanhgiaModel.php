@@ -20,6 +20,7 @@ class DanhgiaModel extends Model
     protected $fillable = [
         'id_sanpham',
         'id_nguoidung',
+        'id_chitietdonhang',
         'diem',
         'noidung',
         'trangthai',
@@ -32,6 +33,7 @@ class DanhgiaModel extends Model
     protected $casts = [
         'id_sanpham' => 'integer',
         'id_nguoidung' => 'integer',
+        'id_chitietdonhang' => 'integer',
         'diem' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -46,12 +48,16 @@ class DanhgiaModel extends Model
     // Quan hệ: Một đánh giá thuộc về một sản phẩm
     public function sanpham()
     {
-        return $this->belongsTo(SanphamModel::class, 'id_sanpham', 'id');
+        return $this->belongsTo(SanphamModel::class, 'id_sanpham');
     }
 
     // Quan hệ: Một đánh giá thuộc về một người dùng
     public function nguoidung()
     {
-        return $this->belongsTo(NguoidungModel::class, 'id_nguoidung', 'id');
+        return $this->belongsTo(NguoidungModel::class, 'id_nguoidung');
+    }
+    public function chitietdonhang()
+    {
+        return $this->belongsTo(ChitietdonhangModel::class, 'id_chitietdonhang');
     }
 }

@@ -34,8 +34,8 @@ use Illuminate\Support\Str;
  *     @OA\Property(
  *         property="sold",
  *         type="object",
- *         @OA\Property(property="total_sold", type="integer", example=350),
- *         @OA\Property(property="total_quantity", type="integer", example=120),
+ *         @OA\Property(property="total_sold", type="integer", example=350, description="Tổng số lượng đã bán, là dùng querry đế bảng chi tiết dơn hàng tính ra, chứ chưa lấy ở field luotban của tb:sanpham"),
+ *         @OA\Property(property="total_quantity", type="integer", example=120, description="Tổng số lượng của field soluong ở tb:bienthe"),
  *     ),
  *     @OA\Property(
  *         property="gia",
@@ -105,7 +105,7 @@ class SanPhamAllDetailResources extends JsonResource
             // 1. Dữ liệu cơ bản
             'id' => $this->id,
             'ten' => $this->ten,
-            'slug'          => Str::slug($this->ten),
+            'slug'          => $this->slug,
 
 
             // 'mediaurl' => $this->mediaurl, // Ảnh đại diện chính

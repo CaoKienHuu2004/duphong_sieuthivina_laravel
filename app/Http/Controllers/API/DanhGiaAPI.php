@@ -31,9 +31,11 @@ class DanhGiaAPI extends BaseController
         $perPage = $request->get('per_page', 10);
         $q = $request->get('q');
 
-        $query = DanhgiaModel::with(['sanpham', 'nguoidung'])
+        $query = DanhgiaModel::with(['sanpham', 'nguoidung','chitietdonhang'])
             ->latest('updated_at');
-
+        // dd( $query);
+        // var_dump($query);
+        // exit();
         if ($q) {
             $query->where(function ($sub) use ($q) {
                 $sub->where('noidung', 'like', "%$q%")
@@ -47,7 +49,17 @@ class DanhGiaAPI extends BaseController
             });
         }
 
-        $items = $query->paginate($perPage);
+
+        $items = $query->with([
+                'nguoidung:id,hoten',
+                'sanpham',
+                'chitietdonhang'
+            ])->paginate($perPage);
+
+        // dd($query);
+        // var_dump($query);
+        // exit();
+
 
         return $this->jsonResponse([
             'status' => true,
@@ -77,7 +89,7 @@ class DanhGiaAPI extends BaseController
      */
     public function show($id)
     {
-        $item = DanhgiaModel::with(['sanpham', 'nguoidung'])->findOrFail($id);
+        $item = DanhgiaModel::with(['sanpham', 'nguoidung:id,hoten','chitietdonhang'])->findOrFail($id);
 
         return $this->jsonResponse([
             'status' => true,
@@ -91,14 +103,15 @@ class DanhGiaAPI extends BaseController
     {
         $validated = $request->validate([
             'id_sanpham' => 'required|exists:sanpham,id',
-            'id_nguoidung'=> 'required|exists:nguoi_dung,id',
+            'id_nguoidung'=> 'required|exists:nguoidung,id',
+            'id_chitietdonhang'=> 'required|exists:chitiet_donhang,id',
             'diem'       => 'required|integer|min:0|max:5',
             'noidung'    => 'nullable|string',
             'trangthai'  => 'nullable|in:Hiển thị,Tạm ẩn',
         ]);
 
         $item = DanhgiaModel::create($validated);
-        $item->load(['sanpham', 'nguoidung']);
+        $item->load(['sanpham', 'nguoidung','chitietdonhang']);
 
         return $this->jsonResponse([
             'status' => true,
@@ -115,13 +128,14 @@ class DanhGiaAPI extends BaseController
         $validated = $request->validate([
             'id_sanpham' => 'sometimes|exists:sanpham,id',
             'id_nguoidung'=> 'sometimes|exists:nguoi_dung,id',
+            'id_chitietdonhang'=> 'required|exists:chitiet_donhang,id',
             'diem'       => 'sometimes|integer|min:0|max:5',
             'noidung'    => 'sometimes|string',
             'trangthai'  => 'sometimes|in:Hiển thị,Tạm ẩn',
         ]);
 
         $item->update($validated);
-        $item->load(['sanpham', 'nguoidung']);
+        $item->load(['sanpham', 'nguoidung','chitietdonhang']);
 
         return $this->jsonResponse([
             'status' => true,

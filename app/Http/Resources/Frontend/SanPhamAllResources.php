@@ -17,7 +17,8 @@ use Illuminate\Support\Str;
  *     @OA\Property(property="id", type="integer", example=1, description="ID sản phẩm"),
  *     @OA\Property(property="ten", type="string", example="Bánh quy ABC", description="Tên sản phẩm"),
  *     @OA\Property(property="slug", type="string", example="banh-quy-abc", description="Slug của sản phẩm"),
- *     @OA\Property(property="hinh_anh", type="string", example="https://example.com/images/banh-quy.jpg", description="Ảnh đại diện sản phẩm"),
+ *     @OA\Property(property="hinh_anh", type="string", example="banh-quy.jpg", description="Ảnh đại diện sản phẩm, lấy từ hinhanhsanpham và lấy theo hình ảnh đầu tiên của sản phẩm và thời gian creaed_at mới nhất"),
+ *     @OA\Property(property="luotxem", type="integer", example="1", description="vì detail có tự động +1 khi gọi tới show nên thêm vào"),
  *
  *     @OA\Property(
  *         property="rating",
@@ -29,8 +30,8 @@ use Illuminate\Support\Str;
  *     @OA\Property(
  *         property="sold",
  *         type="object",
- *         @OA\Property(property="total_sold", type="integer", example=500, description="Tổng số lượng đã bán"),
- *         @OA\Property(property="total_quantity", type="integer", example=1000, description="Tổng tồn kho")
+ *         @OA\Property(property="total_sold", type="integer", example=500, description="Tổng số lượng đã bán, là dùng querry đế bảng chi tiết dơn hàng tính ra, chứ chưa lấy ở field luotban của tb:sanpham"),
+ *         @OA\Property(property="total_quantity", type="integer", example=1000, description="Tổng tồn kho, Tổng số lượng của field soluong ở tb:bienthe")
  *     ),
  *
  *     @OA\Property(
@@ -76,7 +77,8 @@ class SanPhamAllResources extends JsonResource
             // 1. Dữ liệu cơ bản
             'id' => $this->id,
             'ten' => $this->ten,
-            'slug'          => Str::slug($this->ten),
+            // 'slug'          => Str::slug($this->ten),
+            'slug'          => $this->slug,
 
 
             'hinh_anh' =>  $hinhanhsanpham,
@@ -86,6 +88,7 @@ class SanPhamAllResources extends JsonResource
                 'count' => $reviewCount,     // (17k) -> Cần format số lớn ở frontend
                 // 'formatted_count' => $this->formatReviewCount($reviewCount), // Có thể format ở đây hoặc frontend
             ],
+            'luotxem' => $this->luotxem,
 
             'sold' => [
                 'total_sold' => $this->total_sold ?? 0, // Tổng số lượng đã bán

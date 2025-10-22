@@ -116,13 +116,12 @@ class DanhGiaFrontendAPI extends Controller
      */
     public function index(Request $request)
     {
-        $user = $request->user(); // ✅ sửa lại đúng cú pháp
+        $user = $request->get('auth_user');
 
-        $danhgias = DanhgiaModel::with('sanpham')
+        $danhgias = DanhgiaModel::with('sanpham','chitietdonhang')
             ->where('id_nguoidung', $user->id)
             ->orderByDesc('created_at')
             ->get();
-
         return response()->json([
             'success' => true,
             'data' => $danhgias
@@ -155,33 +154,36 @@ class DanhGiaFrontendAPI extends Controller
      */
     public function store(Request $request)
     {
-        $user = $request->user();
+        $user = $request->get('auth_user');
 
         $validated = $request->validate([
             'id_sanpham' => 'required|exists:sanpham,id',
-            'diem' => 'required|integer|min:1|max:5',
-            'noidung' => 'nullable|string',
+            'diem'       => 'required|integer|min:1|max:5',
+            'noidung'    => 'nullable|string',
         ]);
 
-        // ✅ Kiểm tra người dùng đã mua sản phẩm chưa
-        $daMua = DB::table('chitiet_donhang')
+        // ✅ Tìm chi tiết đơn hàng mà user đã mua và giao thành công
+        $chiTiet = DB::table('chitiet_donhang')
             ->join('donhang', 'chitiet_donhang.id_donhang', '=', 'donhang.id')
-            ->join('sanpham', 'chitiet_donhang.id_bienthe', '=', 'sanpham.id')
+            ->join('bienthe', 'chitiet_donhang.id_bienthe', '=', 'bienthe.id')
+            ->join('sanpham', 'bienthe.id_sanpham', '=', 'sanpham.id')
             ->where('donhang.id_nguoidung', $user->id)
             ->where('sanpham.id', $validated['id_sanpham'])
             ->whereIn('donhang.trangthai', ['Đã giao', 'Hoàn tất'])
-            ->exists();
+            ->select('chitiet_donhang.id')
+            ->first();
 
-        if (!$daMua) {
+        if (!$chiTiet) {
             return response()->json([
                 'success' => false,
                 'message' => 'Bạn chỉ có thể đánh giá sản phẩm đã mua và giao thành công.'
             ], Response::HTTP_FORBIDDEN);
         }
 
-        // ✅ Kiểm tra đã đánh giá chưa
+        // ✅ Kiểm tra đã đánh giá chưa (theo 3 trường duy nhất)
         $daDanhGia = DanhgiaModel::where('id_nguoidung', $user->id)
             ->where('id_sanpham', $validated['id_sanpham'])
+            ->where('id_chitietdonhang', $chiTiet->id)
             ->exists();
 
         if ($daDanhGia) {
@@ -193,17 +195,18 @@ class DanhGiaFrontendAPI extends Controller
 
         // ✅ Lưu đánh giá mới
         $danhgia = DanhgiaModel::create([
-            'id_nguoidung' => $user->id,
-            'id_sanpham'   => $validated['id_sanpham'],
-            'diem'         => $validated['diem'],
-            'noidung'      => $validated['noidung'] ?? null,
-            'trangthai'    => 'Hiển thị',
+            'id_nguoidung'       => $user->id,
+            'id_sanpham'         => $validated['id_sanpham'],
+            'id_chitietdonhang'  => $chiTiet->id,
+            'diem'               => $validated['diem'],
+            'noidung'            => $validated['noidung'] ?? null,
+            'trangthai'          => 'Hiển thị',
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Thêm đánh giá thành công',
-            'data' => $danhgia
+            'data'    => $danhgia->load(['nguoidung:id,hoten', 'sanpham:id,ten'])
         ], Response::HTTP_CREATED);
     }
 
@@ -227,10 +230,12 @@ class DanhGiaFrontendAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = $request->user();
+        $user = $request->get('auth_user');
 
+        // ✅ Chỉ tìm đánh giá của chính người dùng, chưa bị xóa
         $danhgia = DanhgiaModel::where('id', $id)
             ->where('id_nguoidung', $user->id)
+            ->whereNull('deleted_at')
             ->first();
 
         if (!$danhgia) {
@@ -240,6 +245,7 @@ class DanhGiaFrontendAPI extends Controller
             ], Response::HTTP_FORBIDDEN);
         }
 
+        // ✅ Chỉ cho phép cập nhật điểm và nội dung
         $validated = $request->validate([
             'diem' => 'nullable|integer|min:1|max:5',
             'noidung' => 'nullable|string',
@@ -250,9 +256,10 @@ class DanhGiaFrontendAPI extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Cập nhật đánh giá thành công',
-            'data' => $danhgia
+            'data' => $danhgia->load(['nguoidung:id,hoten', 'sanpham:id,ten'])
         ], Response::HTTP_OK);
     }
+
 
     /**
      * @OA\Delete(
@@ -267,7 +274,7 @@ class DanhGiaFrontendAPI extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $user = $request->user();
+        $user = $request->get('auth_user');
 
         $danhgia = DanhgiaModel::where('id', $id)
             ->where('id_nguoidung', $user->id)

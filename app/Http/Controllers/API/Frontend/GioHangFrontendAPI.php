@@ -74,7 +74,8 @@ class GioHangFrontendAPI extends BaseFrontendController
             'soluong' => 'required|integer|min:1',
         ]);
 
-        $userId = $request->user()->id;
+        $user = $request->get('auth_user');
+        $userId = $user->id;
         $gia = DB::table('bienthe')->where('id', $validated['id_bienthe'])->value('gia');
 
         $item = GiohangModel::where('id_nguoidung', $userId)
@@ -135,7 +136,8 @@ class GioHangFrontendAPI extends BaseFrontendController
             'soluong' => 'required|integer|min:1',
         ]);
 
-        $userId = $request->user()->id;
+        $user = $request->get('auth_user');
+        $userId = $user->id;
         $item = GiohangModel::where('id_nguoidung', $userId)
             ->where('id', $id)
             ->firstOrFail();
@@ -176,7 +178,8 @@ class GioHangFrontendAPI extends BaseFrontendController
      */
     public function destroy(Request $request, $id)
     {
-        $userId = $request->user()->id;
+        $user = $request->get('auth_user');
+        $userId = $user->id;
         $item = GiohangModel::where('id_nguoidung', $userId)
             ->where('id', $id)
             ->firstOrFail();

@@ -287,7 +287,7 @@ class SanPhamAllFrontendAPI extends SanphamAPI
      * @OA\Get(
     *     path="/api/sanphams-all/{id}",
      *     tags={"Tất Cả Sản phẩm (Trang Tất Cả Sản Phẩm)"},
-     *     summary="Lấy chi tiết sản phẩm",
+     *     summary="Lấy chi tiết sản phẩm , và tự động lượt xem lên 1",
      *     description="Hiển thị chi tiết sản phẩm bao gồm hình ảnh, thương hiệu, danh mục, đánh giá và biến thể có giá cao nhất.",
      *     @OA\Parameter(
      *         name="id",
@@ -325,6 +325,7 @@ class SanPhamAllFrontendAPI extends SanphamAPI
             ->with(['bienthe' => function ($q) {
                 $q->orderByDesc('giagoc')->limit(1);
             }])->findOrFail($id);
+        $query->increment('luotxem');
 
         // dd($query);
         // exit;
