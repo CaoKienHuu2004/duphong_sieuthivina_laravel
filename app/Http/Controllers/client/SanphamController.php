@@ -270,9 +270,9 @@ class SanphamController extends Controller
         $sanpham = SanPhamModel::where('slug', $slug)
             ->where('trangthai', 'Công khai')
             ->with([
+                'danhmuc',
                 'hinhanhsanpham',
                 'bienthe',
-                'danhmuc',
                 'thuonghieu'
             ])
             ->firstOrFail();
@@ -288,35 +288,48 @@ class SanphamController extends Controller
 
         $relatedProducts = $this->fetchRelatedProducts($sanpham);
 
-        $bannerquangcao = QuangcaoModel::where('trangthai', 'Hiển thị')->where('vitri', 'home_banner_product')->get();
+
+        // return response()->json([
+        //     'sanpham' => $sanpham,
+        //     'relatedProducts' => $relatedProducts,
+        // ]);
 
         return view('client.sanpham.chitiet', [
             'sanpham' => $sanpham,
-            'bannerquangcao' => $bannerquangcao,
             'relatedProducts' => $relatedProducts,
         ]);
     }
     protected function fetchRelatedProducts($sanpham)
     {
+
+        // Nếu sản phẩm không có danh mục nào được gán, trả về collection rỗng
+        if ($sanpham->danhmuc->pluck('id')->isEmpty()) {
+            return collect([]);
+        }
+
         $relatedProducts = SanPhamModel::where('trangthai', 'Công khai')
             ->where('id', '!=', $sanpham->id)
             ->whereHas('danhmuc', function ($q) use ($sanpham) {
-                $q->whereIn('id_danhmuc', $sanpham->danhmuc->pluck('id_danhmuc'));
+                // Lấy các sản phẩm có ít nhất một danh mục chung
+                $q->whereIn('id_danhmuc', $sanpham->danhmuc->pluck('id'));
             })
-            ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
+            ->with(['danhmuc','hinhanhsanpham', 'thuonghieu', 'bienthe'])
             ->withSum('bienthe', 'luotban')
             ->orderByDesc('bienthe_sum_luotban')
-            ->limit(12)
+            ->limit(10)
             ->get()
             ->map(function ($relatedSanpham) {
                 if ($relatedSanpham->bienthe->isNotEmpty()) {
+                    // Xử lý: Lấy biến thể rẻ nhất, tính giá đã giảm và xác định cờ giảm giá
                     $cheapestVariant = $relatedSanpham->bienthe->sortBy('giagoc')->first();
                     $relatedSanpham->bienthe = $cheapestVariant; 
                     $giagoc = $cheapestVariant->giagoc;
                     $giamgiaPercent = $relatedSanpham->giamgia / 100;
+                    
                     $relatedSanpham->giadagiam = intval($giagoc * (1 - $giamgiaPercent)); 
                     $relatedSanpham->is_sale = intval($relatedSanpham->giadagiam) < intval($giagoc);
                 } else {
+                    // Xử lý khi không có biến thể
                     $relatedSanpham->bienthe = null;
                     $relatedSanpham->giadagiam = null;
                     $relatedSanpham->is_sale = false;

@@ -766,7 +766,7 @@
 
     // ========================= New arrival Slider Js Start ==============
     $(".new-arrival__slider").slick({
-      slidesToShow: 6,
+      slidesToShow: 5,
       slidesToScroll: 1,
       autoplay: false,
       autoplaySpeed: 2000,
@@ -784,7 +784,7 @@
         {
           breakpoint: 1599,
           settings: {
-            slidesToShow: 6,
+            slidesToShow: 5,
             arrows: false,
           },
         },

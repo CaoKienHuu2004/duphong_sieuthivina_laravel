@@ -4,16 +4,41 @@
     Siêu Thị Vina -  Nền Tảng Bán Hàng Trực Tuyến Siêu Thị Vina
 @endsection
 
+{{-- Sử dụng Tailwind CSS cho giao diện --}}
+@section('styles')
+    <!-- <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .variant-radio:checked + label {
+            border-color: #EF4444; /* red-500 */
+            box-shadow: 0 0 0 2px #FECACA; /* red-200 shadow */
+        }
+    </style> -->
+@endsection
+
+{{-- Khởi tạo biến JavaScript để lưu trữ thông tin biến thể --}}
+@php
+    $variantsData = [];
+    $sanpham->bienthe->each(function($bienthe) use (&$variantsData) {
+        $variantsData[$bienthe->id] = [
+            'name' => $bienthe->loaibienthe->ten,
+            'original_price' => number_format($bienthe->giagoc, 0, ',', '.'),
+            'sale_price' => number_format($bienthe->giadagiam, 0, ',', '.'),
+            'is_sale' => $bienthe->is_sale,
+        ];
+    });
+    $initialVariant = $sanpham->bienthe->first();
+@endphp
+
 @section('content')
     <div class="page">
-        <section class="product-details py-40">
+        <section class="product-details pt-40 fix-scale-40">
             <div class="container container-lg">
-                <div class="row gy-4">
+                <form action="#" class="row gy-4">
                     <div class="col-xl-9">
                         <div class="row gy-4">
                             <div class="col-xl-6">
                                 <div class="product-details__left">
-                                    <div class="product-details__thumb-slider p-6 border border-gray-100 rounded-16">
+                                    <div class="product-details__thumb-slider rounded-16 p-0">
                                         @foreach ($sanpham->hinhanhsanpham as $hasp)
                                             <div class="">
                                                 <div class="product-details__thumb flex-center h-100">
@@ -27,7 +52,7 @@
                                         <div class="product-details__images-slider">
                                             @foreach ($sanpham->hinhanhsanpham as $hasp)
                                                 <div>
-                                                    <div class="max-w-120 max-h-120 h-100 flex-center border border-gray-100 rounded-16 p-8">
+                                                    <div class="max-w-120 max-h-120 h-100 flex-center rounded-16">
                                                         <img class="rounded-10" src="{{asset('assets/client')}}/images/thumbs/{{ $hasp->hinhanh }}" alt="">
                                                     </div>
                                                 </div>
@@ -57,61 +82,101 @@
                                     
                                     <h5 class="mb-12">{{ $sanpham->ten }}</h5>
                                     <div class="flex-align flex-wrap gap-12">
-                                        <div class="flex-align gap-12 flex-wrap">
+                                        @foreach ( $sanpham->danhmuc as $dm)
+                                            <a href="{{ url('san-pham?danhmuc='.$dm->slug) }}" class="btn btn-main rounded-8 py-6 px-8 text-sm">{{ $dm->ten }}</a>
+                                        @endforeach
+                                        
+                                    </div>
+                                    <div class="flex-align flex-wrap gap-12 mt-10">
+                                        <div class="flex-align gap-4 flex-wrap">
                                             <div class="flex-align gap-8">
-                                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                                <span class="text-xs fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
+                                                <span class="text-xl fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
                                             </div>
-                                            <span class="text-sm fw-medium text-neutral-600">4.7 sao</span>
+                                            <span class="text-md fw-medium text-neutral-600">4.7 </span>
                                             <span class="text-sm fw-medium text-gray-500">(21,676)</span>
                                         </div>
-                                        <span class="text-sm fw-medium text-gray-500">|</span>
-                                        <a href="#" class="text-gray-900 flex-align gap-4 hover-text-main-600"><i class="ph-bold ph-storefront"></i> Apple </a>
+                                        
+                                        @if($sanpham->bienthe->sum('luotban') > 0)
+                                            <span class="text-md fw-medium text-gray-500">|</span>
+                                            <div class="flex-align gap-8">
+                                                <span class="text-md fw-medium text-neutral-600">Lượt bán: </span>
+                                                <span class="text-md fw-medium text-gray-500">{{ $sanpham->bienthe->sum('luotban') }}</span>
+                                            </div>
+                                        @endif
+                                        @if($sanpham->luotxem > 0)
+                                        <span class="text-md fw-medium text-gray-500">|</span>
+                                        <div class="flex-align gap-8">
+                                            <span class="text-md fw-medium text-gray-500">{{ $sanpham->luotxem }}</span>
+                                            <span class="text-md fw-medium text-neutral-600">người xem</span>
+                                        </div>
+                                        @endif
+                                        
                                     </div>
+                                
                                     
                                     <!-- <span class="mt-32 text-gray-700 border-top border-gray-100 d-block"></span> -->
+                                     <ul class="mt-30">
+                                            <li class="text-gray-400 mb-14 flex-align gap-14">
+                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
+                                                    <i class="ph ph-check"></i>
+                                                </span>
+                                                <span class="text-heading fw-medium">
+                                                    Xuất xứ:
+                                                    <span class="text-gray-500"> {{ $sanpham->xuatxu }}</span>
+                                                </span>
+                                            </li>
+                                            <li class="text-gray-400 mb-14 flex-align gap-14">
+                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
+                                                    <i class="ph ph-check"></i>
+                                                </span>
+                                                <span class="text-heading fw-medium">
+                                                    Nơi sản xuất:
+                                                    <span class="text-gray-500"> {{ $sanpham->sanxuat }}</span>
+                                                </span>
+                                            </li>
+                                        </ul>
 
                                     <div class="my-32 flex-align gap-16 flex-wrap">
                                         <div class="flex-align gap-8">
-                                            <div class="flex-align gap-8 text-main-two-600">
-                                                <i class="ph-fill ph-seal-percent text-xl"></i>
-                                                -10%
+                                            @if($initialVariant && $initialVariant->is_sale)
+                                                <div class="flex-align gap-8 text-main-two-600">
+                                                    <i class="ph-fill ph-seal-percent text-xl"></i>
+                                                    -{{ $sanpham->giamgia }}%
+                                                </div>
+                                            @endif
+                                            
+                                            <h6 class="mb-0" id="current-price">
+                                                @if($initialVariant)
+                                                    {{ number_format($initialVariant->giadagiam, 0, ',', '.') }} ₫
+                                                @else
+                                                    Đang cập nhật
+                                                @endif
+                                            </h6>
+                                        </div>
+                                        @if($initialVariant && $initialVariant->is_sale)
+                                            <div class="flex-align gap-8">
+                                                <span class="text-gray-700">Giá gốc</span>
+                                                <h6 class="text-xl text-gray-400 mb-0 fw-medium text-decoration-line-through" id="original-price">{{  number_format($sanpham->bienthe->first()->giagoc, 0, ',', '.')}} ₫</h6>
                                             </div>
-                                            <h6 class="mb-0">300.000 đ</h6>
-                                        </div>
-                                        <div class="flex-align gap-8">
-                                            <span class="text-gray-700">Giá gốc</span>
-                                            <h6 class="text-xl text-gray-400 mb-0 fw-medium text-decoration-line-through">425.000 đ</h6>
-                                        </div>
+                                        @endif
                                     </div>
                                     
-                                    <span class="mt-32 pt-32 text-gray-700 border-top border-gray-100 d-block"></span>
+                                    <span class="mt-32 pt-30 text-gray-700 border-top border-gray-100 d-block"></span>
 
-                                    <div class="mt-10">
+                                    <div class="">
                                         <h6 class="mb-16">Loại sản phẩm</h6>
                                         <div class="flex-between align-items-start flex-wrap gap-16">
-                                            <!-- <div>
-                                                <span class="text-gray-900 d-block mb-12">
-                                                    Color: 
-                                                    <span class="fw-medium">Mineral Silver</span> 
-                                                </span>
-                                                <div class="color-list flex-align gap-8">
-                                                    <button type="button" class="color-list__button w-20 h-20 border border-2 border-gray-50 rounded-circle bg-info-600"></button>
-                                                    <button type="button" class="color-list__button w-20 h-20 border border-2 border-gray-50 rounded-circle bg-warning-600"></button>
-                                                    <button type="button" class="color-list__button w-20 h-20 border border-2 border-gray-50 rounded-circle bg-tertiary-600"></button>
-                                                    <button type="button" class="color-list__button w-20 h-20 border border-2 border-gray-50 rounded-circle bg-main-600"></button>
-                                                    <button type="button" class="color-list__button w-20 h-20 border border-2 border-gray-50 rounded-circle bg-gray-100"></button>
-                                                </div>
-                                            </div> -->
                                             <div>
-                                                
-                                                <div class="flex-align gap-8 flex-wrap">
-                                                    <a class="color-list__button cursor-pointer px-12 py-8 text-sm rounded-8 text-gray-900 border border-gray-200 hover-border-main-600 hover-text-main-600"> with offer </a>
-                                                    <a class="color-list__button cursor-pointer px-12 py-8 text-sm rounded-8 text-gray-900 border border-gray-200 hover-border-main-600 hover-text-main-600">12th Gen Laptop</a>
-                                                    <a class="color-list__button cursor-pointer px-12 py-8 text-sm rounded-8 text-gray-900 border border-gray-200 hover-border-main-600 hover-text-main-600">without offer</a>
+                                                <div class=" flex-align gap-8">
+                                                    @foreach($sanpham->bienthe as $bienthe)
+                                                        <input type="radio"
+                                                        @if($loop->first) checked @endif
+                                                        id="bienthe-{{ $bienthe->id }}" name="bienthe" value="{{ $bienthe->id }}" class="d-none" data-variant-id="{{ $bienthe->id }}" onclick="updatePrice(this)">
+                                                        <label for="bienthe-{{ $bienthe->id }}" 
+                                                            class="color-list__button rounded-8 px-12 py-8 border border-2 border-gray-50 hover-border-main-600 transition-1 @if($loop->first) border-gray-900 @endif ">
+                                                            {{ $bienthe->loaibienthe->ten }}
+                                                        </label>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
@@ -135,42 +200,34 @@
                     <div class="col-xl-3">
                         <div class="product-details__sidebar py-40 px-32 border border-gray-100 rounded-16">
             
-                            <div class="mb-32">
+                            <div class="mb-20">
                                 <h6 for="stock" class="mb-8 text-heading fw-semibold d-block">Giỏ hàng</h6>
                                 <span class="text-xl d-flex">
                                     <i class="ph ph-location"></i>
                                 </span>
                                 <div class="d-flex rounded-4 overflow-hidden">
-                                    <button type="button" class="quantity__minus flex-shrink-0 h-48 w-48 text-neutral-600 bg-gray-50 flex-center hover-bg-main-600 hover-text-white">
+                                    <button type="button" id="quantity-minus" class="quantity__minus flex-shrink-0 h-48 w-48 text-neutral-600 bg-gray-50 flex-center hover-bg-main-600 hover-text-white">
                                         <i class="ph ph-minus"></i>
                                     </button>
-                                    <input type="number" class="quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 px-16" id="stock" value="1" min="1">
-                                    <button type="button" class="quantity__plus flex-shrink-0 h-48 w-48 text-neutral-600 bg-gray-50 flex-center hover-bg-main-600 hover-text-white">
+                                    <input type="number" id="quantity-input" value="1" min="1" class="quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 px-16">
+                                    <button type="button" id="quantity-plus" class="quantity__plus flex-shrink-0 h-48 w-48 text-neutral-600 bg-gray-50 flex-center hover-bg-main-600 hover-text-white">
                                         <i class="ph ph-plus"></i>
                                     </button>
                                 </div>
                             </div>
-                            <div class="mb-32">
-                                <div class="flex-between flex-wrap gap-8 border-bottom border-gray-100 pb-16 mb-16">
-                                    <span class="text-gray-500">Giá</span>
-                                    
-                                    <h6 class="text-lg mb-0"><span class="text-sm text-gray-400 mb-0 fw-medium text-decoration-line-through">425.000 đ</span> 300.000 đ</h6>
-                                </div>
-                            </div>
-
-                            <a href="cart.html" class="btn btn-main flex-center gap-8 rounded-8 py-16 fw-normal mt-48">
+                            <button type="submit" class="btn btn-main flex-center gap-8 rounded-8 py-16 fw-normal mt-10 w-100">
                                 <i class="ph ph-shopping-cart-simple text-lg"></i>
                                 Thêm vào giỏ hàng
-                            </a>
+                            </button>
 
                             <div class="mt-32">
                                 
-                                <div class="px-16 py-8 bg-main-50 rounded-8 flex-between gap-24 mb-0">
+                                <a href="{{ url('san-pham?thuonghieu='.$sanpham->thuonghieu->slug) }}" class="px-16 py-8 bg-main-50 rounded-8 flex-between gap-20 mb-0" style="justify-content: start;">
                                     <span class="w-32 h-32 bg-white text-main-600 rounded-circle flex-center text-xl flex-shrink-0">
                                         <i class="ph-fill ph-storefront"></i>
                                     </span>
-                                    <span class="text-sm text-neutral-600">Cửa hàng:  <span class="fw-semibold">MR Distribution LLC</span> </span>
-                                </div>
+                                    <span class="text-sm text-neutral-600"><span class="fw-semibold">{{ $sanpham->thuonghieu->ten }}</span> </span>
+                                </a>
                             </div>
 
                             <div class="mt-32">
@@ -184,27 +241,27 @@
                                         </button>
                                         <div class="on-hover-dropdown common-dropdown border-0 inset-inline-start-auto inset-inline-end-0" >
                                             <ul class="flex-align gap-16">
-            <li>
-                <a href="https://www.facebook.com" class="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white">
-                    <i class="ph-fill ph-facebook-logo"></i>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.twitter.com" class="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white">
-                    <i class="ph-fill ph-twitter-logo"></i>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.linkedin.com" class="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white">
-                    <i class="ph-fill ph-instagram-logo"></i>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.pinterest.com" class="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white">
-                    <i class="ph-fill ph-linkedin-logo"></i>
-                </a>
-            </li>
-        </ul>
+                                                <li>
+                                                    <a href="https://www.facebook.com" class="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white">
+                                                        <i class="ph-fill ph-facebook-logo"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://www.twitter.com" class="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white">
+                                                        <i class="ph-fill ph-twitter-logo"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://www.linkedin.com" class="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white">
+                                                        <i class="ph-fill ph-instagram-logo"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://www.pinterest.com" class="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white">
+                                                        <i class="ph-fill ph-linkedin-logo"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -212,7 +269,7 @@
 
                         </div>
                     </div>
-                </div>
+                </form>
 
                 <div class="pt-80">
                     <div class="product-dContent border rounded-24">
@@ -230,157 +287,10 @@
                                 100% Satisfaction Guaranteed
                             </a> -->
                         </div>
-                        <div class="product-dContent__box">
+                        <div class="product-dContent__box py-20">
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab" tabindex="0">
-                                    <div class="mb-40">
-                                        <h6 class="mb-24">Mô tả về sản phẩm "ABCXYZ"</h6>
-                                        <p>Wherever celebrations and good times happen, the LAY'S brand will be there just as it has been for more than 75 years. With flavors almost as rich as our history, we have a chip or crisp flavor guaranteed to bring a smile on your face. </p>
-                                        <p>Morbi ut sapien vitae odio accumsan gravida. Morbi vitae erat auctor, eleifend nunc a, lobortis neque. Praesent aliquam dignissim viverra. Maecenas lacus odio, feugiat eu nunc sit amet, maximus sagittis dolor. Vivamus nisi sapien, elementum sit amet eros sit amet, ultricies cursus ipsum. Sed consequat luctus ligula. Curabitur laoreet rhoncus blandit. Aenean vel diam ut arcu pharetra dignissim ut sed leo. Vivamus faucibus, ipsum in vestibulum vulputate, lorem orci convallis quam, sit amet consequat nulla felis pharetra lacus. Duis semper erat mauris, sed egestas purus commodo vel.</p>    
-                                        <ul class="list-inside mt-32 ms-16">
-                                            <li class="text-gray-400 mb-4">8.0 oz. bag of LAY'S Classic Potato Chips</li>
-                                            <li class="text-gray-400 mb-4">Tasty LAY's potato chips are a great snack</li>
-                                            <li class="text-gray-400 mb-4">Includes three ingredients: potatoes, oil, and salt</li>
-                                            <li class="text-gray-400 mb-4">Gluten free product</li>
-                                        </ul>
-                                        <ul class="mt-32">
-                                            <li class="text-gray-400 mb-4">Made in USA</li>
-                                            <li class="text-gray-400 mb-4">Ready To Eat.</li>
-                                        </ul>
-                                    </div>
-                                    <div class="mb-40">
-                                        <h6 class="mb-24">Product Specifications</h6>
-                                        <ul class="mt-32">
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium">
-                                                    Product Type:
-                                                    <span class="text-gray-500"> Chips & Dips</span>
-                                                </span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium">
-                                                    Product Name:
-                                                    <span class="text-gray-500"> Potato Chips Classic </span>
-                                                </span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium">
-                                                    Brand:
-                                                    <span class="text-gray-500"> Lay's</span>
-                                                </span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium">
-                                                    FSA Eligible:
-                                                    <span class="text-gray-500"> No</span>
-                                                </span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium">
-                                                    Size/Count: 
-                                                    <span class="text-gray-500"> 8.0oz</span>
-                                                </span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium">
-                                                    Item Code:
-                                                    <span class="text-gray-500"> 331539</span>
-                                                </span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium">
-                                                    Ingredients:
-                                                    <span class="text-gray-500"> Potatoes, Vegetable Oil, and Salt.</span>
-                                                </span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="mb-40">
-                                        <h6 class="mb-24">Nutrition Facts</h6>
-                                        <ul class="mt-32">
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium"> Total Fat 10g 13%</span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium"> Saturated Fat 1.5g 7%</span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium"> Cholesterol 0mg 0%</span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium"> Sodium 170mg 7%</span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-heading fw-medium"> Potassium 350mg 6%</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="mb-0">
-                                        <h6 class="mb-24">More Details</h6>
-                                        <ul class="mt-32">
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-gray-500"> Lunarlon midsole delivers ultra-plush responsiveness</span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-gray-500"> Encapsulated Air-Sole heel unit for lightweight cushioning</span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-gray-500"> Colour Shown: Ale Brown/Black/Goldtone/Ale Brown</span>
-                                            </li>
-                                            <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
-                                                    <i class="ph ph-check"></i>
-                                                </span>
-                                                <span class="text-gray-500"> Style: 805899-202</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-
+                                    {{ $sanpham->mota }}
                                 </div>
                                 <div class="tab-pane fade" id="pills-reviews" role="tabpanel" aria-labelledby="pills-reviews-tab" tabindex="0">
                                     <div class="row g-4">
@@ -413,33 +323,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex align-items-start gap-24">
-                                                <img src="{{asset('assets/client')}}/images/thumbs/comment-img1.png" alt="" class="w-52 h-52 object-fit-cover rounded-circle flex-shrink-0">
-                                                <div class="flex-grow-1">
-                                                    <div class="flex-between align-items-start gap-8 ">
-                                                        <div class="">
-                                                            <h6 class="mb-12 text-md">Nicolas cage</h6>
-                                                            <div class="flex-align gap-8">
-                                                                <span class="text-md fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                                                <span class="text-md fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                                                <span class="text-md fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                                                <span class="text-md fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                                                <span class="text-md fw-medium text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <span class="text-gray-800 text-sm">3 ngày trước</span>
-                                                    </div>
-                                                    <p class="text-gray-700 mt-10">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour</p>
 
-                                                    <div class="flex-align gap-20 mt-10">
-                                                        <button class="flex-align gap-12 text-gray-700 hover-text-main-600">
-                                                            <i class="ph-bold ph-thumbs-up"></i>
-                                                            Hữu ích
-                                                        </button>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
 
                                             <div class="mt-56">
                                                 <div class="">
@@ -567,13 +451,12 @@
         <!-- ========================== Product Details Two End =========================== -->
 
             <!-- ========================== Similar Product Start ============================= -->
-        <section class="new-arrival pb-80">
+        <section class="new-arrival pb-20">
             <div class="container container-lg">
                 <div class="section-heading">
                     <div class="flex-between flex-wrap gap-8">
-                        <h5 class="mb-0">Có thể bạn sẽ thích</h5>
+                        <h5 class="mb-0">Sản phẩm tương tự</h5>
                         <div class="flex-align gap-16">
-                            <a href="shop.html" class="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline">Xem đầy đủ</a>
                             <div class="flex-align gap-8">
                                 <button type="button" id="new-arrival-prev" class="slick-prev slick-arrow flex-center rounded-circle border border-gray-100 hover-border-main-600 text-xl hover-bg-main-600 hover-text-white transition-1" >
                                     <i class="ph ph-caret-left"></i>
@@ -587,231 +470,101 @@
                 </div>
 
                 <div class="new-arrival__slider arrow-style-two">
-                    <div>
-                        <div class="product-card h-100 p-8 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                            <a href="product-details.html" class="product-card__thumb flex-center overflow-hidden">
-                                <img src="{{asset('assets/client')}}/images/thumbs/product-img7.png" alt="">
+                    @foreach ( $relatedProducts as $product)
+                        <div>
+                        <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
+                            <a href="{{ route('chi-tiet-san-pham',$product->slug) }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                                <img src="http://127.0.0.1:8000/assets/client/images/thumbs/{{ $product->hinhanhsanpham->first()->hinhanh }}" alt="{{ $product->ten }}" class="w-100 rounded-top-2">
                             </a>
-                            <div class="product-card__content p-sm-2 w-100">
-                                <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                    <a href="product-details.html" class="link text-line-2">C-500 Antioxidant Protect Dietary Supplement</a>
-                                </h6>   
-                                <div class="flex-align gap-4">
+                            <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                                <div>
+                                <div class="flex-align justify-content-between mt-5">
+                                    <div class="flex-align gap-4 w-100">
                                     <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                                    <span class="text-gray-500 text-xs"> Lucky Supermarket</span>
-                                </div>
-
-                                <div class="product-card__content mt-12">
-                                    <div class="product-card__price mb-8">
-                                        <span class="text-heading text-md fw-semibold ">25.000 đ </span>
-                                        <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> 50.000 đ</span>
+                                    <a href="{{ url('san-pham?thuonghieu='.$product->thuonghieu->slug) }}" class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="Trung Tâm Bán Hàng Siêu Thị Vina">Trung Tâm Bán Hàng Siêu Thị Vina</a>
                                     </div>
-                                    <div class="flex-align gap-6">
-                                        <span class="text-xs fw-bold text-gray-600">4.8</span>
-                                        <span class="text-15 fw-bold text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                        <span class="text-xs fw-bold text-gray-600">(17k)</span>
-                                    </div>
-                                    <a href="cart.html" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center">
-                                        Thêm giỏ hàng <i class="ph ph-shopping-cart"></i> 
-                                    </a>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-card h-100 p-8 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                            <span class="product-card__badge bg-danger-600 px-8 py-4 text-sm text-white">Giảm 50% </span>
-                            <a href="product-details.html" class="product-card__thumb flex-center overflow-hidden">
-                                <img src="{{asset('assets/client')}}/images/thumbs/product-img8.png" alt="">
-                            </a>
-                            <div class="product-card__content p-sm-2 w-100">
-                                <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                    <a href="product-details.html" class="link text-line-2">Marcel's Modern Pantry Almond Unsweetened</a>
+                                <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                                <a href="{{ route('chi-tiet-san-pham',$product->slug) }}" class="link text-line-2" tabindex="0">{{ $product->ten }}</a>
                                 </h6>
-                                <div class="flex-align gap-4">
-                                    <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                                    <span class="text-gray-500 text-xs">Lucky Supermarket</span>
-                                </div>
-
-                                <div class="product-card__content mt-12">
-                                    <div class="product-card__price mb-8">
-                                        <span class="text-heading text-md fw-semibold ">25.000 đ</span>
-                                        <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> 50.000 đ</span>
-                                    </div>
+                                <div class="flex-align justify-content-between mt-2">
                                     <div class="flex-align gap-6">
-                                        <span class="text-xs fw-bold text-gray-600">4.8</span>
-                                        <span class="text-15 fw-bold text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                        <span class="text-xs fw-bold text-gray-600">(17k)</span>
+                                    <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
+                                    <span class="text-xs fw-medium text-gray-500">4.8 
+                                        <i class="ph-fill ph-star text-warning-600"></i></span>
                                     </div>
-                                    <a href="cart.html" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center">
-                                        Thêm giỏ hàng <i class="ph ph-shopping-cart"></i> 
-                                    </a>
+                                    <div class="flex-align gap-4">
+                                    <span class="text-xs fw-medium text-gray-500">{{ $product->bienthe_sum_luotban }}</span>
+                                    <span class="text-xs fw-medium text-gray-500">Đã bán</span>
+                                    </div>
                                 </div>
+                                </div>
+                                <div class="product-card__price mt-5">
+                                @if ($product->giamgia > 0)
+                                  <div class="flex-align gap-4 text-main-two-600">
+                                    <i class="ph-fill ph-seal-percent text-sm"></i> -{{ $product->giamgia }}% 
+                                    <span class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
+                                    {{ number_format($product->bienthe->giagoc, 0, ',', '.')}} đ
+                                    </span>
+                                  </div>
+                                @endif
+                              <span class="text-heading text-lg fw-semibold">
+                                {{ number_format($product->giadagiam, 0, ',', '.')}} đ
+                              </span>
                             </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-card h-100 p-8 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                            <span class="product-card__badge bg-danger-600 px-8 py-4 text-sm text-white">Sale 50% </span>
-                            <a href="product-details.html" class="product-card__thumb flex-center overflow-hidden">
-                                <img src="{{asset('assets/client')}}/images/thumbs/product-img9.png" alt="">
-                            </a>
-                            <div class="product-card__content p-sm-2 w-100">
-                                <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                    <a href="product-details.html" class="link text-line-2">O Organics Milk, Whole, Vitamin D</a>
-                                </h6>
-                                <div class="flex-align gap-4">
-                                    <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                                    <span class="text-gray-500 text-xs">By Lucky Supermarket</span>
-                                </div>
-
-                                <div class="product-card__content mt-12">
-                                    <div class="product-card__price mb-8">
-                                        <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                                        <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                    </div>
-                                    <div class="flex-align gap-6">
-                                        <span class="text-xs fw-bold text-gray-600">4.8</span>
-                                        <span class="text-15 fw-bold text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                        <span class="text-xs fw-bold text-gray-600">(17k)</span>
-                                    </div>
-                                    <a href="cart.html" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center">
-                                        Add To Cart <i class="ph ph-shopping-cart"></i> 
-                                    </a>
-                                </div>
                             </div>
+                            </div> 
                         </div>
-                    </div>
-                    <div>
-                        <div class="product-card h-100 p-8 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                            <span class="product-card__badge bg-info-600 px-8 py-4 text-sm text-white">Best Sale </span>
-                            <a href="product-details.html" class="product-card__thumb flex-center overflow-hidden">
-                                <img src="{{asset('assets/client')}}/images/thumbs/product-img10.png" alt="">
-                            </a>
-                            <div class="product-card__content p-sm-2 w-100">
-                                <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                    <a href="product-details.html" class="link text-line-2">Whole Grains and Seeds Organic Bread</a>
-                                </h6>
-                                <div class="flex-align gap-4">
-                                    <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                                    <span class="text-gray-500 text-xs">By Lucky Supermarket</span>
-                                </div>
-
-                                <div class="product-card__content mt-12">
-                                    <div class="product-card__price mb-8">
-                                        <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                                        <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                    </div>
-                                    <div class="flex-align gap-6">
-                                        <span class="text-xs fw-bold text-gray-600">4.8</span>
-                                        <span class="text-15 fw-bold text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                        <span class="text-xs fw-bold text-gray-600">(17k)</span>
-                                    </div>
-                                    <a href="cart.html" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center">
-                                        Add To Cart <i class="ph ph-shopping-cart"></i> 
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-card h-100 p-8 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                            <a href="product-details.html" class="product-card__thumb flex-center overflow-hidden">
-                                <img src="{{asset('assets/client')}}/images/thumbs/product-img11.png" alt="">
-                            </a>
-                            <div class="product-card__content p-sm-2 w-100">
-                                <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                    <a href="product-details.html" class="link text-line-2">Lucerne Yogurt, Lowfat, Strawberry</a>
-                                </h6>
-                                <div class="flex-align gap-4">
-                                    <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                                    <span class="text-gray-500 text-xs">By Lucky Supermarket</span>
-                                </div>
-
-                                <div class="product-card__content mt-12">
-                                    <div class="product-card__price mb-8">
-                                        <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                                        <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                    </div>
-                                    <div class="flex-align gap-6">
-                                        <span class="text-xs fw-bold text-gray-600">4.8</span>
-                                        <span class="text-15 fw-bold text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                        <span class="text-xs fw-bold text-gray-600">(17k)</span>
-                                    </div>
-                                    <a href="cart.html" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center">
-                                        Add To Cart <i class="ph ph-shopping-cart"></i> 
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-card h-100 p-8 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                            <span class="product-card__badge bg-danger-600 px-8 py-4 text-sm text-white">Sale 50% </span>
-                            <a href="product-details.html" class="product-card__thumb flex-center overflow-hidden">
-                                <img src="{{asset('assets/client')}}/images/thumbs/product-img12.png" alt="">
-                            </a>
-                            <div class="product-card__content p-sm-2 w-100">
-                                <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                    <a href="product-details.html" class="link text-line-2">Nature Valley Whole Grain Oats and Honey Protein</a>
-                                </h6>
-                                <div class="flex-align gap-4">
-                                    <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                                    <span class="text-gray-500 text-xs">By Lucky Supermarket</span>
-                                </div>
-
-                                <div class="product-card__content mt-12">
-                                    <div class="product-card__price mb-8">
-                                        <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                                        <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                    </div>
-                                    <div class="flex-align gap-6">
-                                        <span class="text-xs fw-bold text-gray-600">4.8</span>
-                                        <span class="text-15 fw-bold text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                        <span class="text-xs fw-bold text-gray-600">(17k)</span>
-                                    </div>
-                                    <a href="cart.html" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center">
-                                        Add To Cart <i class="ph ph-shopping-cart"></i> 
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="product-card h-100 p-8 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                            <span class="product-card__badge bg-info-600 px-8 py-4 text-sm text-white">Best Sale </span>
-                            <a href="product-details.html" class="product-card__thumb flex-center overflow-hidden">
-                                <img src="{{asset('assets/client')}}/images/thumbs/product-img10.png" alt="">
-                            </a>
-                            <div class="product-card__content p-sm-2 w-100">
-                                <h6 class="title text-lg fw-semibold mt-12 mb-8">
-                                    <a href="product-details.html" class="link text-line-2">Whole Grains and Seeds Organic Bread</a>
-                                </h6>
-                                <div class="flex-align gap-4">
-                                    <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                                    <span class="text-gray-500 text-xs">By Lucky Supermarket</span>
-                                </div>
-
-                                <div class="product-card__content mt-12">
-                                    <div class="product-card__price mb-8">
-                                        <span class="text-heading text-md fw-semibold ">$14.99 <span class="text-gray-500 fw-normal">/Qty</span> </span>
-                                        <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> $28.99</span>
-                                    </div>
-                                    <div class="flex-align gap-6">
-                                        <span class="text-xs fw-bold text-gray-600">4.8</span>
-                                        <span class="text-15 fw-bold text-warning-600 d-flex"><i class="ph-fill ph-star"></i></span>
-                                        <span class="text-xs fw-bold text-gray-600">(17k)</span>
-                                    </div>
-                                    <a href="cart.html" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center">
-                                        Add To Cart <i class="ph ph-shopping-cart"></i> 
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
+                    
                 </div>
             </div>
         </section>
         <!-- ========================== Similar Product End ============================= -->
     </div>
+    <script>
+    // 1. Lưu trữ dữ liệu biến thể từ PHP vào JavaScript
+    const variants = @json($variantsData);
+
+    /**
+     * Cập nhật giá sản phẩm dựa trên biến thể được chọn.
+     * @param {HTMLInputElement} element - Nút radio được click.
+     */
+    function updatePrice(element) {
+        const variantId = element.value;
+        const variant = variants[variantId];
+        
+        if (!variant) {
+            console.error('Không tìm thấy dữ liệu biến thể với ID:', variantId);
+            return;
+        }
+
+        const currentPriceElement = document.getElementById('current-price');
+        const originalPriceElement = document.getElementById('original-price');
+        const priceContainer = document.querySelector('.price-container');
+
+        // 2. Cập nhật Giá đang bán
+        currentPriceElement.textContent = variant.sale_price + ' ₫';
+
+        // 3. Cập nhật Giá gốc (gạch ngang)
+        if (variant.is_sale) {
+            if (!originalPriceElement) {
+                // Tạo element nếu chưa có (dùng lại cấu trúc HTML để tránh lỗi)
+                const priceWrapper = currentPriceElement.closest('div').parentElement;
+                const originalSpan = document.createElement('span');
+                originalSpan.id = 'original-price';
+                originalSpan.className = 'text-xl text-gray-400 mb-0 fw-medium text-decoration-line-through';
+                currentPriceElement.after(originalSpan);
+                originalPriceElement = originalSpan;
+            }
+            originalPriceElement.textContent = variant.original_price + ' ' + ' ₫';
+            originalPriceElement.style.display = 'inline';
+        } else {
+            // Ẩn giá gốc nếu không có giảm giá
+            if (originalPriceElement) {
+                originalPriceElement.style.display = 'none';
+            }
+        }
+    }
+</script>
 @endsection

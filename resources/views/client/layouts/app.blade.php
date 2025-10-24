@@ -26,6 +26,8 @@
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/main.css" />
 </head>
 
+@yield('styles')
+
 <body>
   <!--==================== Preloader Start ====================-->
   {{-- <div class="preloader">
@@ -537,6 +539,7 @@
     </div>
   </div>
   <!-- ==================== Footer Two End Here ==================== -->
+
 
   <!-- Jquery js -->
   <script src="{{asset('assets/client')}}/js/jquery-3.7.1.min.js"></script>
