@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 6.0.0-dev+20251008.967007883e
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 25, 2025 at 11:31 AM
+-- Generation Time: Oct 26, 2025 at 01:32 PM
 -- Server version: 8.4.3
--- PHP Version: 8.3.16
+-- PHP Version: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -78,7 +78,7 @@ INSERT INTO `bienthe` (`id`, `id_loaibienthe`, `id_sanpham`, `giagoc`, `soluong`
 (15, 4, 13, 90000, 240, 7, 142, 'Còn hàng', NULL),
 (16, 2, 14, 369000, 75, 20, 472, 'Còn hàng', NULL),
 (17, 5, 15, 282000, 25, 0, 782, 'Còn hàng', NULL),
-(18, 6, 15, 282000, 23, 0, 0, 'Còn hàng', NULL),
+(18, 6, 15, 300000, 23, 0, 0, 'Còn hàng', NULL),
 (19, 3, 16, 249000, 2, 0, 187, 'Sắp hết hàng', NULL),
 (20, 3, 17, 220800, 12, 0, 17, 'Còn hàng', NULL),
 (21, 8, 18, 69000, 76, 5, 76, 'Còn hàng', NULL),
@@ -88,11 +88,12 @@ INSERT INTO `bienthe` (`id`, `id_loaibienthe`, `id_sanpham`, `giagoc`, `soluong`
 (25, 1, 22, 42000, 7, 0, 3, 'Sắp hết hàng', NULL),
 (26, 9, 23, 290000, 100, 0, 74, 'Còn hàng', NULL),
 (27, 8, 22, 89000, 123, 0, 3, 'Còn hàng', NULL),
-(28, 10, 24, 699000, 20, 0, 0, 'Còn hàng', NULL),
-(29, 11, 25, 690000, 24, 0, 20, 'Còn hàng', NULL),
-(30, 7, 26, 560000, 123, 0, 0, 'Còn hàng', NULL),
-(31, 9, 27, 89000, 12, 0, 0, 'Còn hàng', NULL),
-(32, 8, 26, 799000, 87, 25, 123, 'Còn hàng', NULL);
+(28, 11, 24, 285000, 800, 0, 1300, 'Còn hàng', NULL),
+(29, 10, 24, 285000, 401, 0, 268, 'Còn hàng', NULL),
+(30, 11, 25, 51000, 234, 0, 7500, 'Còn hàng', NULL),
+(31, 12, 25, 51000, 856, 0, 3300, 'Còn hàng', NULL),
+(32, 13, 26, 3800000, 0, 0, 27, 'Còn hàng', NULL),
+(33, 14, 26, 3400000, 1246, 0, 23, 'Còn hàng', NULL);
 
 -- --------------------------------------------------------
 
@@ -221,11 +222,7 @@ INSERT INTO `danhmuc_sanpham` (`id`, `id_danhmuc`, `id_sanpham`) VALUES
 (27, 6, 20),
 (28, 6, 21),
 (29, 6, 22),
-(30, 6, 23),
-(31, 4, 24),
-(32, 4, 25),
-(33, 4, 26),
-(34, 4, 27);
+(30, 6, 23);
 
 -- --------------------------------------------------------
 
@@ -378,30 +375,23 @@ INSERT INTO `hinhanh_sanpham` (`id`, `id_sanpham`, `hinhanh`, `trangthai`, `dele
 (78, 23, 'tam-lot-abena-pad-45x45-1.webp', 'Hiển thị', NULL),
 (79, 23, 'tam-lot-abena-pad-45x45-2.webp', 'Hiển thị', NULL),
 (80, 23, 'tam-lot-abena-pad-45x45-3.webp', 'Hiển thị', NULL),
-(81, 24, 'serum-angels-liquid-glutathione-plus-niacinamide-cica-ampoule-ho-tro-lam-trang-kiem-soat-dau-thu-nho-lo-chan-long-chai-45ml-1.webp', 'Hiển thị', NULL),
-(82, 24, 'serum-angels-liquid-glutathione-plus-niacinamide-cica-ampoule-ho-tro-lam-trang-kiem-soat-dau-thu-nho-lo-chan-long-chai-45ml-2.webp', 'Hiển thị', NULL),
-(83, 24, 'serum-angels-liquid-glutathione-plus-niacinamide-cica-ampoule-ho-tro-lam-trang-kiem-soat-dau-thu-nho-lo-chan-long-chai-45ml-3.webp', 'Hiển thị', NULL),
-(84, 24, 'serum-angels-liquid-glutathione-plus-niacinamide-cica-ampoule-ho-tro-lam-trang-kiem-soat-dau-thu-nho-lo-chan-long-chai-45ml-4.webp', 'Hiển thị', NULL),
-(85, 24, 'serum-angels-liquid-glutathione-plus-niacinamide-cica-ampoule-ho-tro-lam-trang-kiem-soat-dau-thu-nho-lo-chan-long-chai-45ml-5.webp', 'Hiển thị', NULL),
-(86, 24, 'serum-angels-liquid-glutathione-plus-niacinamide-cica-ampoule-ho-tro-lam-trang-kiem-soat-dau-thu-nho-lo-chan-long-chai-45ml-6.webp', 'Hiển thị', NULL),
-(87, 25, 'thanh-lan-serum-cellbn-ho-tro-cai-thien-nep-nhan-giup-da-san-chac-peptide-collagen-adenosine-15ml-1.webp', 'Hiển thị', NULL),
-(88, 25, 'thanh-lan-serum-cellbn-ho-tro-cai-thien-nep-nhan-giup-da-san-chac-peptide-collagen-adenosine-15ml-2.webp', 'Hiển thị', NULL),
-(89, 25, 'thanh-lan-serum-cellbn-ho-tro-cai-thien-nep-nhan-giup-da-san-chac-peptide-collagen-adenosine-15ml-3.webp', 'Hiển thị', NULL),
-(90, 25, 'thanh-lan-serum-cellbn-ho-tro-cai-thien-nep-nhan-giup-da-san-chac-peptide-collagen-adenosine-15ml-4.webp', 'Hiển thị', NULL),
-(91, 25, 'thanh-lan-serum-cellbn-ho-tro-cai-thien-nep-nhan-giup-da-san-chac-peptide-collagen-adenosine-15ml-5.webp', 'Hiển thị', NULL),
-(92, 25, 'thanh-lan-serum-cellbn-ho-tro-cai-thien-nep-nhan-giup-da-san-chac-peptide-collagen-adenosine-15ml-6.webp', 'Hiển thị', NULL),
-(93, 26, 'nuoc-tay-trang-rua-mat-cap-am-can-bang-do-ph-tren-da-cell-fusion-c-low-ph-pharrier-cleansing-water-1.webp', 'Hiển thị', NULL),
-(94, 26, 'nuoc-tay-trang-rua-mat-cap-am-can-bang-do-ph-tren-da-cell-fusion-c-low-ph-pharrier-cleansing-water-2.webp', 'Hiển thị', NULL),
-(95, 26, 'nuoc-tay-trang-rua-mat-cap-am-can-bang-do-ph-tren-da-cell-fusion-c-low-ph-pharrier-cleansing-water-3.webp', 'Hiển thị', NULL),
-(96, 26, 'nuoc-tay-trang-rua-mat-cap-am-can-bang-do-ph-tren-da-cell-fusion-c-low-ph-pharrier-cleansing-water-4.webp', 'Hiển thị', NULL),
-(97, 26, 'nuoc-tay-trang-rua-mat-cap-am-can-bang-do-ph-tren-da-cell-fusion-c-low-ph-pharrier-cleansing-water-5.webp', 'Hiển thị', NULL),
-(98, 26, 'nuoc-tay-trang-rua-mat-cap-am-can-bang-do-ph-tren-da-cell-fusion-c-low-ph-pharrier-cleansing-water-6.webp', 'Hiển thị', NULL),
-(100, 27, 'mat-na-bun-luvum-pore-reset-mud-mask-giup-lam-sach-thu-nho-lo-chan-long-mieng-le-16g-2.webp', 'Hiển thị', NULL),
-(102, 27, 'mat-na-bun-luvum-pore-reset-mud-mask-giup-lam-sach-thu-nho-lo-chan-long-mieng-le-16g-4.webp', 'Hiển thị', NULL),
-(103, 27, 'mat-na-bun-luvum-pore-reset-mud-mask-giup-lam-sach-thu-nho-lo-chan-long-mieng-le-16g-5.webp', 'Hiển thị', NULL),
-(104, 27, 'mat-na-bun-luvum-pore-reset-mud-mask-giup-lam-sach-thu-nho-lo-chan-long-mieng-le-16g-6.webp', 'Hiển thị', NULL),
-(105, 27, 'mat-na-bun-luvum-pore-reset-mud-mask-giup-lam-sach-thu-nho-lo-chan-long-mieng-le-16g-7.webp', 'Hiển thị', NULL),
-(106, 27, 'mat-na-bun-luvum-pore-reset-mud-mask-giup-lam-sach-thu-nho-lo-chan-long-mieng-le-16g-8.webp', 'Hiển thị', NULL);
+(81, 24, 'nuoc-yen-sao-nest100-lon-190ml-khay-30-lon-1.webp', 'Hiển thị', NULL),
+(82, 24, 'nuoc-yen-sao-nest100-lon-190ml-khay-30-lon-2.webp', 'Hiển thị', NULL),
+(83, 24, 'nuoc-yen-sao-nest100-lon-190ml-khay-30-lon-3.webp', 'Hiển thị', NULL),
+(84, 24, 'nuoc-yen-sao-nest100-lon-190ml-khay-30-lon-4.webp', 'Hiển thị', NULL),
+(85, 24, 'nuoc-yen-sao-nest100-lon-190ml-khay-30-lon-5.webp', 'Hiển thị', NULL),
+(86, 24, 'nuoc-yen-sao-nest100-lon-190ml-khay-30-lon-6.webp', 'Hiển thị', NULL),
+(87, 25, 'nuoc-yen-sao-nest100-lon-190ml-hop-5-lon-1.webp', 'Hiển thị', NULL),
+(88, 25, 'nuoc-yen-sao-nest100-lon-190ml-hop-5-lon-2.webp', 'Hiển thị', NULL),
+(89, 25, 'nuoc-yen-sao-nest100-lon-190ml-hop-5-lon-3.webp', 'Hiển thị', NULL),
+(90, 25, 'nuoc-yen-sao-nest100-lon-190ml-hop-5-lon-4.webp', 'Hiển thị', NULL),
+(91, 25, 'nuoc-yen-sao-nest100-lon-190ml-hop-5-lon-5.webp', 'Hiển thị', NULL),
+(92, 25, 'nuoc-yen-sao-nest100-lon-190ml-hop-5-lon-6.webp', 'Hiển thị', NULL),
+(93, 26, 'yen-to-nest100-hop-50g-tui-1.webp', 'Hiển thị', NULL),
+(94, 26, 'yen-to-nest100-hop-50g-tui-2.webp', 'Hiển thị', NULL),
+(95, 26, 'yen-to-nest100-hop-50g-tui-3.webp', 'Hiển thị', NULL),
+(96, 26, 'yen-to-nest100-hop-50g-tui-4.webp', 'Hiển thị', NULL),
+(97, 26, 'yen-to-nest100-hop-50g-tui-5.webp', 'Hiển thị', NULL);
 
 -- --------------------------------------------------------
 
@@ -429,8 +419,11 @@ INSERT INTO `loaibienthe` (`id`, `ten`, `trangthai`) VALUES
 (7, 'Chai', 'Hiển thị'),
 (8, 'Bình xịt', 'Hiển thị'),
 (9, 'Cái', 'Hiển thị'),
-(10, 'Chai 45ml', 'Hiển thị'),
-(11, 'Loại 15ml', 'Hiển thị');
+(10, 'Đường ăn kiêng (190ml/lon)', 'Hiển thị'),
+(11, 'Có đường (190ml/lon)', 'Hiển thị'),
+(12, 'Plus ít đường (190ml/lon)', 'Hiển thị'),
+(13, 'Rút lông loại đặc biệt (50g/hộp)', 'Hiển thị'),
+(14, 'Tinh chế loại 1 (50g/hộp)', 'Hiển thị');
 
 -- --------------------------------------------------------
 
@@ -580,31 +573,30 @@ CREATE TABLE `sanpham` (
 --
 
 INSERT INTO `sanpham` (`id`, `id_thuonghieu`, `ten`, `slug`, `mota`, `xuatxu`, `sanxuat`, `trangthai`, `giamgia`, `luotxem`, `deleted_at`) VALUES
-(1, 1, 'Keo ong xanh Tracybee Propolis Mint & Honey – Giảm đau rát họng, ho, viêm họng (Vị Bạc Hà)', 'keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha', 'Bạn đang tìm kiếm giải pháp kháng khuẩn tự nhiên và giảm đau họng tức thì? Keo ong xanh Tracybee Propolis Mint & Honey là sự kết hợp hoàn hảo giữa dược liệu quý từ thiên nhiên và hương vị the mát, giúp bạn vượt qua những cơn đau rát họng, ho và viêm họng khó chịu một cách nhanh chóng.', 'Brazil', 'Nhập khẩu chính ngạch bởi Siêu Thị Vina', 'Công khai', 10, 0, NULL),
+(1, 1, 'Keo ong xanh Tracybee Propolis Mint & Honey – Giảm đau rát họng, ho, viêm họng (Vị Bạc Hà)', 'keo-ong-xanh-tracybee-propolis-mint-honey-giam-dau-rat-hong-ho-viem-hong-vi-bac-ha', 'Bạn đang tìm kiếm giải pháp kháng khuẩn tự nhiên và giảm đau họng tức thì? Keo ong xanh Tracybee Propolis Mint & Honey là sự kết hợp hoàn hảo giữa dược liệu quý từ thiên nhiên và hương vị the mát, giúp bạn vượt qua những cơn đau rát họng, ho và viêm họng khó chịu một cách nhanh chóng.', 'Brazil', 'Nhập khẩu chính ngạch bởi Siêu Thị Vina', 'Công khai', 10, 1, NULL),
 (2, 1, 'Mật ong Tây Bắc đông trùng hạ thảo X3 (Hũ 240g)', 'mat-ong-tay-bac-dong-trung-ha-thao-x3-hu-240g', 'Mật ong Tây Bắc Đông Trùng Hạ Thảo X3 là siêu phẩm bồi bổ sức khỏe, kết hợp giữa mật ong rừng Tây Bắc nguyên chất và hàm lượng Đông Trùng Hạ Thảo được tăng cường gấp 3 lần (X3). Sản phẩm mang đến giải pháp tiện lợi và hiệu quả tối ưu để nâng cao thể trạng, tăng cường đề kháng và phục hồi sức khỏe.', 'Việt Nam', 'Việt Nam', 'Công khai', 20, 0, NULL),
-(3, 1, 'Sâm Ngọc Linh trường sinh đỏ (Thùng 24lon)', 'sam-ngoc-linh-truong-sinh-do-thung-24lon', 'Sâm Ngọc Linh Trường Sinh Đỏ là tinh hoa của dược liệu quý hiếm, mang đến giải pháp tiện lợi để bồi bổ sức khỏe và nâng cao thể trạng mỗi ngày. Được chiết xuất từ Sâm Ngọc Linh quý giá – \"Quốc bảo của Việt Nam\" – sản phẩm ở dạng lon uống liền giúp bạn hấp thu trọn vẹn dưỡng chất một cách nhanh chóng và hiệu quả.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 1, NULL),
+(3, 1, 'Sâm Ngọc Linh trường sinh đỏ (Thùng 24lon)', 'sam-ngoc-linh-truong-sinh-do-thung-24lon', 'Sâm Ngọc Linh Trường Sinh Đỏ là tinh hoa của dược liệu quý hiếm, mang đến giải pháp tiện lợi để bồi bổ sức khỏe và nâng cao thể trạng mỗi ngày. Được chiết xuất từ Sâm Ngọc Linh quý giá – \"Quốc bảo của Việt Nam\" – sản phẩm ở dạng lon uống liền giúp bạn hấp thu trọn vẹn dưỡng chất một cách nhanh chóng và hiệu quả.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 3, NULL),
 (4, 1, 'Tinh dầu tràm tự nhiên ECO - Hỗ trợ giảm ho, cảm cúm, sổ mũi, cảm lạnh (Lọ 30ml)', 'tinh-dau-tram-tu-nhien-eco-ho-tro-giam-ho-cam-cum-so-mui-cam-lanh-lo-30ml', 'Tinh Dầu Tràm Tự Nhiên ECO là sản phẩm chiết xuất 100% từ lá tràm nguyên chất, mang trong mình những công dụng truyền thống tuyệt vời trong việc bảo vệ sức khỏe, đặc biệt là hệ hô hấp. Với khả năng kháng khuẩn, làm ấm và thư giãn, Tinh dầu Tràm ECO là người bạn đồng hành không thể thiếu trong tủ thuốc gia đình, giúp đối phó hiệu quả với các triệu chứng cảm thông thường.', 'Việt Nam', 'Việt Nam', 'Công khai', 85, 0, NULL),
 (5, 1, 'Sữa non tổ yến Papamilk Height & Gain giúp tăng cân tăng chiều cao cho Trẻ từ 1-19 tuổi - Lon 830G', 'sua-non-to-yen-papamilk-height-gain-giup-tang-can-tang-chieu-cao-cho-tre-tu-1-19-tuoi-lon-830g', 'Sữa Non Tổ Yến Papamilk Height & Gain là công thức dinh dưỡng đột phá được thiết kế chuyên biệt để hỗ trợ tăng cân khỏe mạnh và tối ưu hóa chiều cao cho trẻ em và thanh thiếu niên từ 1 đến 19 tuổi. Sự kết hợp độc đáo giữa Sữa Non cao cấp, Tổ Yến quý giá cùng hệ dưỡng chất khoa học giúp con bạn xây dựng nền tảng vững chắc cho một tương lai phát triển vượt trội.', 'Việt Nam', 'Việt Nam', 'Công khai', 20, 0, NULL),
-(6, 1, 'hahaha', 'hahahaha', 'ádasdasd', 'ss', 'ss', 'Công khai', 20, 1, NULL),
-(9, 1, 'Thực phẩm bảo vệ sức khỏe: Midu MenaQ7 180mcg', 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg', 'Midu MenaQ7 180mcg bổ sung canxi, Vitamin D3, Vitamin K2 dạng MenaQ7 và Arginine phù hợp với tất cả độ tuổi từ 1 đến 100 tuổi. Đặc biệt giúp phát triển chiều cao cho trẻ em 1-15 tuổi; mẹ bầu bổ sung canxi trong giai đoạn thai kì không gây tiểu đường, không gây táo bón và giúp con cao ngay từ trong bụng mẹ.', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 26, NULL),
-(10, 3, 'Collagen thủy phân hỗ trợ Da Móng Tóc Acai Labs Marine Collagen Beauty Australia 90v', 'collagen-thuy-phan-ho-tro-da-mong-toc-acai-labs-marine-collagen-beauty-australia-90v', 'Acacia Labs, với trụ sở chính tại Sydney, Australia, là thương hiệu hàng đầu trong lĩnh vực sản xuất thực phẩm chức năng, vitamin và khoáng chất. Chúng tôi tập trung vào việc nghiên cứu và phát triển các sản phẩm chăm sóc sức khỏe và sắc đẹp, mang đến cho khách hàng những giải pháp toàn diện cho một cuộc sống khỏe mạnh, tràn đầy năng lượng và hạnh phúc.\r\n\r\nKhởi nguồn từ vẻ đẹp thật sự đến từ bên trong, phòng thí nghiệm Acaci Labs với đội ngũ các chuyên gia hàng đầu thế giới đã không ngừng nghiên cứu tìm ra công thức và sản phẩm chất lượng tốt nhất để mang đến hạnh phúc lâu dài cho người sử dụng.', 'Australia', 'Australia', 'Công khai', 0, 68, NULL),
+(6, 1, 'hahaha', 'hahahaha', 'ádasdasd', 'ss', 'ss', 'Công khai', 20, 3, NULL),
+(9, 1, 'Thực phẩm bảo vệ sức khỏe: Midu MenaQ7 180mcg', 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg', 'Midu MenaQ7 180mcg bổ sung canxi, Vitamin D3, Vitamin K2 dạng MenaQ7 và Arginine phù hợp với tất cả độ tuổi từ 1 đến 100 tuổi. Đặc biệt giúp phát triển chiều cao cho trẻ em 1-15 tuổi; mẹ bầu bổ sung canxi trong giai đoạn thai kì không gây tiểu đường, không gây táo bón và giúp con cao ngay từ trong bụng mẹ.', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 53, NULL),
+(10, 3, 'Collagen thủy phân hỗ trợ Da Móng Tóc Acai Labs Marine Collagen Beauty Australia 90v', 'collagen-thuy-phan-ho-tro-da-mong-toc-acai-labs-marine-collagen-beauty-australia-90v', 'Acacia Labs, với trụ sở chính tại Sydney, Australia, là thương hiệu hàng đầu trong lĩnh vực sản xuất thực phẩm chức năng, vitamin và khoáng chất. Chúng tôi tập trung vào việc nghiên cứu và phát triển các sản phẩm chăm sóc sức khỏe và sắc đẹp, mang đến cho khách hàng những giải pháp toàn diện cho một cuộc sống khỏe mạnh, tràn đầy năng lượng và hạnh phúc.\r\n\r\nKhởi nguồn từ vẻ đẹp thật sự đến từ bên trong, phòng thí nghiệm Acaci Labs với đội ngũ các chuyên gia hàng đầu thế giới đã không ngừng nghiên cứu tìm ra công thức và sản phẩm chất lượng tốt nhất để mang đến hạnh phúc lâu dài cho người sử dụng.', 'Australia', 'Australia', 'Công khai', 0, 84, NULL),
 (11, 1, 'Viên uống Bishin Tripeptide Collagen Nhật Bản 60v', 'vien-uong-bishin-tripeptide-collagen-nhat-ban-60v', 'BISHIN chứa tinh chất Collagen tripeptide giúp tăng cường khả năng hấp thụ cho cơ thể, cấu trúc da, giúp da giữ được sự săn chắc, đàn hồi, tươi trẻ, hạn chế được các nếp nhăn (dấu hiệu của sự lão hóa) xuất hiện.', 'Nhật Bản', 'Phân phối tại Việt Nam', 'Công khai', 0, 3, NULL),
-(12, 2, 'Dưỡng mi tế bào gốc C’Choi - Bio Placenta Lash Serum', 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum', 'DƯỠNG MI TẾ BÀO GỐC C’CHOI Bio-Placenta Lash Serum', 'Việt Nam', 'Việt Nam', 'Công khai', 30, 23, NULL),
-(13, 1, 'Nước rửa bát Bio Formula - Bơ và Lô Hội (Túi 500ml)', 'nuoc-rua-bat-bio-formula-bo-va-lo-hoi-tui-500ml', 'Chiết xuất lô hội giúp làm dịu da tay khi tiếp xúc với chất tẩy rửa, đặc biệt dịu nhẹ với những người có da nhạy cảm. Dầu quả bơ dưỡng ẩm, bảo vệ da tay nhờ các acid béo thiết yếu trong dầu bơ. Chiết xuất rễ cây lá giang hỗ trợ làm sạch an toàn, giảm vi khuẩn bám trên bề mặt bát đĩa.', 'Ukraine', 'Ukraine', 'Công khai', 0, 1200, NULL),
-(14, 1, 'Bánh Trung Thu 2025 - Thu An Nhiên (bánh chay hộp 2 bánh 1 trà)', 'banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra', 'Tết Trung Thu - Tết Đoàn Viên là dịp lý tưởng để gửi tặng những món quà ý nghĩa cho bạn bè, gia đình hay đối tác. Không chỉ đơn thuần là một nét đẹp văn hóa, quà tặng Trung Thu còn là biểu hiện của tấm chân tình và lời chúc mọi điều viên mãn. \r\n\r\nThấu hiểu và trân trọng giá trị truyền thống, Nonglamfood gửi đến quý khách hàng bộ quà tặng Trung Thu cao cấp “Thu An Nhiên”. Bánh được tinh tuyển từ dược liệu thượng hạng, làm hoàn toàn thủ công bởi các nghệ nhân có hơn 30 năm kinh nghiệm.\r\n\r\nNonglamfood ra mắt set “Thu An Nhiên” với hai loại bánh trung thu chay đặc biệt, được làm từ các nguyên liệu thượng hạng như blueberry, đông trùng hạ thảo kết hợp với các loại hạt dinh dưỡng như hạt macca, hạt sen,... hứa hẹn không chỉ mang đến những trải nghiệm tuyệt vời khi thưởng thức mà còn mang lại những lợi ích tuyệt vời về sức khỏe.\r\n\r\nTrung thu này, hãy để Nonglamfood đồng hành cùng bạn trên hành trình gửi trao “mỹ vị” mùa trăng đến những người yêu thương của mình nhé! ', 'Việt Nam', 'Việt Nam', 'Công khai', 70, 33, NULL),
-(15, 1, 'Hạt điều rang muối loại 1 (còn vỏ lụa) Happy Nuts 500g', 'hat-dieu-rang-muoi-loai-1-con-vo-lua-happy-nuts-500g', 'Hạt điều rang muối Happy Nuts là một trong những loại hạt có hàm lượng carbohydrate, chất xơ thấp, nhưng chúng lại chứa nhiều vitamin, khoáng chất và chất chống oxy hóa. Chúng bao gồm vitamin E, K và B6, cùng với các khoáng chất như đồng, phốt pho, kẽm, magiê, sắt và selen.', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 3, NULL),
-(16, 1, 'Kẹo Quả Sâm không đường Free Suger Ginseng Berry S candy 200g', 'keo-qua-sam-khong-duong-free-suger-ginseng-berry-s-candy-200g', 'Giảm đau họng. (không nên ngậm quá 3 viên/ ngày)\r\n\r\nTăng sinh Collagen.\r\n\r\nCân bằng huyết áp, ổn định thần kinh (khi nhức đầu hay mệt mỏi hãy dùng 1 viên và nghỉ ngơi sau 30 phút sẽ thấy giảm các triệu chứng khó chịu).\r\n\r\nGiảm triệu chứng chóng mặt, buồn nôn do say tàu xe\r\n\r\nBổ sung năng lượng nhanh, giảm stress, lo lắng, nhức đầu, chóng mặt.\r\n\r\nHạn chế cơn thèm ngọt, cung cấp năng lượng cho người bị tiểu đường', 'Hàn Quốc', 'KORYO CONFECTIONERY CO., LTD', 'Công khai', 25, 12, NULL),
-(17, 1, 'Bột Matcha Gạo Rang Nhật Bản ONELIFE (Gói 100g)', 'bot-matcha-gao-rang-nhat-ban-onelife-goi-100g', 'Bột Matcha Gạo Rang Nhật Bản Onelife Onlife (Gói 100g) là loại bột trà cao cấp, nhuyễn mịn, được kết hợp giữa bột trà xanh Matcha Nhật Bản và chiết xuất gạo Nhật Niigata Koshihikari rang chín theo tỉ lệ đặc biệt, tạo nên vị trà ngọt hậu tự nhiên, không thêm đường hay bất kỳ thành phần hương liệu nào khác.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 115, NULL),
-(18, 1, 'Nước rửa chén sả chanh COME ON làm sạch bát đĩa, an toàn da tay 1 lít', 'nuoc-rua-chen-sa-chanh-come-on-lam-sach-bat-dia-an-toan-da-tay-1-lit', 'Tên sản phẩm: Nước rửa chén sả chanh COME ON làm sạch bát đĩa, an toàn da tay 1 lít\r\nDung tích: 1 lít\r\nThương hiệu: COME ON', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 67, NULL),
-(19, 1, 'Găng lau Abena Wash Gloves (50 miếng/gói)', 'gang-lau-abena-wash-gloves-50-mienggoi', 'Abena là tập đoàn sản xuất sản phẩm chăm sóc sức khỏe hàng đầu đến từ Đan Mạch. Thành lập từ năm 1953, trải qua một giai đoạn hình thành và phát triển, Abena đã chinh phục được các thị trường khó tính Bắc Âu bằng chất lượng sản phẩm cũng như trách nhiệm xã hội của mình. Hầu hết các sản phẩm của công ty đều qua kiểm nghiệm lâm sàn của các chuyên gia da liễu và nhận được các chứng nhận y tế nghiêm ngặt của thị trường Bắc Âu như: Nordic Eco-Label, Asthma Allegry Nordic.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 51, NULL),
+(12, 2, 'Dưỡng mi tế bào gốc C’Choi - Bio Placenta Lash Serum', 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum', 'DƯỠNG MI TẾ BÀO GỐC C’CHOI Bio-Placenta Lash Serum', 'Việt Nam', 'Việt Nam', 'Công khai', 30, 45, NULL),
+(13, 1, 'Nước rửa bát Bio Formula - Bơ và Lô Hội (Túi 500ml)', 'nuoc-rua-bat-bio-formula-bo-va-lo-hoi-tui-500ml', 'Chiết xuất lô hội giúp làm dịu da tay khi tiếp xúc với chất tẩy rửa, đặc biệt dịu nhẹ với những người có da nhạy cảm. Dầu quả bơ dưỡng ẩm, bảo vệ da tay nhờ các acid béo thiết yếu trong dầu bơ. Chiết xuất rễ cây lá giang hỗ trợ làm sạch an toàn, giảm vi khuẩn bám trên bề mặt bát đĩa.', 'Ukraine', 'Ukraine', 'Công khai', 0, 1206, NULL),
+(14, 1, 'Bánh Trung Thu 2025 - Thu An Nhiên (bánh chay hộp 2 bánh 1 trà)', 'banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra', 'Tết Trung Thu - Tết Đoàn Viên là dịp lý tưởng để gửi tặng những món quà ý nghĩa cho bạn bè, gia đình hay đối tác. Không chỉ đơn thuần là một nét đẹp văn hóa, quà tặng Trung Thu còn là biểu hiện của tấm chân tình và lời chúc mọi điều viên mãn. \r\n\r\nThấu hiểu và trân trọng giá trị truyền thống, Nonglamfood gửi đến quý khách hàng bộ quà tặng Trung Thu cao cấp “Thu An Nhiên”. Bánh được tinh tuyển từ dược liệu thượng hạng, làm hoàn toàn thủ công bởi các nghệ nhân có hơn 30 năm kinh nghiệm.\r\n\r\nNonglamfood ra mắt set “Thu An Nhiên” với hai loại bánh trung thu chay đặc biệt, được làm từ các nguyên liệu thượng hạng như blueberry, đông trùng hạ thảo kết hợp với các loại hạt dinh dưỡng như hạt macca, hạt sen,... hứa hẹn không chỉ mang đến những trải nghiệm tuyệt vời khi thưởng thức mà còn mang lại những lợi ích tuyệt vời về sức khỏe.\r\n\r\nTrung thu này, hãy để Nonglamfood đồng hành cùng bạn trên hành trình gửi trao “mỹ vị” mùa trăng đến những người yêu thương của mình nhé! ', 'Việt Nam', 'Việt Nam', 'Công khai', 70, 59, NULL),
+(15, 1, 'Hạt điều rang muối loại 1 (còn vỏ lụa) Happy Nuts 500g', 'hat-dieu-rang-muoi-loai-1-con-vo-lua-happy-nuts-500g', 'Hạt điều rang muối Happy Nuts là một trong những loại hạt có hàm lượng carbohydrate, chất xơ thấp, nhưng chúng lại chứa nhiều vitamin, khoáng chất và chất chống oxy hóa. Chúng bao gồm vitamin E, K và B6, cùng với các khoáng chất như đồng, phốt pho, kẽm, magiê, sắt và selen.', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 37399, NULL),
+(16, 1, 'Kẹo Quả Sâm không đường Free Suger Ginseng Berry S candy 200g', 'keo-qua-sam-khong-duong-free-suger-ginseng-berry-s-candy-200g', 'Giảm đau họng. (không nên ngậm quá 3 viên/ ngày)\r\n\r\nTăng sinh Collagen.\r\n\r\nCân bằng huyết áp, ổn định thần kinh (khi nhức đầu hay mệt mỏi hãy dùng 1 viên và nghỉ ngơi sau 30 phút sẽ thấy giảm các triệu chứng khó chịu).\r\n\r\nGiảm triệu chứng chóng mặt, buồn nôn do say tàu xe\r\n\r\nBổ sung năng lượng nhanh, giảm stress, lo lắng, nhức đầu, chóng mặt.\r\n\r\nHạn chế cơn thèm ngọt, cung cấp năng lượng cho người bị tiểu đường', 'Hàn Quốc', 'KORYO CONFECTIONERY CO., LTD', 'Công khai', 25, 75, NULL),
+(17, 1, 'Bột Matcha Gạo Rang Nhật Bản ONELIFE (Gói 100g)', 'bot-matcha-gao-rang-nhat-ban-onelife-goi-100g', 'Bột Matcha Gạo Rang Nhật Bản Onelife Onlife (Gói 100g) là loại bột trà cao cấp, nhuyễn mịn, được kết hợp giữa bột trà xanh Matcha Nhật Bản và chiết xuất gạo Nhật Niigata Koshihikari rang chín theo tỉ lệ đặc biệt, tạo nên vị trà ngọt hậu tự nhiên, không thêm đường hay bất kỳ thành phần hương liệu nào khác.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 118, NULL),
+(18, 1, 'Nước rửa chén sả chanh COME ON làm sạch bát đĩa, an toàn da tay 1 lít', 'nuoc-rua-chen-sa-chanh-come-on-lam-sach-bat-dia-an-toan-da-tay-1-lit', 'Tên sản phẩm: Nước rửa chén sả chanh COME ON làm sạch bát đĩa, an toàn da tay 1 lít\r\nDung tích: 1 lít\r\nThương hiệu: COME ON', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 73, NULL),
+(19, 1, 'Găng lau Abena Wash Gloves (50 miếng/gói)', 'gang-lau-abena-wash-gloves-50-mienggoi', 'Abena là tập đoàn sản xuất sản phẩm chăm sóc sức khỏe hàng đầu đến từ Đan Mạch. Thành lập từ năm 1953, trải qua một giai đoạn hình thành và phát triển, Abena đã chinh phục được các thị trường khó tính Bắc Âu bằng chất lượng sản phẩm cũng như trách nhiệm xã hội của mình. Hầu hết các sản phẩm của công ty đều qua kiểm nghiệm lâm sàn của các chuyên gia da liễu và nhận được các chứng nhận y tế nghiêm ngặt của thị trường Bắc Âu như: Nordic Eco-Label, Asthma Allegry Nordic.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 52, NULL),
 (20, 1, 'Tấm lót giường Abena Pad (giặt được) 85x90cm', 'tam-lot-giuong-abena-pad-giat-duoc-85x90cm', ' Abena là tập đoàn sản xuất sản phẩm chăm sóc sức khỏe hàng đầu đến từ Đan Mạch. Thành lập từ năm 1953, trải qua một giai đoạn hình thành và phát triển, Abena đã chinh phục được các thị trường khó tính Bắc Âu bằng chất lượng sản phẩm cũng như trách nhiệm xã hội của mình. Hầu hết các sản phẩm của công ty đều qua kiểm nghiệm lâm sàn của các chuyên gia da liễu và nhận được các chứng nhận y tế nghiêm ngặt của thị trường Bắc Âu như: Nordic Eco-Label, Asthma Allegry Nordic.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 76, NULL),
-(21, 1, 'Máy Xông Khí Dung Cầm Tay Kachi YS35: Giải Pháp Hô Hấp Linh Hoạt Mọi Lúc, Mọi Nơi', 'may-xong-khi-dung-cam-tay-kachi-ys35-giai-phap-ho-hap-linh-hoat-moi-luc-moi-noi', 'Máy xông khí dung cầm tay Kachi YS35 giúp hỗ trợ điều trị và phòng ngừa các bệnh đường hô hấp như viêm phế quản, hen suyễn, viêm mũi xoang, cảm lạnh… Máy sử dụng công nghệ khí dung tạo hạt sương mịn, dễ thẩm thấu sâu vào hệ hô hấp, hiệu quả cao cho cả người lớn và trẻ em. Thiết kế nhỏ gọn, có thể dùng pin AA hoặc cáp Type-C tiện lợi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 854, NULL),
-(22, 1, 'Hũ Hít Thảo Dược Nhị Thiên Đường - Hũ 5g', 'hu-hit-thao-duoc-nhi-thien-duong-hu-5g', 'Hơn một Thế Kỷ gắn bó với bao Thế Hệ, thương hiệu Nhị Thiên Đường không chỉ là dầu gió lâu đời mà còn không ngừng đổi mới. Hũ Hít thảo dược Nhị Thiên Đường ra đời, kế thừa Tinh Hoa Trăm Năm, nay được NÂNG TẦM để phù hợp với nhịp sống hiện đại. Nhỏ gọn, tiện lợi, giúp thông mũi, sảng khoái tức thì – Một lựa chọn mới cho mọi độ tuổi, từ dân văn phòng, tài xế đến người lớn tuổi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 26, NULL),
-(23, 1, 'Tấm lót Abena Pad (45x45)', 'tam-lot-abena-pad-45x45', 'Abena là tập đoàn sản xuất sản phẩm chăm sóc sức khỏe hàng đầu đến từ Đan Mạch. Thành lập từ năm 1953, trải qua một giai đoạn hình thành và phát triển, Abena đã chinh phục được các thị trường khó tính Bắc Âu bằng chất lượng sản phẩm cũng như trách nhiệm xã hội của mình. Hầu hết các sản phẩm của công ty đều qua kiểm nghiệm lâm sàn của các chuyên gia da liễu và nhận được các chứng nhận y tế nghiêm ngặt của thị trường Bắc Âu như: Nordic Eco-Label, Asthma Allegry Nordic.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 224, NULL),
-(24, 1, 'Serum ANGEL\'S LIQUID GLUTATHIONE PLUS NIACINAMIDE CICA AMPOULE hỗ trợ làm trắng, kiểm soát dầu & thu nhỏ lỗ chân lông (chai 45ml)', 'serum-angels-liquid-glutathione-plus-niacinamide-cica-ampoule-ho-tro-lam-trang-kiem-soat-dau-thu-nho-lo-chan-long-chai-45ml', 'Glutathione Plus Niacinamide Cica Ampoule -  sự kết hợp của bộ 3 hoạt chất “vàng\" 700mg Glutathione, 10% Niacinamide & 2% Arbutin sẽ giúp dưỡng trắng da từ sâu bên trong nhằm cải thiện tất cả các vấn đề sắc tố da như thâm, sạm nám, tối màu, xỉn màu,... Đồng thời duy trì độ ẩm, cũng như giúp kiểm soát dầu, mụn & thu nhỏ lỗ chân lông một cách tối ưu hơn.', 'South Korea', 'South Korea', 'Công khai', 0, 1, NULL),
-(25, 1, 'Thanh Lăn Serum CELLBN Hỗ Trợ Cải Thiện Nếp Nhăn Giúp Da Săn Chắc Peptide, Collagen & Adenosine 15ml', 'thanh-lan-serum-cellbn-ho-tro-cai-thien-nep-nhan-giup-da-san-chac-peptide-collagen-adenosine-15ml', 'CELLBN - thương hiệu dược mỹ phẩm Hàn Quốc ra mắt từ năm 2009, đạt TOP 1 thương hiệu do người tiêu dùng bình chọn trên tờ báo lớn uy tín Korea JoongAng Ilbo 2020 - 2022. Tất cả sản phẩm CELLBN đều được sử dụng chất bảo quản từ thảo dược thiên nhiên lành tính, đồng thời hỗ trợ các dưỡng chất khác hoạt động tốt hơn tăng khả năng hấp thụ nuôi dưỡng làn da sáng khoẻ từ bên trong. ', 'South Korea', 'South Korea', 'Công khai', 0, 1, NULL),
-(26, 1, 'Nước Tẩy Trang Rửa Mặt Cấp Ẩm Cân Bằng độ pH Trên Da Cell Fusion C Low pH Pharrier Cleansing Water', 'nuoc-tay-trang-rua-mat-cap-am-can-bang-do-ph-tren-da-cell-fusion-c-low-ph-pharrier-cleansing-water', 'Cell Fusion C Low pH pHarrier Cleansing Water có khả năng làm sạch 3 trong 1, vừa làm sạch lớp trang điểm, chống nắng & bụi bẩn, vừa có khả năng cân bằng độ pH và tăng cường hàng rào bảo vệ da, mang đến làn da sạch sẽ và khỏe mạnh ngay sau khi sử dụng.', 'South Korea', 'South Korea', 'Công khai', 15, 2, NULL),
-(27, 1, 'Mặt nạ bùn LUVUM Pore Reset Mud Mask giúp làm sạch thu nhỏ lỗ chân lông (miếng lẻ 16g)', 'mat-na-bun-luvum-pore-reset-mud-mask-giup-lam-sach-thu-nho-lo-chan-long-mieng-le-16g', 'Mặt nạ bùn dạng miếng LUVUM Pore Reset Mud Mask kết hợp bùn Bentonite và Kaolin, nhẹ nhàng làm sạch dầu thừa và bã nhờn trên da, thu nhỏ lỗ chân lông và cải thiện kết cấu da chỉ sau một lần sử dụng. Thành phần PHA giúp tẩy da chết dịu nhẹ, mang lại làn da mịn màng, sáng khỏe, không gây khô hay kích ứng.', 'South Korea', 'South Korea', 'Công khai', 0, 6, NULL);
+(21, 1, 'Máy Xông Khí Dung Cầm Tay Kachi YS35: Giải Pháp Hô Hấp Linh Hoạt Mọi Lúc, Mọi Nơi', 'may-xong-khi-dung-cam-tay-kachi-ys35-giai-phap-ho-hap-linh-hoat-moi-luc-moi-noi', 'Máy xông khí dung cầm tay Kachi YS35 giúp hỗ trợ điều trị và phòng ngừa các bệnh đường hô hấp như viêm phế quản, hen suyễn, viêm mũi xoang, cảm lạnh… Máy sử dụng công nghệ khí dung tạo hạt sương mịn, dễ thẩm thấu sâu vào hệ hô hấp, hiệu quả cao cho cả người lớn và trẻ em. Thiết kế nhỏ gọn, có thể dùng pin AA hoặc cáp Type-C tiện lợi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 865, NULL),
+(22, 1, 'Hũ Hít Thảo Dược Nhị Thiên Đường - Hũ 5g', 'hu-hit-thao-duoc-nhi-thien-duong-hu-5g', 'Hơn một Thế Kỷ gắn bó với bao Thế Hệ, thương hiệu Nhị Thiên Đường không chỉ là dầu gió lâu đời mà còn không ngừng đổi mới. Hũ Hít thảo dược Nhị Thiên Đường ra đời, kế thừa Tinh Hoa Trăm Năm, nay được NÂNG TẦM để phù hợp với nhịp sống hiện đại. Nhỏ gọn, tiện lợi, giúp thông mũi, sảng khoái tức thì – Một lựa chọn mới cho mọi độ tuổi, từ dân văn phòng, tài xế đến người lớn tuổi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 28, NULL),
+(23, 1, 'Tấm lót Abena Pad (45x45)', 'tam-lot-abena-pad-45x45', 'Abena là tập đoàn sản xuất sản phẩm chăm sóc sức khỏe hàng đầu đến từ Đan Mạch. Thành lập từ năm 1953, trải qua một giai đoạn hình thành và phát triển, Abena đã chinh phục được các thị trường khó tính Bắc Âu bằng chất lượng sản phẩm cũng như trách nhiệm xã hội của mình. Hầu hết các sản phẩm của công ty đều qua kiểm nghiệm lâm sàn của các chuyên gia da liễu và nhận được các chứng nhận y tế nghiêm ngặt của thị trường Bắc Âu như: Nordic Eco-Label, Asthma Allegry Nordic.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 229, NULL),
+(24, 4, 'Nước yến sào Nest100 lon 190ml - Khay 30 lon', 'nuoc-yen-sao-nest100-lon-190ml-khay-30-lon', 'Nước Yến Sào cao cấp NEST100 được sản xuất từ yến sào, chứa nhiều acid amin và nguyên tố vi lượng cần thiết giúp Giải khát và làm mát cơ thể an toàn. Tăng cường sức khỏe, giảm căng thẳng, mệt mỏi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 1, NULL),
+(25, 4, 'Nước yến sào Nest100 lon 190ml - Hộp 5 lon', 'nuoc-yen-sao-nest100-lon-190ml-hop-5-lon', 'Nước Yến Sào cao cấp NEST100 được sản xuất từ yến sào, chứa nhiều acid amin và nguyên tố vi lượng cần thiết giúp Giải khát và làm mát cơ thể an toàn. Tăng cường sức khỏe, giảm căng thẳng, mệt mỏi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 130, NULL),
+(26, 4, 'Yến tổ Nest100 (Hộp 50g + túi)', 'yen-to-nest100-hop-50g-tui', 'Tổ yến sào Nest100 là sản phẩm của Công ty Aquapharm – yến sào Nest100. Được sản xuất theo quy trình hiện đại, hệ thống quản lý chất lượng theo tiêu chuẩn quốc tế: ISO 22000, HACCP, GMP, FSSC 22000; các công đoạn chế biến từ nguyên liệu đến thành phẩm được quản lý, kiểm soát chặt chẽ. Cam kết chất lượng trong từng sợi yến, tổ yến nguyên chất 100%. Quá trình chế biến làm sạch tổ yến bằng nước RO qua hệ thống lọc tinh và tiệt trùng bằng tia UV. Dùng hệ thống sấy lạnh để giữ được trọn vẹn giá trị dinh dưỡng của tổ yến. Đảm bảo nguyên tắc 3 không trong quá trình chế biến: không chà dầu, không chà muối, không tẩy trắng.', 'Việt Nam', 'Việt Nam', 'Công khai', 5, 7407, NULL);
 
 -- --------------------------------------------------------
 
@@ -632,7 +624,7 @@ CREATE TABLE `thuonghieu` (
   `ten` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'logo_shop.jpg',
-  `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+  `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hoạt động'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -642,7 +634,9 @@ CREATE TABLE `thuonghieu` (
 INSERT INTO `thuonghieu` (`id`, `ten`, `slug`, `logo`, `trangthai`) VALUES
 (1, 'Trung Tâm Bán Hàng Siêu Thị Vina', 'trung-tam-ban-hang-sieu-thi-vina', 'trung-tam-ban-hang-sieu-thi-vina.png', 'Hoạt động'),
 (2, 'C\'CHOI', 'cchoi', 'thuonghieu-logo.png', 'Hoạt động'),
-(3, 'ACACI LABS', 'acaci-labs', 'thuonghieu-logo.png', 'Hoạt động');
+(3, 'ACACI LABS', 'acaci-labs', 'thuonghieu-logo.png', 'Hoạt động'),
+(4, 'NEST100', 'nest100', 'nest100.jpg', 'Hoạt động'),
+(5, 'CHẤT VIỆT GROUP', 'chat-viet-group', 'chatvietgroup.jpg', 'Hoạt động');
 
 -- --------------------------------------------------------
 
@@ -667,18 +661,20 @@ INSERT INTO `tukhoa` (`id`, `tukhoa`, `luottruycap`) VALUES
 (4, 'Sách hán ngữ 3', 597),
 (5, 'Huyndai decor', 62),
 (6, 'Điện nội thất', 125),
-(7, 'Móc khóa genshin', 246),
+(7, 'Móc khóa genshin', 247),
 (8, 'Phiền Muộn Của Afratu', 13),
-(9, 'Kẹo', 50),
-(10, 'Sâm Ngọc Linh', 626),
+(9, 'Kẹo', 52),
+(10, 'Sâm Ngọc Linh', 634),
 (11, 'Thầy Hộ', 1),
 (12, 'y tế', 1),
 (13, 'abena', 77),
-(14, 'a', 39),
+(14, 'a', 42),
 (15, 'abena pad', 6),
-(16, 'thiết bị y tế', 3),
-(17, 'cchoi', 1),
-(18, 'c\'choi', 2);
+(16, 'thiết bị y tế', 4),
+(17, 'cà phê', 1),
+(18, 'sâm', 1),
+(19, 'bhasnh trung thu', 1),
+(20, 'bánh trung thu', 1);
 
 -- --------------------------------------------------------
 
@@ -861,7 +857,7 @@ ALTER TABLE `yeuthich`
 -- AUTO_INCREMENT for table `bienthe`
 --
 ALTER TABLE `bienthe`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `chuongtrinh`
@@ -879,19 +875,19 @@ ALTER TABLE `danhmuc`
 -- AUTO_INCREMENT for table `danhmuc_sanpham`
 --
 ALTER TABLE `danhmuc_sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `hinhanh_sanpham`
 --
 ALTER TABLE `hinhanh_sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `loaibienthe`
 --
 ALTER TABLE `loaibienthe`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `nguoidung`
@@ -915,19 +911,19 @@ ALTER TABLE `quatang_sukien`
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `thuonghieu`
 --
 ALTER TABLE `thuonghieu`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tukhoa`
 --
 ALTER TABLE `tukhoa`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables

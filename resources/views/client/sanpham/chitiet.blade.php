@@ -135,17 +135,16 @@
                                                 </span>
                                             </li>
                                         </ul>
-
-                                    <div class="my-32 flex-align gap-16 flex-wrap">
-                                        <div class="flex-align gap-8">
-                                            @if($initialVariant && $initialVariant->is_sale)
-                                                <div class="flex-align gap-8 text-main-two-600">
+                                    @if($initialVariant && $initialVariant->is_sale)
+                                                <div class="flex-align gap-8 text-main-600 mt-30">
                                                     <i class="ph-fill ph-seal-percent text-xl"></i>
                                                     -{{ $sanpham->giamgia }}%
                                                 </div>
                                             @endif
+                                    <div class="mb-32 flex-align gap-16 flex-wrap">
+                                        <div class="flex-align gap-8">
                                             
-                                            <h6 class="mb-0" id="current-price">
+                                            <h6 class="mb-0 text-main-600" id="current-price">
                                                 @if($initialVariant)
                                                     {{ number_format($initialVariant->giadagiam, 0, ',', '.') }} ₫
                                                 @else
@@ -173,7 +172,7 @@
                                                         @if($loop->first) checked @endif
                                                         id="bienthe-{{ $bienthe->id }}" name="bienthe" value="{{ $bienthe->id }}" class="d-none" data-variant-id="{{ $bienthe->id }}" onclick="updatePrice(this)">
                                                         <label for="bienthe-{{ $bienthe->id }}" 
-                                                            class="color-list__button rounded-8 px-12 py-8 border border-2 border-gray-50 hover-border-main-600 transition-1 @if($loop->first) border-gray-900 @endif ">
+                                                            class="color-list__button rounded-8 px-12 py-8 border border-2 border-gray-50 hover-border-main-600 transition-1 @if($loop->first) border-gray-900 @endif " style="cursor: pointer;">
                                                             {{ $bienthe->loaibienthe->ten }}
                                                         </label>
                                                     @endforeach
