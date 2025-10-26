@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 26, 2025 at 01:32 PM
+-- Generation Time: Oct 26, 2025 at 03:25 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.26
 
@@ -93,7 +93,13 @@ INSERT INTO `bienthe` (`id`, `id_loaibienthe`, `id_sanpham`, `giagoc`, `soluong`
 (30, 11, 25, 51000, 234, 0, 7500, 'Còn hàng', NULL),
 (31, 12, 25, 51000, 856, 0, 3300, 'Còn hàng', NULL),
 (32, 13, 26, 3800000, 0, 0, 27, 'Còn hàng', NULL),
-(33, 14, 26, 3400000, 1246, 0, 23, 'Còn hàng', NULL);
+(33, 14, 26, 3400000, 1246, 0, 23, 'Còn hàng', NULL),
+(34, 16, 27, 59500, 643, 0, 17700, 'Còn hàng', NULL),
+(35, 15, 27, 245000, 421, 0, 15400, 'Còn hàng', NULL),
+(36, 17, 28, 110000, 231, 0, 9500, 'Còn hàng', NULL),
+(37, 18, 28, 290000, 423, 0, 4100, 'Còn hàng', NULL),
+(38, 19, 29, 340000, 25, 0, 3500, 'Còn hàng', NULL),
+(39, 20, 29, 360000, 0, 0, 6800, 'Còn hàng', NULL);
 
 -- --------------------------------------------------------
 
@@ -222,7 +228,17 @@ INSERT INTO `danhmuc_sanpham` (`id`, `id_danhmuc`, `id_sanpham`) VALUES
 (27, 6, 20),
 (28, 6, 21),
 (29, 6, 22),
-(30, 6, 23);
+(30, 6, 23),
+(41, 1, 27),
+(42, 7, 24),
+(43, 11, 24),
+(44, 7, 25),
+(45, 11, 25),
+(46, 7, 26),
+(47, 7, 28),
+(48, 7, 29),
+(49, 11, 26),
+(50, 11, 29);
 
 -- --------------------------------------------------------
 
@@ -391,7 +407,24 @@ INSERT INTO `hinhanh_sanpham` (`id`, `id_sanpham`, `hinhanh`, `trangthai`, `dele
 (94, 26, 'yen-to-nest100-hop-50g-tui-2.webp', 'Hiển thị', NULL),
 (95, 26, 'yen-to-nest100-hop-50g-tui-3.webp', 'Hiển thị', NULL),
 (96, 26, 'yen-to-nest100-hop-50g-tui-4.webp', 'Hiển thị', NULL),
-(97, 26, 'yen-to-nest100-hop-50g-tui-5.webp', 'Hiển thị', NULL);
+(97, 26, 'yen-to-nest100-hop-50g-tui-5.webp', 'Hiển thị', NULL),
+(98, 27, 'thuc-pham-bao-ve-suc-khoe-byealco-5-vien-vi-1.webp', 'Hiển thị', NULL),
+(99, 27, 'thuc-pham-bao-ve-suc-khoe-byealco-5-vien-vi-2.webp', 'Hiển thị', NULL),
+(100, 27, 'thuc-pham-bao-ve-suc-khoe-byealco-5-vien-vi-3.webp', 'Hiển thị', NULL),
+(101, 27, 'thuc-pham-bao-ve-suc-khoe-byealco-5-vien-vi-4.webp', 'Hiển thị', NULL),
+(102, 27, 'thuc-pham-bao-ve-suc-khoe-byealco-5-vien-vi-5.webp', 'Hiển thị', NULL),
+(103, 27, 'thuc-pham-bao-ve-suc-khoe-byealco-5-vien-vi-6.webp', 'Hiển thị', NULL),
+(104, 28, 'ca-phe-sam-canada-1.webp', 'Hiển thị', NULL),
+(105, 28, 'ca-phe-sam-canada-2.webp', 'Hiển thị', NULL),
+(106, 28, 'ca-phe-sam-canada-3.webp', 'Hiển thị', NULL),
+(107, 28, 'ca-phe-sam-canada-4.webp', 'Hiển thị', NULL),
+(108, 28, 'ca-phe-sam-canada-5.webp', 'Hiển thị', NULL),
+(109, 29, 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp', 'Hiển thị', NULL),
+(110, 29, 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-2.webp', 'Hiển thị', NULL),
+(111, 29, 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-3.webp', 'Hiển thị', NULL),
+(112, 29, 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-4.webp', 'Hiển thị', NULL),
+(113, 29, 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-5.webp', 'Hiển thị', NULL),
+(114, 29, 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-6.webp', 'Hiển thị', NULL);
 
 -- --------------------------------------------------------
 
@@ -423,7 +456,13 @@ INSERT INTO `loaibienthe` (`id`, `ten`, `trangthai`) VALUES
 (11, 'Có đường (190ml/lon)', 'Hiển thị'),
 (12, 'Plus ít đường (190ml/lon)', 'Hiển thị'),
 (13, 'Rút lông loại đặc biệt (50g/hộp)', 'Hiển thị'),
-(14, 'Tinh chế loại 1 (50g/hộp)', 'Hiển thị');
+(14, 'Tinh chế loại 1 (50g/hộp)', 'Hiển thị'),
+(15, 'Hộp 5 vỉ (5 viên/vỉ)', 'Hiển thị'),
+(16, 'Hộp 1 vỉ (5 viên/vỉ)', 'Hiển thị'),
+(17, 'Hộp 10 gói', 'Hiển thị'),
+(18, 'Hộp 30 gói', 'Hiển thị'),
+(19, 'Loại thường (20 gói x 15g)', 'Hiển thị'),
+(20, 'Vị sữa (20g x 18g)', 'Hiển thị');
 
 -- --------------------------------------------------------
 
@@ -596,7 +635,10 @@ INSERT INTO `sanpham` (`id`, `id_thuonghieu`, `ten`, `slug`, `mota`, `xuatxu`, `
 (23, 1, 'Tấm lót Abena Pad (45x45)', 'tam-lot-abena-pad-45x45', 'Abena là tập đoàn sản xuất sản phẩm chăm sóc sức khỏe hàng đầu đến từ Đan Mạch. Thành lập từ năm 1953, trải qua một giai đoạn hình thành và phát triển, Abena đã chinh phục được các thị trường khó tính Bắc Âu bằng chất lượng sản phẩm cũng như trách nhiệm xã hội của mình. Hầu hết các sản phẩm của công ty đều qua kiểm nghiệm lâm sàn của các chuyên gia da liễu và nhận được các chứng nhận y tế nghiêm ngặt của thị trường Bắc Âu như: Nordic Eco-Label, Asthma Allegry Nordic.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 229, NULL),
 (24, 4, 'Nước yến sào Nest100 lon 190ml - Khay 30 lon', 'nuoc-yen-sao-nest100-lon-190ml-khay-30-lon', 'Nước Yến Sào cao cấp NEST100 được sản xuất từ yến sào, chứa nhiều acid amin và nguyên tố vi lượng cần thiết giúp Giải khát và làm mát cơ thể an toàn. Tăng cường sức khỏe, giảm căng thẳng, mệt mỏi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 1, NULL),
 (25, 4, 'Nước yến sào Nest100 lon 190ml - Hộp 5 lon', 'nuoc-yen-sao-nest100-lon-190ml-hop-5-lon', 'Nước Yến Sào cao cấp NEST100 được sản xuất từ yến sào, chứa nhiều acid amin và nguyên tố vi lượng cần thiết giúp Giải khát và làm mát cơ thể an toàn. Tăng cường sức khỏe, giảm căng thẳng, mệt mỏi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 130, NULL),
-(26, 4, 'Yến tổ Nest100 (Hộp 50g + túi)', 'yen-to-nest100-hop-50g-tui', 'Tổ yến sào Nest100 là sản phẩm của Công ty Aquapharm – yến sào Nest100. Được sản xuất theo quy trình hiện đại, hệ thống quản lý chất lượng theo tiêu chuẩn quốc tế: ISO 22000, HACCP, GMP, FSSC 22000; các công đoạn chế biến từ nguyên liệu đến thành phẩm được quản lý, kiểm soát chặt chẽ. Cam kết chất lượng trong từng sợi yến, tổ yến nguyên chất 100%. Quá trình chế biến làm sạch tổ yến bằng nước RO qua hệ thống lọc tinh và tiệt trùng bằng tia UV. Dùng hệ thống sấy lạnh để giữ được trọn vẹn giá trị dinh dưỡng của tổ yến. Đảm bảo nguyên tắc 3 không trong quá trình chế biến: không chà dầu, không chà muối, không tẩy trắng.', 'Việt Nam', 'Việt Nam', 'Công khai', 5, 7407, NULL);
+(26, 4, 'Yến tổ Nest100 (Hộp 50g + túi)', 'yen-to-nest100-hop-50g-tui', 'Tổ yến sào Nest100 là sản phẩm của Công ty Aquapharm – yến sào Nest100. Được sản xuất theo quy trình hiện đại, hệ thống quản lý chất lượng theo tiêu chuẩn quốc tế: ISO 22000, HACCP, GMP, FSSC 22000; các công đoạn chế biến từ nguyên liệu đến thành phẩm được quản lý, kiểm soát chặt chẽ. Cam kết chất lượng trong từng sợi yến, tổ yến nguyên chất 100%. Quá trình chế biến làm sạch tổ yến bằng nước RO qua hệ thống lọc tinh và tiệt trùng bằng tia UV. Dùng hệ thống sấy lạnh để giữ được trọn vẹn giá trị dinh dưỡng của tổ yến. Đảm bảo nguyên tắc 3 không trong quá trình chế biến: không chà dầu, không chà muối, không tẩy trắng.', 'Việt Nam', 'Việt Nam', 'Công khai', 5, 7407, NULL),
+(27, 5, 'Thực phẩm bảo vệ sức khoẻ ByeAlco (5 viên/vỉ)', 'thuc-pham-bao-ve-suc-khoe-byealco-5-vien-vi', 'BYEALCO là sản phẩm thiên nhiên với công thức đặc biệt được nghiên cứu chiết xuất từ các dược liệu quý. Sản phẩm giúp bảo vệ gan, tăng cường sức khỏe và giảm thiểu tác hại của rượu bia. Sản phẩm được sản xuất tại nhà máy đạt chuẩn GMP, ISO - Đạt các tiêu chuẩn nghiêm ngặt của Bộ y Tế Việt Nam và các tiêu chuẩn Quốc tế.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 5, NULL),
+(28, 5, 'Cà Phê Sâm Canada', 'ca-phe-sam-canada', 'Khi nhắc đến cà phê chất lượng cao, cả thế giới nghĩ ngay đến Việt Nam: Hương thơm nổi bật, vị đậm đà, mạnh mẽ - Là một tài sản quý giá mà thiên nhiên ban tặng cho mảnh đất hình chữ S vốn giàu truyền thống văn hóa, lịch sử. Ở bên kia bán cầu, thổ dân Canada đã sử dụng nhân sâm trong vài nghìn năm như một loại thảo mộc tăng cường sức khỏe. Cà phê sâm Canada ra đời xuất phát từ niềm đam mê bất tận dành cho cà phê và khao khát tạo nên một thức uống không chỉ thơm ngon mà còn giúp người dùng duy trì sức khỏe và sắc đẹp. Sự kết hợp hài hòa giữa công thức truyền thống và hiện đại với hạt cà phê thượng hạng và sâm Canada mang đến loại cà phê sức khỏe riêng biệt trên thị trường giúp người tiêu dùng vừa tận hưởng được hương vị cà phê đậm đà mỗi ngày, vừa chăm sóc sức khỏe từ bên trong', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 0, NULL),
+(29, 5, 'Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo', 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao', 'Thực phẩm bổ sung Lingzhi Coffee - Cà phê sức khỏe giúp tỉnh táo, hỗ trợ bảo vệ gan', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -857,7 +899,7 @@ ALTER TABLE `yeuthich`
 -- AUTO_INCREMENT for table `bienthe`
 --
 ALTER TABLE `bienthe`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `chuongtrinh`
@@ -875,19 +917,19 @@ ALTER TABLE `danhmuc`
 -- AUTO_INCREMENT for table `danhmuc_sanpham`
 --
 ALTER TABLE `danhmuc_sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `hinhanh_sanpham`
 --
 ALTER TABLE `hinhanh_sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT for table `loaibienthe`
 --
 ALTER TABLE `loaibienthe`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `nguoidung`
@@ -911,7 +953,7 @@ ALTER TABLE `quatang_sukien`
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `thuonghieu`
