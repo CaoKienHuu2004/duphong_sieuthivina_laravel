@@ -7,7 +7,7 @@ use App\Models\BientheModel;
 use App\Models\DanhmucModel;
 use App\Models\QuangcaoModel;
 use App\Models\QuatangsukienModel;
-use App\Models\SanPhamModel;
+use App\Models\SanphamModel;
 use App\Models\ThuonghieuModel;
 use Illuminate\Http\Request;
 
