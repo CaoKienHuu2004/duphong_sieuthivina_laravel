@@ -473,7 +473,7 @@
                         <div>
                         <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
                             <a href="{{ route('chi-tiet-san-pham',$product->slug) }}" class="flex-center rounded-8 bg-gray-50 position-relative">
-                                <img src="http://127.0.0.1:8000/assets/client/images/thumbs/{{ $product->hinhanhsanpham->first()->hinhanh }}" alt="{{ $product->ten }}" class="w-100 rounded-top-2">
+                                <img src="{{ asset('assets/client') }}/images/thumbs/{{ $product->hinhanhsanpham->first()->hinhanh }}" alt="{{ $product->ten }}" class="w-100 rounded-top-2">
                             </a>
                             <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
                                 <div>
