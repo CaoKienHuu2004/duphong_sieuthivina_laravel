@@ -1142,7 +1142,7 @@
                     <div class="product-card__price mt-5">
                       <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
                         {{ number_format($td->bienthe->giagoc, 0, ',', '.') }} ₫</span>
-                      <span class="text-heading text-md fw-semibold">{{ number_format($td->giadagiam, 0, ',', '.') }} ₫</span>
+                      <div class="text-heading text-md fw-semibold">{{ number_format($td->giadagiam, 0, ',', '.') }} ₫</div>
                     </div>
                   </div>
                 </div>
@@ -1348,9 +1348,9 @@
                                 </div>
                               @endif
 
-                              <span class="text-heading text-lg fw-semibold">
+                              <div class="text-heading text-md fw-semibold">
                                 {{ number_format($product->giadagiam, 0, ',', '.') }} đ
-                              </span>
+                              </div>
                             </div>
 
                           </div>
@@ -1464,9 +1464,9 @@
                       <div class="" data-aos="fade-up" data-aos-duration="800">
                       <div class="mt-24 product-card d-flex gap-16 p-0 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                         <a href="{{ route('chi-tiet-san-pham', $sp->slug) }}" class="flex-center rounded-8 position-relative w-unset flex-shrink-0 " tabindex="0">
-                          <img src="{{ asset('assets/client') }}/images/thumbs/{{ $sp->hinhanhsanpham->first()->hinhanh }}" alt="{{ $sp->hinhanhsanpham->first()->hinhanh }}" class="rounded-start-4" style="width: 180px; height: 180px; object-fit: cover;"/>
+                          <img src="{{ asset('assets/client') }}/images/thumbs/{{ $sp->hinhanhsanpham->first()->hinhanh }}" alt="{{ $sp->hinhanhsanpham->first()->hinhanh }}" class="rounded-4" style="width: 100%; height: 200px; object-fit: cover;"/>
                         </a>
-                        <div class="product-card__content w-100 mt-20 mb-10 flex-grow-1 pe-10 align-items-stretch flex-column justify-content-between d-flex">
+                        <div class="product-card__content w-100 mt-20 mb-10 px-20 flex-grow-1 pe-10 align-items-stretch flex-column justify-content-between d-flex">
                           <div>
                             <div class="flex-align gap-4 mb-5">
                               <span class="text-main-two-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
@@ -1498,9 +1498,9 @@
                                   </span>
                               </div>
                             @endif
-                              <span class="text-heading text-lg fw-semibold">
+                              <div class="text-heading text-md fw-semibold">
                                 {{ number_format($sp->giadagiam, 0, ',', '.') }} đ
-                              </span>
+                              </div>
                             </div>
                         </div>
                       </div>
@@ -1559,8 +1559,8 @@
   <!-- Super Discount End -->
 
   <!-- ========================= HÀNG MỚI CHÀO SÂN ================================ -->
-  <section class="trending-productss pt-16 overflow-hidden fix-scale-100">
-    <div class="container container-lg px-0">
+  <section class="trending-productss pt-40 overflow-hidden fix-scale-100">
+    <div class="container container-lg">
       <div class="">
         <div class="section-heading mb-24">
           <div class="flex-between flex-wrap gap-2">
@@ -1595,7 +1595,6 @@
                               </h6>
                               <div class="flex-align justify-content-between mt-2">
                                 <div class="flex-align gap-6">
-                                  <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
                                   <span class="text-xs fw-medium text-gray-500">4.8 
                                     <i class="ph-fill ph-star text-warning-600"></i></span>
                                 </div>
@@ -1607,16 +1606,16 @@
                             </div>
                             <div class="product-card__price mt-5">
                                 @if ($product->giamgia > 0)
-                                  <div class="flex-align gap-4 text-main-two-600">
+                                  <div class="flex-align gap-4 text-main-two-600 text-sm">
                                     <i class="ph-fill ph-seal-percent text-sm"></i> -{{ $product->giamgia }}% 
                                     <span class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
                                     {{ number_format($product->bienthe->giagoc, 0, ',', '.')}} đ
                                     </span>
                                   </div>
                                 @endif
-                              <span class="text-heading text-lg fw-semibold">
+                              <div class="text-heading text-md fw-semibold">
                                 {{ number_format($product->giadagiam, 0, ',', '.')}} đ
-                              </span>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1638,8 +1637,8 @@
   <!-- ========================= HÀNG MỚI CHÀO SÂN End ================================ -->
 
   <!-- ========================= CÓ THỂ BẠN YÊU THÍCH ================================ -->
-  <section class="trending-productss pt-16 overflow-hidden fix-scale-80">
-    <div class="container container-lg px-0">
+  <section class="trending-productss pt-40 overflow-hidden fix-scale-80">
+    <div class="container container-lg">
       <div class="">
         <div class="section-heading mb-24">
           <div class="flex-between flex-wrap gap-2">
@@ -1688,16 +1687,16 @@
                             
                             <div class="product-card__price mt-5">
                                 @if ($product->giamgia > 0)
-                                  <div class="flex-align gap-4 text-main-two-600">
+                                  <div class="flex-align gap-4 text-main-two-600 text-sm">
                                     <i class="ph-fill ph-seal-percent text-sm"></i> -{{ $product->giamgia }}% 
                                     <span class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
                                     {{ number_format($product->bienthe->giagoc, 0, ',', '.')}} đ
                                     </span>
                                   </div>
                                 @endif
-                              <span class="text-heading text-lg fw-semibold">
+                              <div class="text-heading text-md fw-semibold">
                                 {{ number_format($product->giadagiam, 0, ',', '.')}} đ
-                              </span>
+                              </div>
                             </div>
                           </div>
                         </div>
