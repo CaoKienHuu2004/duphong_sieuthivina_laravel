@@ -1526,7 +1526,6 @@ input[type=number] {
 .countdown-list.style-four .countdown-list__item::before {
     color: var(--neutral-600);
 }
-
 /* ========================== Count Down Css End =============================== */
 .badge-notification {
     margin-bottom: 6px;
@@ -4400,6 +4399,21 @@ input:focus-visible {
 @media screen and (min-width: 425px) and (max-width: 575px) {
     .col-xs-6 {
         width: 50%;
+    }
+
+    .container{
+        overflow-x: hidden;
+    }
+}
+
+
+@media screen and (min-width: 300px) and (max-width: 425px) {
+    .col-xs-6 {
+        width: 50%;
+    }
+
+    .container{
+        overflow-x: hidden;
     }
 }
 
