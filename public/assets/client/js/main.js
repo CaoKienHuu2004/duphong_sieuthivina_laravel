@@ -358,13 +358,82 @@
         {
           breakpoint: 424,
           settings: {
-            slidesToShow: 4,
+            slidesToShow: 5,
           },
         },
         {
           breakpoint: 359,
           settings: {
-            slidesToShow: 1,
+            slidesToShow: 4,
+          },
+        },
+      ],
+    });
+    // ========================= hot deals Slider Js End ===================
+
+    // ========================= hot deals Slider Js Start ==============
+    $(".feature-item-mobile-wrapper").slick({
+      slidesToShow: 10,
+      slidesToScroll: 1,
+      autoplay: false,
+      autoplaySpeed: 2000,
+      speed: 1500,
+      dots: false,
+      pauseOnHover: true,
+      arrows: true,
+      draggable: true,
+      rtl: $("html").attr("dir") === "rtl" ? true : false,
+      speed: 900,
+      infinite: true,
+      nextArrow: "#feature-item-mobile-wrapper-next",
+      prevArrow: "#feature-item-mobile-wrapper-prev",
+      responsive: [
+        {
+          breakpoint: 1699,
+          settings: {
+            slidesToShow: 10,
+          },
+        },
+        {
+          breakpoint: 1599,
+          settings: {
+            slidesToShow: 10,
+          },
+        },
+        {
+          breakpoint: 1399,
+          settings: {
+            slidesToShow: 6,
+          },
+        },
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 6,
+          },
+        },
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 5,
+          },
+        },
+        {
+          breakpoint: 575,
+          settings: {
+            slidesToShow: 5,
+          },
+        },
+        {
+          breakpoint: 424,
+          settings: {
+            slidesToShow: 5,
+          },
+        },
+        {
+          breakpoint: 359,
+          settings: {
+            slidesToShow: 4,
           },
         },
       ],
@@ -452,6 +521,35 @@
       // cssEase: "linear",
       nextArrow: "#banner-next",
       prevArrow: "#banner-prev",
+      responsive: [
+        {
+          breakpoint: 767,
+          settings: {
+            slidesToShow: 1,
+          },
+        },
+      ],
+    });
+    // ========================= Banner Slider Js End ===================
+
+    // ========================= Banner Slider Js Start ==============
+    $(".banner-item-mobile__slider").slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2500,
+      speed: 2500,
+      dots: true,
+      pauseOnHover: false,
+      arrows: true,
+      draggable: true,
+      rtl: $("html").attr("dir") === "rtl" ? true : false,
+      speed: 900,
+      infinite: true,
+      // fade: true,
+      // cssEase: "linear",
+      nextArrow: "#banner-mobile-next",
+      prevArrow: "#banner-mobile-prev",
       responsive: [
         {
           breakpoint: 767,
@@ -583,6 +681,55 @@
     // ========================= hot deals Slider Js End ===================
 
     // ========================= hot deals Slider Js Start ==============
+    $(".gift-event-mobile-slider").slick({
+      slidesToShow: 6,
+      slidesToScroll: 1,
+      autoplay: false,
+      autoplaySpeed: 1500,
+      speed: 1000,
+      dots: false,
+      pauseOnHover: false,
+      arrows: true,
+      draggable: false,
+      rtl: $("html").attr("dir") === "rtl" ? true : false,
+      speed: 900,
+      infinite: true,
+      nextArrow: "#gift-event-mobile-next",
+      prevArrow: "#gift-event-mobile-prev",
+      responsive: [
+        {
+          breakpoint: 1599,
+          settings: {
+            slidesToShow: 5,
+            arrows: false,
+          },
+        },
+        {
+          breakpoint: 1399,
+          settings: {
+            slidesToShow: 3,
+            arrows: false,
+          },
+        },
+        {
+          breakpoint: 1199,
+          settings: {
+            slidesToShow: 2,
+            arrows: false,
+          },
+        },
+        {
+          breakpoint: 575,
+          settings: {
+            slidesToShow: 2,
+            arrows: false,
+          },
+        },
+      ],
+    });
+    // ========================= hot deals Slider Js End ===================
+
+    // ========================= hot deals Slider Js Start ==============
     $(".top-selling-product-slider").slick({
       slidesToShow: 5,
       slidesToScroll: 1,
@@ -598,6 +745,90 @@
       infinite: true,
       nextArrow: "#top-selling-next",
       prevArrow: "#top-selling-prev",
+      responsive: [
+        {
+          breakpoint: 1399,
+          settings: {
+            slidesToShow: 3,
+            arrows: false,
+          },
+        },
+        {
+          breakpoint: 1199,
+          settings: {
+            slidesToShow: 2,
+            arrows: false,
+          },
+        },
+        {
+          breakpoint: 575,
+          settings: {
+            slidesToShow: 2,
+            arrows: false,
+          },
+        },
+      ],
+    });
+    // ========================= hot deals Slider Js End ===================
+
+    // ========================= hot deals Slider Js Start ==============
+    $(".san-pham-hang-dau-slider").slick({
+      slidesToShow: 5,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2200,
+      speed: 1500,
+      dots: false,
+      pauseOnHover: false,
+      arrows: true,
+      draggable: true,
+      rtl: $("html").attr("dir") === "rtl" ? true : false,
+      speed: 900,
+      infinite: true,
+      nextArrow: "#sphd-next",
+      prevArrow: "#sphd-prev",
+      responsive: [
+        {
+          breakpoint: 1399,
+          settings: {
+            slidesToShow: 3,
+            arrows: false,
+          },
+        },
+        {
+          breakpoint: 1199,
+          settings: {
+            slidesToShow: 2,
+            arrows: false,
+          },
+        },
+        {
+          breakpoint: 575,
+          settings: {
+            slidesToShow: 2,
+            arrows: false,
+          },
+        },
+      ],
+    });
+    // ========================= hot deals Slider Js End ===================
+
+    // ========================= hot deals Slider Js Start ==============
+    $(".top-selling-product-mobile-slider").slick({
+      slidesToShow: 5,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2200,
+      speed: 1500,
+      dots: false,
+      pauseOnHover: false,
+      arrows: true,
+      draggable: true,
+      rtl: $("html").attr("dir") === "rtl" ? true : false,
+      speed: 900,
+      infinite: true,
+      nextArrow: "#top-selling-mobile-next",
+      prevArrow: "#top-selling-mobile-prev",
       responsive: [
         {
           breakpoint: 1399,

@@ -122,5 +122,10 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+     
+    'aliases' => Illuminate\Support\Facades\Facade::defaultAliases()->merge([
+        // Thêm Alias cho Agent:
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
 
+    ])->toArray(),
 ];

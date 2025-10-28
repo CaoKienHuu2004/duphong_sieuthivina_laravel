@@ -120,6 +120,7 @@
     --size-90: 5.625rem;
     --size-110: 6.875rem;
     --size-120: 7.5rem;
+    --size-130: 7.75rem;
     --size-144: 9rem;
     --size-160: 10rem;
     --size-210: 13.125rem;
@@ -2728,6 +2729,10 @@ input:focus-visible {
 
 .mt-120 {
     margin-block-start: var(--size-120) !important;
+}
+
+.mt-130 {
+    margin-block-start: var(--size-130) !important;
 }
 
 .mt-144 {

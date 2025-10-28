@@ -144,7 +144,7 @@
                                     <div class="mb-32 flex-align gap-16 flex-wrap">
                                         <div class="flex-align gap-8">
                                             
-                                            <h6 class="mb-0 text-main-600" id="current-price">
+                                            <h6 class="mb-0 text-main-600 text-2xl @if($initialVariant && !$initialVariant->is_sale) mt-30 @endif" id="current-price">
                                                 @if($initialVariant)
                                                     {{ number_format($initialVariant->giadagiam, 0, ',', '.') }} ₫
                                                 @else
