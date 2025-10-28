@@ -4,17 +4,6 @@
     Siêu Thị Vina -  Nền Tảng Bán Hàng Trực Tuyến Siêu Thị Vina
 @endsection
 
-{{-- Sử dụng Tailwind CSS cho giao diện --}}
-@section('styles')
-    <!-- <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .variant-radio:checked + label {
-            border-color: #EF4444; /* red-500 */
-            box-shadow: 0 0 0 2px #FECACA; /* red-200 shadow */
-        }
-    </style> -->
-@endsection
-
 {{-- Khởi tạo biến JavaScript để lưu trữ thông tin biến thể --}}
 @php
     $variantsData = [];
@@ -42,7 +31,7 @@
                                         @foreach ($sanpham->hinhanhsanpham as $hasp)
                                             <div class="">
                                                 <div class="product-details__thumb flex-center h-100">
-                                                    <img class=" rounded-10" src="{{asset('assets/client')}}/images/thumbs/{{ $hasp->hinhanh }}" alt="">
+                                                    <img class=" rounded-10" src="{{asset('assets/client')}}/images/thumbs/{{ $hasp->hinhanh }}" alt="" style="width:100%; height: 450px; object-fit: cover; object-position: center">
                                                 </div>
                                             </div>
                                         @endforeach

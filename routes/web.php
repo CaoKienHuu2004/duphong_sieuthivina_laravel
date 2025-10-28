@@ -28,20 +28,20 @@ Route::prefix('/san-pham')->group(function () {
         ->where(['id' => '[0-9]+', 'slug' => '[a-z0-9-]+'])
         ->name('danh-muc-san-pham');
 });
-    
 
-Route::get('/dang-nhap', [client\NguoidungController::class, 'login'])->name('login');
-Route::post('/xac-thuc-dang-nhap', [client\NguoidungController::class, 'handleLogin'])->name('handleLogin');
-Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('logout');
+Route::middleware('guest')->group(function () {
+    Route::get('/dang-nhap', [client\NguoidungController::class, 'login'])->name('login');
+    Route::post('/xac-thuc-dang-nhap', [client\NguoidungController::class, 'handleLogin'])->name('handleLogin');
 
-Route::get('/dang-ky', [client\NguoidungController::class, 'register'])->name('register');
-Route::post('/xac-thuc-dang-ky', [client\NguoidungController::class, 'handleRegister'])->name('handleRegister');
+    Route::get('/dang-ky', [client\NguoidungController::class, 'register'])->name('dang-ky');
+    Route::post('/xac-thuc-dang-ky', [client\NguoidungController::class, 'handleRegister'])->name('handleRegister');
+});
 
 // Tuyến đường yêu cầu đăng nhập (dành cho mọi người dùng đã đăng nhập)
 Route::middleware('auth')->group(function () {
 // Route::middleware('auth:web')->group(function () {
     
-
+    Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('dang-xuat');
     // Trang cá nhân
     Route::get('/tai-khoan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use PhpParser\Node\Expr\FuncCall;
-
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\NguoidungModel;
 
@@ -71,7 +73,7 @@ class NguoidungController extends Controller
     // Hiển thị form đăng ký
     public function register()
     {
-        return view('client.nguoidung.register');
+        return view('client.nguoidung.dangky');
     }
 
     // Xử lý đăng ký
@@ -88,12 +90,12 @@ class NguoidungController extends Controller
 
         $user = NguoidungModel::create([
             'username' => $request->username,
-            'password' => $request->password, // Sẽ được hash tự động nhờ cast
+            'password' => Hash::make($request->password), // Sẽ được hash tự động nhờ cast
             'hoten' => $request->hoten,
             'sodienthoai' => $request->sodienthoai,
             'gioitinh' => $request->gioitinh,
             'ngaysinh' => $request->ngaysinh,
-            'vaitro' => 'user', // Mặc định là user
+            'vaitro' => 'client', // Mặc định là user
             'trangthai' => true, // Mặc định active
         ]);
 

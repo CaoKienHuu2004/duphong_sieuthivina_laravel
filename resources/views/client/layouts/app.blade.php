@@ -26,8 +26,6 @@
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/main.css" />
 </head>
 
-@yield('styles')
-
 <body>
   <!--==================== Preloader Start ====================-->
   {{-- <div class="preloader">
@@ -81,7 +79,13 @@
               </button>
             </form>
           </li>
-          <li class="nav-menu__item pt-10">
+          @guest
+            <li class="av-menu__item pt-10">
+              <a href="{{ route('dang-ky') }}" class="nav-menu__link text-heading-two hover-text-main-600"><i class="ph-bold ph-user text-main-600"></i>
+                Đăng ký thành viên</a>
+            </li>
+          @endguest
+          <li class="nav-menu__item">
             <a href="#" class="nav-menu__link text-heading-two hover-text-main-600"><i
                 class="ph-bold ph-notepad text-main-600"></i> Tra cứu đơn hàng</a>
           </li>
@@ -107,10 +111,10 @@
           </li>
           @guest
           <li class="nav-menu__item pt-10">
-            <a href="javascript:void(0)"
+            <a href="{{ route('login') }}"
               class="d-flex justify-content-center align-content-around text-center gap-10 fw-medium text-white py-14 px-24 bg-main-600 rounded-pill line-height-1 hover-bg-main-50 hover-text-main-600">
               <span class="d-lg-none d-flex line-height-1"><i class="ph-bold ph-user"></i></span>
-              Đăng nhập / Đăng ký
+              Đăng nhập
             </a>
 
           </li>
@@ -119,9 +123,9 @@
           <li class="on-hover-item nav-menu__item has-submenu pt-10">
             <a href="javascript:void(0)"
               class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-white py-10 px-20 bg-success-600 rounded-pill line-height-1 hover-bg-success-500">
-              <span class="d-lg-none d-flex line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/method.png"
+              <span class="d-lg-none d-flex line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/{{Auth::user()->avatar}}"
                   class="rounded-circle object-fit-cover" style="width: 25px; height: 25px" alt=""></span>
-              lyhuu123
+              {{ Auth::user()->username }}
             </a>
             <ul class="on-hover-dropdown common-dropdown nav-submenu scroll-sm">
               <li class="common-dropdown__item nav-submenu__item">
@@ -131,7 +135,7 @@
                     class="badge bg-success-600 rounded-circle">6</span></a>
               </li>
               <li class="common-dropdown__item nav-submenu__item">
-                <a href="wishlist.html"
+                <a href="{{ route('tai-khoan') }}"
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
                     class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
               </li>
@@ -141,9 +145,11 @@
                     class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
               </li>
               <li class="common-dropdown__item nav-submenu__item">
-                <a href="checkout.html"
-                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-sign-out text-main-600"></i> Đăng xuất</a>
+                <form action="{{ route('dang-xuat') }}" method="post" class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
+                  @csrf
+                  <button type="submit" class="">
+                    <i class="ph-bold ph-sign-out text-main-600"></i> Đăng xuất</button>
+                </form>
               </li>
 
             </ul>
@@ -222,10 +228,13 @@
             <a href="" class="text-white-6 text-sm hover-text-white"><i class="ph-bold ph-handshake text-white-6"></i>
               Đăng ký đối tác</a>
           </li> --}}
-          <li class="flex-align">
-            <a href="" class="text-white-6 text-sm hover-text-white"><i class="ph-bold ph-user text-white-6"></i>
-              Đăng ký thành viên</a>
-          </li>
+          @guest
+            <li class="flex-align">
+              <a href="{{ route('dang-ky') }}" class="text-white-6 text-sm hover-text-white"><i class="ph-bold ph-user text-white-6"></i>
+                Đăng ký thành viên</a>
+            </li>
+          @endguest
+          
           <li class="flex-align">
             <a href="" class="text-white-6 text-sm hover-text-white pe-1"><i class="ph-bold ph-info text-white-6"></i>
               Giới thiệu về Siêu Thị Vina </a>
@@ -349,9 +358,9 @@
             class="on-hover-item nav-menu__item has-submenu header-top__right style-two style-three flex-align flex-wrap d-lg-block d-none">
             <a href="javascript:void(0)"
               class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-gray-600 py-5 px-10 rounded-pill line-height-1 hover-text-main-600">
-              <span class="line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/flag2.png"
-                  class="rounded-circle object-fit-cover" style="width: 25px; height: 25px" alt=""></span>
-              lyhuu123
+              <span class="line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/{{Auth::user()->avatar}}"
+                  class="rounded-circle object-fit-cover" style="width: 35px; height: 35px" alt=""></span>
+              {{ Auth::user()->username }}
             </a>
             <ul class="on-hover-dropdown common-dropdown nav-submenu scroll-sm">
               <li class="common-dropdown__item nav-submenu__item">
@@ -361,7 +370,7 @@
                     class="badge bg-success-600 rounded-circle">6</span></a>
               </li>
               <li class="common-dropdown__item nav-submenu__item">
-                <a href="wishlist.html"
+                <a href="{{ route('tai-khoan') }}"
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
                     class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
               </li>
@@ -371,13 +380,16 @@
                     class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
               </li>
               <li class="common-dropdown__item nav-submenu__item">
-                <a href="checkout.html"
-                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-sign-out text-main-600"></i> Đăng xuất</a>
+                <form action="{{ route('dang-xuat') }}" method="post" class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
+                  @csrf
+                  <button type="submit" class="">
+                    <i class="ph-bold ph-sign-out text-main-600"></i> Đăng xuất</button>
+                </form>
+                
               </li>
 
             </ul>
-          </div>\
+          </div>
           @endauth
 
           <!-- Dropdown Select End -->

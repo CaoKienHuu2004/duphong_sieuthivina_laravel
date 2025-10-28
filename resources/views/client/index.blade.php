@@ -271,7 +271,7 @@
                     <div class="flex-align justify-content-between mt-5">
                       <div class="flex-align gap-4 w-100">
                         <span class="text-main-600 text-md d-flex"><i class="ph-fill ph-storefront"></i></span>
-                        <span class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="{{ $td->thuonghieu->ten }}">{{ $td->thuonghieu->ten }}</span>
+                        <a href="{{ url('san-pham?thuonghieu=' . $td->thuonghieu->slug) }}"class="text-gray-500 text-xs" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;" title="{{ $td->thuonghieu->ten }}">{{ $td->thuonghieu->ten }}</a>
                       </div>
                     </div>
                     <h6 class="title text-lg fw-semibold mt-5 mb-8">
@@ -1509,32 +1509,25 @@
 
   <!-- MÃ GIẢM GIÁ -->
   <div class="">
-    <div class="container container-lg">
-      <div class="border border-main-500 bg-main-50 border-dashed rounded-8 py-20 px-10 flex-center flex-wrap gap-8">
-        <p class="h6 text-main-600 fw-normal">
-          Áp dụng mã giảm giá ưu đãi cho
-          <a href="#" class="fw-bold text-decoration-underline text-main-600 hover-text-decoration-none hover-text-primary-600">
-            thành viên mới</a>
-        </p>
-        <div class="position-relative">
-          <button class="copy-coupon-btn px-32 py-10 text-white text-uppercase bg-main-600 rounded-pill border-0 hover-bg-main-800">
-            SIEUTHIVINA2025
-            <i class="ph ph-file-text text-lg line-height-1"></i>
-          </button>
-          <span class="copy-text bg-main-600 text-white fw-normal position-absolute px-16 py-6 rounded-pill bottom-100 start-50 translate-middle-x min-w-max mb-8 text-xs"></span>
+     <div class="container container-lg">
+        <div class="border border-main-500 bg-main-50 border-dashed rounded-8 py-20 px-10 flex-center flex-wrap gap-12">
+            <p class="h6 text-main-600 fw-normal">Super discount for your <a href="javascript:void(0)" class="fw-bold text-decoration-underline text-main-600 hover-text-decoration-none hover-text-primary-600 ">first purchase</a> </p>
+            <div class="position-relative">
+                <button class="copy-coupon-btn px-32 py-10 text-white text-uppercase bg-main-600 rounded-pill border-0 hover-bg-main-800">
+                    FREE25BAC
+                    <i class="ph ph-file-text text-lg line-height-1"></i>
+                </button>
+                <span class="copy-text bg-main-600 text-white fw-normal position-absolute px-16 py-6 rounded-pill bottom-100 start-50 translate-middle-x min-w-max mb-8 text-xs" style="display: none;">Copied</span>
+            </div>
+            <p class="text-md text-main-600 fw-normal">Use discount code to get <span class="fw-bold text-main-600">20% </span> discount for any item</p>
         </div>
-        <p class="text-md text-main-600 fw-normal">
-          Áp dụng giảm giá đến
-          <span class="fw-bold text-main-600">20% </span> tổng giá trị mỗi đơn hàng
-        </p>
-      </div>
-    </div>
-  </div>
+     </div>
+ </div>
   <!-- Super Discount End -->
 
   <!-- ========================= HÀNG MỚI CHÀO SÂN ================================ -->
   <section class="trending-productss pt-40 overflow-hidden fix-scale-100">
-    <div class="container container-lg">
+    <div class="container container-lg overflow-hidden">
       <div class="">
         <div class="section-heading mb-24">
           <div class="flex-between flex-wrap gap-2">
@@ -1612,7 +1605,7 @@
 
   <!-- ========================= CÓ THỂ BẠN YÊU THÍCH ================================ -->
   <section class="trending-productss pt-40 overflow-hidden fix-scale-80">
-    <div class="container container-lg">
+    <div class="container container-lg overflow-hidden">
       <div class="">
         <div class="section-heading mb-24">
           <div class="flex-between flex-wrap gap-2">

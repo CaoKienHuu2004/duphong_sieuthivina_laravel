@@ -30,7 +30,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('updateProfile') }}" method="POST">
+                    <form action="{{ route('cap-nhat-tai-khoan') }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -85,7 +85,7 @@
                             <label for="ngaysinh" class="text-neutral-900 text-lg mb-8 fw-medium">Ngày sinh <span class="text-danger">*</span></label>
                             <input type="date" class="common-input @error('ngaysinh') is-invalid @enderror"
                                    id="ngaysinh" name="ngaysinh"
-                                   value="{{ old('ngaysinh', $user->ngaysinh ? $user->ngaysinh->format('Y-m-d') : '') }}">
+                                   value="{{ old('ngaysinh', $user->ngaysinh ? $user->ngaysinh : '') }}">
                             @error('ngaysinh')
                                 <div class="text-danger text-sm mt-4">{{ $message }}</div>
                             @enderror

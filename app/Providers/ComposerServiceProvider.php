@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\DanhmucModel;
 use App\Models\TukhoaModel;
+use App\Models\NguoidungModel;
 
 class ComposerServiceProvider extends ServiceProvider
 {

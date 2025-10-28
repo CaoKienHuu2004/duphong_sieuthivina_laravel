@@ -34,6 +34,11 @@ class NguoidungModel extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $cast = [
+        'ngaysinh' => 'date',
+    ];
+
     public $timestamps = false;
 
     // ===========================================================================================================================
