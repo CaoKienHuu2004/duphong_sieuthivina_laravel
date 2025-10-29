@@ -5,6 +5,24 @@
 @endsection
 
 @section('content')
+    <style>
+    /* CSS cho Avatar */
+    .avatar-container {
+        width: 100px; /* Kích thước container */
+        height: 100px;
+        border-radius: 50%; /* Tạo hình tròn */
+        overflow: hidden; /* Cắt ảnh thừa ra khỏi hình tròn */
+        cursor: pointer; /* Thay đổi con trỏ chuột thành dạng "click" */
+        /* Có thể thêm box-shadow hoặc border nếu muốn */
+    }
+
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Đảm bảo ảnh lấp đầy container mà không bị méo */
+
+    }
+    </style>
     <div class="page">
         <section class="shop py-40">
                 <div class="container container-lg">
@@ -110,7 +128,68 @@
 
                             <div class="row g-12">
                                <div class="border border-gray-100 rounded-8 p-16">
-                                    haha
+                                    <form class="row" action="" method="post">
+                                        <div class="col-xl-8 py-10">
+                                            <h6 class="mb-20 fw-semibold text-gray-700 text-md">Thông tin cá nhân</h6>
+                                            <div class="row mb-20">
+                                                <div class="col-xl-3 flex-align flex-center flex-wrap gap-2">
+                                                    <div class="avatar-container mx-16 mt-10 mb-0">
+                                                        <img id="avatarImage" src="{{ asset('assets/client') }}/images/thumbs/{{ Auth::user()->avatar }}" alt="Avatar" class="avatar-img">
+                                                        <input type="file" id="fileInput" name="avatar" accept="{{ asset('assets/client') }}/images/thumbs/*" style="display: none;">
+                                                    </div>
+                                                    <label class="form-label text-xs text-gray-500 fw-medium" for="fileInput" style="cursor: pointer;"><i class="ph-bold ph-pencil-simple"></i> đổi ảnh</label>
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    <div class="form-group">
+                                                        <label class="form-label text-md text-gray-900" for="">Tên người dùng:</label>
+                                                        <input type="text" id="username" placeholder="" value="{{ Auth::user()->username }}" class="form-control p-10 bg-gray-50 disabled" readonly>
+                                                    </div>
+                                                    <div class="form-group mt-10">
+                                                        <label class="form-label text-md text-gray-900" for="">Họ và tên:</label>
+                                                        <input type="text" id="hoten" name="hoten" placeholder="Nhập họ và tên của bạn..." value="{{ old('hoten',Auth::user()->hoten) }}" class="form-control p-10" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-20">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label text-md text-gray-900" for="gioitinh">Giới tính:</label>
+                                                        <select name="gioitinh" id="gioitinh" class="form-control p-10" required>
+                                                            <option value="Nam" 
+                                                                @if (Auth::check() && Auth::user()->gioitinh == 'Nam') 
+                                                                    selected 
+                                                                @endif
+                                                            >
+                                                                Nam
+                                                            </option>
+                                                            
+                                                            <option value="Nữ" 
+                                                                @if (Auth::check() && Auth::user()->gioitinh == 'Nữ') 
+                                                                    selected 
+                                                                @endif
+                                                            >
+                                                                Nữ
+                                                            </option>
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label text-md text-gray-900" for="ngaysinh">Ngày sinh:</label>
+                                                        <input type="date" id="ngaysinh" name="ngaysinh" value="{{ old('ngaysinh',Auth::user()->ngaysinh) }}" class="form-control p-10" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button title="Lưu thông tin cá nhân" type="submit" class="btn bg-main-600 text-white hover-bg-main-300 hover-text-main-600 rounded-8 px-32 py-12 w-100 flex-center flex-align gap-8">
+                                                <i class="ph-bold ph-floppy-disk"></i> Lưu thông tin
+                                            </button>
+                                        </div>
+                                        <div class="col-xl-4 border-start border-gray-200 py-10">
+                                            <h6 class="mb-10 fw-semibold text-gray-700 text-md">Số điện thoại & Email</h6>
+
+                                        </div>
+                                    </form>
                                </div>
                             </div>
                         </div>
@@ -121,4 +200,39 @@
 
 
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const avatarContainer = document.querySelector('.avatar-container');
+            const fileInput = document.getElementById('fileInput');
+            const avatarImage = document.getElementById('avatarImage');
+
+            // **Bước 1: Kích hoạt Input File**
+            // Lắng nghe sự kiện click vào toàn bộ khu vực avatar
+            avatarContainer.addEventListener('click', function() {
+                fileInput.click(); // Tự động click vào input file ẩn
+            });
+
+            // **Bước 2: Xem trước ảnh đã chọn (Hiệu ứng tức thì)**
+            fileInput.addEventListener('change', function(event) {
+                // Kiểm tra xem có file nào được chọn không
+                if (event.target.files && event.target.files[0]) {
+                    const reader = new FileReader();
+
+                    // Đọc nội dung file
+                    reader.onload = function(e) {
+                        // Thay đổi thuộc tính 'src' của thẻ <img> để hiển thị ảnh mới
+                        avatarImage.src = e.target.result;
+                    };
+
+                    // Bắt đầu đọc file ảnh đã chọn
+                    reader.readAsDataURL(event.target.files[0]);
+                    
+                    // **Gợi ý quan trọng:**
+                    // Tại đây, bạn có thể tự động gửi form (dùng Ajax)
+                    // hoặc thông báo cho người dùng rằng ảnh đã sẵn sàng để lưu.
+                    console.log("File đã được chọn: ", event.target.files[0].name);
+                }
+            });
+        });
+    </script>
 @endsection
