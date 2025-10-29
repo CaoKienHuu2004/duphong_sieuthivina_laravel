@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     
     Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('dang-xuat');
     // Trang cá nhân
-    Route::get('/tai-khoan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
+    Route::get('/thong-tin-ca-nhan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');
 });
 

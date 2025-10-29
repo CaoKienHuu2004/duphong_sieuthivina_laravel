@@ -109,7 +109,7 @@ class NguoidungController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        return view('client.nguoidung.profile', compact('user'));
+        return view('client.nguoidung.thongtin', compact('user'));
     }
 
     // Cập nhật thông tin cá nhân

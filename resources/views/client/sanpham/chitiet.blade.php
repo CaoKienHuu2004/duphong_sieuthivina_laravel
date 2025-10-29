@@ -209,10 +209,9 @@
                             </button>
 
                             <div class="mt-32">
-                                
-                                <a href="{{ url('san-pham?thuonghieu='.$sanpham->thuonghieu->slug) }}" class="px-16 py-8 bg-main-50 rounded-8 flex-between gap-20 mb-0" style="justify-content: start;">
-                                    <span class="w-32 h-32 bg-white text-main-600 rounded-circle flex-center text-xl flex-shrink-0">
-                                        <i class="ph-fill ph-storefront"></i>
+                                <a href="{{ url('san-pham?thuonghieu='.$sanpham->thuonghieu->slug) }}" class="px-16 py-8 bg-main-50 rounded-8 flex-between gap-12 mb-0" style="justify-content: start;">
+                                    <span class="bg-white text-main-600 rounded-circle flex-center text-xl flex-shrink-0 p-4" style="width: 40px; height: 40px;">
+                                        <img src="{{ asset('assets/client') }}/images/brands/{{ $sanpham->thuonghieu->logo }}" alt="{{ $sanpham->thuonghieu->ten }}" class="w-100">
                                     </span>
                                     <span class="text-sm text-neutral-600"><span class="fw-semibold">{{ $sanpham->thuonghieu->ten }}</span> </span>
                                 </a>

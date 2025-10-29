@@ -125,15 +125,9 @@
               class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-white py-10 px-20 bg-success-600 rounded-pill line-height-1 hover-bg-success-500">
               <span class="d-lg-none d-flex line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/{{Auth::user()->avatar}}"
                   class="rounded-circle object-fit-cover" style="width: 25px; height: 25px" alt=""></span>
-              {{ Auth::user()->username }}
+              {{ Auth::user()->hoten }}
             </a>
             <ul class="on-hover-dropdown common-dropdown nav-submenu scroll-sm">
-              <li class="common-dropdown__item nav-submenu__item">
-                <a href="cart.html"
-                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
-                    class="badge bg-success-600 rounded-circle">6</span></a>
-              </li>
               <li class="common-dropdown__item nav-submenu__item">
                 <a href="{{ route('tai-khoan') }}"
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
@@ -142,7 +136,13 @@
               <li class="common-dropdown__item nav-submenu__item">
                 <a href="checkout.html"
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
+                    class="ph-bold ph-notepad text-main-600"></i> Quản lý đơn hàng</a>
+              </li>
+              <li class="common-dropdown__item nav-submenu__item">
+                <a href="cart.html"
+                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
+                    class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
+                    class="badge bg-success-600 rounded-circle">6</span></a>
               </li>
               <li class="common-dropdown__item nav-submenu__item">
                 <form action="{{ route('dang-xuat') }}" method="post" class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
@@ -360,15 +360,9 @@
               class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-gray-600 py-5 px-10 rounded-pill line-height-1 hover-text-main-600">
               <span class="line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/{{Auth::user()->avatar}}"
                   class="rounded-circle object-fit-cover" style="width: 35px; height: 35px" alt=""></span>
-              {{ Auth::user()->username }}
+              {{ Auth::user()->hoten }}
             </a>
             <ul class="on-hover-dropdown common-dropdown nav-submenu scroll-sm">
-              <li class="common-dropdown__item nav-submenu__item">
-                <a href="cart.html"
-                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
-                    class="badge bg-success-600 rounded-circle">6</span></a>
-              </li>
               <li class="common-dropdown__item nav-submenu__item">
                 <a href="{{ route('tai-khoan') }}"
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
@@ -377,7 +371,13 @@
               <li class="common-dropdown__item nav-submenu__item">
                 <a href="checkout.html"
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
+                    class="ph-bold ph-notepad text-main-600"></i> Quản lý đơn hàng</a>
+              </li>
+              <li class="common-dropdown__item nav-submenu__item">
+                <a href="cart.html"
+                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
+                    class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
+                    class="badge bg-success-600 rounded-circle">6</span></a>
               </li>
               <li class="common-dropdown__item nav-submenu__item">
                 <form action="{{ route('dang-xuat') }}" method="post" class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
