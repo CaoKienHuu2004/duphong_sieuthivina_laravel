@@ -128,7 +128,10 @@
 
                             <div class="row g-12">
                                <div class="border border-gray-100 rounded-8 p-16">
-                                    <form class="row" action="" method="post">
+                                    <form class="row" action="{{ route('cap-nhat-tai-khoan') }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+
                                         <div class="col-xl-8 py-10">
                                             <h6 class="mb-20 fw-semibold text-gray-700 text-md">Thông tin cá nhân</h6>
                                             <div class="row mb-20">

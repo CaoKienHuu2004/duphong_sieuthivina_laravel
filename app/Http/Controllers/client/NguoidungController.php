@@ -118,15 +118,15 @@ class NguoidungController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'hoten' => 'required|string|max:255',
-            'sodienthoai' => 'required|string|max:20|unique:nguoidung,sodienthoai,' . $user->id,
-            'gioitinh' => 'required|in:nam,nu,khac',
-            'ngaysinh' => 'required|date|before:today',
+            'hoten' => 'required',
+            // 'sodienthoai' => 'required|string|max:20|unique:nguoidung,sodienthoai,' . $user->id,
+            'gioitinh' => 'required',
+            'ngaysinh' => 'required',
         ]);
 
         NguoidungModel::where('id', $user->id)->update([
             'hoten' => $request->hoten,
-            'sodienthoai' => $request->sodienthoai,
+            // 'sodienthoai' => $request->sodienthoai,
             'gioitinh' => $request->gioitinh,
             'ngaysinh' => $request->ngaysinh,
         ]);
