@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\NguoidungModel;
+use Illuminate\Support\Facades\File;
 
 class NguoidungController extends Controller
 {
@@ -119,16 +120,51 @@ class NguoidungController extends Controller
 
         $request->validate([
             'hoten' => 'required',
-            // 'sodienthoai' => 'required|string|max:20|unique:nguoidung,sodienthoai,' . $user->id,
+            'sodienthoai' => 'required|numeric|digits_between:10,12|unique:nguoidung,sodienthoai,' . $user->id,
             'gioitinh' => 'required',
-            'ngaysinh' => 'required',
+            'ngaysinh' => 'required|date|before_or_equal:today', // Phải là định dạng ngày hợp lệ và không được là ngày trong tương lai
+            'email' => 'required|email:rfc,dns|unique:nguoidung,email,' . $user->id,
+            'avatar' => 'nullable|max:2048',
         ]);
+
+        // 2. XỬ LÝ ẢNH AVATAR
+        if ($request->hasFile('avatar')) {
+            
+            // Chỉ định đường dẫn thư mục trong public: assets/client/images/thumb
+            $publicPath = 'assets/client/images/thumbs';
+            $destinationPath = public_path($publicPath); // Đường dẫn vật lý đầy đủ
+
+            // --- TỐI ƯU HÓA TÊN FILE ---
+            $file = $request->file('avatar');
+            $extension = $file->getClientOriginalExtension();
+            
+            // Sử dụng uniqid() kết hợp với thời gian và ID để tạo tên file gần như độc nhất
+            $fileName = uniqid() . '_' . time() . '_' . $user->id . '.' . $extension; 
+            
+            // 2a. LƯU FILE MỚI VÀO PUBLIC
+            $file->move($destinationPath, $fileName);
+            
+            // Đường dẫn tương đối để lưu vào DB
+            $newAvatarDbPath = $publicPath . '/' . $fileName; 
+            $updateData['avatar'] = $newAvatarDbPath;
+
+            // 2b. XÓA FILE CŨ (NẾU CÓ)
+            if ($user->avatar) {
+                $oldAvatarPath = public_path($user->avatar);
+                
+                // Dùng File::exists() và File::delete() để xóa file
+                if (File::exists($oldAvatarPath)) {
+                    File::delete($oldAvatarPath);
+                }
+            }
+        }
 
         NguoidungModel::where('id', $user->id)->update([
             'hoten' => $request->hoten,
-            // 'sodienthoai' => $request->sodienthoai,
             'gioitinh' => $request->gioitinh,
             'ngaysinh' => $request->ngaysinh,
+            'sodienthoai' => $request->sodienthoai,
+            'email' => $request->email,
         ]);
 
         return back()->with('success', 'Cập nhật thông tin thành công!');

@@ -128,24 +128,36 @@
 
                             <div class="row g-12">
                                <div class="border border-gray-100 rounded-8 p-16">
+                                    @if(session('success'))
+                                        <span class="border-dashed border-success-500 bg-success-300 text-success-900 rounded-8 px-8 py-4">{{ session('success') }}</span>
+                                    @endif
                                     <form class="row" action="{{ route('cap-nhat-tai-khoan') }}" method="POST">
                                         @csrf
                                         @method('PUT')
-
                                         <div class="col-xl-8 py-10">
                                             <h6 class="mb-20 fw-semibold text-gray-700 text-md">Thông tin cá nhân</h6>
                                             <div class="row mb-20">
                                                 <div class="col-xl-3 flex-align flex-center flex-wrap gap-2">
                                                     <div class="avatar-container mx-16 mt-10 mb-0">
                                                         <img id="avatarImage" src="{{ asset('assets/client') }}/images/thumbs/{{ Auth::user()->avatar }}" alt="Avatar" class="avatar-img">
-                                                        <input type="file" id="fileInput" name="avatar" accept="{{ asset('assets/client') }}/images/thumbs/*" style="display: none;">
+                                                        <input type="file" id="fileInput" name="avatar" style="display: none;">
                                                     </div>
                                                     <label class="form-label text-xs text-gray-500 fw-medium" for="fileInput" style="cursor: pointer;"><i class="ph-bold ph-pencil-simple"></i> đổi ảnh</label>
+                                                    @error('avatar')
+                                                            <div class="text-main-600 fw-normal">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
                                                 </div>
                                                 <div class="col-xl-9">
                                                     <div class="form-group">
                                                         <label class="form-label text-md text-gray-900" for="">Tên người dùng:</label>
                                                         <input type="text" id="username" placeholder="" value="{{ Auth::user()->username }}" class="form-control p-10 bg-gray-50 disabled" readonly>
+                                                        @error('username')
+                                                            <div class="text-main-600 fw-normal">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                     <div class="form-group mt-10">
                                                         <label class="form-label text-md text-gray-900" for="">Họ và tên:</label>
@@ -175,12 +187,22 @@
                                                             </option>
                                                             
                                                         </select>
+                                                        @error('gioitinh')
+                                                            <div class="text-main-600 fw-normal">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
                                                         <label class="form-label text-md text-gray-900" for="ngaysinh">Ngày sinh:</label>
                                                         <input type="date" id="ngaysinh" name="ngaysinh" value="{{ old('ngaysinh',Auth::user()->ngaysinh) }}" class="form-control p-10" required>
+                                                        @error('ngaysinh')
+                                                            <div class="text-main-600 fw-normal">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -189,8 +211,41 @@
                                             </button>
                                         </div>
                                         <div class="col-xl-4 border-start border-gray-200 py-10">
-                                            <h6 class="mb-10 fw-semibold text-gray-700 text-md">Số điện thoại & Email</h6>
+                                            <h6 class="mb-20 fw-semibold text-gray-700 text-md">Thông tin liên hệ</h6>
+                                            <div class="form-group mb-10">
+                                                <div class="flex-align flex-between">
+                                                    <label class="form-label text-md text-gray-900 flex-align gap-8" for="sodienthoai"><i class="ph-bold ph-phone"></i> Số điện thoại:</label>
+                                                    <span id="suasodienthoai" class="text-xs text-primary-700 flex-align gap-4 fw-normal" style="cursor:pointer;"><i class="ph-bold ph-pencil-simple"></i> Chỉnh sửa</span>
+                                                </div>
+                                                <input type="text" id="sodienthoai" name="sodienthoai" value="{{ old('sodienthoai',Auth::user()->sodienthoai) }}" class="form-control p-10 bg-gray-50 disabled" required readonly>
+                                                @error('sodienthoai')
+                                                    <div class="text-main-600 fw-normal">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="flex-align flex-between">
+                                                    <label class="form-label text-md text-gray-900 flex-align gap-8" for="email"><i class="ph-bold ph-envelope"></i> Email:</label>
+                                                    <span id="suaemail" class="text-xs text-primary-700 flex-align gap-4 fw-normal" style="cursor:pointer;"><i class="ph-bold ph-pencil-simple"></i> Chỉnh sửa</span>
+                                                </div>
+                                                <input type="text" id="email" name="email" value="{{ old('email',Auth::user()->email) }}" class="form-control p-10 bg-gray-50 disabled" required readonly>
+                                                @error('email')
+                                                    <div class="text-main-600 fw-normal">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                            
+                                            <span class="mt-20 pt-20 text-gray-700 border-top border-gray-100 d-block"></span>
 
+                                            <h6 class="mb-20 fw-semibold text-gray-700 text-md">Thông tin bảo mật</h6>
+                                            <div class="form-group mb-10">
+                                                <div class="flex-align flex-between">
+                                                    <label class="form-label text-md text-gray-900 flex-align gap-8 m-0" for=""><i class="ph-bold ph-lock"></i> Đổi mật khẩu:</label>
+                                                    <a href="#" class="text-sm text-primary-700 flex-align gap-4 fw-normal" style="cursor:pointer;"><i class="ph-bold ph-pencil-simple"></i> Chỉnh sửa</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </form>
                                </div>
@@ -238,4 +293,78 @@
             });
         });
     </script>
+    <script>
+    // Lấy các phần tử DOM
+    const phoneInput = document.getElementById('sodienthoai');
+    const editButton = document.getElementById('suasodienthoai');
+
+    const emailInput = document.getElementById('email');
+    const editEmail = document.getElementById('suaemail');
+
+    // --- LOGIC 1: Khi nhấn nút CHỈNH SỬA ---
+    editButton.addEventListener('click', function() {
+        // Chuyển sang chế độ chỉnh sửa
+        phoneInput.removeAttribute('readonly');
+        
+        // Tùy chọn: Thay đổi kiểu dáng
+        phoneInput.classList.remove('bg-gray-50');
+        
+        // Ẩn nút Chỉnh sửa
+        editButton.style.display = 'none'; 
+        
+        // Đặt con trỏ chuột vào trường nhập liệu
+        phoneInput.focus(); 
+    });
+
+    editEmail.addEventListener('click', function() {
+        // Chuyển sang chế độ chỉnh sửa
+        emailInput.removeAttribute('readonly');
+        
+        // Tùy chọn: Thay đổi kiểu dáng
+        emailInput.classList.remove('bg-gray-50');
+        
+        // Ẩn nút Chỉnh sửa
+        editEmail.style.display = 'none'; 
+        
+        // Đặt con trỏ chuột vào trường nhập liệu
+        emailInput.focus(); 
+    });
+
+    // --- LOGIC 2: Khi rời khỏi trường nhập liệu (sự kiện BLUR) ---
+    phoneInput.addEventListener('blur', function() {
+        // Kiểm tra xem trường input có đang ở chế độ chỉnh sửa không
+        // Nếu trường đó KHÔNG có thuộc tính 'readonly' (tức là đang chỉnh sửa)
+        if (!phoneInput.hasAttribute('readonly')) {
+            
+            // Khóa lại trường nhập liệu (trở lại trạng thái chỉ đọc)
+            phoneInput.setAttribute('readonly', 'readonly');
+            
+            // Hiện nút Chỉnh sửa
+            editButton.style.display = 'inline-block';
+            
+            phoneInput.classList.add('bg-gray-50');
+            
+            // Gợi ý: Tại đây, bạn sẽ gọi một hàm AJAX để gửi dữ liệu đã thay đổi lên server
+            // console.log('Dữ liệu mới đã được lưu (hoặc sẵn sàng để lưu): ' + phoneInput.value);
+        }
+    });
+
+    emailInput.addEventListener('blur', function() {
+        // Kiểm tra xem trường input có đang ở chế độ chỉnh sửa không
+        // Nếu trường đó KHÔNG có thuộc tính 'readonly' (tức là đang chỉnh sửa)
+        if (!emailInput.hasAttribute('readonly')) {
+            
+            // Khóa lại trường nhập liệu (trở lại trạng thái chỉ đọc)
+            emailInput.setAttribute('readonly', 'readonly');
+            
+            // Hiện nút Chỉnh sửa
+            editEmail.style.display = 'inline-block';
+            
+            emailInput.classList.add('bg-gray-50');
+            
+            // Gợi ý: Tại đây, bạn sẽ gọi một hàm AJAX để gửi dữ liệu đã thay đổi lên server
+            // console.log('Dữ liệu mới đã được lưu (hoặc sẵn sàng để lưu): ' + phoneInput.value);
+        }
+    });
+</script>
 @endsection
