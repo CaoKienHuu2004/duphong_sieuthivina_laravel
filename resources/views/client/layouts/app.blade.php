@@ -202,7 +202,7 @@
         <ul class="header-top__right flex-align justify-content-end flex-wrap gap-16">
 
           <li class="flex-align">
-            <a href="wishlist.html" class="text-white-6 text-sm hover-text-white">
+            <a href="{{route('gio-hang')}}" class="text-white-6 text-sm hover-text-white">
               <i class="ph-bold ph-shopping-cart"></i>
               Giỏ hàng
               <span class="badge bg-success-600 rounded-circle">6</span>
@@ -288,7 +288,7 @@
 
           @auth
             <li class="flex-align">
-              <a href="wishlist.html" class="text-white-6 text-sm hover-text-white">
+              <a href="{{route('gio-hang')}}" class="text-white-6 text-sm hover-text-white">
                 <i class="ph-bold ph-shopping-cart"></i>
                 Giỏ hàng
                 <span class="badge bg-success-600 rounded-circle">6</span>

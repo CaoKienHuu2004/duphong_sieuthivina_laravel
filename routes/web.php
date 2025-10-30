@@ -45,6 +45,9 @@ Route::middleware('auth')->group(function () {
     // Trang cá nhân
     Route::get('/thong-tin-ca-nhan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');
+
+    Route::get('/gio-hang', [client\GiohangController::class, 'index'])->name('gio-hang');
+    // Route::get('/cap-nhat-gio-hang', [client\GiohangController::class, 'index'])->name('gio-hang');
 });
 
 /*
