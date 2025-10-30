@@ -48,6 +48,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/gio-hang', [client\GiohangController::class, 'index'])->name('gio-hang');
     // Route::get('/cap-nhat-gio-hang', [client\GiohangController::class, 'index'])->name('gio-hang');
+
+    Route::get('/thanh-toan', [client\DonhangController::class, 'thanhtoan'])->name('thanh-toan');
+
 });
 
 /*
