@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');
 
     Route::get('/gio-hang', [client\GiohangController::class, 'index'])->name('gio-hang');
-    // Route::get('/cap-nhat-gio-hang', [client\GiohangController::class, 'index'])->name('gio-hang');
+    Route::post('/them-gio-hang', [client\GiohangController::class, 'themgiohang'])->name('them-gio-hang');
 
     Route::get('/thanh-toan', [client\DonhangController::class, 'thanhtoan'])->name('thanh-toan');
 

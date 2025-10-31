@@ -22,7 +22,8 @@
     <div class="page">
         <section class="product-details pt-40 fix-scale-40">
             <div class="container container-lg">
-                <form action="#" class="row gy-4">
+                <form action="{{ route('them-gio-hang') }}" method="post" class="row gy-4">
+                    @csrf
                     <div class="col-xl-9">
                         <div class="row gy-4">
                             <div class="col-xl-6">
@@ -159,7 +160,7 @@
                                                     @foreach($sanpham->bienthe as $bienthe)
                                                         <input type="radio"
                                                         @if($loop->first) checked @endif
-                                                        id="bienthe-{{ $bienthe->id }}" name="bienthe" value="{{ $bienthe->id }}" class="d-none" data-variant-id="{{ $bienthe->id }}" onclick="updatePrice(this)">
+                                                        id="bienthe-{{ $bienthe->id }}" name="id_bienthe" value="{{ $bienthe->id }}" class="d-none" data-variant-id="{{ $bienthe->id }}" onclick="updatePrice(this)">
                                                         <label for="bienthe-{{ $bienthe->id }}" 
                                                             class="color-list__button rounded-8 px-12 py-8 border border-2 border-gray-50 hover-border-main-600 transition-1 @if($loop->first) border-gray-900 @endif " style="cursor: pointer;">
                                                             {{ $bienthe->loaibienthe->ten }}
@@ -197,7 +198,7 @@
                                     <button type="button" id="quantity-minus" class="quantity__minus flex-shrink-0 h-48 w-48 text-neutral-600 bg-gray-50 flex-center hover-bg-main-600 hover-text-white">
                                         <i class="ph ph-minus"></i>
                                     </button>
-                                    <input type="number" id="quantity-input" value="1" min="1" class="quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 px-16">
+                                    <input type="number" id="quantity-input" value="1" min="1" name="soluong" class="quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 px-16">
                                     <button type="button" id="quantity-plus" class="quantity__plus flex-shrink-0 h-48 w-48 text-neutral-600 bg-gray-50 flex-center hover-bg-main-600 hover-text-white">
                                         <i class="ph ph-plus"></i>
                                     </button>
