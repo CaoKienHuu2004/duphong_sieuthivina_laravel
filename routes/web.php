@@ -12,7 +12,6 @@ use App\Http\Controllers\vendor;
 |--------------------------------------------------------------------------
 */
 
-// Tuyến đường công khai (Không cần đăng nhập)
 Route::get('/', [client\HomeController::class, 'index'])->name('trang-chu');
 Route::get('/trang-chu', [client\HomeController::class, 'index']);
 Route::get('/tim-kiem', [client\SanphamController::class, 'search'])->name('tim-kiem');
@@ -39,15 +38,17 @@ Route::middleware('guest')->group(function () {
 
 // Tuyến đường yêu cầu đăng nhập (dành cho mọi người dùng đã đăng nhập)
 Route::middleware('auth')->group(function () {
-// Route::middleware('auth:web')->group(function () {
     
     Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('dang-xuat');
-    // Trang cá nhân
     Route::get('/thong-tin-ca-nhan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');
 
     Route::get('/gio-hang', [client\GiohangController::class, 'index'])->name('gio-hang');
     Route::post('/them-gio-hang', [client\GiohangController::class, 'themgiohang'])->name('them-gio-hang');
+    Route::post('/gio-hang/cap-nhat', [client\GiohangController::class, 'capnhatsoluong'])->name('cap-nhat-gio-hang');
+    Route::delete('/gio-hang/xoa/{id}', [client\GiohangController::class, 'xoasanphamgiohang'])->name('xoa-san-pham-gio-hang');
+    Route::post('/gio-hang/ap-dung-voucher', [client\GiohangController::class, 'apdungvoucher'])->name('ap-dung-voucher');
+    Route::delete('/gio-hang/xoa-voucher', [client\GiohangController::class, 'xoavoucher'])->name('xoa-voucher');
 
     Route::get('/thanh-toan', [client\DonhangController::class, 'thanhtoan'])->name('thanh-toan');
 
