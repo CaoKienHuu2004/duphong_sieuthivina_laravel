@@ -10,8 +10,8 @@
             <div class="container container-lg">
                 <div class="row gy-4">
                     <div class="col-xl-9 col-lg-8">
-                        @if(isset($giohangItems))
-                            <form action="{{ route('cap-nhat-gio-hang') }}" method="post" class="cart-table border border-gray-100 rounded-8 p-30 pb-0">
+                        <div class="cart-table border border-gray-100 rounded-8 p-30 pb-0">
+                            <form action="{{ route('cap-nhat-gio-hang') }}" method="post" class="">
                                 <div class="overflow-x-auto scroll-sm scroll-sm-horizontal">
                                     <table class="table style-three">
                                         <thead>
@@ -93,9 +93,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </form>
                             
-                            <div class="cart-table border border-gray-100 rounded-8 p-30 pb-0 mt-20">
+                            </form>
+                        </div>
+                            
+                        <div class="cart-table border border-gray-100 rounded-8 p-30 pb-0 mt-20">
                                 <div class="overflow-x-auto scroll-sm scroll-sm-horizontal">
                                     <table class="table style-three">
                                         <thead>
@@ -150,9 +152,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                        </div>
                             
-                        @endif
                     </div>
                     <div class="col-xl-3 col-lg-4">
                         <div class="cart-sidebar border border-gray-100 rounded-8 px-24 py-30 pb-20">
