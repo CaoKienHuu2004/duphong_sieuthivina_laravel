@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/aos.css" />
   <!-- Main css -->
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/main.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -555,7 +556,7 @@
 
 
   <!-- Jquery js -->
-  <script src="{{asset('assets/client')}}/js/jquery-3.7.1.min.js"></script>
+  {{-- <script src="{{asset('assets/client')}}/js/jquery-3.7.1.min.js"></script> --}}
   <!-- Bootstrap Bundle Js -->
   <script src="{{asset('assets/client')}}/js/boostrap.bundle.min.js"></script>
   <!-- Bootstrap Bundle Js -->
