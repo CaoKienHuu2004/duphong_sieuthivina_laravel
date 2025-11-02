@@ -121,6 +121,9 @@
                             <div class="flex-align gap-16">
                                 <input type="text" name="voucher_code" id="voucher_code_input" class="common-input p-10 flex-grow-1" placeholder="Nhập mã giảm giá..." value="">
                             </div>
+                            <div class="flex-align gap-16">
+                                
+                            </div>
                             <button type="submit" id="apply-voucher-btn" class="btn border-main-600 text-main-600 hover-bg-main-600 hover-text-white mt-20 py-10 w-100 rounded-8">
                                 Áp dụng
                             </button>
@@ -156,7 +159,7 @@
                                         Đang tải...
                                     </span>
                                 </div>
-                            </div>  
+                            </div>
                         </div>
                         <a href="" id="checkout-btn" class="btn btn-main py-14 w-100 rounded-8 disabled">Tiến hành thanh toán</a>
                     </div>
