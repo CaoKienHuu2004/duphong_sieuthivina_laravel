@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\View;
 use App\Models\DanhmucModel;
 use App\Models\TukhoaModel;
 use App\Models\NguoidungModel;
+use App\Listeners\MergeCartOnLogin;
+use Illuminate\Auth\Events\Login;
 
 class ComposerServiceProvider extends ServiceProvider
 {
@@ -48,4 +50,10 @@ class ComposerServiceProvider extends ServiceProvider
             }
         );
     }
+
+    protected $listen = [
+        Login::class => [
+            MergeCartOnLogin::class,
+        ],
+    ];
 }

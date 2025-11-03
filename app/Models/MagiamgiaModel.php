@@ -31,15 +31,4 @@ class MagiamgiaModel extends Model
     {
         return $this->hasMany(DonhangModel::class, 'id_magiamgia');
     }
-
-    // Thêm các scope hoặc hàm tiện ích
-    public function scopeHoatDong($query)
-    {
-        return $query->where('trangthai', 'Hoạt động');
-    }
-
-    public function scopeHetHan($query)
-    {
-        return $query->whereDate('ngayketthuc', '<', now());
-    }
 }

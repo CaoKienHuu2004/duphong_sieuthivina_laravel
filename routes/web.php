@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\client;
 use App\Http\Controllers\admin;
 use App\Http\Controllers\vendor;
+use App\Livewire;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/xac-thuc-dang-ky', [client\NguoidungController::class, 'handleRegister'])->name('handleRegister');
 });
 
+Route::prefix('/gio-hang')->group(function () {
+    
+    Route::get('/', function () {return view('client.thanhtoan.giohang'); })->name('gio-hang');
+
+    Route::post('/them-gio-hang', [client\GiohangController::class, 'themgiohang'])->name('them-gio-hang');
+});
+
 // Tuyến đường yêu cầu đăng nhập (dành cho mọi người dùng đã đăng nhập)
 Route::middleware('auth')->group(function () {
     
@@ -43,19 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/thong-tin-ca-nhan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');
 
-Route::middleware(['auth'])->prefix('/gio-hang')->group(function () {
-    
-    Route::get('/', [client\GiohangController::class, 'index'])->name('gio-hang');
-    
-    // API DATA cho AJAX
-    Route::get('/data', [client\GiohangController::class, 'getCartDataAjax'])->name('gio-hang.data');
 
-    Route::post('/them-gio-hang', [client\GiohangController::class, 'themgiohang'])->name('them-gio-hang');
-    Route::post('/cap-nhat', [client\GiohangController::class, 'capnhatsoluong'])->name('cap-nhat-gio-hang');
-    Route::delete('/xoa/{id}', [client\GiohangController::class, 'xoasanphamgiohang'])->name('xoa-san-pham-gio-hang');
-    Route::post('/ap-dung-voucher', [client\GiohangController::class, 'apdungvoucher'])->name('ap-dung-voucher');
-    Route::delete('/xoa-voucher', [client\GiohangController::class, 'xoavoucher'])->name('xoa-voucher');
-});
 
     Route::get('/thanh-toan', [client\DonhangController::class, 'thanhtoan'])->name('thanh-toan');
 

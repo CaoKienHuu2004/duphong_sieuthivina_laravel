@@ -38,16 +38,4 @@ class QuatangsukienModel extends Model
     {
         return $this->belongsTo(ChuongtrinhModel::class, 'id_chuongtrinh');
     }
-
-    // Scope: chỉ lấy quà tặng đang hiển thị
-    public function scopeHienThi($query)
-    {
-        return $query->where('trangthai', 'Hiển thị');
-    }
-
-    // Scope: chỉ lấy quà tặng đang tạm ẩn
-    public function scopeTamAn($query)
-    {
-        return $query->where('trangthai', 'Tạm ẩn');
-    }
 }

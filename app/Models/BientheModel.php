@@ -35,4 +35,17 @@ class BientheModel extends Model
     {
         return $this->belongsTo(LoaibientheModel::class, 'id_loaibienthe','id');
     }
+
+    // ===========================================================================================================================
+    // BỘ TRUY CẬP (ACCESSORS)
+    // ===========================================================================================================================
+    public function getGiadagiamAttribute()
+    {
+        $giagoc = $this->giagoc;
+
+        $giamgia_phantram = $this->sanpham->giamgia ?? 0;
+
+        $giadagiam = $giagoc - ($giagoc * $giamgia_phantram / 100);
+        return $giadagiam; 
+    }
 }

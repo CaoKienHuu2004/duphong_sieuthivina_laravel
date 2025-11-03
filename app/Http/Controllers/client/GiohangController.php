@@ -4,119 +4,136 @@ namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\giohangService;
+use App\Models\GiohangModel;
+use App\Models\BientheModel;
+use App\Models\MagiamgiaModel;
+use App\Models\NguoidungModel;
+use App\Models\QuatangsukienModel;
+use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class GiohangController extends Controller
 {
-    protected $cartService;
-
-    public function __construct(giohangService $cartService)
-    {
-        $this->middleware('auth');
-        $this->cartService = $cartService;
-    }
-
-    // ========================================================================
-    // HIỂN THỊ VÀ LẤY DATA
-    // ========================================================================
-
     public function index()
     {
         return view('client.thanhtoan.giohang');
     }
 
-    public function getCartDataAjax()
-    {
-        $data = $this->cartService->getCartData();
-        return response()->json(['success' => true, 'data' => $data]);
-    }
-
-    // ========================================================================
-    // TƯƠNG TÁC (AJAX ACTIONS)
-    // ========================================================================
-
     public function themgiohang(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'id_bienthe' => 'required|integer|exists:bienthe,id',
-            'soluong'    => 'required|integer|min:1',
+        // 1. Validate dữ liệu đầu vào
+        $request->validate([
+            'id_bienthe' => 'required|exists:bienthe,id',
+            'soluong' => 'required|integer|min:1',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'error' => $validator->errors()->first()], 400);
-        }
+        $id_bienthe = $request->input('id_bienthe');
+        $soluong_them = $request->input('soluong');
 
-        $result = $this->cartService->themVaoGio($request->id_bienthe, (int) $request->soluong);
+        // Lấy thông tin biến thể VÀ eagerly load sanpham
+        $bienthe = BientheModel::with('sanpham')->find($id_bienthe); 
         
-        if (!$result) {
-            return response()->json(['success' => false, 'error' => 'Sản phẩm không tồn tại hoặc số lượng tồn kho không đủ.'], 400);
+        if (!$bienthe) {
+            // Trả về JSON nếu là AJAX request
+            return response()->json(['status' => 'error', 'message' => 'Biến thể sản phẩm không tồn tại.'], 404);
         }
 
-        return redirect()->route('gio-hang')->with('success', 'Đã thêm sản phẩm vào giỏ hàng.');
-    }
+        $giaban = $bienthe->giadagiam; // Giá đã giảm (Accessor)
+        $tonkho_hientai = $bienthe->soluong; // Số lượng tồn kho
+        $soluong_daco = 0; 
+        $cart = Session::get('cart', []); // Khởi tạo cart cho Guest
 
-    public function capnhatsoluong(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'id_bienthe' => 'required|integer|exists:bienthe,id',
-            'soluong'    => 'required|integer|min:0',
+        // --- 2. XÁC ĐỊNH SỐ LƯỢNG ĐÃ CÓ VÀ KIỂM TRA TỒN KHO ---
+        if (Auth::check()) {
+            // AUTH: Kiểm tra trong Database
+            $id_nguoidung = Auth::id();
+            $giohang_item_db = GiohangModel::where('id_nguoidung', $id_nguoidung)
+                                          ->where('id_bienthe', $id_bienthe)
+                                          ->first();
+            if ($giohang_item_db) {
+                $soluong_daco = $giohang_item_db->soluong;
+            }
+        } else {
+            // GUEST: Kiểm tra trong Session
+            if (isset($cart[$id_bienthe])) {
+                $soluong_daco = $cart[$id_bienthe]['soluong'];
+            }
+        }
+        
+        $tong_soluong_moi = $soluong_daco + $soluong_them;
+
+        if ($tong_soluong_moi > $tonkho_hientai) {
+             $con_lai = $tonkho_hientai - $soluong_daco;
+             $message_error = "Xin lỗi, số lượng tồn kho chỉ còn $tonkho_hientai sản phẩm. Bạn chỉ có thể thêm tối đa $con_lai sản phẩm nữa.";
+             
+             // Trả về JSON lỗi tồn kho
+             return response()->json([
+                 'status' => 'error', 
+                 'message' => $message_error, 
+                 'con_lai' => max(0, $con_lai)
+             ], 400); // Bad Request
+        }
+        
+        // --- 3. TIẾN HÀNH THÊM HOẶC CẬP NHẬT GIỎ HÀNG ---
+        
+        if (Auth::check()) {
+            // 3a. ĐÃ ĐĂNG NHẬP (Lưu vào Database)
+            if (isset($giohang_item_db)) {
+                // Cập nhật
+                $giohang_item_db->soluong = $tong_soluong_moi;
+                $giohang_item_db->thanhtien = $tong_soluong_moi * $giaban;
+                $giohang_item_db->save();
+                $message = 'Đã cập nhật số lượng sản phẩm trong giỏ hàng!';
+                
+            } else {
+                // Thêm mới
+                $giohang_item_db = GiohangModel::create([
+                    'id_nguoidung' => $id_nguoidung,
+                    'id_bienthe' => $id_bienthe,
+                    'soluong' => $soluong_them,
+                    'thanhtien' => $soluong_them * $giaban,
+                    'trangthai' => 'Hiển thị',
+                ]);
+                $message = 'Đã thêm sản phẩm vào giỏ hàng!';
+            }
+            // Không trả về $cart (Session) trong trường hợp Auth, mà trả về Database Cart hoặc thông báo.
+            $data_response = $giohang_item_db; // Có thể trả về item vừa được tạo/cập nhật
+
+        } else {
+            // 3b. CHƯA ĐĂNG NHẬP (Lưu vào Session)
+            if (isset($cart[$id_bienthe])) {
+                // Cập nhật
+                $cart[$id_bienthe]['soluong'] = $tong_soluong_moi;
+                $cart[$id_bienthe]['giaban'] = $giaban; // Cập nhật lại giá
+                $cart[$id_bienthe]['thanhtien'] = $tong_soluong_moi * $giaban; 
+                $message = 'Đã cập nhật số lượng sản phẩm trong giỏ hàng (Session)!';
+            } else {
+                // Thêm mới
+                $cart[$id_bienthe] = [
+                    'id_bienthe' => $id_bienthe,
+                    'soluong' => $soluong_them,
+                    'giaban' => $giaban, // <-- THÊM THUỘC TÍNH GIÁ BÁN
+                    'thanhtien' => $soluong_them * $giaban,
+                    'trangthai' => 'Hiển thị',
+                ];
+                $message = 'Đã thêm sản phẩm vào giỏ hàng (Session)!';
+            }
+
+            Session::put('cart', $cart); // Lưu lại Session
+            $data_response = $cart; // Trả về toàn bộ Session Cart
+        }
+        
+        // 4. Trả về JSON thành công
+        return response()->json([
+            'status' => 'success',
+            'message' => $message,
+            'data' => $data_response,
+            'total_items' => Auth::check() ? GiohangModel::where('id_nguoidung', $id_nguoidung)->count() : count($data_response),
         ]);
-        
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'error' => $validator->errors()->first()], 400);
-        }
-
-        if ((int) $request->soluong === 0) {
-            return $this->xoasanphamgiohang($request, $request->id_bienthe);
-        }
-
-        $result = $this->cartService->capNhatSoLuong($request->id_bienthe, (int) $request->soluong);
-
-        if (!$result) {
-            return response()->json(['success' => false, 'error' => 'Sản phẩm không tồn tại hoặc số lượng tồn kho không đủ.'], 400);
-        }
-
-        return response()->json(['success' => true, 'message' => 'Cập nhật giỏ hàng thành công.']);
-    }
-
-    public function xoasanphamgiohang(Request $request, $id)
-    {
-        $this->cartService->xoaSanPham($id);
-        return response()->json(['success' => true, 'message' => 'Đã xóa sản phẩm khỏi giỏ hàng.']);
     }
     
-    public function apdungvoucher(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'voucher_code' => 'required|string|max:50',
-        ]);
 
-        if ($validator->fails()) {
-            // Trả về 200 OK cho lỗi Validation
-            return response()->json(['success' => false, 'error' => $validator->errors()->first()], 200);
-        }
-
-        $code = trim($request->voucher_code);
-        
-        $result = $this->cartService->apDungVoucher($code);
-
-        // LUÔN TRẢ VỀ 200 OK (Thành công hoặc Lỗi nghiệp vụ),
-        // và để Frontend kiểm tra trường 'status' trong $result.
-        if ($result['status'] === 'success') {
-            return response()->json(['success' => true, 'message' => $result['message']]);
-        } else {
-            // Trả về lỗi nghiệp vụ (Voucher không hợp lệ/không đủ điều kiện)
-            // nhưng sử dụng status HTTP 200 để tránh lỗi console
-            return response()->json(['success' => false, 'error' => $result['message']]);
-        }
-    }
-
-
-    public function xoavoucher()
-    {
-        $this->cartService->xoaVoucher();
-        return response()->json(['success' => true, 'message' => 'Đã xóa mã giảm giá thành công!']);
-    }
 }
