@@ -97,7 +97,7 @@ class GiohangController extends Controller
                     'thanhtien' => $soluong_them * $giaban,
                     'trangthai' => 'Hiển thị',
                 ]);
-                $message = 'Đã thêm sản phẩm vào giỏ hàng!';
+                $message = 'Đã thêm sản phẩm vào giỏ hàng !';
             }
             // Không trả về $cart (Session) trong trường hợp Auth, mà trả về Database Cart hoặc thông báo.
             $data_response = $giohang_item_db; // Có thể trả về item vừa được tạo/cập nhật
@@ -109,7 +109,7 @@ class GiohangController extends Controller
                 $cart[$id_bienthe]['soluong'] = $tong_soluong_moi;
                 $cart[$id_bienthe]['giaban'] = $giaban; // Cập nhật lại giá
                 $cart[$id_bienthe]['thanhtien'] = $tong_soluong_moi * $giaban; 
-                $message = 'Đã cập nhật số lượng sản phẩm trong giỏ hàng (Session)!';
+                $message = 'Đã cập nhật số lượng sản phẩm trong giỏ hàng !';
             } else {
                 // Thêm mới
                 $cart[$id_bienthe] = [
@@ -119,20 +119,23 @@ class GiohangController extends Controller
                     'thanhtien' => $soluong_them * $giaban,
                     'trangthai' => 'Hiển thị',
                 ];
-                $message = 'Đã thêm sản phẩm vào giỏ hàng (Session)!';
+                $message = 'Đã thêm sản phẩm vào giỏ hàng !';
             }
 
             Session::put('cart', $cart); // Lưu lại Session
             $data_response = $cart; // Trả về toàn bộ Session Cart
         }
         
-        // 4. Trả về JSON thành công
-        return response()->json([
-            'status' => 'success',
-            'message' => $message,
-            'data' => $data_response,
-            'total_items' => Auth::check() ? GiohangModel::where('id_nguoidung', $id_nguoidung)->count() : count($data_response),
+        return redirect()->route('gio-hang')->with([
+            'status' => 'success', 
+            'message' => $message 
         ]);
+        
+        // Hoặc đơn giản hơn, nếu Route hiển thị trang giỏ hàng là /gio-hang:
+        // return redirect('/gio-hang')->with([
+        //     'status' => 'success', 
+        //     'message' => $message 
+        // ]);
     }
     
 

@@ -21,6 +21,7 @@ class BientheModel extends Model
         'luotban',
         'trangthai',
     ];
+    protected $appends = ['giadagiam'];
     public $timestamps = false;
 
     // ===========================================================================================================================
