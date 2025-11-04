@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\DanhmucModel;
 use App\Models\TukhoaModel;
 use Illuminate\Support\Facades\View;
-use App\Livewire\GiohangComponent;
 use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {   
-        Livewire::component('giohang-thong-nhat', GiohangComponent::class);
+        Livewire::component('giohangComponent', \App\Livewire\GiohangComponent::class);
     }
 }
