@@ -10,7 +10,7 @@ use App\Models\GiohangModel;
 use App\Models\BientheModel;
 use App\Models\QuatangsukienModel; 
 
-class GiohangComponent extends Component
+class giohangComponent extends Component
 {
     public $giohang = []; 
     public $tamtinh = 0; 
