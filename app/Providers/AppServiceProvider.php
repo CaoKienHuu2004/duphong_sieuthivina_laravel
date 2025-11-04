@@ -23,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {   
-        Livewire::component('giohangComponent', \App\Livewire\GiohangComponent::class);
+        Livewire::component('giohang', \App\Livewire\GiohangComponent::class);
     }
 }
