@@ -7,7 +7,7 @@ use App\Models\DanhmucModel;
 use App\Models\TukhoaModel;
 use Illuminate\Support\Facades\View;
 use App\Livewire\GiohangComponent;
-use Illuminate\Livewire\Livewire;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
