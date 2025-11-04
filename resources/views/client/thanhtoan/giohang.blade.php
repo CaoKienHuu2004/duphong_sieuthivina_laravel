@@ -7,7 +7,7 @@
 @section('content')
     <div class="page">
          <section class="cart py-40">
-            @livewire('giohang')
+            @livewire('giohangComponent')
         </section>
     </div>
 @endsection
