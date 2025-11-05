@@ -2,7 +2,7 @@
     {{-- Hiển thị thông báo (Livewire Flash Messages) --}}
     @if (session()->has('update_message') || session()->has('error_message') || session()->has('voucher_message'))
         <div class="{{ session()->has('error_message') ? 'bg-main-200 border border-main-600 text-main-900 fw-medium' : 'bg-success-200 border border-success-600 text-success-900 fw-medium' }} mb-20 p-10 rounded-8">
-            {{ session('update_message') ?? $message ?? session('error_message') }}
+            {{ session('update_message') ?? $message ?? session('error_message') ?? session('voucher_message')}}
         </div>
     @endif
     @php
@@ -218,56 +218,42 @@
         </div>
         
         <div class="col-xl-3 col-lg-4">
-            
-            {{-- ================================================================= --}}
-            {{-- 3. ÁP DỤNG VOUCHER (availableVouchers) --}}
-            {{-- ================================================================= --}}
             <div class="cart-sidebar border border-gray-100 rounded-8 px-24 py-30 pb-20">
                 <h6 class="text-lg mb-20 flex-align gap-8"><i class="ph-bold ph-ticket text-main-600 text-xl"></i>Áp dụng Voucher</h6>
-                
-                <form wire:submit.prevent="applyVoucher($event.target.magiamgia.value)">
+                <form>
                     <div class="flex-align gap-16">
-                        <input type="text" name="magiamgia" class="common-input p-10" placeholder="Nhập mã giảm giá..." value="">
+                        <input type="text" class="common-input p-10" placeholder="Nhập mã giảm giá..." value="">
                     </div>
-                    <button type="submit" class="btn border-main-600 text-main-600 hover-bg-main-600 hover-text-white mt-20 py-10 w-100 rounded-8" style="width: 100px;">
-                        Áp dụng
+                    <button class="btn border-main-600 text-main-600 hover-bg-main-600 hover-text-white mt-20 py-10 w-100 rounded-8" style="width: 100px;">
+                        <span>Áp Dụng</span>
+                        {{-- <span>Đang kiểm tra...</span> --}}
                     </button>
                 </form>
+                        <div class="flex-align flex-between gap-8 mt-10 border-dashed border-gray-200 py-10 px-12 rounded-4">
+                            <span class="flex-align gap-8 text-sm fw-medium text-gray-900 pe-10">
+                                <i class="ph-bold ph-ticket text-main-600 text-2xl"></i>
+                                <div class="text-sm d-flex flex-column">
+                                    <span class="text-sm text-gray-900 w-100">
+                                        Giảm 20.000 đ
+                                    </span>
+                                    <span class="text-xs text-gray-500 w-100">
+                                        SIEUTHIVINA2025
+                                    </span>
+                                </div>
+                            </span>
+                            <span class="flex-align gap-8 text-xs fw-medium text-gray-900">
+                                <input type="radio" name="selected_voucher" id="voucher-id-radio" class="d-none"
+                                    checked>
 
-                {{-- @foreach ($availableVouchers as $voucher)
-                    <div class="flex-align flex-between gap-8 mt-10 border-dashed border-gray-200 py-10 px-12 rounded-4" wire:key="voucher-{{ $voucher['magiamgia'] }}">
-                        <span class="flex-align gap-8 text-sm fw-medium text-gray-900 pe-10">
-                            <i class="ph-bold ph-ticket text-main-600 text-2xl"></i>
-                            <div class="text-sm d-flex flex-column">
-                                <span class="text-sm text-gray-900 w-100">
-                                    Giảm **{{ number_format($voucher['giatri']) }} đ**
-                                </span>
-                                <span class="text-xs text-gray-500 w-100">
-                                    {{ $voucher['magiamgia'] }} (Min: {{ number_format($voucher['dieukien']) }}đ)
-                                </span>
-                            </div>
-                        </span>
-                        <span class="flex-align gap-8 text-xs fw-medium text-gray-900">
-                            <input type="radio" name="selected_voucher" id="voucher-{{ $voucher['magiamgia'] }}-radio" class="d-none"
-                                @if($appliedVoucherCode == $voucher['magiamgia']) checked @endif >
-
-                            <label for="voucher-{{ $voucher['magiamgia'] }}-radio" 
-                                class="btn bg-main-600 hover-bg-main-100 text-white hover-text-main-600 p-6 rounded-4 text-xs"
-                                wire:click="applyVoucher('{{ $voucher['magiamgia'] }}')" style="cursor: pointer;">
-                                {{ $appliedVoucherCode == $voucher['magiamgia'] ? 'Đã chọn' : 'Chọn' }}
-                            </label>
-                        </span>
-                    </div>
-                @endforeach --}}
+                                <label for="voucher-id-radio" 
+                                    class="btn bg-main-600 hover-bg-main-100 text-white hover-text-main-600 p-6 rounded-4 text-xs"
+                                    style="cursor: pointer;">
+                                    Chọn
+                                    {{-- đã chọn --}}
+                                </label>
+                            </span>
+                        </div>
                 
-                {{-- Nếu có voucher đang áp dụng, thêm nút Hủy --}}
-                {{-- @if ($appliedVoucherCode)
-                    <button type="button" class="btn border-danger-600 text-danger-600 hover-bg-danger-600 hover-text-white mt-10 py-10 w-100 rounded-8"
-                        wire:click="applyVoucher('')"
-                        >
-                        Hủy mã giảm giá ({{ $appliedVoucherCode }})
-                    </button>
-                @endif --}}
             </div>
             
             {{-- ================================================================= --}}

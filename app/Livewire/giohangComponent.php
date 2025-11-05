@@ -109,18 +109,20 @@ class giohangComponent extends Component
     
     private function xacnhandieukienquatang()
     {
-        $tongsothuonghieusp = [];
+        $uniqueItemsByBrand = [];
         
         foreach ($this->giohang as $item) {
-            if ($item['thanhtien'] > 0) {
+            // CHỈ XÉT SẢN PHẨM CHÍNH (có thành tiền > 0)
+            if ($item['thanhtien'] > 0) { 
                 $thuonghieuId = $item['bienthe']['sanpham']['id_thuonghieu'] ?? null;
-                $soluong = $item['soluong'];
+                $bientheId = $item['id_bienthe'];
                 
                 if ($thuonghieuId) {
-                    if (!isset($tongsothuonghieusp[$thuonghieuId])) {
-                        $tongsothuonghieusp[$thuonghieuId] = 0;
+                    if (!isset($uniqueItemsByBrand[$thuonghieuId])) {
+                        $uniqueItemsByBrand[$thuonghieuId] = [];
                     }
-                    $tongsothuonghieusp[$thuonghieuId] += $soluong;
+                    
+                    $uniqueItemsByBrand[$thuonghieuId][$bientheId] = true;
                 }
             }
         }
@@ -130,18 +132,23 @@ class giohangComponent extends Component
         
         foreach ($quatangsukiendb as $rule) {
             $bientheduoctang = $rule->id_bienthe;
-            $dieukienduoctang = $rule->dieukien;
+            $dieukienduoctang = $rule->dieukien; // Đây là "Số lượng sản phẩm khác nhau" cần mua
             
             $giftBienthe = BientheModel::with('sanpham')->find($bientheduoctang);
             
             if (!$giftBienthe) continue;
 
             $requiredBrandId = $giftBienthe->sanpham->id_thuonghieu ?? null;
-
+            
             if ($requiredBrandId) {
-                $currentBrandQuantity = $tongsothuonghieusp[$requiredBrandId] ?? 0;
+                // TÍNH TOÁN: Lấy số lượng biến thể DUY NHẤT đang có của Thương hiệu đó
+                $uniqueItemsCount = 0;
+                if (isset($uniqueItemsByBrand[$requiredBrandId])) {
+                    $uniqueItemsCount = count($uniqueItemsByBrand[$requiredBrandId]);
+                }
                 
-                if ($currentBrandQuantity >= $dieukienduoctang) {
+                // KIỂM TRA ĐIỀU KIỆN MỚI: Nếu số lượng sản phẩm khác nhau >= điều kiện
+                if ($uniqueItemsCount >= $dieukienduoctang) {
                     $soluongquatang = 1; 
 
                     if (!isset($themquatang[$bientheduoctang])) {
