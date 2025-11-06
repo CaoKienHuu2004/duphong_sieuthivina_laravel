@@ -65,24 +65,29 @@ class GiohangComponent extends Component
             $this->giohang = $giohangdb->toArray();
 
         } else {
+            // FIX CHO NGƯỜI DÙNG CHƯA ĐĂNG NHẬP: Xử lý khóa Session độc lập cho quà tặng
             $giohangsession = Session::get('cart', []);
             
-            foreach ($giohangsession as $id_bienthe => $item) {
+            foreach ($giohangsession as $cartKey => $item) { // $cartKey có thể là '101' hoặc '101_GIFT_0D'
+                // Tách ID biến thể thực tế từ khóa Session
+                $id_bienthe_actual = (int)str_replace('_GIFT_0D', '', $cartKey); 
+
                 if (($item['soluong'] ?? 0) > 0) { 
                     $bienthe = BientheModel::with([
                         'sanpham.thuonghieu',
                         'sanpham.hinhanhsanpham', 
                         'loaibienthe'
-                    ])->find($id_bienthe);
-                    
+                    ])->find($id_bienthe_actual); // SỬ DỤNG ID THỰC TẾ
+
                     if ($bienthe) {
                         $isGift = ($item['thanhtien'] ?? 1) == 0;
                         $giaban = $isGift ? 0 : ($bienthe->giadagiam ?? $bienthe->giagoc);
                         
                         $this->giohang[] = [
-                            'id_bienthe' => $id_bienthe,
+                            'id_bienthe' => $id_bienthe_actual, // Luôn lưu ID biến thể thực tế
                             'soluong' => $item['soluong'],
-                            'thanhtien' => $item['thanhtien'] ?? ($item['soluong'] * $giaban), // Giữ lại thanhtien nếu có từ session, tránh tính toán lại quà tặng 0đ
+                            // Giữ lại thanhtien nếu có từ session, tránh tính toán lại quà tặng 0đ
+                            'thanhtien' => $item['thanhtien'] ?? ($item['soluong'] * $giaban), 
                             'bienthe' => $bienthe->toArray(),
                         ];
                     }
@@ -106,15 +111,16 @@ class GiohangComponent extends Component
             // Xóa quà tặng trong Session
             $sessionCart = Session::get('cart', []);
             
-            $bientheIdsToRemove = [];
-            foreach ($sessionCart as $bientheId => $item) {
-                if (($item['thanhtien'] ?? 1) == 0) {
-                    $bientheIdsToRemove[] = $bientheId;
+            $sessionKeysToRemove = [];
+            foreach ($sessionCart as $cartKey => $item) {
+                // Quà tặng luôn được xác định bằng thanhtien = 0
+                if (($item['thanhtien'] ?? 1) == 0) { 
+                    $sessionKeysToRemove[] = $cartKey; // Lấy key chính xác
                 }
             }
             
-            foreach ($bientheIdsToRemove as $id) {
-                unset($sessionCart[$id]);
+            foreach ($sessionKeysToRemove as $key) {
+                unset($sessionCart[$key]);
             }
             
             Session::put('cart', $sessionCart);
@@ -219,12 +225,16 @@ class GiohangComponent extends Component
             );
 
         } else {
+            // FIX CHO NGƯỜI DÙNG CHƯA ĐĂNG NHẬP: SỬ DỤNG KHÓA DUY NHẤT CHO QUÀ TẶNG
             $sessionCart = Session::get('cart', []);
             
-            // Dùng id_bienthe làm key, ghi đè nếu tồn tại
-            $sessionCart[$bientheId] = [
+            // Dùng key duy nhất cho quà tặng để tránh bị trùng với sản phẩm mua
+            $giftKey = $bientheId . '_GIFT_0D'; 
+
+            // Ghi đè quà tặng nếu tồn tại, hoặc thêm mới
+            $sessionCart[$giftKey] = [
                 'soluong' => $soluong,
-                'thanhtien' => 0,
+                'thanhtien' => 0, // BẮT BUỘC thanhtien = 0 để phân biệt
             ];
             
             Session::put('cart', $sessionCart);
@@ -308,7 +318,7 @@ class GiohangComponent extends Component
                     $thanhtien_moi = $soluong * $giaban;
                     $this->giohang[$index]['soluong'] = $soluong;
                     $this->giohang[$index]['thanhtien'] = $thanhtien_moi;
-                                        
+                                             
                     $this->capnhatgiohang($bientheId, $soluong, $thanhtien_moi); 
                     
                     // BƯỚC QUAN TRỌNG: Kiểm tra lại quà tặng sau khi cập nhật số lượng
@@ -335,6 +345,7 @@ class GiohangComponent extends Component
                 ]);
 
         } else {
+            // Chỉ cập nhật sản phẩm MUA (key là id_bienthe)
             $sessionCart = Session::get('cart', []);
             
             if (isset($sessionCart[$bientheId])) {
@@ -354,11 +365,22 @@ class GiohangComponent extends Component
                 ->delete();
 
         } else {
+            // FIX CHO NGƯỜI DÙNG CHƯA ĐĂNG NHẬP: Xóa cả hai loại key (Mua & Quà tặng)
             $sessionCart = Session::get('cart', []);
-            unset($sessionCart[$bientheId]);
+            
+            $purchasedKey = (string)$bientheId;
+            $giftKey = $bientheId . '_GIFT_0D';
+
+            // Xóa item MUA (key là ID bienthe, nếu tồn tại)
+            unset($sessionCart[$purchasedKey]);
+
+            // Xóa item QUÀ TẶNG (key là ID bienthe + '_GIFT_0D', nếu tồn tại)
+            unset($sessionCart[$giftKey]); 
+            
             Session::put('cart', $sessionCart);
         }
         
+        // Lọc lại mảng Livewire ($this->giohang)
         $this->giohang = array_filter($this->giohang, function ($item) use ($bientheId) {
             return $item['id_bienthe'] != $bientheId;
         });
