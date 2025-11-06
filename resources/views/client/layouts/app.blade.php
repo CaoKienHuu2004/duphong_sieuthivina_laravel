@@ -289,7 +289,6 @@
               Tra cứu đơn hàng</a>
           </li>
 
-          @auth
             <li class="flex-align">
               <a href="{{route('gio-hang')}}" class="text-white-6 text-sm hover-text-white">
                 <i class="ph-bold ph-shopping-cart"></i>
@@ -297,7 +296,6 @@
                 <span class="badge bg-success-600 rounded-circle">6</span>
               </a>
             </li>
-          @endauth
           
         </ul>
       </div>
@@ -469,7 +467,7 @@
           <h6 class="footer-item__title">Tài khoản</h6>
           <ul class="footer-menu">
             <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Truy cập tài khoản</a>
+              <a href="{{ route('tai-khoan') }}" class="text-gray-600 hover-text-main-600">Truy cập tài khoản</a>
             </li>
             <li class="mb-16">
               <a href="contact.html" class="text-gray-600 hover-text-main-600">Lịch sử đơn hàng</a>
@@ -478,7 +476,7 @@
               <a href="shop.html" class="text-gray-600 hover-text-main-600">Danh sách yêu thích</a>
             </li>
             <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Giỏ hàng của bạn</a>
+              <a href="{{route('gio-hang')}}" class="text-gray-600 hover-text-main-600">Giỏ hàng của bạn</a>
             </li>
 
           </ul>
