@@ -5,7 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-// Import Model Quà tặng của bạn
+use App\Models\MagiamgiaModel;
 use App\Models\GiohangModel; 
 use App\Models\BientheModel;
 use App\Models\QuatangsukienModel; 
@@ -17,20 +17,37 @@ class giohangComponent extends Component
     public $tonggiatri = 0;
     public $tietkiem = 0;
     public $quatang = [];
-    public $tongsoquatang = 0; 
+    public $tongsoquatang = 0;
+    public $voucherCode = ''; // Mã người dùng nhập vào form
+    public $appliedVoucher = null; // Voucher đã áp dụng (Model hoặc array)
+    public $giamgiaVoucher = 0; // Số tiền giảm từ voucher
+    public $availableVouchers = []; // Danh sách voucher đủ điều kiện để hiển thị
 
     public function mount()
     {
+        // 1. Tải Giỏ hàng & Xử lý Quà tặng (Để có dữ liệu cơ bản)
         $this->loadgiohang();
-        // Bắt đầu bằng cách xóa hết quà tặng cũ để kiểm tra lại điều kiện
         $this->xoaTatCaQuatang(); 
         $this->xacnhandieukienquatang();
+        
+        // BƯỚC QUAN TRỌNG 1: Tính toán Tạm tính ($this->tamtinh) sau khi giỏ hàng ổn định
         $this->tonggiatri();
+        
+        // 2. Tải Voucher Đã Áp Dụng TỪ SESSION
+        // Hàm này sẽ kiểm tra Session và gán giá trị cho $this->appliedVoucher.
+        // Nếu voucher không hợp lệ (ví dụ: giỏ hàng không còn đủ điều kiện), nó sẽ bị xóa.
+        $this->loadAppliedVoucher(); 
+        
+        // 3. Tính toán Tổng giá trị CUỐI CÙNG (áp dụng Voucher nếu $appliedVoucher != null)
+        $this->tonggiatri(); 
+
+        // 4. Tải danh sách voucher có thể áp dụng để hiển thị
+        $this->loadAvailableVouchers();
     }
 
     /**
-     * Tải giỏ hàng từ DB hoặc Session, bao gồm cả sản phẩm chính và quà tặng (thanhtien = 0).
-     */
+     * Tải giỏ hàng từ DB hoặc Session, bao gồm cả sản phẩm chính và quà tặng (thanhtien = 0).
+     */
     public function loadgiohang()
     {
         $this->giohang = []; 
@@ -237,6 +254,34 @@ class giohangComponent extends Component
         
         $this->tietkiem = $tongsanphamluutru;
         $this->tonggiatri = $this->tamtinh; 
+
+        $this->giamgiaVoucher = 0;
+
+        if ($this->appliedVoucher) {
+            $voucher = (object)$this->appliedVoucher; // Chuyển sang object để dễ truy cập
+            
+            // Tái kiểm tra điều kiện (phòng trường hợp người dùng xóa sản phẩm khiến tamtinh không đủ)
+            if ($this->tamtinh >= $voucher->dieukien) {
+                // Voucher của bạn đang dùng trường 'giatri'. Giả sử đây là số tiền giảm cố định (VND).
+                $giamgia = (float) $voucher->giatri;
+                
+                // Đảm bảo số tiền giảm không vượt quá tổng giá trị giỏ hàng
+                $this->giamgiaVoucher = min($giamgia, $this->tamtinh);
+                
+            } else {
+                // Nếu không còn đủ điều kiện, hủy bỏ voucher
+                $this->removeAppliedVoucher(true);
+            }
+        }
+
+        // Cập nhật tổng giá trị cuối cùng
+        $this->tonggiatri = $this->tamtinh - $this->giamgiaVoucher;
+        
+        // Cập nhật giá trị tiết kiệm (cộng thêm phần giảm từ voucher)
+        $this->tietkiem += $this->giamgiaVoucher;
+
+        // Tải lại danh sách voucher có thể áp dụng nếu tổng tiền thay đổi
+        $this->loadAvailableVouchers();
     }
 
     public function capnhatsoluong($bientheId, $soluong)
@@ -325,6 +370,159 @@ class giohangComponent extends Component
         $this->tonggiatri();
         session()->flash('update_message', 'Đã xóa sản phẩm khỏi giỏ hàng.');
     }
+
+    /**
+     * Tải voucher đã áp dụng từ Session và kiểm tra tính hợp lệ của nó.
+     * Đây là bước then chốt để giữ trạng thái sau khi refresh trang.
+     */
+    private function loadAppliedVoucher()
+    {
+        // Lấy dữ liệu từ Session
+        $voucherData = Session::get('applied_voucher', null); // <-- LẤY TỪ SESSION
+
+        if ($voucherData) {
+            $voucher = MagiamgiaModel::where('magiamgia', $voucherData['magiamgia'])->first();
+
+            // Kiểm tra lại điều kiện, ngày hết hạn
+            if ($voucher && $this->checkVoucherConditions($voucher, false)) { // Gửi false để không flash message
+                $this->appliedVoucher = $voucher->toArray(); // <-- LƯU VÀO BIẾN LIVEWIRE
+                $this->voucherCode = $voucher->magiamgia;
+            } else {
+                // Nếu không hợp lệ (ví dụ: đã hết hạn, giỏ hàng không đủ điều kiện), xóa nó khỏi Session
+                $this->removeAppliedVoucher(false);
+            }
+        }
+    }
+
+    /**
+     * Kiểm tra các điều kiện cơ bản của voucher
+     */
+    private function checkVoucherConditions($voucher, $flashMessage = true)
+    {
+        if (!$voucher || $voucher->trangthai !== 'Hoạt động') {
+             if ($flashMessage) {
+                 session()->flash('voucher_error', 'Mã giảm giá không hợp lệ hoặc không hoạt động.');
+             }
+            return false;
+        }
+
+        // Kiểm tra ngày hết hạn (nếu có trường ngayketthuc)
+        if ($voucher->ngayketthuc && now()->gt($voucher->ngayketthuc)) {
+             if ($flashMessage) {
+                 session()->flash('voucher_error', 'Mã giảm giá đã hết hạn sử dụng.');
+             }
+            return false;
+        }
+
+        // Điều kiện tối thiểu: Tổng giá trị giỏ hàng (tamtinh) phải lớn hơn hoặc bằng điều kiện
+        if ($this->tamtinh < $voucher->dieukien) {
+            if ($flashMessage) {
+                session()->flash('voucher_error', 'Giỏ hàng chưa đủ điều kiện (Giá trị tối thiểu: ' . number_format($voucher->dieukien,0,',','.') . ' ₫).');
+            }
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Lấy danh sách các voucher hợp lệ để hiển thị
+     */
+    public function loadAvailableVouchers()
+    {
+        // Lấy tất cả voucher đang hoạt động
+        $allVouchers = MagiamgiaModel::where('trangthai', 'Hoạt động')
+            ->where(function ($query) {
+                // Thêm điều kiện ngày hết hạn nếu có
+                $query->whereNull('ngayketthuc')
+                      ->orWhere('ngayketthuc', '>=', now());
+            })
+            ->get();
+            
+        $this->availableVouchers = [];
+        
+        foreach ($allVouchers as $voucher) {
+            // Chỉ hiển thị những voucher mà giỏ hàng đủ điều kiện áp dụng
+            if ($this->tamtinh >= $voucher->dieukien) {
+                $this->availableVouchers[] = $voucher->toArray();
+            }
+        }
+    }
+
+    /**
+     * Áp dụng voucher từ mã nhập hoặc chọn từ danh sách
+     */
+    public function applyVoucher($code = null)
+    {
+        $codeToApply = strtoupper($code ?? trim($this->voucherCode));
+
+        if (empty($codeToApply)) {
+             session()->flash('voucher_error', 'Vui lòng nhập mã giảm giá.');
+             return;
+        }
+        
+        // 1. Tìm kiếm Voucher
+        $voucher = MagiamgiaModel::where('magiamgia', $codeToApply)->first();
+
+        if (!$voucher) {
+            session()->flash('voucher_error', 'Mã giảm giá không tồn tại.');
+            return;
+        }
+
+        // 2. Kiểm tra Điều kiện áp dụng
+        if (!$this->checkVoucherConditions($voucher)) {
+            // Flash message đã được xử lý trong checkVoucherConditions
+            return;
+        }
+
+        // 3. Áp dụng Voucher (Lưu vào Session/DB)
+        $this->appliedVoucher = $voucher->toArray();
+        $this->voucherCode = $voucher->magiamgia;
+
+        $voucherData = [
+            'id' => $voucher->id,
+            'magiamgia' => $voucher->magiamgia,
+            'dieukien' => $voucher->dieukien,
+            'giatri' => $voucher->giatri,
+        ];
+
+        // Lưu vào Session để duy trì trạng thái khi refresh
+        Session::put('applied_voucher', $voucherData);
+        
+        // 4. Tính toán lại Tổng giá trị
+        $this->tonggiatri();
+        
+        // 5. Cập nhật danh sách voucher có sẵn (để voucher vừa áp dụng không bị hiện ở mục 'Chọn')
+        $this->loadAvailableVouchers(); 
+
+        session()->flash('voucher_success', 'Đã áp dụng mã giảm giá **' . $codeToApply . '** thành công.');
+    }
+
+    /**
+     * Hủy bỏ voucher đã áp dụng
+     */
+    public function removeVoucher()
+    {
+        $this->removeAppliedVoucher(true); // Gửi thông báo
+    }
+
+    private function removeAppliedVoucher(bool $flashMessage)
+    {
+        $this->appliedVoucher = null;
+        $this->voucherCode = '';
+        $this->giamgiaVoucher = 0;
+        
+        // Xóa khỏi Session
+        Session::forget('applied_voucher');
+
+        $this->tonggiatri();
+        $this->loadAvailableVouchers();
+
+        if ($flashMessage) {
+            session()->flash('voucher_info', 'Đã hủy bỏ mã giảm giá.');
+        }
+    }
+
 
     public function render()
     {

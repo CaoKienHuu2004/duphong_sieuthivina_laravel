@@ -1,8 +1,8 @@
 <div class="container container-lg">
     {{-- Hiển thị thông báo (Livewire Flash Messages) --}}
-    @if (session()->has('update_message') || session()->has('error_message') || session()->has('voucher_message'))
+    @if (session()->has('update_message') || session()->has('error_message') || session()->has('voucher_success') || session()->has('voucher_error') || session()->has('voucher_info'))
         <div class="{{ session()->has('error_message') ? 'bg-main-200 border border-main-600 text-main-900 fw-medium' : 'bg-success-200 border border-success-600 text-success-900 fw-medium' }} mb-20 p-10 rounded-8">
-            {{ session('update_message') ?? $message ?? session('error_message') ?? session('voucher_message')}}
+            {{ session('update_message') ?? $message ?? session('error_message') ?? session('voucher_success') ?? session('voucher_error') ?? session('voucher_info')}}
         </div>
     @endif
     @php
@@ -57,7 +57,7 @@
                                                 </button>
                                                 
                                                 {{-- Ảnh sản phẩm --}}
-                                                <a href="#" class="border border-gray-100 rounded-8 flex-center" style="max-width: 120px; max-height: 120px; width: 100%; height: 100%">
+                                                <a href="{{ route('chi-tiet-san-pham',$sanpham['slug']) }}" class="border border-gray-100 rounded-8 flex-center" style="max-width: 120px; max-height: 120px; width: 100%; height: 100%">
                                                     <img src="{{ asset('assets/client') }}/images/thumbs/{{ $image }}" alt="{{ $sanpham['ten'] ?? 'Sản phẩm' }}" class="w-100 rounded-8">
                                                 </a>
 
@@ -72,13 +72,13 @@
                                                     
                                                     {{-- Tên sản phẩm --}}
                                                     <h6 class="title text-lg fw-semibold mb-0">
-                                                        <a href="#" class="link text-line-2" title="{{ $sanpham['ten'] ?? 'Sản phẩm' }}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">{{ $sanpham['ten'] ?? 'Sản phẩm' }}</a>
+                                                        <a href="{{ route('chi-tiet-san-pham',$sanpham['slug']) }}" class="link text-line-2" title="{{ $sanpham['ten'] ?? 'Sản phẩm' }}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">{{ $sanpham['ten'] ?? 'Sản phẩm' }}</a>
                                                     </h6>
                                                     
                                                     {{-- Loại biến thể --}}
                                                     @if ($loaibienthe)
                                                         <div class="flex-align gap-16 mb-6">
-                                                            <a href="#" class="btn bg-gray-50 text-heading text-sm py-6 px-8 rounded-8 flex-center gap-8 fw-medium">
+                                                            <a href="{{ route('chi-tiet-san-pham',$sanpham['slug']) }}" class="btn bg-gray-50 text-heading text-sm py-6 px-8 rounded-8 flex-center gap-8 fw-medium">
                                                                 {{ $loaibienthe }}
                                                             </a>
                                                         </div>
@@ -173,7 +173,7 @@
                                                 @endphp
                                                 <td class="py-20 px-5">
                                                     <div class="d-flex align-items-center gap-12">
-                                                        <a href="" class="border border-gray-100 rounded-8 flex-center" style="max-width: 100px; max-height: 100px; width: 100%; height: 100%">
+                                                        <a href="{{ route('chi-tiet-san-pham',$sanphamGift['slug']) }}" class="border border-gray-100 rounded-8 flex-center" style="max-width: 100px; max-height: 100px; width: 100%; height: 100%">
                                                             <img src="{{ asset('assets/client') }}/images/thumbs/{{ $hinhanhsanphamGift[0]['hinhanh']}}" alt="{{ $sanphamGift['ten'] ?? 'Sản phẩm'}}" class="w-100 rounded-8">
                                                         </a>
                                                         <div class="table-product__content text-start">
@@ -222,38 +222,45 @@
                 <h6 class="text-lg mb-20 flex-align gap-8"><i class="ph-bold ph-ticket text-main-600 text-xl"></i>Áp dụng Voucher</h6>
                 <form>
                     <div class="flex-align gap-16">
-                        <input type="text" class="common-input p-10" placeholder="Nhập mã giảm giá..." value="">
+                        <input type="text" wire:model.live="voucherCode" class="common-input p-10" placeholder="Nhập mã giảm giá..." value="">
                     </div>
-                    <button class="btn border-main-600 text-main-600 hover-bg-main-600 hover-text-white mt-20 py-10 w-100 rounded-8" style="width: 100px;">
+                    <button type="button" wire:click="applyVoucher" wire:loading.attr="disabled" class="btn border-main-600 text-main-600 hover-bg-main-600 hover-text-white mt-20 py-10 w-100 rounded-8" style="width: 100px;">
                         <span>Áp Dụng</span>
-                        {{-- <span>Đang kiểm tra...</span> --}}
                     </button>
                 </form>
+                @if (count($availableVouchers) > 0)
+                    @foreach ($availableVouchers as $voucher)
                         <div class="flex-align flex-between gap-8 mt-10 border-dashed border-gray-200 py-10 px-12 rounded-4">
                             <span class="flex-align gap-8 text-sm fw-medium text-gray-900 pe-10">
                                 <i class="ph-bold ph-ticket text-main-600 text-2xl"></i>
                                 <div class="text-sm d-flex flex-column">
                                     <span class="text-sm text-gray-900 w-100">
-                                        Giảm 20.000 đ
+                                        Giảm {{ number_format($voucher['giatri'],'0',',','.') }} đ
                                     </span>
                                     <span class="text-xs text-gray-500 w-100">
-                                        SIEUTHIVINA2025
+                                        {{ $voucher['magiamgia'] }}
                                     </span>
                                 </div>
                             </span>
-                            <span class="flex-align gap-8 text-xs fw-medium text-gray-900">
-                                <input type="radio" name="selected_voucher" id="voucher-id-radio" class="d-none"
-                                    checked>
-
-                                <label for="voucher-id-radio" 
-                                    class="btn bg-main-600 hover-bg-main-100 text-white hover-text-main-600 p-6 rounded-4 text-xs"
-                                    style="cursor: pointer;">
-                                    Chọn
-                                    {{-- đã chọn --}}
-                                </label>
-                            </span>
+                            @php
+                                $isApplied = $appliedVoucher && $appliedVoucher['magiamgia'] === $voucher['magiamgia'];
+                            @endphp
+                            @if($isApplied)
+                                <span class="flex-align gap-8 text-xs fw-medium text-gray-900">
+                                    <button wire:click="removeVoucher" wire:loading.attr="disabled" class="btn border-main-600 text-main-600 hover-bg-main-600 hover-text-white p-6 rounded-4 text-xs" style="cursor: pointer;">
+                                        Hủy
+                                    </button>
+                                </span>
+                            @else
+                                <span class="flex-align gap-8 text-xs fw-medium text-gray-900">
+                                    <button wire:click="applyVoucher('{{ $voucher['magiamgia'] }}')" class="btn bg-main-600 hover-bg-main-100 text-white hover-text-main-600 p-6 rounded-4 text-xs" style="cursor: pointer;">
+                                        Chọn
+                                    </button>
+                                </span>
+                            @endif
                         </div>
-                
+                    @endforeach
+                @endif
             </div>
             
             {{-- ================================================================= --}}
@@ -261,9 +268,9 @@
             {{-- ================================================================= --}}
             <div class="cart-sidebar border border-gray-100 rounded-8 px-20 py-20 mt-20">
                 <div class="mb-20">
-                    <h6 class="text-lg mb-6 flex-align gap-4"><i class="ph-bold ph-shopping-cart text-main-600 text-xl"></i>Thông tin giỏ hàng</h6>    
+                    <h6 class="text-lg mb-6 flex-align gap-4"><i class="ph-bold ph-shopping-cart text-main-600 text-xl"></i>Thông tin giỏ hàng</h6>
                     <a href="#" class="text-sm text-gray-600 flex-align gap-1 fw-medium" style="cursor:pointer;">
-                        {{ count($giohang) }} sản phẩm + null quà tặng
+                        {{ count($giohang) }} sản phẩm @if($tongsoquatang > 0) + {{ $tongsoquatang }} quà tặng @endif
                     </a>
                 </div>
                 
@@ -272,12 +279,12 @@
                     <span class="text-gray-900 font-heading-two">Tạm tính:</span>
                     <span class="text-gray-900 fw-semibold">{{ number_format($tamtinh,'0',',','.') }} đ</span>
                 </div>
-                
+                @if($giamgiaVoucher > 0)
                 <div class="flex-between gap-8">
                     <span class="text-gray-900 font-heading-two">Giảm giá Voucher:</span>
-                    <span class="text-success-600 fw-semibold"> -null đ</span>
+                    <span class="text-success-600 fw-semibold"> -{{ number_format($giamgiaVoucher,'0',',','.') }} đ</span>
                 </div>
-
+                @endif
                 <div class="border-top border-gray-100 my-20 pt-24">
                     <div class="flex-between gap-8">
                         <span class="text-gray-900 text-lg fw-semibold">Tổng giá trị:</span>
