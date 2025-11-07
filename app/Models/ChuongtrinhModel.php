@@ -24,7 +24,7 @@ class ChuongtrinhModel extends Model
     // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
     // ===========================================================================================================================
-    public function quatang()
+    public function quatangsukien()
     {
         return $this->hasMany(QuatangsukienModel::class, 'id_chuongtrinh','id');
     }

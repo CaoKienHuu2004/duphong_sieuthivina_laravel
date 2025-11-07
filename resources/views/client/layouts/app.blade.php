@@ -293,7 +293,9 @@
               <a href="{{route('gio-hang')}}" class="text-white-6 text-sm hover-text-white">
                 <i class="ph-bold ph-shopping-cart"></i>
                 Giỏ hàng
-                <span class="badge bg-success-600 rounded-circle">6</span>
+                <span class="badge bg-success-600 rounded-4 px-6 py-4">@auth{{ count($giohangauth) }}@endauth @guest
+                  {{ count($giohangsession) }}
+                @endguest</span>
               </a>
             </li>
           

@@ -15,7 +15,7 @@ class QuatangsukienModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'id_bienthe',
-        'id_sukien',
+        'id_chuongtrinh',
         'dieukien',
         'tieude',
         'thongtin',
@@ -34,7 +34,7 @@ class QuatangsukienModel extends Model
     {
         return $this->belongsTo(BientheModel::class, 'id_bienthe');
     }
-    public function sukien()
+    public function chuongtrinh()
     {
         return $this->belongsTo(ChuongtrinhModel::class, 'id_chuongtrinh');
     }

@@ -300,7 +300,7 @@
                         </span>
                     </div>
                 </div>
-                <a href="#" class="btn btn-main py-14 w-100 rounded-8" wire:loading.class="opacity-50">Tiến hành thanh toán</a>
+                <a href="{{ route('thanh-toan') }}" class="btn btn-main py-14 w-100 rounded-8" wire:loading.class="opacity-50">Tiến hành thanh toán</a>
             </div>
         </div>
     </div>

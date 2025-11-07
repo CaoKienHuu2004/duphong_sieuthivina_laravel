@@ -17,8 +17,10 @@ class DonhangModel extends Model
         'id_phuongthuc',
         'id_magiamgia',
         'id_diachinguoidung',
+        'id_phivanchuyen',
         'madon',
         'tongsoluong',
+        'tamtinh',
         'thanhtien',
         'trangthai',
     ];
@@ -42,6 +44,10 @@ class DonhangModel extends Model
     public function diachinguoidung()
     {
         return $this->belongsTo(DiachinguoidungModel::class, 'id_diachinguoidung', 'id');
+    }
+    public function phivanchuyen()
+    {
+        return $this->belongsTo(PhivanchuyenModel::class, 'id_phivanchuyen', 'id');
     }
     public function chitietdonhang()
     {

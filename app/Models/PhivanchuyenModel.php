@@ -5,22 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-class DiachinguoidungModel extends Model
+class PhivanchuyenModel extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $table = 'diachi_nguoidung';
+    protected $table = 'phivanchuyen';
     protected $primaryKey = 'id';
     protected $fillable = [
         'id_nguoidung',
-        'hoten',
-        'sodienthoai',
-        'diachi',
-        'tinhthanh',
+        'ten',
+        'phi',
         'trangthai',
     ];
     public $timestamps = false;
@@ -28,13 +23,9 @@ class DiachinguoidungModel extends Model
     // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
     // ===========================================================================================================================
-    public function nguoidung(): BelongsTo
+    public function donhang(): BelongsTo
     {
-        return $this->belongsTo(NguoidungModel::class, 'id_nguoidung');
+        return $this->belongsTo(DonhangModel::class, 'id_phivanchuyen');
     }
-    public function donhang(): HasMany
-    {
-        return $this->hasMany(DonhangModel::class, 'id_diachinguoidung','id');
-    }
+    
 }
-

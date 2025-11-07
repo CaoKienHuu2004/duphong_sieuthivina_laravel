@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 29, 2025 at 10:41 AM
+-- Generation Time: Nov 07, 2025 at 12:40 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.16
 
@@ -260,9 +260,19 @@ CREATE TABLE `diachi_nguoidung` (
   `hoten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `sodienthoai` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `diachi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tinhthanh` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `trangthai` enum('Mặc định','Khác','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Khác',
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `diachi_nguoidung`
+--
+
+INSERT INTO `diachi_nguoidung` (`id`, `id_nguoidung`, `hoten`, `sodienthoai`, `diachi`, `tinhthanh`, `trangthai`, `deleted_at`) VALUES
+(1, 2, 'Cao Kiến Hựu', '0845381121', '29/7C, đường số 25-A1 Ngô Quyền, ấp Trường An, xã Trường Tây, thị xã Hòa Thành', 'Tây Ninh', 'Mặc định', NULL),
+(2, 2, 'Cao Vũ Nghị', '0911975996', 'Tòa T - FPT Polytechnic csHCM, CVPM Quang Trung, phường Tân Chánh Hiệp, quận 12', 'TP.Hồ Chí Minh', 'Khác', NULL),
+(3, 3, 'Trần Bá Hộ', '0987654321', '801/2A Phạm Thế Hiển, Phường 4, Quận 8', 'TP.Hồ Chí Minh', 'Mặc định', NULL);
 
 -- --------------------------------------------------------
 
@@ -274,11 +284,14 @@ CREATE TABLE `donhang` (
   `id` int NOT NULL,
   `id_nguoidung` int NOT NULL,
   `id_diachinguoidung` int NOT NULL,
+  `id_phivanchuyen` int NOT NULL,
   `id_phuongthuc` int NOT NULL,
   `id_magiamgia` int DEFAULT NULL,
   `madon` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tongsoluong` int NOT NULL,
+  `tamtinh` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `thanhtien` int NOT NULL,
+  `trangthaithanhtoan` enum('Chờ thanh toán','Đã thanh toán','Thanh toán khi nhận hàng','Hủy thanh toán') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Chờ thanh toán',
   `trangthai` enum('Chờ xử lý','Đã chấp nhận','Đang giao hàng','Đã giao hàng','Đã hủy đơn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Chờ xử lý',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -299,6 +312,17 @@ CREATE TABLE `giohang` (
   `thanhtien` int NOT NULL,
   `trangthai` enum('Hiển thị','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `giohang`
+--
+
+INSERT INTO `giohang` (`id`, `id_bienthe`, `id_nguoidung`, `soluong`, `thanhtien`, `trangthai`) VALUES
+(19, 16, 3, 1, 110700, 'Hiển thị'),
+(93, 30, 2, 1, 51000, 'Hiển thị'),
+(123, 40, 2, 1, 43000, 'Hiển thị'),
+(124, 42, 2, 1, 44000, 'Hiển thị'),
+(129, 44, 2, 1, 0, 'Hiển thị');
 
 -- --------------------------------------------------------
 
@@ -498,7 +522,7 @@ INSERT INTO `loaibienthe` (`id`, `ten`, `trangthai`) VALUES
 
 CREATE TABLE `magiamgia` (
   `id` int NOT NULL,
-  `magiamgia` int NOT NULL,
+  `magiamgia` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dieukien` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `mota` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `giatri` int NOT NULL,
@@ -507,6 +531,14 @@ CREATE TABLE `magiamgia` (
   `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hoạt động',
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `magiamgia`
+--
+
+INSERT INTO `magiamgia` (`id`, `magiamgia`, `dieukien`, `mota`, `giatri`, `ngaybatdau`, `ngayketthuc`, `trangthai`, `deleted_at`) VALUES
+(1, 'SIEUTHIVINA2025', '200000', 'Mã Voucher thuộc Nền tảng bán hàng trực tuyến Siêu Thị Vina, dành tặng cho các khách hàng không kể bất kỳ ai với ưu đãi lên đến 20%. Áp dụng 1 lần duy nhất.', 20000, '2025-11-01', '2025-12-31', 'Hoạt động', NULL),
+(2, 'NEWSTORE50K', '50000', 'Giảm 50K cho tất cả khách hàng nhân dịp khai trương Siêu Thị Vina', 50000, '2025-11-06', '2025-11-30', 'Hoạt động', NULL);
 
 -- --------------------------------------------------------
 
@@ -519,6 +551,7 @@ CREATE TABLE `nguoidung` (
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `sodienthoai` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` text COLLATE utf8mb4_unicode_ci,
   `hoten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `gioitinh` enum('Nam','Nữ') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `ngaysinh` date NOT NULL,
@@ -533,9 +566,30 @@ CREATE TABLE `nguoidung` (
 -- Dumping data for table `nguoidung`
 --
 
-INSERT INTO `nguoidung` (`id`, `username`, `password`, `sodienthoai`, `hoten`, `gioitinh`, `ngaysinh`, `avatar`, `vaitro`, `trangthai`, `deleted_at`, `remember_token`) VALUES
-(2, 'caokienhuu2004', '$2y$12$/8kG3YP.cDE22cEm2IQBvOLDlcOeCFQGkY5bpfurTLgNt.uo3lARa', '0845381121', 'Cao Kiến Hựu', 'Nam', '2004-10-13', 'caokienhuu2004.jpg', 'client', 'Hoạt động', NULL, 'ZRrmp8rd97nXgHzoeXAmo8VpL7cC3rmtzjgXlRLo2q8jYMFC3SrD7Iug5wfJ'),
-(3, 'hotb', '$2y$12$HkN//sdXq/bdEO0ILo6URenzV0oJ4aupXqvjCU0jtqtfp1yRnhHkS', '0987654321', 'Trần Bá Hộ', 'Nam', '1984-01-01', 'hotb.jpg', 'client', 'Hoạt động', NULL, 'qUoLkiqnDfXr8HBA3uuuznFy4wCAw8c1kcAKnGfdRg3Cx9qrtBeSJw57wJT5');
+INSERT INTO `nguoidung` (`id`, `username`, `password`, `sodienthoai`, `email`, `hoten`, `gioitinh`, `ngaysinh`, `avatar`, `vaitro`, `trangthai`, `deleted_at`, `remember_token`) VALUES
+(2, 'caokienhuu2004', '$2y$12$/8kG3YP.cDE22cEm2IQBvOLDlcOeCFQGkY5bpfurTLgNt.uo3lARa', '0845381121', 'huuckps27362@fpt.edu.vn', 'Cao Kiến Hựu', 'Nam', '2004-10-13', 'caokienhuu2004.jpg', 'client', 'Hoạt động', NULL, 'zfIQcPma1zVihQxmWXRJJIrHBBTIbry4DFtjmu7Q2YE1ddAs3Ri3NRilboPd'),
+(3, 'hotb', '$2y$12$HkN//sdXq/bdEO0ILo6URenzV0oJ4aupXqvjCU0jtqtfp1yRnhHkS', '0987654321', 'hotb@fpt.edu.vn', 'Trần Bá Hộ', 'Nam', '1981-03-24', 'hotb.jpg', 'client', 'Hoạt động', NULL, 'NiabjazetuSMtR34bmUoDCc5Ken0jCS4Jfe80THUfarShWQtZHRSrh7BlmMT');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `phivanchuyen`
+--
+
+CREATE TABLE `phivanchuyen` (
+  `id` int NOT NULL,
+  `ten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phi` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` enum('Hiển thị','Tạm ẩn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hiển thị'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `phivanchuyen`
+--
+
+INSERT INTO `phivanchuyen` (`id`, `ten`, `phi`, `trangthai`) VALUES
+(1, 'Nội tỉnh (TP.HCM)', '0', 'Hiển thị'),
+(2, 'Ngoại tỉnh (các vùng lân cận)', '15000', 'Hiển thị');
 
 -- --------------------------------------------------------
 
@@ -549,6 +603,13 @@ CREATE TABLE `phuongthuc` (
   `maphuongthuc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `trangthai` enum('Hoạt động','Tạm khóa','Dừng hoạt động') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Hoạt động'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `phuongthuc`
+--
+
+INSERT INTO `phuongthuc` (`id`, `ten`, `maphuongthuc`, `trangthai`) VALUES
+(1, 'Thanh toán khi nhận hàng (COD)', 'COD', 'Hoạt động');
 
 -- --------------------------------------------------------
 
@@ -650,11 +711,11 @@ INSERT INTO `sanpham` (`id`, `id_thuonghieu`, `ten`, `slug`, `mota`, `xuatxu`, `
 (9, 1, 'Thực phẩm bảo vệ sức khỏe: Midu MenaQ7 180mcg', 'thuc-pham-bao-ve-suc-khoe-midu-menaq7-180mcg', 'Midu MenaQ7 180mcg bổ sung canxi, Vitamin D3, Vitamin K2 dạng MenaQ7 và Arginine phù hợp với tất cả độ tuổi từ 1 đến 100 tuổi. Đặc biệt giúp phát triển chiều cao cho trẻ em 1-15 tuổi; mẹ bầu bổ sung canxi trong giai đoạn thai kì không gây tiểu đường, không gây táo bón và giúp con cao ngay từ trong bụng mẹ.', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 53, NULL),
 (10, 3, 'Collagen thủy phân hỗ trợ Da Móng Tóc Acai Labs Marine Collagen Beauty Australia 90v', 'collagen-thuy-phan-ho-tro-da-mong-toc-acai-labs-marine-collagen-beauty-australia-90v', 'Acacia Labs, với trụ sở chính tại Sydney, Australia, là thương hiệu hàng đầu trong lĩnh vực sản xuất thực phẩm chức năng, vitamin và khoáng chất. Chúng tôi tập trung vào việc nghiên cứu và phát triển các sản phẩm chăm sóc sức khỏe và sắc đẹp, mang đến cho khách hàng những giải pháp toàn diện cho một cuộc sống khỏe mạnh, tràn đầy năng lượng và hạnh phúc.\r\n\r\nKhởi nguồn từ vẻ đẹp thật sự đến từ bên trong, phòng thí nghiệm Acaci Labs với đội ngũ các chuyên gia hàng đầu thế giới đã không ngừng nghiên cứu tìm ra công thức và sản phẩm chất lượng tốt nhất để mang đến hạnh phúc lâu dài cho người sử dụng.', 'Australia', 'Australia', 'Công khai', 0, 84, NULL),
 (11, 1, 'Viên uống Bishin Tripeptide Collagen Nhật Bản 60v', 'vien-uong-bishin-tripeptide-collagen-nhat-ban-60v', 'BISHIN chứa tinh chất Collagen tripeptide giúp tăng cường khả năng hấp thụ cho cơ thể, cấu trúc da, giúp da giữ được sự săn chắc, đàn hồi, tươi trẻ, hạn chế được các nếp nhăn (dấu hiệu của sự lão hóa) xuất hiện.', 'Nhật Bản', 'Phân phối tại Việt Nam', 'Công khai', 0, 3, NULL),
-(12, 2, 'Dưỡng mi tế bào gốc C’Choi - Bio Placenta Lash Serum', 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum', 'DƯỠNG MI TẾ BÀO GỐC C’CHOI Bio-Placenta Lash Serum', 'Việt Nam', 'Việt Nam', 'Công khai', 30, 45, NULL),
+(12, 2, 'Dưỡng mi tế bào gốc C’Choi - Bio Placenta Lash Serum', 'duong-mi-te-bao-goc-cchoi-bio-placenta-lash-serum', 'DƯỠNG MI TẾ BÀO GỐC C’CHOI Bio-Placenta Lash Serum', 'Việt Nam', 'Việt Nam', 'Công khai', 30, 48, NULL),
 (13, 1, 'Nước rửa bát Bio Formula - Bơ và Lô Hội (Túi 500ml)', 'nuoc-rua-bat-bio-formula-bo-va-lo-hoi-tui-500ml', 'Chiết xuất lô hội giúp làm dịu da tay khi tiếp xúc với chất tẩy rửa, đặc biệt dịu nhẹ với những người có da nhạy cảm. Dầu quả bơ dưỡng ẩm, bảo vệ da tay nhờ các acid béo thiết yếu trong dầu bơ. Chiết xuất rễ cây lá giang hỗ trợ làm sạch an toàn, giảm vi khuẩn bám trên bề mặt bát đĩa.', 'Ukraine', 'Ukraine', 'Công khai', 0, 1206, NULL),
-(14, 1, 'Bánh Trung Thu 2025 - Thu An Nhiên (bánh chay hộp 2 bánh 1 trà)', 'banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra', 'Tết Trung Thu - Tết Đoàn Viên là dịp lý tưởng để gửi tặng những món quà ý nghĩa cho bạn bè, gia đình hay đối tác. Không chỉ đơn thuần là một nét đẹp văn hóa, quà tặng Trung Thu còn là biểu hiện của tấm chân tình và lời chúc mọi điều viên mãn. \r\n\r\nThấu hiểu và trân trọng giá trị truyền thống, Nonglamfood gửi đến quý khách hàng bộ quà tặng Trung Thu cao cấp “Thu An Nhiên”. Bánh được tinh tuyển từ dược liệu thượng hạng, làm hoàn toàn thủ công bởi các nghệ nhân có hơn 30 năm kinh nghiệm.\r\n\r\nNonglamfood ra mắt set “Thu An Nhiên” với hai loại bánh trung thu chay đặc biệt, được làm từ các nguyên liệu thượng hạng như blueberry, đông trùng hạ thảo kết hợp với các loại hạt dinh dưỡng như hạt macca, hạt sen,... hứa hẹn không chỉ mang đến những trải nghiệm tuyệt vời khi thưởng thức mà còn mang lại những lợi ích tuyệt vời về sức khỏe.\r\n\r\nTrung thu này, hãy để Nonglamfood đồng hành cùng bạn trên hành trình gửi trao “mỹ vị” mùa trăng đến những người yêu thương của mình nhé! ', 'Việt Nam', 'Việt Nam', 'Công khai', 70, 70, NULL),
-(15, 1, 'Hạt điều rang muối loại 1 (còn vỏ lụa) Happy Nuts 500g', 'hat-dieu-rang-muoi-loai-1-con-vo-lua-happy-nuts-500g', 'Hạt điều rang muối Happy Nuts là một trong những loại hạt có hàm lượng carbohydrate, chất xơ thấp, nhưng chúng lại chứa nhiều vitamin, khoáng chất và chất chống oxy hóa. Chúng bao gồm vitamin E, K và B6, cùng với các khoáng chất như đồng, phốt pho, kẽm, magiê, sắt và selen.', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 37399, NULL),
-(16, 1, 'Kẹo Quả Sâm không đường Free Suger Ginseng Berry S candy 200g', 'keo-qua-sam-khong-duong-free-suger-ginseng-berry-s-candy-200g', 'Giảm đau họng. (không nên ngậm quá 3 viên/ ngày)\r\n\r\nTăng sinh Collagen.\r\n\r\nCân bằng huyết áp, ổn định thần kinh (khi nhức đầu hay mệt mỏi hãy dùng 1 viên và nghỉ ngơi sau 30 phút sẽ thấy giảm các triệu chứng khó chịu).\r\n\r\nGiảm triệu chứng chóng mặt, buồn nôn do say tàu xe\r\n\r\nBổ sung năng lượng nhanh, giảm stress, lo lắng, nhức đầu, chóng mặt.\r\n\r\nHạn chế cơn thèm ngọt, cung cấp năng lượng cho người bị tiểu đường', 'Hàn Quốc', 'KORYO CONFECTIONERY CO., LTD', 'Công khai', 25, 76, NULL),
+(14, 1, 'Bánh Trung Thu 2025 - Thu An Nhiên (bánh chay hộp 2 bánh 1 trà)', 'banh-trung-thu-2025-thu-an-nhien-banh-chay-hop-2-banh-1-tra', 'Tết Trung Thu - Tết Đoàn Viên là dịp lý tưởng để gửi tặng những món quà ý nghĩa cho bạn bè, gia đình hay đối tác. Không chỉ đơn thuần là một nét đẹp văn hóa, quà tặng Trung Thu còn là biểu hiện của tấm chân tình và lời chúc mọi điều viên mãn. \r\n\r\nThấu hiểu và trân trọng giá trị truyền thống, Nonglamfood gửi đến quý khách hàng bộ quà tặng Trung Thu cao cấp “Thu An Nhiên”. Bánh được tinh tuyển từ dược liệu thượng hạng, làm hoàn toàn thủ công bởi các nghệ nhân có hơn 30 năm kinh nghiệm.\r\n\r\nNonglamfood ra mắt set “Thu An Nhiên” với hai loại bánh trung thu chay đặc biệt, được làm từ các nguyên liệu thượng hạng như blueberry, đông trùng hạ thảo kết hợp với các loại hạt dinh dưỡng như hạt macca, hạt sen,... hứa hẹn không chỉ mang đến những trải nghiệm tuyệt vời khi thưởng thức mà còn mang lại những lợi ích tuyệt vời về sức khỏe.\r\n\r\nTrung thu này, hãy để Nonglamfood đồng hành cùng bạn trên hành trình gửi trao “mỹ vị” mùa trăng đến những người yêu thương của mình nhé! ', 'Việt Nam', 'Việt Nam', 'Công khai', 70, 75, NULL),
+(15, 1, 'Hạt điều rang muối loại 1 (còn vỏ lụa) Happy Nuts 500g', 'hat-dieu-rang-muoi-loai-1-con-vo-lua-happy-nuts-500g', 'Hạt điều rang muối Happy Nuts là một trong những loại hạt có hàm lượng carbohydrate, chất xơ thấp, nhưng chúng lại chứa nhiều vitamin, khoáng chất và chất chống oxy hóa. Chúng bao gồm vitamin E, K và B6, cùng với các khoáng chất như đồng, phốt pho, kẽm, magiê, sắt và selen.', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 37403, NULL),
+(16, 1, 'Kẹo Quả Sâm không đường Free Suger Ginseng Berry S candy 200g', 'keo-qua-sam-khong-duong-free-suger-ginseng-berry-s-candy-200g', 'Giảm đau họng. (không nên ngậm quá 3 viên/ ngày)\r\n\r\nTăng sinh Collagen.\r\n\r\nCân bằng huyết áp, ổn định thần kinh (khi nhức đầu hay mệt mỏi hãy dùng 1 viên và nghỉ ngơi sau 30 phút sẽ thấy giảm các triệu chứng khó chịu).\r\n\r\nGiảm triệu chứng chóng mặt, buồn nôn do say tàu xe\r\n\r\nBổ sung năng lượng nhanh, giảm stress, lo lắng, nhức đầu, chóng mặt.\r\n\r\nHạn chế cơn thèm ngọt, cung cấp năng lượng cho người bị tiểu đường', 'Hàn Quốc', 'KORYO CONFECTIONERY CO., LTD', 'Công khai', 25, 80, NULL),
 (17, 1, 'Bột Matcha Gạo Rang Nhật Bản ONELIFE (Gói 100g)', 'bot-matcha-gao-rang-nhat-ban-onelife-goi-100g', 'Bột Matcha Gạo Rang Nhật Bản Onelife Onlife (Gói 100g) là loại bột trà cao cấp, nhuyễn mịn, được kết hợp giữa bột trà xanh Matcha Nhật Bản và chiết xuất gạo Nhật Niigata Koshihikari rang chín theo tỉ lệ đặc biệt, tạo nên vị trà ngọt hậu tự nhiên, không thêm đường hay bất kỳ thành phần hương liệu nào khác.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 118, NULL),
 (18, 1, 'Nước rửa chén sả chanh COME ON làm sạch bát đĩa, an toàn da tay 1 lít', 'nuoc-rua-chen-sa-chanh-come-on-lam-sach-bat-dia-an-toan-da-tay-1-lit', 'Tên sản phẩm: Nước rửa chén sả chanh COME ON làm sạch bát đĩa, an toàn da tay 1 lít\r\nDung tích: 1 lít\r\nThương hiệu: COME ON', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 73, NULL),
 (19, 1, 'Găng lau Abena Wash Gloves (50 miếng/gói)', 'gang-lau-abena-wash-gloves-50-mienggoi', 'Abena là tập đoàn sản xuất sản phẩm chăm sóc sức khỏe hàng đầu đến từ Đan Mạch. Thành lập từ năm 1953, trải qua một giai đoạn hình thành và phát triển, Abena đã chinh phục được các thị trường khó tính Bắc Âu bằng chất lượng sản phẩm cũng như trách nhiệm xã hội của mình. Hầu hết các sản phẩm của công ty đều qua kiểm nghiệm lâm sàn của các chuyên gia da liễu và nhận được các chứng nhận y tế nghiêm ngặt của thị trường Bắc Âu như: Nordic Eco-Label, Asthma Allegry Nordic.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 52, NULL),
@@ -662,15 +723,15 @@ INSERT INTO `sanpham` (`id`, `id_thuonghieu`, `ten`, `slug`, `mota`, `xuatxu`, `
 (21, 1, 'Máy Xông Khí Dung Cầm Tay Kachi YS35: Giải Pháp Hô Hấp Linh Hoạt Mọi Lúc, Mọi Nơi', 'may-xong-khi-dung-cam-tay-kachi-ys35-giai-phap-ho-hap-linh-hoat-moi-luc-moi-noi', 'Máy xông khí dung cầm tay Kachi YS35 giúp hỗ trợ điều trị và phòng ngừa các bệnh đường hô hấp như viêm phế quản, hen suyễn, viêm mũi xoang, cảm lạnh… Máy sử dụng công nghệ khí dung tạo hạt sương mịn, dễ thẩm thấu sâu vào hệ hô hấp, hiệu quả cao cho cả người lớn và trẻ em. Thiết kế nhỏ gọn, có thể dùng pin AA hoặc cáp Type-C tiện lợi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 865, NULL),
 (22, 1, 'Hũ Hít Thảo Dược Nhị Thiên Đường - Hũ 5g', 'hu-hit-thao-duoc-nhi-thien-duong-hu-5g', 'Hơn một Thế Kỷ gắn bó với bao Thế Hệ, thương hiệu Nhị Thiên Đường không chỉ là dầu gió lâu đời mà còn không ngừng đổi mới. Hũ Hít thảo dược Nhị Thiên Đường ra đời, kế thừa Tinh Hoa Trăm Năm, nay được NÂNG TẦM để phù hợp với nhịp sống hiện đại. Nhỏ gọn, tiện lợi, giúp thông mũi, sảng khoái tức thì – Một lựa chọn mới cho mọi độ tuổi, từ dân văn phòng, tài xế đến người lớn tuổi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 28, NULL),
 (23, 1, 'Tấm lót Abena Pad (45x45)', 'tam-lot-abena-pad-45x45', 'Abena là tập đoàn sản xuất sản phẩm chăm sóc sức khỏe hàng đầu đến từ Đan Mạch. Thành lập từ năm 1953, trải qua một giai đoạn hình thành và phát triển, Abena đã chinh phục được các thị trường khó tính Bắc Âu bằng chất lượng sản phẩm cũng như trách nhiệm xã hội của mình. Hầu hết các sản phẩm của công ty đều qua kiểm nghiệm lâm sàn của các chuyên gia da liễu và nhận được các chứng nhận y tế nghiêm ngặt của thị trường Bắc Âu như: Nordic Eco-Label, Asthma Allegry Nordic.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 229, NULL),
-(24, 4, 'Nước yến sào Nest100 lon 190ml - Khay 30 lon', 'nuoc-yen-sao-nest100-lon-190ml-khay-30-lon', 'Nước Yến Sào cao cấp NEST100 được sản xuất từ yến sào, chứa nhiều acid amin và nguyên tố vi lượng cần thiết giúp Giải khát và làm mát cơ thể an toàn. Tăng cường sức khỏe, giảm căng thẳng, mệt mỏi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 3, NULL),
-(25, 4, 'Nước yến sào Nest100 lon 190ml - Hộp 5 lon', 'nuoc-yen-sao-nest100-lon-190ml-hop-5-lon', 'Nước Yến Sào cao cấp NEST100 được sản xuất từ yến sào, chứa nhiều acid amin và nguyên tố vi lượng cần thiết giúp Giải khát và làm mát cơ thể an toàn. Tăng cường sức khỏe, giảm căng thẳng, mệt mỏi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 135, NULL),
+(24, 4, 'Nước yến sào Nest100 lon 190ml - Khay 30 lon', 'nuoc-yen-sao-nest100-lon-190ml-khay-30-lon', 'Nước Yến Sào cao cấp NEST100 được sản xuất từ yến sào, chứa nhiều acid amin và nguyên tố vi lượng cần thiết giúp Giải khát và làm mát cơ thể an toàn. Tăng cường sức khỏe, giảm căng thẳng, mệt mỏi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 6, NULL),
+(25, 4, 'Nước yến sào Nest100 lon 190ml - Hộp 5 lon', 'nuoc-yen-sao-nest100-lon-190ml-hop-5-lon', 'Nước Yến Sào cao cấp NEST100 được sản xuất từ yến sào, chứa nhiều acid amin và nguyên tố vi lượng cần thiết giúp Giải khát và làm mát cơ thể an toàn. Tăng cường sức khỏe, giảm căng thẳng, mệt mỏi.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 143, NULL),
 (26, 4, 'Yến tổ Nest100 (Hộp 50g + túi)', 'yen-to-nest100-hop-50g-tui', 'Tổ yến sào Nest100 là sản phẩm của Công ty Aquapharm – yến sào Nest100. Được sản xuất theo quy trình hiện đại, hệ thống quản lý chất lượng theo tiêu chuẩn quốc tế: ISO 22000, HACCP, GMP, FSSC 22000; các công đoạn chế biến từ nguyên liệu đến thành phẩm được quản lý, kiểm soát chặt chẽ. Cam kết chất lượng trong từng sợi yến, tổ yến nguyên chất 100%. Quá trình chế biến làm sạch tổ yến bằng nước RO qua hệ thống lọc tinh và tiệt trùng bằng tia UV. Dùng hệ thống sấy lạnh để giữ được trọn vẹn giá trị dinh dưỡng của tổ yến. Đảm bảo nguyên tắc 3 không trong quá trình chế biến: không chà dầu, không chà muối, không tẩy trắng.', 'Việt Nam', 'Việt Nam', 'Công khai', 5, 7407, NULL),
 (27, 5, 'Thực phẩm bảo vệ sức khoẻ ByeAlco (5 viên/vỉ)', 'thuc-pham-bao-ve-suc-khoe-byealco-5-vien-vi', 'BYEALCO là sản phẩm thiên nhiên với công thức đặc biệt được nghiên cứu chiết xuất từ các dược liệu quý. Sản phẩm giúp bảo vệ gan, tăng cường sức khỏe và giảm thiểu tác hại của rượu bia. Sản phẩm được sản xuất tại nhà máy đạt chuẩn GMP, ISO - Đạt các tiêu chuẩn nghiêm ngặt của Bộ y Tế Việt Nam và các tiêu chuẩn Quốc tế.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 5, NULL),
-(28, 5, 'Cà Phê Sâm Canada', 'ca-phe-sam-canada', 'Khi nhắc đến cà phê chất lượng cao, cả thế giới nghĩ ngay đến Việt Nam: Hương thơm nổi bật, vị đậm đà, mạnh mẽ - Là một tài sản quý giá mà thiên nhiên ban tặng cho mảnh đất hình chữ S vốn giàu truyền thống văn hóa, lịch sử. Ở bên kia bán cầu, thổ dân Canada đã sử dụng nhân sâm trong vài nghìn năm như một loại thảo mộc tăng cường sức khỏe. Cà phê sâm Canada ra đời xuất phát từ niềm đam mê bất tận dành cho cà phê và khao khát tạo nên một thức uống không chỉ thơm ngon mà còn giúp người dùng duy trì sức khỏe và sắc đẹp. Sự kết hợp hài hòa giữa công thức truyền thống và hiện đại với hạt cà phê thượng hạng và sâm Canada mang đến loại cà phê sức khỏe riêng biệt trên thị trường giúp người tiêu dùng vừa tận hưởng được hương vị cà phê đậm đà mỗi ngày, vừa chăm sóc sức khỏe từ bên trong', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 3, NULL),
-(29, 5, 'Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo', 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao', 'Thực phẩm bổ sung Lingzhi Coffee - Cà phê sức khỏe giúp tỉnh táo, hỗ trợ bảo vệ gan', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 10, NULL),
-(30, 4, 'Nước Yến sào Đông trùng hạ thảo Nest100 - Có đường', 'nuoc-yen-sao-dong-trung-ha-thao-nest100-co-duong', 'Thành Phần: \r\nNước, yến sào đã chế biến (10-35%), đông trùng hạ thảo sấy thăng hoa (2500mg/L), đường phèn, chất làm dày (401, 415, 406, 327), chất bảo quản (211), màu tổng hợp (102, 110), hương tổng hợp dùng cho thực phẩm.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 134, NULL),
-(31, 4, 'Nước Yến Sâm Ginnest – Có đường', 'nuoc-yen-sam-ginnest-co-duong', 'Thành Phần: \r\nNước, yến sào đã chế biến (35%), Nhân sâm (2143mg/L), đường phèn, chất làm dày (401, 415, 406, 327), chất bảo quản (211), màu tổng hợp (150d, 110), hương sâm tổng hợp dùng cho thực phẩm.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 2, NULL),
-(32, 4, 'Hộp quà tặng Cao cấp - Ngũ Phúc Luxury tổ yến tinh chế và yến chưng Nest100 cao cấp (kèm túi)', 'hop-qua-tang-cao-cap-ngu-phuc-luxury-to-yen-tinh-che-va-yen-chung-nest100-cao-cap-kem-tui', 'Bộ quà tặng sức khỏe cao cấp bao gồm:\r\n01 hộp tổ yến tinh chế 10g\r\n01 lọ yến cao cấp đường phèn 70ml\r\n01 lọ yến cao cấp đường ăn kiêng 70ml\r\n01 lọ yến cao cấp Đông trùng hạ thảo 70ml\r\n01 lọ yến kids 2in1', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 13, NULL);
+(28, 5, 'Cà Phê Sâm Canada', 'ca-phe-sam-canada', 'Khi nhắc đến cà phê chất lượng cao, cả thế giới nghĩ ngay đến Việt Nam: Hương thơm nổi bật, vị đậm đà, mạnh mẽ - Là một tài sản quý giá mà thiên nhiên ban tặng cho mảnh đất hình chữ S vốn giàu truyền thống văn hóa, lịch sử. Ở bên kia bán cầu, thổ dân Canada đã sử dụng nhân sâm trong vài nghìn năm như một loại thảo mộc tăng cường sức khỏe. Cà phê sâm Canada ra đời xuất phát từ niềm đam mê bất tận dành cho cà phê và khao khát tạo nên một thức uống không chỉ thơm ngon mà còn giúp người dùng duy trì sức khỏe và sắc đẹp. Sự kết hợp hài hòa giữa công thức truyền thống và hiện đại với hạt cà phê thượng hạng và sâm Canada mang đến loại cà phê sức khỏe riêng biệt trên thị trường giúp người tiêu dùng vừa tận hưởng được hương vị cà phê đậm đà mỗi ngày, vừa chăm sóc sức khỏe từ bên trong', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 7, NULL),
+(29, 5, 'Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo', 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao', 'Thực phẩm bổ sung Lingzhi Coffee - Cà phê sức khỏe giúp tỉnh táo, hỗ trợ bảo vệ gan', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 33, NULL),
+(30, 4, 'Nước Yến sào Đông trùng hạ thảo Nest100 - Có đường', 'nuoc-yen-sao-dong-trung-ha-thao-nest100-co-duong', 'Thành Phần: \r\nNước, yến sào đã chế biến (10-35%), đông trùng hạ thảo sấy thăng hoa (2500mg/L), đường phèn, chất làm dày (401, 415, 406, 327), chất bảo quản (211), màu tổng hợp (102, 110), hương tổng hợp dùng cho thực phẩm.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 142, NULL),
+(31, 4, 'Nước Yến Sâm Ginnest – Có đường', 'nuoc-yen-sam-ginnest-co-duong', 'Thành Phần: \r\nNước, yến sào đã chế biến (35%), Nhân sâm (2143mg/L), đường phèn, chất làm dày (401, 415, 406, 327), chất bảo quản (211), màu tổng hợp (150d, 110), hương sâm tổng hợp dùng cho thực phẩm.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 5, NULL),
+(32, 4, 'Hộp quà tặng Cao cấp - Ngũ Phúc Luxury tổ yến tinh chế và yến chưng Nest100 cao cấp (kèm túi)', 'hop-qua-tang-cao-cap-ngu-phuc-luxury-to-yen-tinh-che-va-yen-chung-nest100-cao-cap-kem-tui', 'Bộ quà tặng sức khỏe cao cấp bao gồm:\r\n01 hộp tổ yến tinh chế 10g\r\n01 lọ yến cao cấp đường phèn 70ml\r\n01 lọ yến cao cấp đường ăn kiêng 70ml\r\n01 lọ yến cao cấp Đông trùng hạ thảo 70ml\r\n01 lọ yến kids 2in1', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 24, NULL);
 
 -- --------------------------------------------------------
 
@@ -834,7 +895,8 @@ ALTER TABLE `donhang`
   ADD KEY `id_nguoidung` (`id_nguoidung`),
   ADD KEY `id_magiamgia` (`id_magiamgia`),
   ADD KEY `id_phuongthuc` (`id_phuongthuc`),
-  ADD KEY `id_diachinguoidung` (`id_diachinguoidung`);
+  ADD KEY `id_diachinguoidung` (`id_diachinguoidung`),
+  ADD KEY `id_phivanchuyen` (`id_phivanchuyen`);
 
 --
 -- Indexes for table `giohang`
@@ -867,6 +929,12 @@ ALTER TABLE `magiamgia`
 -- Indexes for table `nguoidung`
 --
 ALTER TABLE `nguoidung`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `phivanchuyen`
+--
+ALTER TABLE `phivanchuyen`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -952,6 +1020,18 @@ ALTER TABLE `danhmuc_sanpham`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
+-- AUTO_INCREMENT for table `diachi_nguoidung`
+--
+ALTER TABLE `diachi_nguoidung`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `giohang`
+--
+ALTER TABLE `giohang`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+
+--
 -- AUTO_INCREMENT for table `hinhanh_sanpham`
 --
 ALTER TABLE `hinhanh_sanpham`
@@ -964,10 +1044,28 @@ ALTER TABLE `loaibienthe`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
+-- AUTO_INCREMENT for table `magiamgia`
+--
+ALTER TABLE `magiamgia`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `nguoidung`
 --
 ALTER TABLE `nguoidung`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `phivanchuyen`
+--
+ALTER TABLE `phivanchuyen`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `phuongthuc`
+--
+ALTER TABLE `phuongthuc`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `quangcao`
@@ -1051,7 +1149,8 @@ ALTER TABLE `donhang`
   ADD CONSTRAINT `donhang_ibfk_1` FOREIGN KEY (`id_nguoidung`) REFERENCES `nguoidung` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `donhang_ibfk_2` FOREIGN KEY (`id_magiamgia`) REFERENCES `magiamgia` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `donhang_ibfk_3` FOREIGN KEY (`id_phuongthuc`) REFERENCES `phuongthuc` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `donhang_ibfk_4` FOREIGN KEY (`id_diachinguoidung`) REFERENCES `diachi_nguoidung` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `donhang_ibfk_4` FOREIGN KEY (`id_diachinguoidung`) REFERENCES `diachi_nguoidung` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `donhang_ibfk_5` FOREIGN KEY (`id_phivanchuyen`) REFERENCES `phivanchuyen` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `giohang`
