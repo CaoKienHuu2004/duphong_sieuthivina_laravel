@@ -44,15 +44,18 @@ Route::prefix('/gio-hang')->group(function () {
     Route::post('/them-gio-hang', [client\GiohangController::class, 'themgiohang'])->name('them-gio-hang');
 });
 
-// Tuyến đường yêu cầu đăng nhập (dành cho mọi người dùng đã đăng nhập)
 Route::middleware('auth')->group(function () {
     
     Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('dang-xuat');
     Route::get('/thong-tin-ca-nhan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');
     
-    Route::get('/thanh-toan', [client\DonhangController::class, 'thanhtoan'])->name('thanh-toan');
-
+    
+    Route::prefix('/thanh-toan')->group(function () {
+        Route::get('/', [client\ThanhtoanController::class, 'index'])->name('thanh-toan');
+        Route::get('/dat-hang', [client\ThanhtoanController::class, 'placeOrder'])->name('dat-hang');
+        Route::get('/thay-doi-dia-chi', [client\ThanhtoanController::class, 'placeOrder'])->name('thay-doi-dia-chi');
+    });
 });
 
 /*

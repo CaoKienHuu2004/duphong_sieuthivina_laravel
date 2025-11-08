@@ -302,6 +302,11 @@
                 </div>
                 <a href="{{ route('thanh-toan') }}" class="btn btn-main py-14 w-100 rounded-8" wire:loading.class="opacity-50">Tiến hành thanh toán</a>
             </div>
+            <span class="mt-20 w-100">
+                            <a href="{{ route('danhsachsanpham') }}" class="text-sm text-main-600 fw-medium flex-align d-flex flex-center transtional-2 link" style="cursor:pointer;">
+                                    <i class="ph-bold ph-arrow-fat-lines-left text-main-600 text-md pe-10"></i> <span>Tiếp tục mua hàng</span> 
+                                </a>
+                        </span>
         </div>
     </div>
 </div>
