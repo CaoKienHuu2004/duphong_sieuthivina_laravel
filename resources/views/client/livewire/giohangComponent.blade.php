@@ -220,14 +220,6 @@
         <div class="col-xl-3 col-lg-4">
             <div class="cart-sidebar border border-gray-100 rounded-8 px-24 py-30 pb-20">
                 <h6 class="text-lg mb-20 flex-align gap-8"><i class="ph-bold ph-ticket text-main-600 text-xl"></i>Áp dụng Voucher</h6>
-                <form>
-                    <div class="flex-align gap-16">
-                        <input type="text" wire:model.live="voucherCode" class="common-input p-10" placeholder="Nhập mã giảm giá..." value="">
-                    </div>
-                    <button type="button" wire:click="applyVoucher" wire:loading.attr="disabled" class="btn border-main-600 text-main-600 hover-bg-main-600 hover-text-white mt-20 py-10 w-100 rounded-8" style="width: 100px;">
-                        <span>Áp Dụng</span>
-                    </button>
-                </form>
                 @if (count($availableVouchers) > 0)
                     @foreach ($availableVouchers as $voucher)
                         <div class="flex-align flex-between gap-8 mt-10 border-dashed border-gray-200 py-10 px-12 rounded-4">
@@ -260,6 +252,16 @@
                             @endif
                         </div>
                     @endforeach
+                @else
+                    <div class="flex-align flex-center gap-8 mt-10 py-10 px-12 rounded-4">
+                        <span class="flex-align gap-8 text-sm fw-medium text-gray-900 pe-10">
+                            <div class="text-sm d-flex flex-column">
+                                <span class="text-sm text-gray-900 w-100">
+                                    Chưa có voucher nào phù hợp !
+                                </span>
+                            </div>
+                        </span>
+                    </div>
                 @endif
             </div>
             

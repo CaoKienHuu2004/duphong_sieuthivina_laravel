@@ -25,7 +25,6 @@
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/aos.css" />
   <!-- Main css -->
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/main.css" />
-  @livewireStyles
   {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 </head>
 
@@ -554,8 +553,6 @@
     </div>
   </div>
   <!-- ==================== Footer Two End Here ==================== -->
-
-  @livewireScripts
   <!-- Jquery js -->
   <script src="{{asset('assets/client')}}/js/jquery-3.7.1.min.js"></script>
   <!-- Bootstrap Bundle Js -->
