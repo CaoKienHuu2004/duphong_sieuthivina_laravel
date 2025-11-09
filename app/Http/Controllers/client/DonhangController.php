@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class DonhangController extends Controller
 {
-    public function thanhtoan()
+    public function donhangcuatoi()
     {
-        return view('client.thanhtoan.thanhtoan');
+        return view('client.nguoidung.donhang');
     }
 }

@@ -66,8 +66,8 @@
                                         </li>
                                         <li class="mb-6">
                                             <div class="">
-                                                <a href="{{ route('trang-chu') }}" class="px-16 py-8 hover-bg-main-50 hover-text-main-600 {{ Route::is('trang-chu') ? 'border border-main-600 text-main-600' : 'text-neutral-600' }} rounded-8 flex-between gap-12 mb-0" style="justify-content: start;">
-                                                    <span class="fw-medium text-md flex-align gap-12"><i class="ph-bold ph-notepad"></i> Quản lý đơn hàng </span> 
+                                                <a href="{{ route('don-hang-cua-toi') }}" class="px-16 py-8 hover-bg-main-50 hover-text-main-600 {{ Route::is('don-hang-cua-toi') ? 'border border-main-600 text-main-600' : 'text-neutral-600' }} rounded-8 flex-between gap-12 mb-0" style="justify-content: start;">
+                                                    <span class="fw-medium text-md flex-align gap-12"><i class="ph-bold ph-notepad"></i> Đơn hàng của tôi </span> 
                                                 </a>
                                             </div>        
                                         </li>
@@ -131,7 +131,7 @@
                                     @if(session('success'))
                                         <span class="border-dashed border-success-500 bg-success-300 text-success-900 rounded-8 px-8 py-4">{{ session('success') }}</span>
                                     @endif
-                                    <form class="row" action="{{ route('cap-nhat-tai-khoan') }}" method="POST">
+                                    <form class="row" action="{{ route('cap-nhat-tai-khoan') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
                                         <div class="col-xl-8 py-10">

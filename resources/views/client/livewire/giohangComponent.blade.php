@@ -294,13 +294,14 @@
                             {{ number_format($tonggiatri,'0',',','.') }} đ
                         </span>
                     </div>
-
-                    <div class="text-end gap-8">
-                        <span class="text-success-600 text-sm fw-normal">Tiết kiệm:</span>
-                        <span class="text-success-600 text-sm fw-normal">
-                            {{ number_format($tietkiem,'0',',','.') }} đ
-                        </span>
-                    </div>
+                    @if($tietkiem > 0)
+                        <div class="text-end gap-8">
+                            <span class="text-success-600 text-sm fw-normal">Tiết kiệm:</span>
+                            <span class="text-success-600 text-sm fw-normal">
+                                {{ number_format($tietkiem,'0',',','.') }} đ
+                            </span>
+                        </div>
+                    @endif
                 </div>
                 <a href="{{ route('thanh-toan') }}" class="btn btn-main py-14 w-100 rounded-8" wire:loading.class="opacity-50">Tiến hành thanh toán</a>
             </div>

@@ -20,13 +20,8 @@ Route::get('/tim-kiem', [client\SanphamController::class, 'search'])->name('tim-
 Route::prefix('/san-pham')->group(function () {
 
     Route::get('/', [client\SanphamController::class, 'index'])->name('danhsachsanpham');
+    Route::get('/{slug}', [client\SanphamController::class, 'show'])->name('chi-tiet-san-pham');
 
-    Route::get('/{slug}', [client\SanphamController::class, 'show'])
-        ->name('chi-tiet-san-pham');
-
-    Route::get('/danh-muc/{slug}-{id}', [client\SanphamController::class, 'danhmuc'])
-        ->where(['id' => '[0-9]+', 'slug' => '[a-z0-9-]+'])
-        ->name('danh-muc-san-pham');
 });
 
 Route::middleware('guest')->group(function () {
@@ -38,7 +33,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::prefix('/gio-hang')->group(function () {
-    
     Route::get('/', function () {return view('client.thanhtoan.giohang'); })->name('gio-hang');
 
     Route::post('/them-gio-hang', [client\GiohangController::class, 'themgiohang'])->name('them-gio-hang');
@@ -48,6 +42,7 @@ Route::middleware('auth')->group(function () {
     
     Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('dang-xuat');
     Route::get('/thong-tin-ca-nhan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
+    Route::get('/don-hang-cua-toi', [client\DonhangController::class, 'donhangcuatoi'])->name('don-hang-cua-toi');
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');
     
     

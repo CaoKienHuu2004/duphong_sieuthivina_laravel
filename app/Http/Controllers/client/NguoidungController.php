@@ -124,7 +124,6 @@ class NguoidungController extends Controller
             'gioitinh' => 'required',
             'ngaysinh' => 'required|date|before_or_equal:today', // Phải là định dạng ngày hợp lệ và không được là ngày trong tương lai
             'email' => 'required|email:rfc,dns|unique:nguoidung,email,' . $user->id,
-            'avatar' => 'nullable|max:2048',
         ]);
 
         // 2. XỬ LÝ ẢNH AVATAR
@@ -168,5 +167,10 @@ class NguoidungController extends Controller
         ]);
 
         return back()->with('success', 'Cập nhật thông tin thành công!');
+    }
+
+    public function donhangcuatoi()
+    {
+        return view('client.nguoidung.donhang');
     }
 }

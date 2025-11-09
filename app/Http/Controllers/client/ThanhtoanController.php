@@ -170,7 +170,7 @@ class ThanhtoanController extends Controller
             $order->tongsoluong = collect($cartItems)->sum('soluong');
             $order->tamtinh = $tamtinh;
             $order->thanhtien = $tongThanhTien;
-            $order->trangthai = 'Chờ xác nhận';
+            $order->trangthai = 'Đang xác nhận';
             $order->save();
 
             // 3. LƯU CHI TIẾT ĐƠN HÀNG (ChitietdonhangModel) & CẬP NHẬT TỒN KHO
@@ -199,6 +199,19 @@ class ThanhtoanController extends Controller
                         $bienthe->save();
                     }
                 }
+
+                if ($item['thanhtien'] == 0) { 
+                    $bienthe = BientheModel::find($bientheId);
+                    if ($bienthe) {
+                        $bienthe->soluong -= $soluong;
+                        if ($bienthe->soluong < 0) {
+                             DB::rollBack();
+                             return redirect()->back()->with('error', 'Lỗi: Sản phẩm **' . ($bienthe->sanpham->ten ?? '') . '** không đủ số lượng tồn kho.');
+                        }
+                        $bienthe->luottang += $soluong; 
+                        $bienthe->save();
+                    }
+                }
             }
             
             // 4. DỌN DẸP
@@ -208,6 +221,7 @@ class ThanhtoanController extends Controller
             
             // 5. Kết thúc Transaction
             DB::commit();
+            
 
             return redirect()->route('tai-khoan', ['madon' => $order->madon])
                              ->with('success', 'Đơn hàng **' . $order->madon . '** của bạn đã được đặt thành công!');
