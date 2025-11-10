@@ -7,14 +7,19 @@
 @section('content')
     <div class="page">
         <section class="cart py-20">
+            
             <div class="container container-lg">
-                <form action="" method="POST" class="row gy-4">
+                @if(session('error'))
+                    <span class="border-dashed border-2 border-main-500 bg-main-100 text-main-900 rounded-8 px-4 py-2 mb-10">{{ session('error') }}</span>
+                @endif
+                <form action="{{ route('dat-hang') }}" method="POST" class="row gy-4">
+                    @csrf
                     <div class="col-xl-7 col-lg-8">
                         <div class="cart-sidebar border border-gray-100 rounded-8 px-20 py-20 pb-20">
                             <div class="flex-align flex-between gap-8 mb-20">
                                 <h6 class="text-lg m-0 flex-align gap-4">
                                     <i class="ph-bold ph-map-pin-area text-main-600 text-xl"></i>Người nhận hàng</h6>
-                                <a href="#" class="text-xs text-primary-700 flex-align gap-1 fw-normal" style="cursor:pointer;"><i class="ph-bold ph-pencil-simple"></i> Thay đổi</a>
+                                <a href="{{ route('thay-doi-dia-chi') }}" class="text-xs text-primary-700 flex-align gap-1 fw-normal" style="cursor:pointer;"><i class="ph-bold ph-pencil-simple"></i> Thay đổi</a>
                             </div>
                             <div class="flex-align flex-wrap">
                                 <span class="text-md fw-semibold text-gray-600 border-end border-gray-600 me-8 pe-10">{{ $diachiMacDinh->hoten }}</span>
@@ -110,7 +115,7 @@
                                 <label for="phuongthuc1" class="w-100 mt-10 border border-gray-100 hover-border-main-600 hover-bg-main-50 py-16 px-12 rounded-4 transition-1" style="cursor:pointer;">
                                     <div class="payment-item">
                                         <div class="form-check common-check common-radio mb-0">
-                                            <input class="form-check-input" type="radio" name="phuongthuc" id="phuongthuc{{ $phuongthuc->id }}" value="{{ $phuongthuc->id }}" @if ($phuongthuc->id == 1) checked @endif>
+                                            <input class="form-check-input" type="radio" name="id_phuongthuc" id="phuongthuc{{ $phuongthuc->id }}" value="{{ $phuongthuc->id }}" @if ($phuongthuc->id == 1) checked @endif>
                                             <label class="form-check-label fw-medium text-neutral-600 text-sm w-100"
                                                 for="phuongthuc{{ $phuongthuc->id }}">{{ $phuongthuc->ten }}</label>
                                         </div>

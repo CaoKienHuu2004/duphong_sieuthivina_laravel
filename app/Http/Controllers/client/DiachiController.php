@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\client;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DiachinguoidungModel;
@@ -15,9 +16,9 @@ class DiachiController extends Controller
     public function selectAddress()
     {
         // $diachis = Auth::user()->diachi()->orderBy('trangthai', 'desc')->get();
-        $diachis = DiachinguoidungModel::where('id_nguoidung', Auth::id())->orderBy('trangthai', 'desc')->get();
+        $diachis = DiachinguoidungModel::where('id_nguoidung', Auth::id())->orderBy('trangthai', 'asc')->get();
         
-        return view('client.thanhtoan.diachigiaohang', compact('diachis'));
+        return view('client.thanhtoan.thaydoidiachi', compact('diachis'));
     }
 
     /**
@@ -50,7 +51,7 @@ class DiachiController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('thanh-toan')->with('success_address', 'Đã cập nhật địa chỉ mặc định thành công.');
+            return redirect()->route('thanh-toan')->with('success', 'Đã cập nhật địa chỉ mặc định thành công.');
 
         } catch (\Exception $e) {
             DB::rollBack();

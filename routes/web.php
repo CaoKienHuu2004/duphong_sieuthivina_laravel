@@ -48,8 +48,9 @@ Route::middleware('auth')->group(function () {
     
     Route::prefix('/thanh-toan')->group(function () {
         Route::get('/', [client\ThanhtoanController::class, 'index'])->name('thanh-toan');
-        Route::get('/dat-hang', [client\ThanhtoanController::class, 'placeOrder'])->name('dat-hang');
-        Route::get('/thay-doi-dia-chi', [client\ThanhtoanController::class, 'placeOrder'])->name('thay-doi-dia-chi');
+        Route::post('/dat-hang', [client\ThanhtoanController::class, 'placeOrder'])->name('dat-hang');
+        Route::get('/thay-doi-dia-chi', [client\DiachiController::class, 'selectAddress'])->name('thay-doi-dia-chi');
+        Route::post('/cap-nhat-mac-dinh', [client\DiachiController::class, 'updateDefaultAddress'])->name('cap-nhat-mac-dinh');
     });
 });
 

@@ -65,7 +65,7 @@ class ThanhtoanController extends Controller
         $giohangComponent = new GiohangComponent();
         $giohangComponent->mount();
         if (empty($giohangComponent->giohang)) {
-            return redirect()->route('cart')->with('error', 'Giỏ hàng của bạn đang trống.');
+            return redirect()->route('gio-hang')->with('error', 'Giỏ hàng của bạn đang trống.');
         }
 
         // 2. Lấy Địa chỉ MẶC ĐỊNH (Không dùng Scope MacDinh)
@@ -74,7 +74,7 @@ class ThanhtoanController extends Controller
                                         ->first();
 
         if (!$diachiMacDinh) {
-            return redirect()->route('thay-doi-dia-chi')->with('info', 'Vui lòng chọn địa chỉ nhận hàng.');
+            return redirect()->route('tai-khoan')->with('info', 'Vui lòng chọn địa chỉ mặc định nhận hàng.');
         }
 
         // 3. Tính toán Phí Vận Chuyển
@@ -113,7 +113,7 @@ class ThanhtoanController extends Controller
     public function placeOrder(Request $request)
     {
         if (!Auth::check()) {
-            return response()->json(['success' => false, 'message' => 'Vui lòng đăng nhập để đặt hàng.'], 401);
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để đặt hàng.');
         }
 
         $request->validate([
@@ -134,7 +134,7 @@ class ThanhtoanController extends Controller
 
             if (empty($cartItems)) {
                 DB::rollBack();
-                return redirect()->route('cart')->with('error', 'Giỏ hàng trống, không thể đặt hàng.');
+                return redirect()->route('gio-hang')->with('error', 'Giỏ hàng trống, không thể đặt hàng.');
             }
 
             // Lấy Địa chỉ MẶC ĐỊNH (Không dùng Scope MacDinh)
@@ -144,7 +144,7 @@ class ThanhtoanController extends Controller
                         
             if (!$diachi) {
                  DB::rollBack();
-                 return redirect()->route('checkout.address.select')->with('error', 'Vui lòng chọn địa chỉ nhận hàng trước khi đặt.');
+                 return redirect()->route('thay-doi-dia-chi')->with('error', 'Vui lòng chọn địa chỉ nhận hàng trước khi đặt.');
             }
             
             // Lấy Phương thức thanh toán
@@ -159,6 +159,7 @@ class ThanhtoanController extends Controller
             $tongThanhTien = $tamtinh - $giamgiaVoucher + $phiVanChuyen;
             if ($tongThanhTien < 0) $tongThanhTien = 0; 
 
+            $currentDateTime = Carbon::now()->format('ymdHi');
             // 2. TẠO ĐƠN HÀNG (DonhangModel)
             $order = new DonhangModel();
             $order->id_nguoidung = Auth::id();
@@ -166,7 +167,7 @@ class ThanhtoanController extends Controller
             $order->id_diachinguoidung = $diachi->id; 
             $order->id_phivanchuyen = $phivanchuyenModel->id ?? null;
             $order->id_magiamgia = $appliedVoucher['id'] ?? null;
-            $order->madon = 'STV' . time() . Auth::id(); 
+            $order->madon = 'STV' . $currentDateTime . Auth::id(); 
             $order->tongsoluong = collect($cartItems)->sum('soluong');
             $order->tamtinh = $tamtinh;
             $order->thanhtien = $tongThanhTien;
@@ -223,13 +224,13 @@ class ThanhtoanController extends Controller
             DB::commit();
             
 
-            return redirect()->route('tai-khoan', ['madon' => $order->madon])
+            return redirect()->route('don-hang-cua-toi', ['madon' => $order->madon])
                              ->with('success', 'Đơn hàng **' . $order->madon . '** của bạn đã được đặt thành công!');
 
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Lỗi đặt hàng: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi trong quá trình đặt hàng. Vui lòng thử lại.');
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi trong quá trình đặt hàng. (Chi tiết lỗi: ' . $e->getMessage() . ').');
         }
     }
 }

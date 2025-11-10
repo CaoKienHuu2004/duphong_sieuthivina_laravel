@@ -5,6 +5,9 @@
             {{ session('update_message') ?? $message ?? session('error_message') ?? session('voucher_success') ?? session('voucher_error') ?? session('voucher_info')}}
         </div>
     @endif
+    @if(session('error'))
+                    <span class="border-dashed border-2 border-main-500 bg-main-100 text-main-900 rounded-4 px-4 py-2 mb-10">{{ session('error') }}</span>
+                @endif
     @php
         $mainItems = array_filter($giohang, fn($item) => ($item['thanhtien'] ?? 0) > 0);
         $giftItems = array_filter($giohang, fn($item) => ($item['thanhtien'] ?? 1) == 0);
