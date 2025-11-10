@@ -35,10 +35,10 @@
                             <div class="d-flex flex-align gap-24 pt-10">
                                 <div class="flex-align gap-12">
                                     @if ($diachi->trangthai == 'Mặc định')
-                                        <span class="text-sm bg-main-300 text-white rounded-8 px-8 py-6 w-100 transition-1 gap-8">Đặt làm mặc định</span>
+                                        <span class="text-sm bg-main-300 text-white rounded-4 px-8 py-6 w-100 transition-1 gap-8">Đặt làm mặc định</span>
                                     @else
                                         <input type="hidden" name="id_diachi" value="{{ $diachi->id }}">
-                                        <button type="submit" class="text-sm bg-main-600 text-white hover-bg-white hover-text-main-900 border hover-border-main-600 rounded-8 px-8 py-6 w-100 transition-1 gap-8">Đặt làm mặc định</button>
+                                        <button type="submit" class="text-sm bg-main-600 text-white hover-bg-white hover-text-main-900 border hover-border-main-600 rounded-4 px-8 py-6 w-100 transition-1 gap-8">Đặt làm mặc định</button>
                                     @endif
                                 </div>
                             </div>

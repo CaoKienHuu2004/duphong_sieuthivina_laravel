@@ -53,7 +53,7 @@
                         @endphp
                         <div class="cart-table border border-gray-100 rounded-8 p-30 pb-0 mt-20">
                                 <div class="overflow-x-auto scroll-sm scroll-sm-horizontal">
-                                    <table class="table style-three">
+                                    <table class="table style-three mb-20">
                                         <thead>
                                             <tr class=" my-10 py-10">
                                                 <th class="h6 mb-0 p-0 pb-10 text-lg fw-bold flex-align gap-24" colspan="2">
@@ -67,7 +67,9 @@
                                         <tbody>
                                         @foreach ($sanPham as $item)
                                            <tr>
-                                                <td class="py-10 px-5">
+                                                
+                                                <td class="rounded-4 py-10 px-5">
+                                                    @if($item['thanhtien']==0)<span class="flex-align mb-10 text-sm fw-medium"><i class="ph-bold ph-gift text-main-600 text-lg pe-4"></i>Quà tặng nhận được</span>@endif
                                                     <div class="d-flex align-items-center gap-12">
                                                         <a href="{{ route('chi-tiet-san-pham',$item['bienthe']['sanpham']['slug']) }}"
                                                             class="border border-gray-100 rounded-8 flex-center"

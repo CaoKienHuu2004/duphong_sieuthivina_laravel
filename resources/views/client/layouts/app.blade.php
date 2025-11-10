@@ -136,9 +136,9 @@
                     class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
               </li>
               <li class="common-dropdown__item nav-submenu__item">
-                <a href="checkout.html"
+                <a href="{{ route('don-hang-cua-toi') }}"
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-notepad text-main-600"></i> Quản lý đơn hàng</a>
+                    class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
               </li>
               <li class="common-dropdown__item nav-submenu__item">
                 <a href="cart.html"
@@ -371,9 +371,9 @@
                     class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
               </li>
               <li class="common-dropdown__item nav-submenu__item">
-                <a href="checkout.html"
+                <a href="{{ route('don-hang-cua-toi') }}"
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-notepad text-main-600"></i> Quản lý đơn hàng</a>
+                    class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
               </li>
               <li class="common-dropdown__item nav-submenu__item">
                 <a href="cart.html"

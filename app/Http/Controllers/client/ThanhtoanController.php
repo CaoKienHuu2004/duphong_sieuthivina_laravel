@@ -159,22 +159,32 @@ class ThanhtoanController extends Controller
             $tongThanhTien = $tamtinh - $giamgiaVoucher + $phiVanChuyen;
             if ($tongThanhTien < 0) $tongThanhTien = 0; 
 
-            $currentDateTime = Carbon::now()->format('ymdHi');
+            $currentDateTime = Carbon::now()->format('ymd');
             // 2. TẠO ĐƠN HÀNG (DonhangModel)
+            // ********** BƯỚC 1: LƯU TẠM THỜI ĐỂ LẤY ID ĐƠN HÀNG **********
             $order = new DonhangModel();
             $order->id_nguoidung = Auth::id();
             $order->id_phuongthuc = $phuongthuc->id;
             $order->id_diachinguoidung = $diachi->id; 
             $order->id_phivanchuyen = $phivanchuyenModel->id ?? null;
-            $order->id_magiamgia = $appliedVoucher['id'] ?? null;
-            $order->madon = 'STV' . $currentDateTime . Auth::id(); 
+
+            // Sửa lỗi Foreign Key: Lấy ID mã giảm giá, nếu không có thì là NULL
+            $voucherId = $appliedVoucher['id'] ?? null;
+            $order->id_magiamgia = $voucherId;
+
+            // Mã đơn hàng ban đầu là một giá trị tạm thời (TEMP)
+            $order->madon = 'TEMP'; 
             $order->tongsoluong = collect($cartItems)->sum('soluong');
             $order->tamtinh = $tamtinh;
             $order->thanhtien = $tongThanhTien;
-            $order->trangthai = 'Đang xác nhận';
+            $order->trangthai = 'Đang xác nhận'; 
+            $order->trangthaithanhtoan = 'Chờ thanh toán';
             $order->save();
 
-            // 3. LƯU CHI TIẾT ĐƠN HÀNG (ChitietdonhangModel) & CẬP NHẬT TỒN KHO
+            $currentDateTime = Carbon::now()->format('ymd');
+            $order->madon = 'STV' . $currentDateTime . $order->id;
+            $order->save();
+
             foreach ($cartItems as $item) {
                 $bientheId = $item['id_bienthe'];
                 $soluong = $item['soluong'];
