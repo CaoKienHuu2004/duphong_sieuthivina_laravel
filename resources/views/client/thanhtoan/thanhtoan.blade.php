@@ -19,7 +19,7 @@
                             <div class="flex-align flex-between gap-8 mb-20">
                                 <h6 class="text-lg m-0 flex-align gap-4">
                                     <i class="ph-bold ph-map-pin-area text-main-600 text-xl"></i>Người nhận hàng</h6>
-                                <a href="{{ route('thay-doi-dia-chi') }}" class="text-xs text-primary-700 flex-align gap-1 fw-normal" style="cursor:pointer;"><i class="ph-bold ph-pencil-simple"></i> Thay đổi</a>
+                                <span href="" class="text-xs text-primary-700 flex-align gap-1 fw-normal" id="openModalBtn" style="cursor:pointer;"><i class="ph-bold ph-pencil-simple"></i> Thay đổi</span>
                             </div>
                             <div class="flex-align flex-wrap">
                                 <span class="text-md fw-semibold text-gray-600 border-end border-gray-600 me-8 pe-10">{{ $diachiMacDinh->hoten }}</span>
@@ -224,5 +224,209 @@
                 </form>
             </div>
         </section>
+        <style>
+        /* --- CSS cho Modal --- */
+        
+        /* Modal Backdrop */
+        .modal {
+            display: none; /* Mặc định ẩn modal */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6); /* Nền tối mờ */
+            /* Thêm animation fade in */
+            /* animation: fadeIn 0.3s ease-out; */
+        }
+
+        /* Modal Content (Popup chính) */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 50px auto; /* Đặt modal ở giữa màn hình */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            /* Thêm animation slide down */
+            /* animation: slideDown 0.4s ease-out; */
+        }
+        
+        /* Tiêu đề */
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* Nút đóng (X) */
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #333;
+            text-decoration: none;
+        }
+        
+        /* Các Form Địa chỉ */
+        .address-form {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+        }
+
+        .address-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .address-form p {
+            margin: 5px 0 10px 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .address-form button {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .address-form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        @keyframes slideDown {
+            from {transform: translateY(-50px); opacity: 0;}
+            to {transform: translateY(0); opacity: 1;}
+        }
+        @keyframes zoomIn {
+            0% { /* Bắt đầu */
+                opacity: 0;
+                transform: scale(0.7); /* Rất nhỏ */
+            }
+            60% { /* Phóng to quá mức */
+                opacity: 1;
+                transform: scale(1.1); /* Phóng to hơn kích thước thật một chút */
+            }
+            80% { /* Lùi lại một chút */
+                transform: scale(0.95); /* Thu nhỏ lại một chút */
+            }
+            100% { /* Về kích thước cuối cùng */
+                transform: scale(1); /* Kích thước thật */
+            }
+        }
+    </style>
+        <div id="deliveryAddressModal" class="modal">
+
+        <div class="modal-content container container-lg">
+            <div class="flex-align flex-between">
+                <span class="pb-10 fw-semibold text-lg text-gray-900">Thay đổi địa chỉ giao hàng</span>
+                <button class="pb-10 rounded-circle 0 fw-semibold text-2xl text-gray-900 close-btn" style="cursor: pointer;">&times;</button>
+            </div>
+                <div class="row gy-4">
+                    @foreach ($diachis as $diachi)
+                    <div class="col-lg-6 col-xl-6">
+                        <form action="{{ route('cap-nhat-mac-dinh') }}" method="POST" class="border-dashed border-2 border-gray-500 text-main-900 rounded-8 px-10 py-8 mb-10">
+                            @csrf
+                            <div class="d-flex flex-align flex-between gap-24">
+                                <div class="flex-align gap-12">
+                                    <span class="fw-semibold text-gray-900 text-md border-end border-gray-600 pe-10">{{ $diachi->hoten }}</span>
+                                    <span class="fw-semibold text-gray-900 text-md">{{ $diachi->sodienthoai }}</span>
+                                </div>
+                                <div class="flex-align gap-12">
+                                    @if ($diachi->trangthai == 'Mặc định')
+                                        <span class="fw-medium text-xs text-success-700 bg-success-100 px-6 py-2 rounded-4 flex-align gap-8">{{ $diachi->trangthai }}</span>
+                                    @else
+                                        <span class="fw-medium text-xs text-gray-700 bg-gray-100 px-6 py-2 rounded-4 flex-align gap-8">{{ $diachi->trangthai }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="d-flex flex-align gap-24 pt-10">
+                                <div class="flex-align gap-12">
+                                    <span class="fw-medium text-gray-900 text-sm">Địa chỉ: {{ $diachi->diachi }}, {{ $diachi->tinhthanh }}</span>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-align gap-24 pt-10">
+                                <div class="flex-align gap-12">
+                                    @if ($diachi->trangthai == 'Mặc định')
+                                        <span class="text-sm bg-main-300 text-white rounded-4 px-8 py-6 w-100 transition-1 gap-8">Đặt làm mặc định</span>
+                                    @else
+                                        <input type="hidden" name="id_diachi" value="{{ $diachi->id }}">
+                                        <button type="submit" class="text-sm bg-main-600 text-white hover-bg-white hover-text-main-900 border hover-border-main-600 rounded-4 px-8 py-6 w-100 transition-1 gap-8">Đặt làm mặc định</button>
+                                    @endif
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    @endforeach
+                </div>
+            
+            </div>
+    </div>
+
+    <script>
+        // Lấy các element cần thiết
+        var modal = document.getElementById("deliveryAddressModal");
+        var btn = document.getElementById("openModalBtn");
+        var closeBtn = document.getElementsByClassName("close-btn")[0];
+
+        // 1. Khi người dùng click vào nút, mở modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+            // Kích hoạt lại animation mỗi lần mở (tùy chọn)
+            // modal.querySelector('.modal-content').style.animation = 'slideDown 0.4s ease-out';
+            // modal.style.animation = 'fadeIn 0.3s ease-out';
+        }
+
+        // 2. Khi người dùng click vào nút (X), đóng modal
+        closeBtn.onclick = function() {
+            // Thay đổi display sau khi animation kết thúc để có hiệu ứng mượt mà
+            // modal.querySelector('.modal-content').style.animation = 'slideDown 0.4s ease-out reverse forwards';
+            // modal.style.animation = 'fadeIn 0.3s ease-out reverse forwards';
+            
+            setTimeout(() => {
+                 modal.style.display = "none";
+            }, 100); // Chờ 400ms (thời gian animation) để đóng hẳn
+        }
+
+        // 3. Khi người dùng click vào bất cứ đâu bên ngoài modal, đóng modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                // Tương tự, dùng animation ngược trước khi đóng
+                // modal.querySelector('.modal-content').style.animation = 'slideDown 0.4s ease-out reverse forwards';
+                // modal.style.animation = 'fadeIn 0.3s ease-out reverse forwards';
+                
+                setTimeout(() => {
+                    modal.style.display = "none";
+                }, 100);
+            }
+        }
+    </script>
     </div>
 @endsection

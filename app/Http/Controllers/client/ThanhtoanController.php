@@ -101,12 +101,15 @@ class ThanhtoanController extends Controller
             'tietkiem' => $giohangComponent->tietkiem,
         ];
 
+        $diachis = DiachinguoidungModel::where('id_nguoidung', Auth::id())->orderBy('trangthai', 'asc')->get();
+
         return view('client.thanhtoan.thanhtoan', compact(
             'cartData',
             'diachiMacDinh', 
             'phuongthucs', 
             'phivanchuyenModel',
-            'phiVanChuyen'
+            'phiVanChuyen',
+            'diachis',
         ));
     }
 

@@ -97,16 +97,14 @@
 
                         <!-- Content Start -->
                         <div class="col-lg-9">
-                            <!-- Top Start -->
                             <div class="flex-between gap-16 flex-wrap mb-20 ">
                                 <h6 class="mb-0 text-gray-900">Đơn hàng của tôi</h6>
-                                <div class="position-relative flex-align gap-16 flex-wrap">
-                                    <button type="button" class="w-44 h-44 d-lg-none d-flex flex-center border border-gray-100 rounded-6 text-2xl sidebar-btn">
-                                        <i class="ph-bold ph-folder-user"></i>
-                                    </button>
+                                    <div class="position-relative flex-align gap-16 flex-wrap">
+                                        <button type="button" class="w-44 h-44 d-lg-none d-flex flex-center border border-gray-100 rounded-6 text-2xl sidebar-btn">
+                                            <i class="ph-bold ph-folder-user"></i>
+                                        </button>
                                 </div>
                             </div>
-                            <!-- Top End -->
                             <livewire:donhangcuatoi-component />
                         </div>
                     </div>
