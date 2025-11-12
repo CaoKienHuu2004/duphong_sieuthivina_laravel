@@ -172,7 +172,7 @@ class NguoidungController extends Controller
             $fileName = uniqid() . '_' . time() . '_' . $user->id . '.' . $extension; 
             
             // 2a. LƯU FILE MỚI VÀO PUBLIC
-            $file->move($destinationPath, $fileName);
+            $file->move($publicPath, $fileName);
 
             // Đường dẫn tương đối để lưu vào DB
             $user->avatar = $fileName;
