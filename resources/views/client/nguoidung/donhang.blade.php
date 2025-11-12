@@ -19,7 +19,7 @@
                                     <div class="border-bottom border-gray-100 pb-16 mb-16">
                                         <a href="http://127.0.0.1:8000/san-pham?thuonghieu=chat-viet-group" class="px-16 py-8 bg-gray-50 rounded-8 flex-between gap-12 mb-0" style="justify-content: start;">
                                             <span class="bg-white text-main-600 rounded-circle flex-center text-xl flex-shrink-0" style="width: 45px; height: 45px;">
-                                                <img src="{{ asset('assets/client') }}/images/thumbs/{{ Auth::user()->avatar }}" alt="{{ Auth::user()->username }}" class="w-100 rounded-circle">
+                                                <img src="{{ asset('assets/client') }}/images/thumbs/{{ Auth::user()->avatar }}" alt="{{ Auth::user()->username }}" class="w-100 h-100 object-fit-cover rounded-circle">
                                             </span>
                                             <div class="flex-column d-flex">
                                                 <span class="text-xs text-neutral-600">
