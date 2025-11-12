@@ -129,7 +129,7 @@
                             <div class="row g-12">
                                <div class="border border-gray-100 rounded-8 p-16">
                                     @if(session('success'))
-                                        <span class="border-dashed border-success-500 bg-success-300 text-success-900 rounded-8 px-8 py-4">{{ session('success') }}</span>
+                                        <span class="border-dashed border-2 border-success-500 bg-success-300 text-success-900 rounded-8 px-8 py-4">{{ session('success') }}</span>
                                     @endif
                                     <form class="row" action="{{ route('cap-nhat-tai-khoan') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
