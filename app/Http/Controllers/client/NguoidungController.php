@@ -173,11 +173,9 @@ class NguoidungController extends Controller
             
             // 2a. LƯU FILE MỚI VÀO PUBLIC
             $file->move($destinationPath, $fileName);
-            
             // Đường dẫn tương đối để lưu vào DB
             $user->avatar = $fileName;
             $user->save();
-
             // 2b. XÓA FILE CŨ (NẾU CÓ)
             if ($user->avatar) {
                 $oldAvatarPath = public_path($user->avatar);
@@ -187,6 +185,7 @@ class NguoidungController extends Controller
                     File::delete($oldAvatarPath);
                 }
             }
+            
         }
 
         NguoidungModel::where('id', $user->id)->update([
