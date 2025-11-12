@@ -14,7 +14,8 @@ class DonhangcuatoiComponent extends Component
         'Đang đóng gói', 
         'Đang giao hàng', 
         'Đã giao hàng', 
-        'Đã hủy đơn'
+        'Đã hủy đơn',
+        'Chờ thanh toán'
     ];
     
     // Trạng thái xử lý hiện tại đang được chọn (Mặc định là Đang xác nhận)
@@ -114,7 +115,7 @@ class DonhangcuatoiComponent extends Component
     {
         // Khi chọn 'Chờ thanh toán', buộc phải đặt trạng thái xử lý là 'Đang xác nhận' 
         // để hiển thị đúng đơn hàng mới
-        $this->trangThaiHienTai = 'Đang xác nhận';
+        $this->trangThaiHienTai = 'Chờ thanh toán';
         $this->trangThaiThanhToanHienTai = $status;
         $this->loadDonHangs();
     }
@@ -139,9 +140,9 @@ class DonhangcuatoiComponent extends Component
 
         try {
             // Cập nhật trạng thái
-            $donHang->trangthai = 'Đã hủy';
+            $donHang->trangthai = 'Đã hủy đơn';
             // Tùy chọn: Cập nhật trạng thái thanh toán nếu là Chờ thanh toán
-            $donHang->trangthaithanhtoan = 'Chưa thanh toán'; 
+            $donHang->trangthaithanhtoan = 'Hủy thanh toán'; 
             $donHang->save();
 
             // Tải lại số lượng và danh sách đơn hàng

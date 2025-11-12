@@ -181,7 +181,11 @@ class ThanhtoanController extends Controller
             $order->tamtinh = $tamtinh;
             $order->thanhtien = $tongThanhTien;
             $order->trangthai = 'Đang xác nhận'; 
-            $order->trangthaithanhtoan = 'Chờ thanh toán';
+            if($phuongthuc->maphuongthuc == 'COD') {
+                $order->trangthaithanhtoan = 'Đã thanh toán';
+            } else {
+                $order->trangthaithanhtoan = 'Chờ thanh toán';
+            }
             $order->save();
 
             $currentDateTime = Carbon::now()->format('ymd');
@@ -191,7 +195,7 @@ class ThanhtoanController extends Controller
             foreach ($cartItems as $item) {
                 $bientheId = $item['id_bienthe'];
                 $soluong = $item['soluong'];
-                $dongia = $item['thanhtien'] > 0 ? ($item['thanhtien'] / $soluong) : 0; 
+                $dongia = $item['thanhtien']; 
 
                 ChitietdonhangModel::create([
                     'id_bienthe' => $bientheId,

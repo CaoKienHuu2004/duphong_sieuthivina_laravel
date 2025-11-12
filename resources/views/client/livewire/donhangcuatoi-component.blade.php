@@ -4,7 +4,7 @@
         <div class="border border-gray-100 p-24 rounded-8">
             <div class="section-heading mb-20">
                 <div class="flex-between flex-align flex-wrap gap-8">
-                    <ul class="nav common-tab style-two nav-pills m-0 border-bottom overflow-auto flex-nowrap mb-3 pb-2">
+                    <ul class="nav common-tab style-two nav-pills m-0 overflow-auto flex-nowrap mb-3 pb-2">
             
                         @php
                             // Đảm bảo $filterCounts là một mảng nếu nó chưa được định nghĩa
@@ -83,7 +83,7 @@
                         {{-- 6. Đã hủy --}}
                         @php
                             // Đã chỉnh sửa từ 'Đã hủy đơn' thành 'Đã hủy' để khớp với Component Livewire
-                            $trangThai = 'Đã hủy'; 
+                            $trangThai = 'Đã hủy đơn'; 
                             $count = array_key_exists($trangThai, $filterCounts) ? $filterCounts[$trangThai] : 0;
                             $isActive = ($trangThaiHienTai === $trangThai) && ($trangThaiThanhToanHienTai !== 'Chờ thanh toán');
                         @endphp
@@ -104,18 +104,40 @@
                             <span class="fw-semibold text-gray-900 text-md">Đơn hàng #{{ $donHang->madon }}</span>
                         </div>
                         <div class="flex-align gap-12">
-                            <span class="fw-medium text-xs text-gray-700 bg-gray-100 px-6 py-4 rounded-4 flex-align gap-8">
-                                @php
-                                    $statusText = $donHang->trangthai;
-                                    
-                                    // Chỉ hiển thị trạng thái thanh toán nếu là 'Chờ thanh toán'
-                                    if ($donHang->trangthaithanhtoan === 'Chờ thanh toán') {
-                                        $statusText = 'Chờ thanh toán';
-                                    } 
-                                    // Các trạng thái thanh toán khác (Đã thanh toán, Chưa thanh toán) sẽ hiển thị trạng thái xử lý ($donHang->trangthai)
-                                @endphp
-                                <i class="ph-bold ph-clock-countdown"></i> {{ $statusText }}
-                            </span>
+                            @php
+                                        $statusText = $donHang->trangthai;
+                                        
+                                        // Chỉ hiển thị trạng thái thanh toán nếu là 'Chờ thanh toán'
+                                        if ($donHang->trangthaithanhtoan === 'Chờ thanh toán') {
+                                            $statusText = 'Chờ thanh toán';
+                                        } 
+                                        // Các trạng thái thanh toán khác (Đã thanh toán, Chưa thanh toán) sẽ hiển thị trạng thái xử lý ($donHang->trangthai)
+                                    @endphp
+                            @if ($donHang->trangthai === 'Đang xác nhận' && $donHang->trangthaithanhtoan === 'Đã thanh toán')
+                                <span class="fw-medium text-xs text-warning-700 bg-warning-100 px-6 py-4 rounded-4 flex-align gap-8">
+                                    <i class="ph-bold ph-clock-countdown"></i> {{ $statusText }}
+                                </span>
+                            @elseif($donHang->trangthai === 'Chờ thanh toán' && $donHang->trangthaithanhtoan === 'Chờ thanh toán')
+                                <span class="fw-medium text-xs text-gray-700 bg-gray-100 px-6 py-4 rounded-4 flex-align gap-8">
+                                    <i class="ph-bold ph-wallet"></i> {{ $statusText }}
+                                </span>
+                            @elseif($donHang->trangthai === 'Đang đóng gói')
+                                <span class="fw-medium text-xs text-primary-700 bg-primary-100 px-6 py-4 rounded-4 flex-align gap-8">
+                                    <i class="ph-bold ph-package"></i> {{ $statusText }}
+                                </span>
+                            @elseif ($donHang->trangthai === 'Đang giao hàng')
+                                <span class="fw-medium text-xs text-info-700 bg-info-100 px-6 py-4 rounded-4 flex-align gap-8">
+                                    <i class="ph-bold ph-truck"></i> {{ $statusText }}
+                                </span>
+                            @elseif ($donHang->trangthai === 'Đã giao hàng')
+                                <span class="fw-medium text-xs text-success-700 bg-success-100 px-6 py-4 rounded-4 flex-align gap-8">
+                                    <i class="ph-bold ph-check-fat"></i> {{ $statusText }}
+                                </span>
+                            @else
+                                <span class="fw-medium text-xs text-main-700 bg-main-100 px-6 py-4 rounded-4 flex-align gap-8">
+                                    <i class="ph-bold ph-prohibit"></i> {{ $statusText }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="d-flex flex-align flex-between mb-10">
@@ -137,7 +159,8 @@
                         $thanhTienChiTiet = $chiTiet->soluong * $donGiaThuc;
                         $tongGiaTri += $thanhTienChiTiet;
                     @endphp
-                    <div class="py-14 px-5">
+                    <div class="py-6 px-5">
+                        @if($chiTiet->dongia == 0) <span class="flex-align mt-10 mb-4 text-gray-900 text-sm fw-medium"><i class="ph-bold ph-gift text-main-600 text-lg pe-4"></i>Quà tặng của bạn</span> @endif
                         <div class="d-flex align-items-center gap-12">
                             <a href="#"
                                 class="border border-gray-100 rounded-8 flex-center"
@@ -154,13 +177,13 @@
                                 <div class="flex-align gap-16 mb-6">
                                     <a href="#"
                                         class="btn bg-gray-50 text-heading text-xs py-4 px-6 rounded-8 flex-center gap-8 fw-medium">
-                                        Có đường (190ml/lon)
+                                        {{ $bienthe->loaibienthe->ten }}
                                     </a>
                                 </div>
                                 <div class="product-card__price mb-6">
                                     <div class="flex-align gap-24">
-                                        <span class="text-heading text-sm fw-medium ">Số lượng: 1</span>
-                                        <span class="text-main-600 text-md fw-bold">51.000 ₫</span>
+                                        <span class="text-heading text-sm fw-medium ">Số lượng: {{ $chiTiet->soluong }}</span>
+                                        <span class="text-main-600 text-md fw-bold">{{ number_format($chiTiet->dongia,0,',','.')}} ₫</span>
                                     </div>
                                 </div>
                             </div>
@@ -173,15 +196,19 @@
                             <span class="fw-semibold text-sm text-gray-600"></span>
                         </div>
                         <div class="flex-align gap-12">
-                            <span class="fw-medium text-sm">Tổng giá trị</span>
+                            <span class="fw-medium text-sm">Tổng thanh toán</span>
                         </div>
                     </div>
                     <div class="d-flex flex-align flex-between">
                         <div class="flex-align gap-12">
                             <span class="fw-semibold text-sm text-gray-600">
+                                @if($donHang->trangthai == 'Đang xác nhận' || $donHang->trangthai == 'Chờ thanh toán')
                                 <div class="flex-align gap-12">
-                                    <button class="fw-medium text-main-600 text-sm border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
-                                        <i class="ph-bold ph-trash"></i> Hủy đơn hàng</button>
+                                    <button 
+                                    wire:click="huyDonHang({{ $donHang->id }})" 
+                                    wire:confirm="Bạn có chắc chắn muốn hủy đơn hàng này không?" 
+                                    class="fw-medium text-main-600 text-sm border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
+                                        <i class="ph-bold ph-trash"></i> Hủy đơn</button>
                                     {{-- <div
                                         class="fw-medium text-main-400 text-sm border border-main-400 px-8 py-4 rounded-4 transition-1 flex-align gap-8">
                                         <i class="ph-bold ph-trash"></i> Hủy đơn hàng
@@ -189,16 +216,29 @@
                                     <button class="fw-medium text-main-600 text-sm border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
                                         <i class="ph-bold ph-eye"></i> Xem chi tiết</button>
                                 </div>
+                                @else
+                                    <div class="flex-align gap-12">
+                                        <span
+                                        class="fw-medium text-main-300 text-sm border border-main-300 px-8 py-4 rounded-4 transition-1 flex-align gap-8">
+                                            <i class="ph-bold ph-trash"></i> Hủy đơn</span>
+                                        {{-- <div
+                                            class="fw-medium text-main-400 text-sm border border-main-400 px-8 py-4 rounded-4 transition-1 flex-align gap-8">
+                                            <i class="ph-bold ph-trash"></i> Hủy đơn hàng
+                                        </div> --}}
+                                        <button class="fw-medium text-main-600 text-sm border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
+                                            <i class="ph-bold ph-eye"></i> Xem chi tiết</button>
+                                    </div>
+                                @endif
                             </span>
                         </div>
                         <div class="flex-align gap-12">
-                            <span class="fw-bold text-main-600 text-lg">220.000 đ</span>
+                            <span class="fw-bold text-main-600 text-lg">{{ number_format($donHang->thanhtien,'0',',','.') }} đ</span>
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="alert alert-info text-center mt-3 mb-0">
-                    Không tìm thấy đơn hàng nào phù hợp với điều kiện lọc hiện tại.
+                <div class="text-gray-900 rounded-4 text-center mt-3 mb-0 p-20">
+                    Chưa có đơn hàng nào !
                 </div>
             @endforelse
         </div>
