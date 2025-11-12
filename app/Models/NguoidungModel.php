@@ -24,6 +24,7 @@ class NguoidungModel extends Authenticatable
         'password',
         'sodienthoai',
         'hoten',
+        'email',
         'gioitinh',
         'ngaysinh',
         'avatar',

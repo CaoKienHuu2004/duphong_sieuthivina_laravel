@@ -27,6 +27,11 @@ class NguoidungController extends Controller
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
+        ],[
+            'username.required' => 'Vui lòng nhập Tên tài khoản để đăng nhập.',
+            'username.string' => 'Tên tài khoản không hợp lệ.',
+            'password.required' => 'Vui lòng nhập Mật khẩu.',
+            'password.string' => 'Mật khẩu không hợp lệ.',
         ]);
 
         $credentials = $request->only('username', 'password');
@@ -81,23 +86,49 @@ class NguoidungController extends Controller
     public function handleRegister(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|max:255|unique:nguoidung,username',
-            'password' => 'required|string|min:6|confirmed',
             'hoten' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:nguoidung,username',
+            'email' => 'required|email:rfc,dns|unique:nguoidung,email',
             'sodienthoai' => 'required|string|max:20|unique:nguoidung,sodienthoai',
-            'gioitinh' => 'required|in:nam,nu,khac',
-            'ngaysinh' => 'required|date|before:today',
+            'password' => 'required|string|min:6|confirmed',
+        ],[
+            // Username (Tên tài khoản)
+            'username.required' => 'Vui lòng nhập tên tài khoản.',
+            'username.string' => 'Tên tài khoản phải là chuỗi ký tự.',
+            'username.max' => 'Tên tài khoản không được vượt quá :max ký tự.',
+            'username.unique' => 'Tên tài khoản này đã được sử dụng. Vui lòng chọn tên khác.',
+            
+            // Password (Mật khẩu)
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.string' => 'Mật khẩu phải là chuỗi ký tự.',
+            'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
+            
+            // Hoten (Họ tên)
+            'hoten.required' => 'Vui lòng nhập họ và tên.',
+            'hoten.string' => 'Họ và tên phải là chuỗi ký tự.',
+            'hoten.max' => 'Họ và tên không được vượt quá :max ký tự.',
+
+            // Email
+            'email.required' => 'Vui lòng nhập địa chỉ email.',
+            'email.email' => 'Địa chỉ email không đúng định dạng.',
+            'email.unique' => 'Địa chỉ email này đã được đăng ký.',
+            
+            // Sodienthoai (Số điện thoại)
+            'sodienthoai.required' => 'Vui lòng nhập số điện thoại.',
+            'sodienthoai.string' => 'Số điện thoại không hợp lệ.',
+            'sodienthoai.max' => 'Số điện thoại không được vượt quá :max ký tự.',
+            'sodienthoai.unique' => 'Số điện thoại này đã được đăng ký.',
         ]);
 
         $user = NguoidungModel::create([
             'username' => $request->username,
             'password' => Hash::make($request->password), // Sẽ được hash tự động nhờ cast
             'hoten' => $request->hoten,
+            'email' => $request->email,
             'sodienthoai' => $request->sodienthoai,
-            'gioitinh' => $request->gioitinh,
-            'ngaysinh' => $request->ngaysinh,
             'vaitro' => 'client', // Mặc định là user
-            'trangthai' => true, // Mặc định active
+            'trangthai' => 'Hoạt động', // Mặc định active
         ]);
 
         // Tự động đăng nhập sau khi đăng ký
@@ -144,8 +175,8 @@ class NguoidungController extends Controller
             $file->move($destinationPath, $fileName);
             
             // Đường dẫn tương đối để lưu vào DB
-            $newAvatarDbPath = $publicPath . '/' . $fileName; 
-            $updateData['avatar'] = $newAvatarDbPath;
+            $user->avatar = $fileName;
+            $user->save();
 
             // 2b. XÓA FILE CŨ (NẾU CÓ)
             if ($user->avatar) {
