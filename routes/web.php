@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('dang-xuat');
     Route::get('/thong-tin-ca-nhan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
     Route::get('/don-hang-cua-toi', [client\DonhangController::class, 'donhangcuatoi'])->name('don-hang-cua-toi');
+    Route::get('/so-dia-chi', [client\DiachiController::class, 'index'])->name('so-dia-chi');
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');
     
     

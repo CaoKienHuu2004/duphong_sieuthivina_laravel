@@ -55,7 +55,7 @@
                                         </li>
                                         <li class="mb-6">
                                             <div class="">
-                                                <a href="{{ route('trang-chu') }}" class="px-16 py-8 hover-bg-main-50 hover-text-main-600 {{ Route::is('trang-chu') ? 'border border-main-600 text-main-600' : 'text-neutral-600' }} rounded-8 flex-between gap-12 mb-0" style="justify-content: start;">
+                                                <a href="{{ route('so-dia-chi') }}" class="px-16 py-8 hover-bg-main-50 hover-text-main-600 {{ Route::is('so-dia-chi') ? 'border border-main-600 text-main-600' : 'text-neutral-600' }} rounded-8 flex-between gap-12 mb-0" style="justify-content: start;">
                                                     <span class="fw-medium text-md flex-align gap-12"><i class="ph-bold ph-map-pin-area"></i> Sổ địa chỉ</span> 
                                                 </a>
                                             </div>        

@@ -13,12 +13,12 @@ class DiachiController extends Controller
     /**
      * Hiển thị danh sách địa chỉ của người dùng để chọn.
      */
-    public function selectAddress()
+    public function index()
     {
         // $diachis = Auth::user()->diachi()->orderBy('trangthai', 'desc')->get();
         $diachis = DiachinguoidungModel::where('id_nguoidung', Auth::id())->orderBy('trangthai', 'asc')->get();
         
-        return view('client.thanhtoan.thaydoidiachi', compact('diachis'));
+        return view('client.nguoidung.sodiachi', compact('diachis'));
     }
 
     /**
