@@ -1,7 +1,7 @@
 @extends('client.layouts.app')
 
 @section('title')
-    Đơn hàng của tôi | Siêu Thị Vina - Nền Tảng Bán Hàng Trực Tuyến Siêu Thị Vina
+    Thêm địa chỉ giao hàng | Siêu Thị Vina - Nền Tảng Bán Hàng Trực Tuyến Siêu Thị Vina
 @endsection
 
 @section('content')
@@ -129,7 +129,7 @@
                     <!-- Content Start -->
                     <div class="col-lg-9">
                         <div class="flex-between gap-16 flex-wrap mb-20 ">
-                            <h6 class="mb-0 text-gray-900">Sổ địa chỉ</h6>
+                            <h6 class="mb-0 text-gray-900">Thêm địa chỉ giao hàng</h6>
                             <div class="position-relative flex-align gap-16 flex-wrap">
                                 <button type="button"
                                     class="w-44 h-44 d-lg-none d-flex flex-center border border-gray-100 rounded-6 text-2xl sidebar-btn">
@@ -144,88 +144,59 @@
                             <div class="alert alert-danger">{{ session('error') }}</div>
                         @endif
                         <div class="border border-gray-100 rounded-8 p-16">
-                            <a href="#" class="w-100 border-dashed border-2 border-info-300 bg-info-50 hover-bg-info-100 text-main-900 rounded-4 px-20 py-12 mb-10">
-                                <div class="text-center">
-                                    <div class="flex-align flex-center gap-12">
-                                        <i class="ph-bold ph-plus text-xl fw-bold text-info-600"></i>
-                                        <span class="fw-medium text-info-600 text-md pe-10 pb-0 mb-0">Thêm địa chỉ giao hàng</span>
+                            <form action="{{ route('luu-dia-chi') }}" method="post">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-6 mb-24">
+                                        <label for="hoten" class="text-neutral-900 text-md mb-8 fw-medium">Họ và tên <span class="text-danger">*</span></label>
+                                        <input type="text" class="placeholder-italic py-12 px-18 text-sm common-input"
+                                            id="hoten" name="hoten"
+                                            placeholder="Nhập họ và tên"
+                                            value="">
+
+                                            <div class="text-danger text-sm mt-4">Lỗi</div>
+                                    </div>
+                                    <div class="col-md-6 mb-24">
+                                        <label for="sodienthoai" class="text-neutral-900 text-md mb-8 fw-medium">Số điện thoại<span class="text-danger">*</span></label>
+                                        <input type="tel" class="placeholder-italic py-12 px-18 text-sm common-input"
+                                            id="sodienthoai" name="sodienthoai"
+                                            placeholder="Nhập số điện thoại"
+                                            value="">
+
+                                            <div class="text-danger text-sm mt-4">Lỗi</div>
                                     </div>
                                 </div>
-                            </a>
-                            <div class="row gy-2">
-                                <div class="col-lg-12 col-xl-12">
-                                    <form action="" method="POST"
-                                        class="border border-gray-100 box-shadow-sm text-main-900 rounded-4 px-20 py-16 mb-10">
-                                        <input type="hidden" name="_token" value="mLorwkebNQLqLMZywmPUJnCIZaDF0DYjjO4IyizR"
-                                            autocomplete="off">
-                                        <div class="d-flex flex-align flex-between gap-24">
-                                            <div class="flex-align gap-12">
-                                                <span
-                                                    class="fw-semibold text-gray-900 text-md border-end border-gray-600 pe-10">Cao
-                                                    Kiến Hựu</span>
-                                                <span class="fw-semibold text-gray-900 text-md">0845381121</span>
-                                            </div>
-                                            <div class="flex-align gap-12">
-                                                <span
-                                                    class="fw-medium text-xs text-success-700 bg-success-100 px-6 py-2 rounded-4 flex-align gap-8">Mặc
-                                                    định</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-align gap-24 pt-10">
-                                            <div class="flex-align gap-12">
-                                                <span class="fw-medium text-gray-900 text-sm">Địa chỉ: 29/7C, đường số 25-A1
-                                                    Ngô Quyền, ấp Trường An, xã Trường Tây, thị xã Hòa Thành, Tây
-                                                    Ninh</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-align gap-24 pt-10">
-                                            <div class="flex-align gap-4">
-                                                <i class="ph-bold ph-pencil-simple text-main-600"></i>
-                                                <a href="#" class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Chỉnh sửa</a>
-                                            </div>
-                                            <div class="flex-align gap-4 opacity-50">
-                                                <i class="ph-bold ph-trash text-main-600"></i>
-                                                <span class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Xóa</span>
-                                            </div>
-                                        </div>
-                                    </form>
+                                <div class="row">
+                                    <div class="col-md-6 mb-24">
+                                        <label for="diachi" class="text-neutral-900 text-md mb-8 fw-medium">Địa chỉ <span class="text-danger">*</span></label>
+                                        <input type="text" class="placeholder-italic py-12 px-18 text-sm common-input"
+                                            id="diachi" name="diachi"
+                                            placeholder="Nhập địa chỉ giao hàng"
+                                            value="">
+
+                                            <div class="text-danger text-sm mt-4">Lỗi</div>
+                                    </div>
+                                    <div class="col-md-6 mb-24">
+                                        <label for="hoten" class="text-neutral-900 text-md mb-8 fw-medium">Tỉnh thành <span class="text-danger">*</span></label>
+                                        <select class="placeholder-italic common-input py-11 px-14 text-sm" id="tinhthanh" name="tinhthanh">
+                                            <option selected>-- Chọn tỉnh thành --</option>
+                                            @foreach ($tinhThanhs as $tinh)
+                                                <option value="{{ $tinh['name'] }}">{{ $tinh['name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                        
+                                        <div class="text-danger text-sm mt-4">Lỗi</div>
+                                    </div>
                                 </div>
-                                <div class="col-lg-12 col-xl-12">
-                                    <form action="https://sieuthivina.com/thanh-toan/cap-nhat-mac-dinh" method="POST"
-                                        class="border-dashed border-2 border-gray-100 text-main-900 rounded-4 px-20 py-16 mb-10">
-                                        <input type="hidden" name="_token" value="mLorwkebNQLqLMZywmPUJnCIZaDF0DYjjO4IyizR"
-                                            autocomplete="off">
-                                        <div class="d-flex flex-align flex-between gap-24">
-                                            <div class="flex-align gap-12">
-                                                <span
-                                                    class="fw-semibold text-gray-900 text-md border-end border-gray-600 pe-10">Cao
-                                                    Vũ Nghị</span>
-                                                <span class="fw-semibold text-gray-900 text-md">0911975996</span>
-                                            </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-24">
+                                        <div class="form-check common-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="remember">
+                                            <label class="form-check-label flex-grow-1" for="remember">Đặt địa chỉ làm mặc định <span class="fst-italic text-xs text-gray-600 fw-normal">(Địa chỉ sẽ được đặt mặc định cho việc thanh toán và giao hàng của bạn)</span></label>
                                         </div>
-                                        <div class="d-flex flex-align gap-24 pt-10">
-                                            <div class="flex-align gap-12">
-                                                <span class="fw-medium text-gray-900 text-sm">Địa chỉ: Tòa T - FPT
-                                                    Polytechnic csHCM, CVPM Quang Trung, phường Tân Chánh Hiệp, quận 12,
-                                                    TP.Hồ Chí Minh</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-align gap-24 pt-10">
-                                            <div class="flex-align gap-4">
-                                                <i class="ph-bold ph-pencil-simple text-main-600"></i>
-                                                <a href="#"
-                                                    class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Chỉnh
-                                                    sửa</a>
-                                            </div>
-                                            <div class="flex-align gap-4">
-                                                <i class="ph-bold ph-trash text-main-600"></i>
-                                                <a href="#"
-                                                    class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Xóa</a>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -123,7 +123,7 @@
           @endguest
           @auth
           <li class="on-hover-item nav-menu__item has-submenu pt-10">
-            <a href="javascript:void(0)"
+            <a href="#"
               class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-white py-10 px-20 bg-success-600 rounded-pill line-height-1 hover-bg-success-500">
               <span class="d-lg-none d-flex line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/{{Auth::user()->avatar}}"
                   class="rounded-circle object-fit-cover" style="width: 25px; height: 25px" alt=""></span>
@@ -358,7 +358,7 @@
           @auth
           <div
             class="on-hover-item nav-menu__item has-submenu header-top__right style-two style-three flex-align flex-wrap d-lg-block d-none">
-            <a href="javascript:void(0)"
+            <a href="{{ route('tai-khoan') }}"
               class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-gray-600 py-5 px-10 rounded-pill line-height-1 hover-text-main-600">
               <span class="line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/{{Auth::user()->avatar}}"
                   class="rounded-circle object-fit-cover" style="width: 35px; height: 35px" alt=""></span>
