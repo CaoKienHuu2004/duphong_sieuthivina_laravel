@@ -58,9 +58,49 @@ class DiachiController extends Controller
         return view('client.nguoidung.taodiachi',compact('tinhThanhs'));
     }
 
-    public function khoitaodiachi()
+    public function khoitaodiachi(Request $request)
     {
-        return view('client.nguoidung.sodiachi');
+        $request->validate([
+            // Trường từ form: hoten_nguoinhan, sodienthoai_nguoinhan
+            'hoten' => 'required|string|max:255',
+            'sodienthoai' => 'required|string|max:20',
+            'tinhthanh' => 'required|string',
+            'diachi' => 'required|string|max:255',
+        ], [
+            // Thông báo lỗi tiếng Việt
+            'required' => 'Trường :attribute là bắt buộc.',
+            'max' => 'Trường :attribute không được vượt quá :max ký tự.',
+            'hoten.required' => 'Vui lòng nhập Họ tên Người nhận.',
+            'sodienthoai.required' => 'Vui lòng nhập Số điện thoại.',
+            'tinhthanh.required' => 'Vui lòng chọn Tỉnh/Thành phố.',
+            'diachi.required' => 'Vui lòng nhập Địa chỉ chi tiết.',
+        ]);
+
+        $isDefault = $request->has('trangthai');
+
+        if ($isDefault) {
+            DiachinguoidungModel::where('id_nguoidung', Auth::id())
+                                ->update(['trangthai' => 'Khác']);
+        }
+
+        // 4. LƯU ĐỊA CHỈ MỚI VÀO DATABASE
+        try {
+            DiachinguoidungModel::create([
+                'id_nguoidung' => Auth::id(),
+                'hoten' => $request->hoten,
+                'sodienthoai' => $request->sodienthoai,
+                'diachi' => $request->diachi,
+                'tinhthanh' => $request->tinhthanh,
+                'trangthai' => $isDefault ? 'Mặc định' : 'Khác', 
+            ]);
+
+            return back()->with('success', 'Đã thêm địa chỉ giao hàng mới thành công!');
+
+        } catch (\Exception $e) {
+            // Log lỗi
+            \Log::error("Lỗi khi thêm địa chỉ: " . $e->getMessage());
+            return back()->with('error', 'Lỗi hệ thống: Không thể lưu địa chỉ. Vui lòng thử lại.')->withInput();
+        }
     }
 
     public function suadiachi()
