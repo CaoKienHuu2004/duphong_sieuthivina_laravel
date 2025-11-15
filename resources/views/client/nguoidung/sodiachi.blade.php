@@ -144,7 +144,7 @@
                             <div class="alert alert-danger">{{ session('error') }}</div>
                         @endif
                         <div class="border border-gray-100 rounded-8 p-16">
-                            <a href="#" class="w-100 border-dashed border-2 border-info-300 bg-info-50 hover-bg-info-100 text-main-900 rounded-4 px-20 py-12 mb-10">
+                            <a href="{{ route('them-dia-chi-giao-hang') }}" class="w-100 border-dashed border-2 border-info-300 bg-info-50 hover-bg-info-100 text-main-900 rounded-4 px-20 py-12 mb-10">
                                 <div class="text-center">
                                     <div class="flex-align flex-center gap-12">
                                         <i class="ph-bold ph-plus text-xl fw-bold text-info-600"></i>
@@ -153,78 +153,52 @@
                                 </div>
                             </a>
                             <div class="row gy-2">
-                                <div class="col-lg-12 col-xl-12">
-                                    <form action="" method="POST"
-                                        class="border border-gray-100 box-shadow-sm text-main-900 rounded-4 px-20 py-16 mb-10">
-                                        <input type="hidden" name="_token" value="mLorwkebNQLqLMZywmPUJnCIZaDF0DYjjO4IyizR"
-                                            autocomplete="off">
-                                        <div class="d-flex flex-align flex-between gap-24">
-                                            <div class="flex-align gap-12">
-                                                <span
-                                                    class="fw-semibold text-gray-900 text-md border-end border-gray-600 pe-10">Cao
-                                                    Kiến Hựu</span>
-                                                <span class="fw-semibold text-gray-900 text-md">0845381121</span>
+                                @foreach ($diachis as $diachi)
+                                    <div class="col-lg-12 col-xl-12">
+                                        <form action="" method="POST"
+                                            class="@if ($diachi->trangthai === 'Mặc định') border @else border-dashed border-2 @endif border-gray-200 box-shadow-sm text-main-900 rounded-4 px-20 py-16 mb-10">
+                                            <input type="hidden" name="_token" value="mLorwkebNQLqLMZywmPUJnCIZaDF0DYjjO4IyizR"
+                                                autocomplete="off">
+                                            <div class="d-flex flex-align flex-between gap-24">
+                                                <div class="flex-align gap-12">
+                                                    <span
+                                                        class="fw-semibold text-gray-900 text-md border-end border-gray-600 pe-10">{{ $diachi->hoten }}</span>
+                                                    <span class="fw-semibold text-gray-900 text-md">{{ $diachi->sodienthoai }}</span>
+                                                </div>
+                                                <div class="flex-align gap-12">
+                                                    @if ($diachi->trangthai === 'Mặc định')
+                                                    <span
+                                                        class="fw-medium text-xs text-success-700 bg-success-100 px-6 py-2 rounded-4 flex-align gap-8">Mặc
+                                                        định</span>
+                                                    @endif
+                                                </div>
                                             </div>
-                                            <div class="flex-align gap-12">
-                                                <span
-                                                    class="fw-medium text-xs text-success-700 bg-success-100 px-6 py-2 rounded-4 flex-align gap-8">Mặc
-                                                    định</span>
+                                            <div class="d-flex flex-align gap-24 pt-10">
+                                                <div class="flex-align gap-12">
+                                                    <span class="fw-medium text-gray-900 text-sm">Địa chỉ: {{ $diachi->diachi }}, {{ $diachi->tinhthanh }}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="d-flex flex-align gap-24 pt-10">
-                                            <div class="flex-align gap-12">
-                                                <span class="fw-medium text-gray-900 text-sm">Địa chỉ: 29/7C, đường số 25-A1
-                                                    Ngô Quyền, ấp Trường An, xã Trường Tây, thị xã Hòa Thành, Tây
-                                                    Ninh</span>
+                                            <div class="d-flex flex-align gap-24 pt-10">
+                                                <div class="flex-align gap-4">
+                                                    <i class="ph-bold ph-pencil-simple text-main-600"></i>
+                                                    <a href="{{ route('sua-dia-chi',['encryptedId' => Crypt::encryptString($diachi->id)]) }}" class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Chỉnh sửa</a>
+                                                </div>
+                                                @if ($diachi->trangthai === 'Mặc định')
+                                                <div class="flex-align gap-4 opacity-50">
+                                                    <i class="ph-bold ph-trash text-main-600"></i>
+                                                    <span class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Xóa</span>
+                                                </div>
+                                                @else
+                                                    <div class="flex-align gap-4">
+                                                        <i class="ph-bold ph-trash text-main-600"></i>
+                                                        <a href="#"
+                                                            class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Xóa</a>
+                                                    </div>
+                                                @endif
                                             </div>
-                                        </div>
-                                        <div class="d-flex flex-align gap-24 pt-10">
-                                            <div class="flex-align gap-4">
-                                                <i class="ph-bold ph-pencil-simple text-main-600"></i>
-                                                <a href="#" class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Chỉnh sửa</a>
-                                            </div>
-                                            <div class="flex-align gap-4 opacity-50">
-                                                <i class="ph-bold ph-trash text-main-600"></i>
-                                                <span class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Xóa</span>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="col-lg-12 col-xl-12">
-                                    <form action="https://sieuthivina.com/thanh-toan/cap-nhat-mac-dinh" method="POST"
-                                        class="border-dashed border-2 border-gray-100 text-main-900 rounded-4 px-20 py-16 mb-10">
-                                        <input type="hidden" name="_token" value="mLorwkebNQLqLMZywmPUJnCIZaDF0DYjjO4IyizR"
-                                            autocomplete="off">
-                                        <div class="d-flex flex-align flex-between gap-24">
-                                            <div class="flex-align gap-12">
-                                                <span
-                                                    class="fw-semibold text-gray-900 text-md border-end border-gray-600 pe-10">Cao
-                                                    Vũ Nghị</span>
-                                                <span class="fw-semibold text-gray-900 text-md">0911975996</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-align gap-24 pt-10">
-                                            <div class="flex-align gap-12">
-                                                <span class="fw-medium text-gray-900 text-sm">Địa chỉ: Tòa T - FPT
-                                                    Polytechnic csHCM, CVPM Quang Trung, phường Tân Chánh Hiệp, quận 12,
-                                                    TP.Hồ Chí Minh</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-align gap-24 pt-10">
-                                            <div class="flex-align gap-4">
-                                                <i class="ph-bold ph-pencil-simple text-main-600"></i>
-                                                <a href="#"
-                                                    class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Chỉnh
-                                                    sửa</a>
-                                            </div>
-                                            <div class="flex-align gap-4">
-                                                <i class="ph-bold ph-trash text-main-600"></i>
-                                                <a href="#"
-                                                    class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Xóa</a>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                        </form>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

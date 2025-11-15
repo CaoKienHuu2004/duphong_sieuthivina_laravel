@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\DiachinguoidungModel;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class DiachiController extends Controller
@@ -76,7 +77,7 @@ class DiachiController extends Controller
             'diachi.required' => 'Vui lòng nhập Địa chỉ chi tiết.',
         ]);
 
-        $isDefault = $request->has('trangthai');
+        $isDefault = $request->input('trangthai') === 'Mặc định';
 
         if ($isDefault) {
             DiachinguoidungModel::where('id_nguoidung', Auth::id())
@@ -94,7 +95,7 @@ class DiachiController extends Controller
                 'trangthai' => $isDefault ? 'Mặc định' : 'Khác', 
             ]);
 
-            return back()->with('success', 'Đã thêm địa chỉ giao hàng mới thành công!');
+            return redirect()->route('so-dia-chi')->with('success', 'Đã thêm địa chỉ giao hàng mới thành công!');
 
         } catch (\Exception $e) {
             // Log lỗi
@@ -103,13 +104,41 @@ class DiachiController extends Controller
         }
     }
 
-    public function suadiachi()
-    {
-        return view('client.nguoidung.suadiachi');
+    public function suadiachi($encryptedId)
+    {   
+        $id = Crypt::decryptString($encryptedId);
+        $tinhThanhs = collect([]);
+        $apiUrl = 'https://provinces.open-api.vn/api/v1/'; // API mẫu
+
+        try {
+            // *** BƯỚC 1: GỌI API LẤY DANH SÁCH TỈNH/THÀNH PHỐ ***
+            $response = Http::timeout(5)->get($apiUrl);
+
+            if ($response->successful()) {
+                // Giả định API trả về JSON chứa mảng các tỉnh thành
+                $tinhThanhs = collect($response->json());
+                
+                // Sắp xếp theo tên (nếu cần)
+                $tinhThanhs = $tinhThanhs->sortBy('name'); 
+            } else {
+                 // Xử lý lỗi API (ví dụ: API trả về mã lỗi 4xx, 5xx)
+                 // Trong thực tế, bạn nên log lỗi hoặc hiển thị thông báo thân thiện hơn
+                 \Log::error('API Tỉnh/Thành phố trả về lỗi: ' . $response->status());
+            }
+
+        } catch (\Exception $e) {
+            // Xử lý lỗi kết nối (timeout, mạng,...)
+            \Log::error('Lỗi kết nối API Tỉnh/Thành phố: ' . $e->getMessage());
+            // Có thể gán mảng rỗng để form vẫn tải nhưng không có dữ liệu
+        }
+        $diachi = DiachinguoidungModel::findOrFail($id);
+        $diachi->encryptedId = $encryptedId;
+        return view('client.nguoidung.suadiachi', compact('diachi', 'tinhThanhs'));
     }
 
     public function capnhatdiachi()
     {
+
         return view('client.nguoidung.sodiachi');
     }
 

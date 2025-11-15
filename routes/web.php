@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/so-dia-chi', [client\DiachiController::class, 'index'])->name('so-dia-chi');
     Route::get('/them-dia-chi-giao-hang', [client\DiachiController::class, 'taodiachi'])->name('them-dia-chi-giao-hang');
     Route::post('/luu-dia-chi', [client\DiachiController::class, 'khoitaodiachi'])->name('luu-dia-chi');
-    Route::get('/sua-dia-chi', [client\DiachiController::class, 'suadiachi'])->name('sua-dia-chi');
+    Route::get('/sua-dia-chi/{encryptedId}', [client\DiachiController::class, 'suadiachi'])->name('sua-dia-chi');
     Route::put('/cap-nhat-dia-chi', [client\DiachiController::class, 'capnhatdiachi'])->name('cap-nhat-dia-chi');
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');
     

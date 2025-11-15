@@ -152,7 +152,7 @@
                                         <input type="text" class="placeholder-italic py-12 px-18 text-sm common-input"
                                             id="hoten" name="hoten"
                                             placeholder="Nhập họ và tên"
-                                            value="">
+                                            value="{{ old('hoten') }}">
 
                                             <div class="text-danger text-sm mt-4">Lỗi</div>
                                     </div>
@@ -161,7 +161,7 @@
                                         <input type="tel" class="placeholder-italic py-12 px-18 text-sm common-input"
                                             id="sodienthoai" name="sodienthoai"
                                             placeholder="Nhập số điện thoại"
-                                            value="">
+                                            value="{{ old('sodienthoai') }}">
 
                                             <div class="text-danger text-sm mt-4">Lỗi</div>
                                     </div>
@@ -172,16 +172,16 @@
                                         <input type="text" class="placeholder-italic py-12 px-18 text-sm common-input"
                                             id="diachi" name="diachi"
                                             placeholder="Nhập địa chỉ giao hàng"
-                                            value="">
+                                            value="{{ old('diachi') }}">
 
                                             <div class="text-danger text-sm mt-4">Lỗi</div>
                                     </div>
                                     <div class="col-md-6 mb-24">
                                         <label for="hoten" class="text-neutral-900 text-md mb-8 fw-medium">Tỉnh thành <span class="text-danger">*</span></label>
                                         <select class="placeholder-italic common-input py-11 px-14 text-sm" id="tinhthanh" name="tinhthanh">
-                                            <option selected>-- Chọn tỉnh thành --</option>
+                                            <option disabled selected>-- Chọn tỉnh thành --</option>
                                             @foreach ($tinhThanhs as $tinh)
-                                                <option value="{{ $tinh['name'] }}">{{ $tinh['name'] }}</option>
+                                                <option value="{{ $tinh['name'] }}" {{ old('tinhthanh') == $tinh['name'] ? 'selected' : '' }}>{{ $tinh['name'] }}</option>
                                             @endforeach
                                         </select>
                                         
@@ -191,8 +191,8 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-24">
                                         <div class="form-check common-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="remember">
-                                            <label class="form-check-label flex-grow-1" for="remember">Đặt địa chỉ làm mặc định <span class="fst-italic text-xs text-gray-600 fw-normal">(Địa chỉ sẽ được đặt mặc định cho việc thanh toán và giao hàng của bạn)</span></label>
+                                            <input class="form-check-input" type="checkbox" id="default" name="trangthai" value="Mặc định" {{ old('trangthai') ? 'checked' : '' }}>
+                                            <label class="form-check-label flex-grow-1" for="default">Đặt địa chỉ làm mặc định <span class="fst-italic text-xs text-gray-600 fw-normal">(Địa chỉ sẽ được đặt mặc định cho việc thanh toán và giao hàng của bạn)</span></label>
                                         </div>
                                     </div>
                                 </div>
