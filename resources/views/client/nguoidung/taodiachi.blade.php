@@ -153,8 +153,9 @@
                                             id="hoten" name="hoten"
                                             placeholder="Nhập họ và tên"
                                             value="{{ old('hoten') }}">
-
-                                            <div class="text-danger text-sm mt-4">Lỗi</div>
+                                            @error('hoten')
+                                            <div class="text-danger text-sm mt-4">{{ $message }}</div>
+                                            @enderror
                                     </div>
                                     <div class="col-md-6 mb-24">
                                         <label for="sodienthoai" class="text-neutral-900 text-md mb-8 fw-medium">Số điện thoại<span class="text-danger">*</span></label>
@@ -162,8 +163,9 @@
                                             id="sodienthoai" name="sodienthoai"
                                             placeholder="Nhập số điện thoại"
                                             value="{{ old('sodienthoai') }}">
-
-                                            <div class="text-danger text-sm mt-4">Lỗi</div>
+                                            @error('sodienthoai')
+                                            <div class="text-danger text-sm mt-4">{{ $message }}</div>
+                                            @enderror
                                     </div>
                                 </div>
                                 <div class="row">
@@ -173,8 +175,9 @@
                                             id="diachi" name="diachi"
                                             placeholder="Nhập địa chỉ giao hàng"
                                             value="{{ old('diachi') }}">
-
-                                            <div class="text-danger text-sm mt-4">Lỗi</div>
+                                            @error('diachi')
+                                            <div class="text-danger text-sm mt-4">{{ $message }}</div>
+                                            @enderror
                                     </div>
                                     <div class="col-md-6 mb-24">
                                         <label for="hoten" class="text-neutral-900 text-md mb-8 fw-medium">Tỉnh thành <span class="text-danger">*</span></label>
@@ -184,8 +187,9 @@
                                                 <option value="{{ $tinh['name'] }}" {{ old('tinhthanh') == $tinh['name'] ? 'selected' : '' }}>{{ $tinh['name'] }}</option>
                                             @endforeach
                                         </select>
-                                        
-                                        <div class="text-danger text-sm mt-4">Lỗi</div>
+                                        @error('tinhthanh')
+                                        <div class="text-danger text-sm mt-4">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">

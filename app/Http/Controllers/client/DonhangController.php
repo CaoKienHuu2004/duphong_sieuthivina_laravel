@@ -11,4 +11,11 @@ class DonhangController extends Controller
     {
         return view('client.nguoidung.donhang');
     }
+
+    public function chitietdonhang()
+    {
+        
+        return view('client.nguoidung.chitietdonhang');
+    }
+    
 }

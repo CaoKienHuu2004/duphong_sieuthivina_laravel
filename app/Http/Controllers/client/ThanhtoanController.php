@@ -74,7 +74,7 @@ class ThanhtoanController extends Controller
                                         ->first();
 
         if (!$diachiMacDinh) {
-            return redirect()->route('tai-khoan')->with('info', 'Vui lòng chọn địa chỉ mặc định nhận hàng.');
+            return redirect()->route('so-dia-chi')->with('error', 'Vui lòng chọn địa chỉ mặc định nhận hàng.');
         }
 
         // 3. Tính toán Phí Vận Chuyển
@@ -182,7 +182,7 @@ class ThanhtoanController extends Controller
             $order->thanhtien = $tongThanhTien;
             $order->trangthai = 'Đang xác nhận'; 
             if($phuongthuc->maphuongthuc == 'COD') {
-                $order->trangthaithanhtoan = 'Đã thanh toán';
+                $order->trangthaithanhtoan = 'Thanh toán khi nhận hàng';
             } else {
                 $order->trangthaithanhtoan = 'Chờ thanh toán';
             }

@@ -104,9 +104,8 @@ class DiachiController extends Controller
         }
     }
 
-    public function suadiachi($encryptedId)
+    public function suadiachi($id)
     {   
-        $id = Crypt::decryptString($encryptedId);
         $tinhThanhs = collect([]);
         $apiUrl = 'https://provinces.open-api.vn/api/v1/'; // API mẫu
 
@@ -132,13 +131,61 @@ class DiachiController extends Controller
             // Có thể gán mảng rỗng để form vẫn tải nhưng không có dữ liệu
         }
         $diachi = DiachinguoidungModel::findOrFail($id);
-        $diachi->encryptedId = $encryptedId;
         return view('client.nguoidung.suadiachi', compact('diachi', 'tinhThanhs'));
     }
 
-    public function capnhatdiachi()
+    public function capnhatdiachi(Request $request)
     {
+        $request->validate([
+            // Trường từ form: hoten_nguoinhan, sodienthoai_nguoinhan
+            'hoten' => 'required|string|max:255',
+            'sodienthoai' => 'required|string|max:20',
+            'tinhthanh' => 'required|string',
+            'diachi' => 'required|string|max:255',
+        ], [
+            // Thông báo lỗi tiếng Việt
+            'required' => 'Trường :attribute là bắt buộc.',
+            'max' => 'Trường :attribute không được vượt quá :max ký tự.',
+            'hoten.required' => 'Vui lòng nhập Họ tên Người nhận.',
+            'sodienthoai.required' => 'Vui lòng nhập Số điện thoại.',
+            'tinhthanh.required' => 'Vui lòng chọn Tỉnh/Thành phố.',
+            'diachi.required' => 'Vui lòng nhập Địa chỉ chi tiết.',
+        ]);
 
+        $isDefault = $request->input('trangthai') === 'Mặc định';
+
+        if ($isDefault) {
+            DiachinguoidungModel::where('id_nguoidung', Auth::id())
+                                ->update(['trangthai' => 'Khác']);
+        }
+
+        $diachi = DiachinguoidungModel::findOrFail($request->id_diachi);
+        $diachi->hoten = $request->hoten;
+        $diachi->sodienthoai = $request->sodienthoai;
+        $diachi->tinhthanh = $request->tinhthanh;
+        $diachi->diachi = $request->diachi;
+        $diachi->trangthai = $isDefault ? 'Mặc định' : 'Khác';
+        $diachi->save();
+
+
+
+        return redirect()->route('so-dia-chi')->with('success', 'Đã cập nhật địa chỉ giao hàng thành công!');
+    }
+
+    public function xoadiachi(Request $request)
+    {
+        $request->validate([
+            'id_diachi' => 'required|exists:diachi_nguoidung,id',
+        ]);
+
+        $diachi = DiachinguoidungModel::findOrFail($request->id_diachi);
+        $diachi->delete();
+
+        return redirect()->route('so-dia-chi')->with('success', 'Đã xóa địa chỉ giao hàng thành công!');
+    }
+
+    public function selectAddress()
+    {
         return view('client.nguoidung.sodiachi');
     }
 

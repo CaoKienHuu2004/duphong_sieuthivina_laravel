@@ -144,8 +144,9 @@
                             <div class="alert alert-danger">{{ session('error') }}</div>
                         @endif
                         <div class="border border-gray-100 rounded-8 p-16">
-                            <form action="{{ route('luu-dia-chi') }}" method="post">
+                            <form action="{{ route('cap-nhat-dia-chi') }}" method="post">
                                 @csrf
+                                @method('PUT')
                                 <div class="row">
                                     <div class="col-md-6 mb-24">
                                         <label for="hoten" class="text-neutral-900 text-md mb-8 fw-medium">Họ và tên <span class="text-danger">*</span></label>
@@ -154,7 +155,9 @@
                                             placeholder="Nhập họ và tên"
                                             value="{{ $diachi->hoten }}">
 
-                                            {{-- <div class="text-danger text-sm mt-4">Lỗi</div> --}}
+                                            @error('hoten')
+                                            <div class="text-danger text-sm mt-4">{{ $message }}</div>
+                                            @enderror
                                     </div>
                                     <div class="col-md-6 mb-24">
                                         <label for="sodienthoai" class="text-neutral-900 text-md mb-8 fw-medium">Số điện thoại<span class="text-danger">*</span></label>
@@ -163,7 +166,9 @@
                                             placeholder="Nhập số điện thoại"
                                             value="{{ $diachi->sodienthoai }}">
 
-                                            {{-- <div class="text-danger text-sm mt-4">Lỗi</div> --}}
+                                            @error('sodienthoai')
+                                            <div class="text-danger text-sm mt-4">{{ $message }}</div>
+                                            @enderror
                                     </div>
                                 </div>
                                 <div class="row">
@@ -174,7 +179,9 @@
                                             placeholder="Nhập địa chỉ giao hàng"
                                             value="{{ $diachi->diachi }}">
 
-                                            {{-- <div class="text-danger text-sm mt-4">Lỗi</div> --}}
+                                            @error('diachi')
+                                            <div class="text-danger text-sm mt-4">{{ $message }}</div>
+                                            @enderror
                                     </div>
                                     <div class="col-md-6 mb-24">
                                         <label for="hoten" class="text-neutral-900 text-md mb-8 fw-medium">Tỉnh thành <span class="text-danger">*</span></label>
@@ -185,7 +192,9 @@
                                             @endforeach
                                         </select>
                                         
-                                        {{-- <div class="text-danger text-sm mt-4">Lỗi</div> --}}
+                                        @error('tinhthanh')
+                                        <div class="text-danger text-sm mt-4">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
@@ -198,6 +207,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-24">
+                                        <input type="hidden" name="id_diachi" value="{{ $diachi->id }}">
                                         <button type="submit" class="btn btn-main py-14 px-40">Cập nhật địa chỉ</button>
                                     </div>
                                 </div>

@@ -155,10 +155,10 @@
                             <div class="row gy-2">
                                 @foreach ($diachis as $diachi)
                                     <div class="col-lg-12 col-xl-12">
-                                        <form action="" method="POST"
+                                        <form action="{{ route('xoa-dia-chi') }}" method="POST"
                                             class="@if ($diachi->trangthai === 'Mặc định') border @else border-dashed border-2 @endif border-gray-200 box-shadow-sm text-main-900 rounded-4 px-20 py-16 mb-10">
-                                            <input type="hidden" name="_token" value="mLorwkebNQLqLMZywmPUJnCIZaDF0DYjjO4IyizR"
-                                                autocomplete="off">
+                                            @csrf
+                                            @method('DELETE')
                                             <div class="d-flex flex-align flex-between gap-24">
                                                 <div class="flex-align gap-12">
                                                     <span
@@ -181,7 +181,7 @@
                                             <div class="d-flex flex-align gap-24 pt-10">
                                                 <div class="flex-align gap-4">
                                                     <i class="ph-bold ph-pencil-simple text-main-600"></i>
-                                                    <a href="{{ route('sua-dia-chi',['encryptedId' => Crypt::encryptString($diachi->id)]) }}" class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Chỉnh sửa</a>
+                                                    <a href="{{ route('sua-dia-chi', $diachi->id) }}" class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Chỉnh sửa</a>
                                                 </div>
                                                 @if ($diachi->trangthai === 'Mặc định')
                                                 <div class="flex-align gap-4 opacity-50">
@@ -191,8 +191,9 @@
                                                 @else
                                                     <div class="flex-align gap-4">
                                                         <i class="ph-bold ph-trash text-main-600"></i>
-                                                        <a href="#"
-                                                            class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Xóa</a>
+                                                        <input type="hidden" name="id_diachi" value="{{ $diachi->id }}">
+                                                        <button type="submit"
+                                                            class="text-sm text-main-600 rounded-4 py-6 w-100 transition-1 gap-8">Xóa</button>
                                                     </div>
                                                 @endif
                                             </div>
