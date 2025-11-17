@@ -147,7 +147,89 @@
                             <div class="row mt-20">
                                 <div class="col-lg-12">
                                     <div class="border border-gray-300 rounded-4 p-16">
-                                        
+                                        <span class="text-lg text-gray-900 fw-semibold flex-align gap-8 mb-10"><i class="ph-bold ph-shopping-cart text-main-600 text-lg"></i> Chi tiết mua hàng</span>
+                                        <div class="py-6 px-5">
+                                            <div class="d-flex align-items-center gap-12">
+                                                <a href="#" class="border border-gray-100 rounded-8 flex-center" style="max-width: 90px; max-height: 90px; width: 100%; height: 100%">
+                                                    <img src="http://127.0.0.1:8000/assets/client/images/thumbs/ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp" alt="Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo" class="w-100 rounded-8">
+                                                </a>
+                                                <div class="text-start w-100">
+                                                    <h6 class="title text-md fw-semibold mb-0">
+                                                        <a href="#" class="link text-line-2" title="Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo</a>
+                                                    </h6>
+                                                    <div class="flex-align gap-16 mb-6">
+                                                        <a href="#" class="btn bg-gray-50 text-heading text-sm py-4 px-6 rounded-8 flex-center gap-8 fw-medium">
+                                                            Loại thường (20 gói x 15g)
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-card__price mb-6">
+                                                        <div class="flex-align flex-between gap-24">
+                                                            <span class="text-heading text-md fw-medium ">Số lượng: 1</span>
+                                                            <span class="text-gray-600 text-md fw-semibold">306.000 ₫</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" class="item-id" value="30">
+                                        </div>
+                                        <div class="py-6 px-5">
+                                            <div class="d-flex align-items-center gap-12">
+                                                <a href="#" class="border border-gray-100 rounded-8 flex-center" style="max-width: 90px; max-height: 90px; width: 100%; height: 100%">
+                                                    <img src="http://127.0.0.1:8000/assets/client/images/thumbs/ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp" alt="Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo" class="w-100 rounded-8">
+                                                </a>
+                                                <div class="text-start w-100">
+                                                    <h6 class="title text-md fw-semibold mb-0">
+                                                        <a href="#" class="link text-line-2" title="Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo</a>
+                                                    </h6>
+                                                    <div class="flex-align gap-16 mb-6">
+                                                        <a href="#" class="btn bg-gray-50 text-heading text-sm py-4 px-6 rounded-8 flex-center gap-8 fw-medium">
+                                                            Loại thường (20 gói x 15g)
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-card__price mb-6">
+                                                        <div class="flex-align flex-between gap-24">
+                                                            <span class="text-heading text-md fw-medium ">Số lượng: 1</span>
+                                                            <span class="text-gray-600 text-md fw-semibold">306.000 ₫</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" class="item-id" value="30">
+                                        </div>
+                                        <div class="border-top border-1 border-gray-300 pt-16 mt-16">
+                                            <div class="flex-between gap-8 mb-8">
+                                                <span class="text-md text-gray-700"></span>
+                                                <div class="flex-align flex-between gap-24" style="width: 22%">
+                                                    <span class="text-md text-gray-700">Tạm tính:</span>
+                                                    <span class="text-md text-gray-900 fw-semibold">1.306.000 ₫</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex-between gap-8 mb-8">
+                                                <span class="text-md text-gray-700"></span>
+                                                <div class="flex-align flex-between gap-24" style="width: 22%">
+                                                    <span class="text-md text-gray-700">Phí giao hàng:</span>
+                                                    <span class="text-md text-gray-900 fw-semibold">0 ₫</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex-between gap-8 mb-10">
+                                                <span class="text-md text-gray-700"></span>
+                                                <div class="flex-align flex-between gap-24" style="width: 22%">
+                                                    <span class="text-md text-gray-700">Giảm giá:</span>
+                                                    <span class="text-md text-gray-900 fw-semibold">- 50.000 ₫</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex-between gap-8">
+                                                <span class="text-md text-gray-700"></span>
+                                                <div class="flex-align gap-24">
+                                                    <span class="text-xl text-gray-900 fw-bold">Tổng tiền:</span>
+                                                    <span class="text-xl text-main-600 fw-bold">306.000 ₫</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-align flex-between gap-12">
+                                        <a href="#" class="text-main-600 text-md fw-medium flex-align gap-8 mt-10 "><i class="ph-bold ph-arrow-fat-lines-left text-main-600 text-md"></i>Quay lại đơn hàng của tôi</a>
+                                        <a href="#" class="text-main-600 text-md fw-medium flex-align gap-8 mt-10 "><i class="ph-bold ph-arrow-fat-lines-left text-main-600 text-md"></i>Quay lại đơn hàng của tôi</a>
                                     </div>
                                 </div>
                             </div>
