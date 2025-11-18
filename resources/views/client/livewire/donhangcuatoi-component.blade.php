@@ -18,15 +18,15 @@
                         <li class="nav-item">
                             <button 
                             wire:click="changePaymentStatus('Chờ thanh toán')"
-                            class="{{ $trangThaiThanhToanHienTai === 'Chờ thanh toán' && $trangThaiHienTai === 'Đang xác nhận' ? 'bg-main-600 text-white' : 'border border-gray-600 text-gray-900 hover-border-main-600 hover-text-main-600' }} px-10 py-8 rounded-10 flex-align gap-8 fw-medium text-xs transition-1 me-2 mb-2">
+                            class="{{ $trangThaiThanhToanHienTai === 'Chờ thanh toán' && $trangThaiHienTai === 'Chờ xác nhận' ? 'bg-main-600 text-white' : 'border border-gray-600 text-gray-900 hover-border-main-600 hover-text-main-600' }} px-10 py-8 rounded-10 flex-align gap-8 fw-medium text-xs transition-1 me-2 mb-2">
                                 <i class="ph-bold ph-wallet"></i> Chờ thanh toán ({{ $pendingCount }})
                             </button>
                         </li>
                         @endif
 
-                        {{-- 2. Đang xác nhận --}}
+                        {{-- 2. Chờ xác nhận --}}
                         @php
-                            $trangThai = 'Đang xác nhận';
+                            $trangThai = 'Chờ xác nhận';
                             $count = array_key_exists($trangThai, $filterCounts) ? $filterCounts[$trangThai] : 0;
                             $isActive = ($trangThaiHienTai === $trangThai) && ($trangThaiThanhToanHienTai !== 'Chờ thanh toán');
                         @endphp
@@ -34,7 +34,7 @@
                             <button
                             wire:click="changeStatus('{{ $trangThai }}')" 
                             class=" {{ $isActive ? 'bg-main-600 text-white' : 'border border-gray-600 text-gray-900 hover-border-main-600 hover-text-main-600' }}  px-10 py-8 rounded-10 flex-align gap-8 fw-medium text-xs transition-1 me-2 mb-2">
-                                <i class="ph-bold ph-clock-countdown"></i> Đang xác nhận ({{ $count }})
+                                <i class="ph-bold ph-clock-countdown"></i> Chờ xác nhận ({{ $count }})
                             </button>
                         </li>
                         
@@ -113,7 +113,7 @@
                                         } 
                                         // Các trạng thái thanh toán khác (Đã thanh toán, Chưa thanh toán) sẽ hiển thị trạng thái xử lý ($donHang->trangthai)
                                     @endphp
-                            @if ($donHang->trangthai === 'Đang xác nhận' && $donHang->trangthaithanhtoan === 'Đã thanh toán')
+                            @if ($donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Thanh toán khi nhận hàng')
                                 <span class="fw-medium text-xs text-warning-700 bg-warning-100 px-6 py-4 rounded-4 flex-align gap-8">
                                     <i class="ph-bold ph-clock-countdown"></i> {{ $statusText }}
                                 </span>
@@ -202,7 +202,7 @@
                     <div class="d-flex flex-align flex-between">
                         <div class="flex-align gap-12">
                             <span class="fw-semibold text-sm text-gray-600">
-                                @if($donHang->trangthai == 'Đang xác nhận' || $donHang->trangthai == 'Chờ thanh toán')
+                                @if($donHang->trangthai == 'Chờ xác nhận' || $donHang->trangthai == 'Chờ thanh toán')
                                 <div class="flex-align gap-12">
                                     <button 
                                     wire:click="huyDonHang({{ $donHang->id }})" 
@@ -213,8 +213,8 @@
                                         class="fw-medium text-main-400 text-sm border border-main-400 px-8 py-4 rounded-4 transition-1 flex-align gap-8">
                                         <i class="ph-bold ph-trash"></i> Hủy đơn hàng
                                     </div> --}}
-                                    <button class="fw-medium text-main-600 text-sm border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
-                                        <i class="ph-bold ph-eye"></i> Xem chi tiết</button>
+                                    <a href="{{ route('chi-tiet-don-hang',$donHang->madon) }}" class="fw-medium text-main-600 text-sm border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
+                                        <i class="ph-bold ph-eye"></i> Xem chi tiết</a>
                                 </div>
                                 @else
                                     <div class="flex-align gap-12">
@@ -225,8 +225,8 @@
                                             class="fw-medium text-main-400 text-sm border border-main-400 px-8 py-4 rounded-4 transition-1 flex-align gap-8">
                                             <i class="ph-bold ph-trash"></i> Hủy đơn hàng
                                         </div> --}}
-                                        <button class="fw-medium text-main-600 text-sm border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
-                                            <i class="ph-bold ph-eye"></i> Xem chi tiết</button>
+                                        <a href="{{ route('chi-tiet-don-hang',$donHang->madon) }}" class="fw-medium text-main-600 text-sm border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
+                                            <i class="ph-bold ph-eye"></i> Xem chi tiết</a>
                                     </div>
                                 @endif
                             </span>

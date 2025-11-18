@@ -180,7 +180,7 @@ class ThanhtoanController extends Controller
             $order->tongsoluong = collect($cartItems)->sum('soluong');
             $order->tamtinh = $tamtinh;
             $order->thanhtien = $tongThanhTien;
-            $order->trangthai = 'Đang xác nhận'; 
+            $order->trangthai = 'Chờ xác nhận'; 
             if($phuongthuc->maphuongthuc == 'COD') {
                 $order->trangthaithanhtoan = 'Thanh toán khi nhận hàng';
             } else {
@@ -241,7 +241,7 @@ class ThanhtoanController extends Controller
             DB::commit();
             
 
-            return redirect()->route('don-hang-cua-toi', ['madon' => $order->madon])
+            return redirect()->route('dat-hang-thanh-cong', ['madon' => $order->madon])
                              ->with('success', 'Đơn hàng **' . $order->madon . '** của bạn đã được đặt thành công!');
 
         } catch (\Exception $e) {
@@ -249,5 +249,29 @@ class ThanhtoanController extends Controller
             Log::error('Lỗi đặt hàng: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Đã xảy ra lỗi trong quá trình đặt hàng. (Chi tiết lỗi: ' . $e->getMessage() . ').');
         }
+    }
+    public function orderSuccess(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để đặt hàng.');
+        }
+
+        $madon = $request->query('madon');
+        $donhang = DonhangModel::with([
+            'chitietdonhang.bienthe.sanpham.hinhanhsanpham',
+            'phuongthuc', // Phương thức thanh toán
+            'diachinguoidung', // Địa chỉ giao hàng
+            'phivanchuyen', // Phí vận chuyển
+            'magiamgia' // Mã giảm giá (nếu có)
+        ])
+        ->where('madon', $madon) // <-- Lọc theo madon
+        ->where('id_nguoidung', Auth::id()) // <-- **QUAN TRỌNG: Đảm bảo đơn hàng này thuộc về user đang đăng nhập**
+        ->first(); // <-- Lấy bản ghi đầu tiên
+
+        if (!$donhang) {
+            return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
+        }
+
+        return view('client.thanhtoan.dathangthanhcong', compact('donhang'));
     }
 }

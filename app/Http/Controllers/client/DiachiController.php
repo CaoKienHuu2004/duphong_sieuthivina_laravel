@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\DiachinguoidungModel;
+use App\Models\DonhangModel;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
@@ -135,42 +136,63 @@ class DiachiController extends Controller
     }
 
     public function capnhatdiachi(Request $request)
-    {
-        $request->validate([
-            // Trường từ form: hoten_nguoinhan, sodienthoai_nguoinhan
-            'hoten' => 'required|string|max:255',
-            'sodienthoai' => 'required|string|max:20',
-            'tinhthanh' => 'required|string',
-            'diachi' => 'required|string|max:255',
-        ], [
-            // Thông báo lỗi tiếng Việt
-            'required' => 'Trường :attribute là bắt buộc.',
-            'max' => 'Trường :attribute không được vượt quá :max ký tự.',
-            'hoten.required' => 'Vui lòng nhập Họ tên Người nhận.',
-            'sodienthoai.required' => 'Vui lòng nhập Số điện thoại.',
-            'tinhthanh.required' => 'Vui lòng chọn Tỉnh/Thành phố.',
-            'diachi.required' => 'Vui lòng nhập Địa chỉ chi tiết.',
-        ]);
+{
+    // 1. Validate dữ liệu đầu vào
+    $request->validate([
+        'id_diachi'   => 'required|exists:diachi_nguoidung,id', // Nên validate cả ID này để bảo mật
+        'hoten'       => 'required|string|max:255',
+        'sodienthoai' => 'required|string|max:20',
+        'tinhthanh'   => 'required|string',
+        'diachi'      => 'required|string|max:255',
+    ], [
+        'required'             => 'Trường :attribute là bắt buộc.',
+        'max'                  => 'Trường :attribute không được vượt quá :max ký tự.',
+        'hoten.required'       => 'Vui lòng nhập Họ tên Người nhận.',
+        'sodienthoai.required' => 'Vui lòng nhập Số điện thoại.',
+        'tinhthanh.required'   => 'Vui lòng chọn Tỉnh/Thành phố.',
+        'diachi.required'      => 'Vui lòng nhập Địa chỉ chi tiết.',
+    ]);
 
-        $isDefault = $request->input('trangthai') === 'Mặc định';
+    // --- [BẮT ĐẦU] LOGIC KIỂM TRA TRẠNG THÁI ĐƠN HÀNG ---
+    $id_diachi = $request->id_diachi;
+    
+    // Kiểm tra xem địa chỉ này có đang nằm trong đơn hàng nào chưa hoàn tất không
+    // Logic: Lấy đơn hàng có địa chỉ này VÀ trạng thái KHÔNG PHẢI là 'Đã giao hàng' hoặc 'Đã hủy'
+    $diaChiDangBiKhoa = DonhangModel::where('id_diachinguoidung', $id_diachi)
+        ->whereNotIn('trangthai', ['Đã giao hàng', 'Đã hủy đơn']) 
+        ->exists(); // Trả về true nếu tìm thấy
 
-        if ($isDefault) {
-            DiachinguoidungModel::where('id_nguoidung', Auth::id())
-                                ->update(['trangthai' => 'Khác']);
-        }
-
-        $diachi = DiachinguoidungModel::findOrFail($request->id_diachi);
-        $diachi->hoten = $request->hoten;
-        $diachi->sodienthoai = $request->sodienthoai;
-        $diachi->tinhthanh = $request->tinhthanh;
-        $diachi->diachi = $request->diachi;
-        $diachi->trangthai = $isDefault ? 'Mặc định' : 'Khác';
-        $diachi->save();
-
-
-
-        return redirect()->route('so-dia-chi')->with('success', 'Đã cập nhật địa chỉ giao hàng thành công!');
+    if ($diaChiDangBiKhoa) {
+        return redirect()->back()->with('error', 'Không thể cập nhật: Địa chỉ này đang được sử dụng cho một đơn hàng đang xử lý hoặc đang giao.');
     }
+    // --- [KẾT THÚC] LOGIC KIỂM TRA ---
+
+
+    // 2. Xử lý cập nhật trạng thái Mặc định
+    $isDefault = $request->input('trangthai') === 'Mặc định';
+
+    if ($isDefault) {
+        DiachinguoidungModel::where('id_nguoidung', Auth::id())
+                            ->update(['trangthai' => 'Khác']);
+    }
+
+    // 3. Cập nhật thông tin địa chỉ
+    $diachi = DiachinguoidungModel::findOrFail($id_diachi);
+    
+    // (Tùy chọn) Kiểm tra quyền sở hữu địa chỉ lần nữa cho chắc chắn
+    if ($diachi->id_nguoidung != Auth::id()) {
+         return redirect()->back()->with('error', 'Bạn không có quyền sửa địa chỉ này.');
+    }
+
+    $diachi->hoten = $request->hoten;
+    $diachi->sodienthoai = $request->sodienthoai;
+    $diachi->tinhthanh = $request->tinhthanh;
+    $diachi->diachi = $request->diachi;
+    $diachi->trangthai = $isDefault ? 'Mặc định' : 'Khác';
+    $diachi->save();
+
+    return redirect()->route('so-dia-chi')->with('success', 'Đã cập nhật địa chỉ giao hàng thành công!');
+}
 
     public function xoadiachi(Request $request)
     {

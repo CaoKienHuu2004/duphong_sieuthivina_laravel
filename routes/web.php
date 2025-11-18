@@ -42,8 +42,13 @@ Route::middleware('auth')->group(function () {
     
     Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('dang-xuat');
     Route::get('/thong-tin-ca-nhan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
-    Route::get('/don-hang-cua-toi', [client\DonhangController::class, 'donhangcuatoi'])->name('don-hang-cua-toi');
-    Route::get('/chi-tiet-don-hang', [client\DonhangController::class, 'chitietdonhang'])->name('chi-tiet-don-hang');
+
+    Route::prefix('/don-hang')->group(function () {
+        Route::get('/', [client\DonhangController::class, 'donhangcuatoi'])->name('don-hang-cua-toi');
+        Route::get('/{madon}', [client\DonhangController::class, 'chitietdonhang'])->name('chi-tiet-don-hang');
+        Route::delete('/huy-don-hang', [client\DonhangController::class, 'huydonhang'])->name('huy-don-hang');
+    });
+    
     Route::get('/so-dia-chi', [client\DiachiController::class, 'index'])->name('so-dia-chi');
     Route::get('/them-dia-chi-giao-hang', [client\DiachiController::class, 'taodiachi'])->name('them-dia-chi-giao-hang');
     Route::post('/luu-dia-chi', [client\DiachiController::class, 'khoitaodiachi'])->name('luu-dia-chi');
@@ -56,6 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/thanh-toan')->group(function () {
         Route::get('/', [client\ThanhtoanController::class, 'index'])->name('thanh-toan');
         Route::post('/dat-hang', [client\ThanhtoanController::class, 'placeOrder'])->name('dat-hang');
+        Route::get('/dat-hang-thanh-cong', [client\ThanhtoanController::class, 'orderSuccess'])->name('dat-hang-thanh-cong');
         Route::get('/thay-doi-dia-chi', [client\DiachiController::class, 'selectAddress'])->name('thay-doi-dia-chi');
         Route::post('/cap-nhat-mac-dinh', [client\DiachiController::class, 'updateDefaultAddress'])->name('cap-nhat-mac-dinh');
     });

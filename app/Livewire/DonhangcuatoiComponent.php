@@ -10,7 +10,7 @@ class DonhangcuatoiComponent extends Component
 {
     // Mảng các trạng thái xử lý có thể lọc
     public $trangThaiFilter = [
-        'Đang xác nhận', 
+        'Chờ xác nhận', 
         'Đang đóng gói', 
         'Đang giao hàng', 
         'Đã giao hàng', 
@@ -18,8 +18,8 @@ class DonhangcuatoiComponent extends Component
         'Chờ thanh toán'
     ];
     
-    // Trạng thái xử lý hiện tại đang được chọn (Mặc định là Đang xác nhận)
-    public $trangThaiHienTai = 'Đang xác nhận'; 
+    // Trạng thái xử lý hiện tại đang được chọn (Mặc định là Chờ xác nhận)
+    public $trangThaiHienTai = 'Chờ xác nhận'; 
     
     // Mảng các trạng thái THANH TOÁN có thể lọc
     public $trangThaiThanhToanFilter = [
@@ -113,7 +113,7 @@ class DonhangcuatoiComponent extends Component
     // Hàm chuyển trạng thái lọc THANH TOÁN (Chủ yếu dùng cho tab 'Chờ thanh toán')
     public function changePaymentStatus($status)
     {
-        // Khi chọn 'Chờ thanh toán', buộc phải đặt trạng thái xử lý là 'Đang xác nhận' 
+        // Khi chọn 'Chờ thanh toán', buộc phải đặt trạng thái xử lý là 'Chờ xác nhận' 
         // để hiển thị đúng đơn hàng mới
         $this->trangThaiHienTai = 'Chờ thanh toán';
         $this->trangThaiThanhToanHienTai = $status;
@@ -133,7 +133,7 @@ class DonhangcuatoiComponent extends Component
         }
 
         // Kiểm tra điều kiện hủy (chỉ cho phép hủy khi đang chờ xác nhận)
-        if ($donHang->trangthai !== 'Đang xác nhận') {
+        if ($donHang->trangthai !== 'Chờ xác nhận') {
             session()->flash('error', 'Đơn hàng đang được xử lý, không thể hủy.');
             return;
         }
