@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('title')
     Sửa hàng tồn cho "{{ $bienthe->sanpham->ten }}" | Sản phẩm | Quản trị hệ thống Siêu Thị Vina

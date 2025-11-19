@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('title', 'Danh sách thương hiệu | Quản trị hệ thống Siêu Thị Vina')
 

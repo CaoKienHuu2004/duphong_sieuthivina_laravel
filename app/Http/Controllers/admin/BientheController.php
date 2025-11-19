@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\BientheModel;
-use App\Models\CuahangModel;
-use App\Models\DanhmucModel;
-use App\Models\LoaibientheModel;
 use Illuminate\Http\Request;
-
-use App\Models\SanphamModel;
+use App\Models\SanphamModel as SanPham;
+use App\Models\ThuonghieuModel as ThuongHieu;
+use App\Models\DanhmucModel as DanhMuc;
+use App\Models\BientheModel as Bienthesp;
+use App\Models\LoaibientheModel as LoaiBienThe;
 
 class BientheController extends Controller
 {
@@ -18,24 +17,24 @@ class BientheController extends Controller
      */
     public function index(Request $request)
     {
-        $query = SanphamModel::with('bienThe', 'danhmuc');
-        $bienthe = BientheModel::with('sanpham', 'loaiBienThe');
+        $query = SanPham::with('bienThe', 'danhmuc');
+        $bienthe = Bienthesp::with('sanpham', 'loaiBienThe');
 
         // Lấy kết quả
         $sanphams = $query->orderBydesc('updated_at')->get();
 
         // Lấy thêm list danh mục & thương hiệu để render filter
-        $cuaHang = CuahangModel::all();
-        $danhmucs = DanhmucModel::all();
+        $thuonghieus = ThuongHieu::all();
+        $danhmucs = DanhMuc::all();
 
-        return view('khohang', compact('sanphams', 'bienthe', 'cuaHang', 'danhmucs'));
+        return view('khohang', compact('sanphams', 'bienthe', 'thuonghieus', 'danhmucs'));
     }
 
     public function edit(Request $request, $id)
     {
         // $bienthe = Bienthesp::findOrFail($id);
-        $bienthe = BientheModel::with(['loaiBienThe', 'sanpham'])->findOrFail($id);
-        $loaibienthes = LoaibientheModel::all();
+        $bienthe = Bienthesp::with(['loaiBienThe', 'sanpham'])->findOrFail($id);
+        $loaibienthes = LoaiBienThe::all();
 
         return view('suahangtonkho', compact('bienthe',  'loaibienthes'));
     }
@@ -43,7 +42,7 @@ class BientheController extends Controller
     public function update(Request $request, $id)
     {
         // TỰ TÌM KIẾM: Tìm biến thể cần cập nhật
-        $bienthe = BientheModel::findOrFail($id);
+        $bienthe = Bienthesp::findOrFail($id);
 
         // Validate dữ liệu
         $request->validate([
@@ -59,7 +58,7 @@ class BientheController extends Controller
         if (is_numeric($tenLoaiInput)) {
             $idTenLoai = $tenLoaiInput;
         } else {
-            $newLoai = LoaibientheModel::firstOrCreate(['ten' => $tenLoaiInput]);
+            $newLoai = Loaibienthe::firstOrCreate(['ten' => $tenLoaiInput]);
             $idTenLoai = $newLoai->id;
         }
 
@@ -79,7 +78,7 @@ class BientheController extends Controller
     public function destroy($id)
     {
         // 1. Tìm biến thể cần xóa, nếu không có sẽ báo lỗi 404
-        $bienthe = BientheModel::findOrFail($id);
+        $bienthe = Bienthesp::findOrFail($id);
 
         // 2. Lấy sản phẩm cha của biến thể này
         $sanpham = $bienthe->sanpham;

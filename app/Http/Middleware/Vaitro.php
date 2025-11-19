@@ -33,10 +33,6 @@ class Vaitro
                 return redirect()->route('quan-tri-vien.trang-chu');
             }
 
-            if ($user->vaitro === 'seller') {
-                return redirect()->route('nguoi-ban-hang.trang-chu');
-            }
-
             return redirect()->route('trang-chu');
         }
         return $next($request);

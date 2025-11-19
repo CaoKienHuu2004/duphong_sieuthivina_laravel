@@ -4,20 +4,19 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
-use App\Models\Donhang;
-use App\Models\DonhangModel;
-use App\Models\NguoidungModel;
-use App\Models\Sanpham;
-use App\Models\SanphamModel;
+use App\Models\DonhangModel as Donhang;
+use App\Models\ChitietdonhangModel as ChitietDonhang;
+use App\Models\NguoidungModel as Nguoidung;
+use App\Models\SanphamModel as Sanpham;
 use Illuminate\Http\Request;
-
+use App\Models\BientheModel as Bienthe;
 
 class DonhangController extends Controller
 {
     // Danh sách đơn hàng
     public function index(Request $request)
     {
-        $query = DonhangModel::with(['nguoidung', 'chitietdonhang']);
+        $query = Donhang::with(['khachhang', 'chitiet']);
         // ->where('is_deleted', 0); // nếu bạn muốn lọc đơn chưa xóa thì bỏ comment
 
         // Filter theo mã đơn
@@ -77,8 +76,8 @@ class DonhangController extends Controller
     // Hiển thị form tạo đơn hàng
     public function create()
     {
-        $customers = NguoidungModel::all();
-        $products  = SanphamModel::with('bienthe')->get();
+        $customers = Nguoidung::all();
+        $products  = Sanpham::with('bienthe')->get();
         return view('donhang.create', compact('customers', 'products'));
     }
 
@@ -96,7 +95,7 @@ class DonhangController extends Controller
 
         $validated['ma_donhang'] = $ma_donhang;
 
-        DonhangModel::create($validated);
+        Donhang::create($validated);
 
         return redirect()->route('danh-sach-don-hang')
             ->with('success', 'Tạo đơn hàng thành công!');
@@ -107,7 +106,7 @@ class DonhangController extends Controller
     {
         do {
             $code = Str::upper(Str::random(5));
-        } while (DonhangModel::where('ma_donhang', $code)->exists());
+        } while (Donhang::where('ma_donhang', $code)->exists());
 
         return $code;
     }
@@ -115,7 +114,7 @@ class DonhangController extends Controller
     // Chi tiết đơn hàng
     public function show($id)
     {
-        $donhang = DonhangModel::with(['nguoidung', 'chitietdonhang.sanpham'])
+        $donhang = Donhang::with(['khachhang', 'chitiet.sanpham'])
             ->findOrFail($id);
 
         return view('donhang.show', compact('donhang'));
@@ -124,7 +123,7 @@ class DonhangController extends Controller
     // API chi tiết đơn hàng
     public function showApi($id)
     {
-        $order = DonhangModel::with('chitiet')
+        $order = Donhang::with('chitiet')
             ->where('is_deleted', 0)
             ->findOrFail($id);
 
@@ -139,8 +138,8 @@ class DonhangController extends Controller
     // Form sửa đơn hàng
     public function edit($id)
     {
-        $donhang = DonhangModel::with('nguoidung')->findOrFail($id);
-        $products = SanphamModel::all();
+        $donhang = Donhang::with('khachhang')->findOrFail($id);
+        $products = Sanpham::all();
 
         return view('donhang.edit', compact('donhang', 'products'));
     }
@@ -148,7 +147,7 @@ class DonhangController extends Controller
     // Cập nhật đơn hàng
     public function update(Request $request, $id)
     {
-        $donhang = DonhangModel::findOrFail($id);
+        $donhang = Donhang::findOrFail($id);
 
         $validated = $request->validate([
             'ghichu'       => 'nullable|string',
@@ -166,7 +165,7 @@ class DonhangController extends Controller
     // Xóa đơn hàng (ẩn dữ liệu)
     public function destroy($id)
     {
-        $donhang = DonhangModel::findOrFail($id);
+        $donhang = Donhang::findOrFail($id);
         $donhang->forceDelete();
 
         return redirect()->route('danh-sach-don-hang')
@@ -180,7 +179,7 @@ class DonhangController extends Controller
             'soluong' => 'required|integer|min:1',
         ]);
 
-        $order = DonhangModel::with('chitietdonhang')->where('is_deleted', 0)->findOrFail($orderId);
+        $order = Donhang::with('chitiets')->where('is_deleted', 0)->findOrFail($orderId);
         $item = $order->chitiets()->where('id', $itemId)->first();
 
         if (!$item) {

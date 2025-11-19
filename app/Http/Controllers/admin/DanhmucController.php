@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Danhmuc;
 use App\Models\DanhmucModel;
 use Illuminate\Http\Request;
 

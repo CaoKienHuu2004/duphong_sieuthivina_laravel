@@ -3,19 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Anhsp;
-use App\Models\BientheModel;
-use App\Models\Sanpham;
-use App\Models\Thuonghieu;
-use App\Models\Danhmuc;
-use App\Models\Bienthesp;
-use App\Models\CuahangModel;
-use App\Models\DanhmucModel;
-use App\Models\HinhanhsanphamModel;
-use App\Models\Loaibienthe;
-use App\Models\LoaibientheModel;
-use App\Models\SanphamModel;
-use App\Models\ThongTinNguoiBanHang;
+use App\Models\HinhanhsanphamModel as Anhsp;
+use App\Models\SanphamModel as Sanpham;
+use App\Models\ThuonghieuModel as ThuongHieu;
+use App\Models\DanhmucModel as Danhmuc;
+use App\Models\BientheModel as Bienthesp;
+use App\Models\LoaibientheModel as LoaiBienThe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -28,11 +21,11 @@ class SanphamController extends Controller
      */
     public function index(Request $request)
     {
-        $query = SanphamModel::with('bienThe', 'danhmuc','anhSanPham','cuaHang','bienThe.chiTietDonHang');
+        $query = SanPham::with('bienThe', 'danhmuc');
 
         // Filter theo thương hiệu
-        if ($request->filled('cuahang')) {
-            $query->where('id_cuahang', $request->thuonghieu);
+        if ($request->filled('thuonghieu')) {
+            $query->where('id_thuonghieu', $request->thuonghieu);
         }
 
         // Filter theo danh mục (many-to-many)
@@ -42,31 +35,29 @@ class SanphamController extends Controller
             });
         }
 
-        // Filter giá (dựa trên bảng bienThe_sp)
+        // Filter giá (dựa trên bảng bienthe_sp)
         if ($request->filled('gia_min') && $request->filled('gia_max')) {
-            $query->whereHas('bienThe', function ($q) use ($request) {
+            $query->whereHas('bienthe', function ($q) use ($request) {
                 $q->whereBetween('gia', [$request->gia_min, $request->gia_max]);
             });
         } elseif ($request->filled('gia_min')) {
-            $query->whereHas('bienThe', function ($q) use ($request) {
+            $query->whereHas('bienthe', function ($q) use ($request) {
                 $q->where('gia', '>=', $request->gia_min);
             });
         } elseif ($request->filled('gia_max')) {
-            $query->whereHas('bienThe', function ($q) use ($request) {
+            $query->whereHas('bienthe', function ($q) use ($request) {
                 $q->where('gia', '<=', $request->gia_max);
             });
         }
 
         // Lấy kết quả
-        $sanphams = $query->distinct()
-                      ->orderBy('updated_at', 'desc')
-                      ->get();
+        $sanphams = $query->orderBy('id', 'desc')->get();
 
         // Lấy thêm list danh mục & thương hiệu để render filter
-        $cuaHang = CuahangModel::all();
-        $danhmucs = DanhmucModel::all();
+        $thuonghieus = ThuongHieu::all();
+        $danhmucs = DanhMuc::all();
 
-        return view('sanpham/sanpham', compact('sanphams', 'cuaHang', 'danhmucs'));
+        return view('admin.sanpham', compact('sanphams', 'thuonghieus', 'danhmucs'));
 
         // // Lấy toàn bộ sản phẩm kèm quan hệ
         // $sanpham = Sanpham::with(['bienThe.loaiBienThe', 'anhSanPham', 'danhmuc', 'thuonghieu'])->get();
@@ -77,11 +68,11 @@ class SanphamController extends Controller
 
     public function create()
     {
-        $cuaHang = CuahangModel::all();
-        $danhmucs = DanhmucModel::all();
-        $loaibienthes = LoaibientheModel::all();
+        $thuonghieus = Thuonghieu::all();
+        $danhmucs = Danhmuc::all();
+        $loaibienthes = Loaibienthe::all();
 
-        return view('sanpham/taosanpham', compact('cuaHang', 'danhmucs', 'loaibienthes'));
+        return view('taosanpham', compact('thuonghieus', 'danhmucs', 'loaibienthes'));
     }
 
     /**
@@ -94,7 +85,7 @@ class SanphamController extends Controller
                 'tensp'        => 'required|string|max:255',
                 'id_danhmuc'   => 'required|array',
                 'id_danhmuc.*' => 'integer|exists:danh_muc,id',
-                'id_cuahang' => 'required|integer',
+                'id_thuonghieu' => 'required|integer',
                 'xuatxu'   => 'required|string|max:255',
                 'sanxuat'  => 'nullable|string|max:255',
                 'mo_ta'        => 'required|string',
@@ -113,8 +104,8 @@ class SanphamController extends Controller
                 'id_danhmuc.*.integer'   => 'Danh mục không hợp lệ',
                 'id_danhmuc.*.exists'    => 'Danh mục đã chọn không tồn tại',
 
-                'id_cuahang.required' => 'Vui lòng chọn cửa hàng',
-                'id_cuahang.integer'  => 'Cửa Hàng không hợp lệ',
+                'id_thuonghieu.required' => 'Vui lòng chọn thương hiệu',
+                'id_thuonghieu.integer'  => 'Thương hiệu không hợp lệ',
 
                 'xuatxu.required'        => 'Vui lòng nhập xuất xứ',
                 'xuatxu.string'          => 'Xuất xứ phải là chuỗi ký tự',
@@ -143,27 +134,15 @@ class SanphamController extends Controller
         DB::beginTransaction();
         try {
             // Tạo sản phẩm
-
-            if(!empty($request->mediaurl)){
-                $sanpham = SanphamModel::create([
-                    'ten'        => $request->tensp,
-                    'id_cuahang' => $request->id_cuahang,
-                    'xuatxu'   => $request->xuatxu,
-                    'sanxuat'  => $request->sanxuat,
-                    'mediaurl' => $request->mediaurl,
-                    'trangthai'    => $request->trangthai,
-                    'mota'         => $request->mo_ta,
-                ]);
-            }else{
-                $sanpham = SanphamModel::create([
-                    'ten'        => $request->tensp,
-                    'id_cuahang' => $request->id_cuahang,
-                    'xuatxu'   => $request->xuatxu,
-                    'sanxuat'  => $request->sanxuat,
-                    'trangthai'    => $request->trangthai,
-                    'mota'         => $request->mo_ta,
-                ]);
-            }
+            $sanpham = Sanpham::create([
+                'ten'        => $request->tensp,
+                'id_thuonghieu' => $request->id_thuonghieu,
+                'xuatxu'   => $request->xuatxu,
+                'sanxuat'  => $request->sanxuat,
+                'mediaurl'      => $request->mediaurl,
+                'trangthai'    => $request->trangthai,
+                'mota'         => $request->mo_ta,
+            ]);
 
             // $sanpham->danhmuc()->attach($request->id_danhmuc);
             if ($request->id_danhmuc) {
@@ -171,27 +150,27 @@ class SanphamController extends Controller
             }
 
             if ($request->hasFile('anhsanpham')) {
-                $slugName = Str::slug($request->tensp);
                 $i = 1;
+                // Chuẩn hóa tên sản phẩm thành slug để đặt tên file
+                $slugName = Str::slug($request->tensp);
 
                 foreach ($request->file('anhsanpham') as $file) {
-
                     $extension = $file->getClientOriginalExtension();
+                    $filename = $slugName . '-' . $i . '.' . $extension;
 
-                    $filename = "{$slugName}-{$i}-" . time() . ".{$extension}";
-                    $path = $file->storeAs('uploads/anh_sanpham/media', $filename, 'public');
-                    $file->storeAs('images/anh_sanpham/media', $filename, 'nextjs_assets');
-                    $url = asset('storage/' . $path);
+                    // Lưu vào thư mục public/storage/images
+                    $file->move(public_path('img/product'), $filename);
 
-                    // Ghi vào database
-                    HinhanhsanphamModel::create([
+                    // Lưu thông tin vào DB
+                    Anhsp::create([
                         'id_sanpham' => $sanpham->id,
-                        'media'      => $path,
+                        'media'      => $filename,
                     ]);
 
                     $i++;
                 }
             }
+
             foreach ($request->bienthe as $bt) {
                 if (!empty($bt['id_tenloai']) && !empty($bt['gia'])) {
 
@@ -203,25 +182,25 @@ class SanphamController extends Controller
                         $tenLoai = trim($bt['id_tenloai']);
 
                         // Tìm trong DB xem đã có chưa
-                        $existingLoai = LoaibientheModel::whereRaw('LOWER(ten) = ?', [strtolower($tenLoai)])->first();
+                        $existingLoai = Loaibienthe::whereRaw('LOWER(ten) = ?', [strtolower($tenLoai)])->first();
 
                         if ($existingLoai) {
                             // Nếu đã có -> lấy id cũ
                             $id_tenloai = $existingLoai->id;
                         } else {
                             // Nếu chưa có -> tạo mới
-                            $newLoai = LoaibientheModel::create(['ten' => $tenLoai]);
+                            $newLoai = Loaibienthe::create(['ten' => $tenLoai]);
                             $id_tenloai = $newLoai->id;
                         }
                     }
 
                     // Tạo biến thể sản phẩm
-                    BientheModel::create([
+                    Bienthesp::create([
                         'id_sanpham' => $sanpham->id,
                         'id_tenloai' => $id_tenloai,
                         'gia'        => $bt['gia'],
-                        'soluong'    => $bt['soluong'] ?? 1,
-                        'uutien'    => $bt['uutien'] ?? 1,
+                        'soluong'    => $bt['soluong'] ?? 0,
+                        'trangthai'  => 0,
                     ]);
                 }
             }
@@ -243,7 +222,7 @@ class SanphamController extends Controller
             // }
 
             DB::commit();
-            return redirect()->route('san-pham.danh-sach')->with('success', 'Thêm sản phẩm thành công!');
+            return redirect()->route('danh-sach')->with('success', 'Thêm sản phẩm thành công!');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['msg' => 'Có lỗi: ' . $e->getMessage()]);
@@ -252,17 +231,17 @@ class SanphamController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $sanpham = SanphamModel::with(['bienthe', 'anhsanpham', 'danhmuc'])->findOrFail($id);
-        $danhmucs = DanhmucModel::all();
-        $cuaHang = CuahangModel::all();
-        $loaibienthes = LoaibientheModel::all();
+        $sanpham = Sanpham::with(['bienthe', 'anhsanpham', 'danhmuc'])->findOrFail($id);
+        $danhmucs = DanhMuc::all();
+        $thuonghieus = ThuongHieu::all();
+        $loaibienthes = LoaiBienThe::all();
 
-        return view('suasanpham', compact('sanpham', 'danhmucs', 'cuaHang', 'loaibienthes'));
+        return view('suasanpham', compact('sanpham', 'danhmucs', 'thuonghieus', 'loaibienthes'));
     }
 
     public function update(Request $request, $id)
     {
-        $sanpham = SanphamModel::with(['bienthe', 'anhsanpham'])->findOrFail($id);
+        $sanpham = Sanpham::with(['bienthe', 'anhsanpham'])->findOrFail($id);
 
         // Update thông tin sản phẩm
         $sanpham->ten = $request->ten;
@@ -296,7 +275,7 @@ class SanphamController extends Controller
                 // nhập mới (string)
                 $tenLoai = trim($bt['id_tenloai']);
                 if ($tenLoai != '') {
-                    $loai = LoaibientheModel::firstOrCreate(
+                    $loai = LoaiBienThe::firstOrCreate(
                         ['ten' => $tenLoai],
                         ['ten' => $tenLoai] // nếu chưa có thì tạo mới
                     );
@@ -308,7 +287,7 @@ class SanphamController extends Controller
 
             if (isset($bt['id'])) {
                 // Nếu biến thể đã có id -> update
-                $b = BientheModel::find($bt['id']);
+                $b = Bienthesp::find($bt['id']);
                 if ($b) {
                     $b->id_tenloai = $idTenLoai;
                     $b->gia = $bt['gia'];
@@ -318,7 +297,7 @@ class SanphamController extends Controller
                 }
             } else {
                 // Thêm biến thể mới
-                $b = new BientheModel();
+                $b = new Bienthesp();
                 $b->id_sanpham = $sanpham->id;
                 $b->id_tenloai = $idTenLoai;
                 $b->gia = $bt['gia'];
@@ -331,7 +310,7 @@ class SanphamController extends Controller
         // Xóa biến thể cũ mà bị remove
         $toDelete = array_diff($existingIds, $newIds);
         if (!empty($toDelete)) {
-            BientheModel::destroy($toDelete);
+            Bienthesp::destroy($toDelete);
         }
 
         // --- Xử lý ảnh ---
@@ -359,7 +338,7 @@ class SanphamController extends Controller
                 $file->move(public_path('img/product'), $filename);
 
                 // Lưu tên file vào DB
-                $anh = new HinhanhsanphamModel();
+                $anh = new Anhsp();
                 $anh->id_sanpham = $sanpham->id;
                 $anh->media = $filename;
                 $anh->save();
@@ -374,7 +353,7 @@ class SanphamController extends Controller
      */
     public function destroy($id)
     {
-        $sanpham = SanphamModel::findOrFail($id);
+        $sanpham = Sanpham::findOrFail($id);
 
         DB::beginTransaction();
         try {
@@ -390,7 +369,7 @@ class SanphamController extends Controller
             }
 
             // Xoá biến thể
-            BientheModel::where('id_sanpham', $sanpham->id)->delete();
+            Bienthesp::where('id_sanpham', $sanpham->id)->delete();
 
             // Xoá liên kết danh mục (nếu có belongsToMany)
             $sanpham->danhmuc()->detach();
@@ -409,7 +388,7 @@ class SanphamController extends Controller
 
     public function show($slug,$id)
     {
-        $sanpham = SanphamModel::with(['anhsanpham', 'danhmuc', 'bienthe.loaiBienThe'])->findOrFail($id);
+        $sanpham = SanPham::with(['anhsanpham', 'danhmuc', 'bienthe.loaiBienThe'])->findOrFail($id);
 
         // kiểm tra slug có đúng không, nếu không thì redirect về slug đúng
         $correctSlug = \Illuminate\Support\Str::slug($sanpham->ten);

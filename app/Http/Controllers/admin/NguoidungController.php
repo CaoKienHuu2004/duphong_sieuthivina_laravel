@@ -4,9 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App\Models\DiachinguoidungModel;
-use App\Models\NguoidungModel;
+use App\Models\NguoidungModel as Nguoidung;
+use App\Models\DiachinguoidungModel as Diachi;
 
 class NguoidungController extends Controller
 {
@@ -15,9 +14,9 @@ class NguoidungController extends Controller
      */
     public function index(Request $request)
     {
-        $danhsach = NguoidungModel::with('diachi')->where('vaitro', 'client')
+        $danhsach = Nguoidung::with('diachi')->where('vaitro', 'user')
             ->get();
-        $diachi = DiachinguoidungModel::all();
+        $diachi = Diachi::all();
 
         return view("khachhang.index", compact("danhsach","diachi"));
     }
