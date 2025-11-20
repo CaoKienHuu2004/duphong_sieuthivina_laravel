@@ -135,6 +135,13 @@
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
                     class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
               </li>
+              @if(Auth::check() && Auth::user()->vaitro === 'admin')
+              <li class="common-dropdown__item nav-submenu__item">
+                <a href="{{ route('quan-tri-vien.trang-chu') }}"
+                  class="common-dropdown__link nav-submenu__link text-sm text-heading-two bg-warning-100 hover-bg-neutral-100"><i
+                    class="ph-bold ph-app-window text-main-600"></i> Truy cập quản trị</a>
+              </li>
+              @endif
               <li class="common-dropdown__item nav-submenu__item">
                 <a href="{{ route('don-hang-cua-toi') }}"
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
@@ -370,6 +377,13 @@
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
                     class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
               </li>
+              @if(Auth::check() && Auth::user()->vaitro === 'admin')
+              <li class="common-dropdown__item nav-submenu__item">
+                <a href="{{ route('quan-tri-vien.trang-chu') }}"
+                  class="common-dropdown__link nav-submenu__link text-heading-two bg-warning-100 hover-bg-neutral-100"><i
+                    class="ph-bold ph-app-window text-main-600"></i> Truy cập quản trị</a>
+              </li>
+              @endif
               <li class="common-dropdown__item nav-submenu__item">
                 <a href="{{ route('don-hang-cua-toi') }}"
                   class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i

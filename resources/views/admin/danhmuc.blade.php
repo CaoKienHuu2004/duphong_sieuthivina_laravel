@@ -8,12 +8,12 @@
         <div class="page-header">
             <div class="page-title">
                 <h4>Danh mục sản phẩm</h4>
-                <h6>Theo dõi {{ $danhmuc->where('trangthai', 0)->count() }} danh mục của sản phẩm</h6>
+                <h6>Theo dõi {{ $danhmuc->where('trangthai', 'Hiển thị')->count() }} danh mục của sản phẩm</h6>
             </div>
             <div class="page-btn">
-                <a href="{{ route('tao-danh-muc') }}" class="btn btn-added">
+                <a href="{{ route('quan-tri-vien.tao-danh-muc') }}" class="btn btn-added">
                     <img
-                        src="{{asset('')}}img/icons/plus.svg"
+                        src="{{asset('assets/admin/img/icons/plus.svg')}}"
                         class="me-1"
                         alt="img" />Thêm danh mục
                 </a>
@@ -39,7 +39,7 @@
 
                         </div>
                         <div class="search-input">
-                            <a class="btn btn-searchset"><img src="{{asset('')}}img/icons/search-white.svg" alt="img" /></a>
+                            <a class="btn btn-searchset"><img src="{{asset('assets/admin/img/icons/search-white.svg')}}" alt="img" /></a>
                         </div>
                     </div>
                     <!-- <div class="wordset">
@@ -49,21 +49,21 @@
                                     data-bs-toggle="tooltip"
                                     class="btn p-0"
                                     data-bs-placement="top"
-                                    title="Xuất file PDF" id="btnPdf"><img src="{{asset('')}}img/icons/pdf.svg" alt="img" /></button>
+                                    title="Xuất file PDF" id="btnPdf"><img src="{{asset('assets/admin')}}/img/icons/pdf.svg" alt="img" /></button>
                             </li>
                             <li>
                                 <button
                                     data-bs-toggle="tooltip"
                                     class="btn p-0"
                                     data-bs-placement="top"
-                                    title="Xuất file Excel" id="btnExcel"><img src="{{asset('')}}img/icons/excel.svg" alt="img" /></button>
+                                    title="Xuất file Excel" id="btnExcel"><img src="{{asset('assets/admin')}}/img/icons/excel.svg" alt="img" /></button>
                             </li>
                             <li>
                                 <button
                                     data-bs-toggle="tooltip"
                                     class="btn p-0"
                                     data-bs-placement="top"
-                                    title="In" id="btnPrint"><img src="{{asset('')}}img/icons/printer.svg" alt="img" /></button>
+                                    title="In" id="btnPrint"><img src="{{asset('assets/admin')}}/img/icons/printer.svg" alt="img" /></button>
                             </li>
                         </ul>
                     </div> -->
@@ -75,26 +75,35 @@
                         <thead>
                             <tr>
                                 <th>Tên danh mục</th>
+                                <th>Slug</th>
                                 <th>Số sản phẩm</th>
-                                <th>Cập nhật</th>
+                                <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($danhmuc as $dm)
                             <tr>
-                                <td>{{ $dm->ten }}</td>
-                                <td data-bs-toggle="tooltip" data-bs-placement="top" title="danh mục này có {{ $dm->sanpham_count }} sản phẩm">{{ $dm->sanpham_count }}</td>
-                                <td>{{ $dm->updated_at->format('d/m/Y - H:i') }}</td>
-                                <td>
-                                    <a class="me-3 btn" href="{{ route('chinh-sua-danh-muc',$dm->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa">
-                                        <img src="{{asset('')}}img/icons/edit.svg" alt="img" />
+                                <td class="productimgname">
+                                    <a href="{{url('/')}}" class="product-img">
+                                        <img
+                                        src="{{ asset('assets/client/images/categories/' . $dm->logo) }}"
+                                        alt="Not found" />
                                     </a>
-                                    <form action="{{ route('xoa-danh-muc', $dm->id) }}" method="POST" class="d-inline"
+                                    <a href="{{url('/')}}" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$dm->ten}}">{{$dm->ten}}</a>
+                                </td>
+                                <td>{{$dm->slug}}</td>
+                                <td data-bs-toggle="tooltip" data-bs-placement="top" title="danh mục này có {{ $dm->sanpham_count }} sản phẩm">{{ $dm->sanpham_count }}</td>
+                                <td>{{ $dm->trangthai }}</td>
+                                <td>
+                                    <a class="me-3 btn" href="{{ route('quan-tri-vien.chinh-sua-danh-muc',$dm->slug) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa">
+                                        <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
+                                    </a>
+                                    <form action="{{ route('quan-tri-vien.xoa-danh-muc', $dm->slug) }}" method="POST" class="d-inline"
                                         onsubmit="return confirm('Bạn chắc chắn muốn xóa danh mục này?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="me-3 btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa"><img src="{{asset('img/icons/delete.svg')}}" alt="img" /></button>
+                                        <button class="me-3 btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa"><img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" /></button>
                                     </form>
 
                                     </a>

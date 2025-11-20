@@ -29,13 +29,13 @@
                             </div>
                             <div class="flex-align gap-8 flex-between">
                                 <span class="text-md text-gray-900 fw-semibold flex-align gap-8 mb-10"><i class="ph-bold ph-shopping-cart text-main-600 text-lg"></i> Chi tiết đơn hàng</span>
-                                <a href="{{ $donhang->madon }}" class="fw-semibold text-sm text-gray-600 hover-text-main-600 transition-1 flex-align gap-4 mb-0 pb-0"><i class="ph-bold ph-notepad"></i> Xem chi tiết</a>
+                                <a href="{{ route('chi-tiet-don-hang', $donhang->madon) }}" class="fw-semibold text-sm text-gray-600 hover-text-main-600 transition-1 flex-align gap-4 mb-0 pb-0"><i class="ph-bold ph-notepad"></i> Xem chi tiết</a>
                             </div>
                                 @foreach ($donhang->chitietdonhang as $chitiet)
                                         <div class="py-6 px-5">
                                             @if($chitiet->dongia == 0)<span class="flex-align mt-10 mb-4 text-gray-900 text-sm fw-medium"><i class="ph-bold ph-gift text-main-600 text-lg pe-4"></i>Quà tặng của bạn</span>@endif
                                             <div class="d-flex align-items-center gap-12">
-                                                <a href="#" class="border border-gray-100 rounded-8 flex-center" style="max-width: 90px; max-height: 90px; width: 100%; height: 100%">
+                                                <a href="{{ route('chi-tiet-san-pham',$chitiet->bienthe->sanpham->slug) }}" class="border border-gray-100 rounded-8 flex-center" style="max-width: 90px; max-height: 90px; width: 100%; height: 100%">
                                                     <img src="{{ asset('assets/client') }}/images/thumbs/{{ $chitiet->bienthe->sanpham->hinhanhsanpham->first()->hinhanh ?? 'default-image.jpg' }}" alt="{{ $chitiet->bienthe->sanpham->ten }}" class="w-100 rounded-8">
                                                 </a>
                                                 <div class="text-start w-100">

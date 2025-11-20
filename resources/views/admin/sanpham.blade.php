@@ -53,7 +53,7 @@
           <div class="card-body pb-0">
             <label for="" class="mb-2"><strong>Lọc danh sách sản phẩm</strong></label>
             <div class="row">
-              <form id="filterForm" class="col-lg-12 col-sm-12" method="GET" action="{{ route('quan-tri-vien.danh-sach') }}">
+              <form id="filterForm" class="col-lg-12 col-sm-12" method="GET" action="{{ route('quan-tri-vien.danh-sach-san-pham') }}">
                 <div class="row">
                   <div class="col-lg col-sm-6 col-12">
                     <div class="form-group">
@@ -91,7 +91,7 @@
                   </div>
                   <div class="col-lg col-sm-6 col-12">
                     <div class="form-group row">
-                      <a class="btn btn-outline-danger col-lg-3" href="{{ route('quan-tri-vien.danh-sach') }}">X</a>
+                      <a class="btn btn-outline-danger col-lg-3" href="{{ route('quan-tri-vien.danh-sach-san-pham') }}">X</a>
                       <button type="submit" class="btn btn-filters ms-2 col-lg-3">
                         <img src="{{asset('assets/admin/img/icons/search-whites.svg')}}" alt="img" />
                       </button>
@@ -167,7 +167,7 @@
                   <p style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$tenbt ?: 'Không có biến thể'}}">{{$tenbt ?: 'Không có biến thể'}}</p>
                 </td>
                 <td>{{ $sp->bienthe->sum('soluong') }}</td>
-                <td>Không có</td>
+                <td>{{ number_format($sp->bienthe->sum('luotban'), 0, ',', '.') }}</td>
                 <td>{{ $sp->trangthai }}</td>
                 <td>
                   <a class="me-3" href="{{ route('quan-tri-vien.chi-tiet-san-pham', ['id' => $sp->id, 'slug' => Str::slug($sp->ten)]) }}" title="xem chi tiết">

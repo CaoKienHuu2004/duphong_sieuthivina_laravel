@@ -18,7 +18,7 @@
     <link
       rel="shortcut icon"
       type="image/x-icon"
-      href="{{asset('assets/admin/img/favicon_tayninhquan.png')}}"
+      href="{{asset('assets/client/images/logo/logo_nguyenban.png')}}"
     />
 
     <link rel="stylesheet" href="{{asset('assets/admin/css/bootstrap.min.css')}}" />
@@ -56,11 +56,11 @@
     <div class="main-wrapper">
       <div class="header">
         <div class="header-left active">
-          <a href="{{ route ('trang-chu') }}" class="logo">
-            <img src="{{asset('assets/admin/img/logo.png')}}" alt="" />
+          <a href="{{ route ('quan-tri-vien.trang-chu') }}" class="logo">
+            <img src="{{asset('assets/client/images/logo/logo_nguyenban.png')}}" alt="" />
           </a>
-          <a href="/" class="logo-small">
-            <img src="{{asset('assets/admin/img/logo-small.png')}}" alt="" />
+          <a href="{{ route ('quan-tri-vien.trang-chu') }}" class="logo-small">
+            <img src="{{asset('assets/client/images/logo/logo_nguyenban.png')}}" alt="" />
           </a>
           <a id="toggle_btn" href="javascript:void(0);"> </a>
         </div>
@@ -180,8 +180,8 @@
         <div class="sidebar-inner slimscroll">
           <div id="sidebar-menu" class="sidebar-menu">
             <ul>
-              <li class="{{ request()->routeIs('trang-chu') ? 'active' : '' }}">
-                <a href="/"
+              <li class="{{ request()->routeIs('quan-tri-vien.trang-chu') ? 'active' : '' }}">
+                <a href="{{ route('quan-tri-vien.trang-chu') }}"
                   ><img src="{{asset('assets/admin/img/icons/dashboard.svg')}}" alt="img" /><span>
                     Tổng quan</span
                   >
@@ -195,8 +195,8 @@
                   <span class="menu-arrow"></span
                 ></a>
                 <ul>
-                  <li><a class="active" href="">Danh sách sản phẩm</a></li>
-                  <li><a class="" href="">Danh mục sản phẩm</a></li>
+                  <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-san-pham') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-san-pham') }}">Danh sách sản phẩm</a></li>
+                  <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-danh-muc') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-danh-muc') }}">Danh mục sản phẩm</a></li>
                   <li><a class="" href="">Thương hiệu sản phẩm</a></li>
                   <li><a class="" href="">Kho hàng</a></li>
                 </ul>

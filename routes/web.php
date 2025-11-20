@@ -78,12 +78,13 @@ Route::middleware(['auth','vaitro:admin']) // Kiểm tra đăng nhập và role
     ->name('quan-tri-vien.')         // Tiền tố tên route: admin.*
     ->group(function () {
 
-        Route::get('/trang-chu', [admin\HomeController::class, 'index'])->name('trang-chu');
+        Route::get('/', [admin\HomeController::class, 'index'])->name('trang-chu');
+        Route::get('/trang-chu', [admin\HomeController::class, 'index']);
 
         /* ===================== SẢN PHẨM ===================== */
         Route::prefix('san-pham')->group(function () {
-            Route::get('/danh-sach', [admin\SanphamController::class, 'index'])->name('danh-sach');
-            Route::get('/', [admin\SanphamController::class, 'index']);
+            Route::get('/danh-sach', [admin\SanphamController::class, 'index']);
+            Route::get('/', [admin\SanphamController::class, 'index'])->name('danh-sach-san-pham');
 
             Route::get('/tao-san-pham', [admin\SanphamController::class, 'create'])->name('tao-san-pham');
             Route::post('/luu', [admin\SanphamController::class, 'store'])->name('luu-san-pham');
@@ -95,6 +96,20 @@ Route::middleware(['auth','vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::get('/{id}/chinh-sua', [admin\SanphamController::class, 'edit'])->name('chinh-sua-san-pham');
             Route::post('/{id}/cap-nhat', [admin\SanphamController::class, 'update'])->name('cap-nhat-san-pham'); // giữ POST theo dự án
             Route::get('/{id}/xoa', [admin\SanphamController::class, 'destroy'])->name('xoa-san-pham');           // giữ GET theo dự án
+        });
+
+        /* ===================== DANH MỤC ===================== */
+        Route::prefix('danh-muc')->group(function () {
+            Route::get('/danh-sach', [admin\DanhmucController::class, 'index']);
+            Route::get('/', [admin\DanhmucController::class, 'index'])->name('danh-sach-danh-muc');
+
+            Route::get('/tao-danh-muc', [admin\DanhmucController::class, 'create'])->name('tao-danh-muc');
+            Route::post('/luu', [admin\DanhmucController::class, 'store'])->name('luu-danh-muc');
+
+            Route::get('/{slug}/chinh-sua', [admin\DanhmucController::class, 'edit'])->name('chinh-sua-danh-muc');
+            Route::post('/{slug}/cap-nhat', [admin\DanhmucController::class, 'update'])->name('cap-nhat-danh-muc');
+
+            Route::delete('/{slug}/xoa', [admin\DanhmucController::class, 'destroy'])->name('xoa-danh-muc');
         });
         
 });
