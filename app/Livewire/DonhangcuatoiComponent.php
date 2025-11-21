@@ -115,7 +115,7 @@ class DonhangcuatoiComponent extends Component
     {
         // Khi chọn 'Chờ thanh toán', buộc phải đặt trạng thái xử lý là 'Chờ xác nhận' 
         // để hiển thị đúng đơn hàng mới
-        $this->trangThaiHienTai = 'Chờ thanh toán';
+        $this->trangThaiHienTai = 'Chờ xác nhận';
         $this->trangThaiThanhToanHienTai = $status;
         $this->loadDonHangs();
     }

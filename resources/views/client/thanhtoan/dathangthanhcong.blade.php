@@ -8,11 +8,35 @@
     <div class="page">
         <section class="mt-20 mb-10">
             <div class="container container-lg">
+                @if($donhang->trangthai == 'Đã hủy đơn')
+                <div class="text-center mb-20">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="#DE473F" viewBox="0 0 256 256"><path d="M168.49,104.49,145,128l23.52,23.51a12,12,0,0,1-17,17L128,145l-23.51,23.52a12,12,0,0,1-17-17L111,128,87.51,104.49a12,12,0,0,1,17-17L128,111l23.51-23.52a12,12,0,0,1,17,17ZM236,128A108,108,0,1,1,128,20,108.12,108.12,0,0,1,236,128Zm-24,0a84,84,0,1,0-84,84A84.09,84.09,0,0,0,212,128Z"></path></svg>
+                    <h6 class="mt-10 mb-6">Bạn đã hủy đơn hàng này !</h6>
+                    <div class="text-md text-gray-700"><i class="ph-bold ph-smiley-sad text-2xl text-warning-600"></i> <span class="m-0 p-0">Rất tiếc khi bạn đã hủy đơn, bạn hãy mua sắm trên Siêu Thị Vina tiếp nhé !</span> <i class="ph-bold ph-smiley-sad text-2xl text-warning-600"></i></div>
+                </div>
+                @else
                 <div class="text-center mb-20">
                     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="#2ABC79" viewBox="0 0 256 256"><path d="M176.49,95.51a12,12,0,0,1,0,17l-56,56a12,12,0,0,1-17,0l-24-24a12,12,0,1,1,17-17L112,143l47.51-47.52A12,12,0,0,1,176.49,95.51ZM236,128A108,108,0,1,1,128,20,108.12,108.12,0,0,1,236,128Zm-24,0a84,84,0,1,0-84,84A84.09,84.09,0,0,0,212,128Z"></path></svg>
                     <h6 class="mt-10 mb-6">Bạn đã đặt hàng thành công !</h6>
-                    <span class="flex-align gap-4 justify-content-center text-md text-gray-700">Siêu Thị Vina đã nhận được đơn hàng của bạn và sớm giao hàng đến tận tay bạn <i class="ph-bold ph-smiley-wink text-2xl text-warning-600"></i></span>
+                    <div class="text-md text-gray-700"><i class="ph-bold ph-smiley-wink text-2xl text-warning-600"></i> <span class="m-0 p-0">Siêu Thị Vina đã nhận được đơn hàng của bạn và sớm giao hàng đến tận tay bạn</span> <i class="ph-bold ph-smiley-wink text-2xl text-warning-600"></i></div>
                 </div>
+                @endif
+                @if ($donhang->trangthaithanhtoan == 'Chờ thanh toán' && $donhang->phuongthuc->maphuongthuc == 'QRCODE')
+                    <div class="text-center pt-20 mb-30">
+                        <h6 class="mt-10 mb-6">--- Thông tin chuyển khoản ---</h6>
+                        <div class="flex-align justify-content-center gap-12 my-20">
+                            <img class="rounded-circle p-2" src="{{ asset('assets/client') }}/images/thumbs/TPBank_logo.jpg" alt="" style="width:60px;">
+                            <div class="text-start">
+                                <div class="text-sm text-gray-600 fw-bold">Chủ tài khoản: Tran Ba Ho</div>
+                                <div class="text-lg text-gray-600">0011 7137 001</div>
+                                <div class="text-sm text-gray-600">thayhotb</div>
+                            </div>
+                        </div>
+                        <img src={{ $qrCodeUrl }}" alt="" style="width:300px;">
+                        <div class="text-md text-gray-600 fw-medium mt-20">Nội dung thanh toán: <span class="fw-semibold text-lg">Thanh toan don hang {{ $donhang->madon }}</span></div>
+                        <span class="text-main-600 text-sm fst-italic">* Quý khách vui lòng nhập đúng nội dung thanh toán khi chuyển khoản</span>
+                    </div>
+                @endif
                 <div class="row flex-align-center justify-content-center">
                     <div class="col-lg-9">
                         <div class="border border-gray-200 p-20 rounded-8">
@@ -21,7 +45,7 @@
                                     <span class="fw-semibold text-sm text-gray-600">Mã đơn hàng:</span> <span class="fst-italic fw-semibold">#{{ $donhang->madon }}</span>
                                 </div>
                                 <div class="col-lg-4 text-sm text-center">
-                                    <span class="fw-semibold text-sm text-gray-600">Trạng thái đơn hàng:</span> <span class="fst-italic text-info-600">{{ $donhang->trangthai }}</span>
+                                    <span class="fw-semibold text-sm text-gray-600">Trạng thái thanh toán:</span> <span class="fst-italic @if($donhang->trangthaithanhtoan == 'Hủy thanh toán') text-main-600 @else text-warning-600 @endif">{{ $donhang->trangthaithanhtoan }}</span>
                                 </div>
                                 <div class="col-lg-4 text-sm text-end">
                                     <span class="fw-semibold text-sm text-gray-600">Ngày đặt:</span> <span class="fst-italic">{{ $donhang->created_at->format('d/m/Y - H:i') }}</span>

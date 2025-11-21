@@ -214,13 +214,21 @@
                                     <div class="flex-align flex-between gap-12 mt-10">
                                         <a href="{{ route('don-hang-cua-toi') }}" class="text-main-600 text-md fw-medium flex-align gap-8 mt-10 "><i class="ph-bold ph-arrow-fat-lines-left text-main-600 text-md"></i>Quay lại đơn hàng của tôi</a>
                                          @if($donhang->trangthai == 'Chờ xác nhận' || $donhang->trangthai == 'Chờ thanh toán')
-                                            <form action="{{ route('huy-don-hang') }}" method="POST">
+                                            
+                                            <div class="flex-align gap-12">
+                                                @if ($donhang->trangthaithanhtoan === 'Chờ thanh toán')
+                                                    <a href="{{ route('dat-hang-thanh-cong', ['madon' => $donhang->madon]) }}"
+                                                    class="fw-medium text-main-600 text-md border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
+                                                    <i class="ph-bold ph-credit-card"></i> Quay lại thanh toán</a>
+                                                @endif
+                                                <form action="{{ route('huy-don-hang') }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="id_donhang" value="{{ $donhang->id }}">
                                                 <button type="submit" class="fw-medium text-main-600 text-md border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
                                                     <i class="ph-bold ph-trash"></i> Hủy đơn</button>
                                             </form>
+                                            </div>
                                             @else
                                                     <span class="fw-medium text-main-300 text-md border border-main-300 px-8 py-4 rounded-4 transition-1 flex-align gap-8">
                                                         <i class="ph-bold ph-trash"></i> Hủy đơn hàng</span>

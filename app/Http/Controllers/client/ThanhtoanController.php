@@ -239,7 +239,6 @@ class ThanhtoanController extends Controller
             
             // 5. Kết thúc Transaction
             DB::commit();
-            
 
             return redirect()->route('dat-hang-thanh-cong', ['madon' => $order->madon])
                              ->with('success', 'Đơn hàng **' . $order->madon . '** của bạn đã được đặt thành công!');
@@ -259,19 +258,43 @@ class ThanhtoanController extends Controller
         $madon = $request->query('madon');
         $donhang = DonhangModel::with([
             'chitietdonhang.bienthe.sanpham.hinhanhsanpham',
-            'phuongthuc', // Phương thức thanh toán
-            'diachinguoidung', // Địa chỉ giao hàng
-            'phivanchuyen', // Phí vận chuyển
-            'magiamgia' // Mã giảm giá (nếu có)
+            'phuongthuc', 
+            'diachinguoidung', 
+            'phivanchuyen', 
+            'magiamgia' 
         ])
-        ->where('madon', $madon) // <-- Lọc theo madon
-        ->where('id_nguoidung', Auth::id()) // <-- **QUAN TRỌNG: Đảm bảo đơn hàng này thuộc về user đang đăng nhập**
-        ->first(); // <-- Lấy bản ghi đầu tiên
+        ->where('madon', $madon) 
+        ->where('id_nguoidung', Auth::id()) 
+        ->first(); 
 
         if (!$donhang) {
             return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
         }
 
-        return view('client.thanhtoan.dathangthanhcong', compact('donhang'));
+        // --- TẠO MÃ QR VIETQR TỰ ĐỘNG ---
+        $qrCodeUrl = null;
+
+        if ($donhang->trangthaithanhtoan !== 'Đã thanh toán') {
+            
+            $bankId = 'TPB'; 
+            $accountNo = '00117137001'; 
+            $accountName = 'TRAN BA HO'; 
+            $template = 'compact2'; 
+
+            $amount = $donhang->thanhtien;
+            
+            // CẬP NHẬT: Nội dung có dấu cách và thêm tiền tố
+            $rawContent = "Thanh toan don hang " . $donhang->madon;
+            
+            // MÃ HÓA URL (URL Encode) để xử lý khoảng trắng
+            $description = urlencode($rawContent);
+            
+            // Mã hóa cả tên tài khoản cho an toàn (phòng trường hợp có ký tự lạ)
+            $encodedAccountName = urlencode($accountName);
+
+            $qrCodeUrl = "https://img.vietqr.io/image/{$bankId}-{$accountNo}-{$template}.png?amount={$amount}&addInfo={$description}&accountName={$encodedAccountName}";
+        }
+
+        return view('client.thanhtoan.dathangthanhcong', compact('donhang', 'qrCodeUrl'));
     }
 }

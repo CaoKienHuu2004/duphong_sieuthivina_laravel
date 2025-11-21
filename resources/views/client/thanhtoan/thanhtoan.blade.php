@@ -114,8 +114,8 @@
                                 </span>
                             </h6>
                             @foreach ($phuongthucs as $phuongthuc)
-                                <label for="phuongthuc1" class="w-100 mt-10 border border-gray-100 hover-border-main-600 hover-bg-main-50 py-16 px-12 rounded-4 transition-1" style="cursor:pointer;">
-                                    <div class="payment-item">
+                                <label for="phuongthuc{{ $phuongthuc->id }}" class="w-100 mt-10 border border-gray-100 hover-border-main-600 hover-bg-main-50 py-16 px-12 rounded-4 transition-1" style="cursor:pointer;">
+                                    <div class="">
                                         <div class="form-check common-check common-radio mb-0">
                                             <input class="form-check-input" type="radio" name="id_phuongthuc" id="phuongthuc{{ $phuongthuc->id }}" value="{{ $phuongthuc->id }}" @if ($phuongthuc->id == 1) checked @endif>
                                             <label class="form-check-label fw-medium text-neutral-600 text-sm w-100"

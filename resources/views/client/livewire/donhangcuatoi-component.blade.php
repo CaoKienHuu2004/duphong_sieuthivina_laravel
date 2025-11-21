@@ -113,7 +113,7 @@
                                         } 
                                         // Các trạng thái thanh toán khác (Đã thanh toán, Chưa thanh toán) sẽ hiển thị trạng thái xử lý ($donHang->trangthai)
                                     @endphp
-                            @if ($donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Thanh toán khi nhận hàng')
+                            @if ($donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Thanh toán khi nhận hàng'||$donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Chờ thanh toán')
                                 <span class="fw-medium text-xs text-warning-700 bg-warning-100 px-6 py-4 rounded-4 flex-align gap-8">
                                     <i class="ph-bold ph-clock-countdown"></i> {{ $statusText }}
                                 </span>
@@ -204,6 +204,11 @@
                             <span class="fw-semibold text-sm text-gray-600">
                                 @if($donHang->trangthai == 'Chờ xác nhận' || $donHang->trangthai == 'Chờ thanh toán')
                                 <div class="flex-align gap-12">
+                                    @if ($donHang->trangthaithanhtoan === 'Chờ thanh toán')
+                                        <a href="{{ route('dat-hang-thanh-cong', ['madon' => $donHang->madon]) }}"
+                                         class="fw-medium text-main-600 text-sm border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
+                                        <i class="ph-bold ph-credit-card"></i> Quay lại thanh toán</a>
+                                    @endif
                                     <button 
                                     wire:click="huyDonHang({{ $donHang->id }})" 
                                     wire:confirm="Bạn có chắc chắn muốn hủy đơn hàng này không?" 
@@ -213,6 +218,7 @@
                                         class="fw-medium text-main-400 text-sm border border-main-400 px-8 py-4 rounded-4 transition-1 flex-align gap-8">
                                         <i class="ph-bold ph-trash"></i> Hủy đơn hàng
                                     </div> --}}
+                                    
                                     <a href="{{ route('chi-tiet-don-hang',$donHang->madon) }}" class="fw-medium text-main-600 text-sm border border-main-600 hover-bg-main-600 hover-text-white px-8 py-4 rounded-4 transition-1 flex-align gap-8">
                                         <i class="ph-bold ph-eye"></i> Xem chi tiết</a>
                                 </div>
