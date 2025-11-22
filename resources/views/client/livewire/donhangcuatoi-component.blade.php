@@ -113,7 +113,7 @@
                                         } 
                                         // Các trạng thái thanh toán khác (Đã thanh toán, Chưa thanh toán) sẽ hiển thị trạng thái xử lý ($donHang->trangthai)
                                     @endphp
-                            @if ($donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Thanh toán khi nhận hàng'||$donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Chờ thanh toán')
+                            @if ($donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Thanh toán khi nhận hàng'||$donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Chờ thanh toán'||$donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Đã thanh toán')
                                 <span class="fw-medium text-xs text-warning-700 bg-warning-100 px-6 py-4 rounded-4 flex-align gap-8">
                                     <i class="ph-bold ph-clock-countdown"></i> {{ $statusText }}
                                 </span>

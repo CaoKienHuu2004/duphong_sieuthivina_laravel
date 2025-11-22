@@ -24,6 +24,32 @@ Route::prefix('/san-pham')->group(function () {
 
 });
 
+Route::prefix('/bai-viet')->group(function () {
+
+    Route::get('/', [client\BaivietController::class, 'index'])->name('danh-sach-bai-viet');
+    Route::get('/{slug}', [client\BaivietController::class, 'chitiet'])->name('chi-tiet-bai-viet');
+
+});
+
+Route::get('/lien-he', function () {
+    return view('client.gioithieu.lienhe');
+});
+
+Route::get('/chinh-sach-mua-hang', function () {
+    return view('client.gioithieu.chinhsachmuahang');
+});
+
+Route::get('/chinh-sach-nguoi-dung', function () {
+    return view('client.gioithieu.chinhsachnguoidung');
+});
+
+Route::get('/dieu-khoan', function () {
+    return view('client.gioithieu.dieukhoan');
+});
+
+Route::get('/tra-cuu-don-hang', [client\DonhangController::class, 'tracuudonhang'])->name('tra-cuu-don-hang');
+Route::post('/tra-cuu-don-hang', [client\DonhangController::class, 'tracuu'])->name('xu-ly-tra-cuu-don-hang');
+
 Route::middleware('guest')->group(function () {
     Route::get('/dang-nhap', [client\NguoidungController::class, 'login'])->name('login');
     Route::post('/xac-thuc-dang-nhap', [client\NguoidungController::class, 'handleLogin'])->name('handleLogin');

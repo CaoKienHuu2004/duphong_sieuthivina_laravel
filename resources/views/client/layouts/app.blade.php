@@ -88,7 +88,7 @@
             </li>
           @endguest
           <li class="nav-menu__item">
-            <a href="#" class="nav-menu__link text-heading-two hover-text-main-600"><i
+            <a href="{{ route('tra-cuu-don-hang') }}" class="nav-menu__link text-heading-two hover-text-main-600"><i
                 class="ph-bold ph-notepad text-main-600"></i> Tra cứu đơn hàng</a>
           </li>
 
@@ -290,7 +290,7 @@
           </li>
 
           <li class="flex-align">
-            <a href="javascript:void(0)" class="text-white-6 text-sm hover-text-white">
+            <a href="{{ route('tra-cuu-don-hang') }}" class="text-white-6 text-sm hover-text-white">
               <i class="ph-bold ph-notepad"></i>
               Tra cứu đơn hàng</a>
           </li>
@@ -436,20 +436,20 @@
             <span
               class="w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0"><i
                 class="ph-fill ph-phone-call"></i></span>
-            <a href="tel:++886911975996" class="text-md text-gray-900 hover-text-main-600">+886 0911 975 996</a>
+            <a href="tel:+886911975996" class="text-md text-gray-900 hover-text-main-600">+886 0911 975 996</a>
           </div>
           <div class="flex-align gap-16 mb-16">
             <span
               class="w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0"><i
                 class="ph-fill ph-envelope"></i></span>
-            <a href="mailto:support24@marketpro.com"
+            <a href="mailto:hotro@sieuthivina.com"
               class="text-md text-gray-900 hover-text-main-600">hotro@sieuthivina.com</a>
           </div>
           <div class="flex-align gap-16 mb-16">
             <span
               class="w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0"><i
                 class="ph-fill ph-map-pin"></i></span>
-            <span class="text-md text-gray-900 ">No.XXXX Fengshi.rd, Shigang - Taichung, Taiwan</span>
+            <span class="text-md text-gray-900 ">801/2A Phạm Thế Hiển, Phường 4, Quận 8, TP.HCM</span>
           </div>
         </div>
 
@@ -463,16 +463,13 @@
               <a href="shop.html" class="text-gray-600 hover-text-main-600">Liên hệ hỗ trợ</a>
             </li>
             <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Điều khoản sử dụng</a>
+              <a href="{{ url('/dieu-khoan') }}" class="text-gray-600 hover-text-main-600">Điều khoản sử dụng</a>
             </li>
             <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Chính sách mua hàng</a>
+              <a href="{{ url('/chinh-sach-mua-hang') }}" class="text-gray-600 hover-text-main-600">Chính sách mua hàng</a>
             </li>
             <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Chính sách người dùng</a>
-            </li>
-            <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Chính sách cửa hàng</a>
+              <a href="{{ url('/chinh-sach-nguoi-dung') }}" class="text-gray-600 hover-text-main-600">Chính sách người dùng</a>
             </li>
 
           </ul>

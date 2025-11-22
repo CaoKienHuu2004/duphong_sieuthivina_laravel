@@ -873,8 +873,137 @@
       </div>
     </div>
   </section>
+  <section>
+    <div class="container container-lg px-0">
+      <div class="section-heading mb-24">
+          <div class="flex-between flex-wrap gap-2">
+            <h6 class="mb-0 wow fadeInLeft"><i class="ph-bold ph-hand-withdraw text-main-600"></i> Nhiều bài viết cần bạn khám phá
+            </h6>
+            <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 71%;"></div>
+            
+          </div>
+        </div>
+        <div class="row gy-4">
+            <div class="col-xxl-3 col-xl-3 col-sm-6 col-xs-6">
+                <div class="border border-gray-100 hover-border-main-600 rounded-6 transition-1">
+                    <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                            <img src="{{ asset('assets/client') }}/images/thumbs/ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp" 
+                                 alt="" 
+                                 class="w-100 rounded-top-2" style="height: 230px; object-fit: cover;" />
+                    </a>
+                    <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                        <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                              <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="link text-line-2" tabindex="0">Ưu đãi cùng Siêu Thị Vina, xem ngày đừng chờ đợi nhé</a>
+                        </h6>
+                        <div class="flex-align justify-content-between mt-2">
+                            <div class="flex-align gap-6">
+                                <span class="text-xs fw-medium text-gray-500"><i class="ph-bold ph-calendar-blank"></i> 25/06/2025</span>
+                            </div>
+
+                        </div>
+                        <span class="mt-10 text-gray-600 text-sm fw-normal">
+                            Mô tả ngắn về bài viết để thu hút người đọc quan tâm và nhấp vào xem chi tiết...
+                        </span>
+                        <div class="flex-align gap-12 mt-10">
+                            <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="text-sm fw-semibold text-main-600 hover-text-decoration-underline transition-1">
+                                Đọc thêm <i class="ph-bold ph-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-3 col-xl-3 col-sm-6 col-xs-6">
+                <div class="border border-gray-100 hover-border-main-600 rounded-6 transition-1">
+                    <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                            <img src="{{ asset('assets/client') }}/images/thumbs/ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp" 
+                                 alt="" 
+                                 class="w-100 rounded-top-2" style="height: 230px; object-fit: cover;" />
+                    </a>
+                    <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                        <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                              <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="link text-line-2" tabindex="0">Ưu đãi cùng Siêu Thị Vina, xem ngày đừng chờ đợi nhé</a>
+                        </h6>
+                        <div class="flex-align justify-content-between mt-2">
+                            <div class="flex-align gap-6">
+                                <span class="text-xs fw-medium text-gray-500"><i class="ph-bold ph-calendar-blank"></i> 25/06/2025</span>
+                            </div>
+
+                        </div>
+                        <span class="mt-10 text-gray-600 text-sm fw-normal">
+                            Mô tả ngắn về bài viết để thu hút người đọc quan tâm và nhấp vào xem chi tiết...
+                        </span>
+                        <div class="flex-align gap-12 mt-10">
+                            <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="text-sm fw-semibold text-main-600 hover-text-decoration-underline transition-1">
+                                Đọc thêm <i class="ph-bold ph-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-3 col-xl-3 col-sm-6 col-xs-6">
+                <div class="border border-gray-100 hover-border-main-600 rounded-6 transition-1">
+                    <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                            <img src="{{ asset('assets/client') }}/images/thumbs/ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp" 
+                                 alt="" 
+                                 class="w-100 rounded-top-2" style="height: 230px; object-fit: cover;" />
+                    </a>
+                    <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                        <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                              <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="link text-line-2" tabindex="0">Ưu đãi cùng Siêu Thị Vina, xem ngày đừng chờ đợi nhé</a>
+                        </h6>
+                        <div class="flex-align justify-content-between mt-2">
+                            <div class="flex-align gap-6">
+                                <span class="text-xs fw-medium text-gray-500"><i class="ph-bold ph-calendar-blank"></i> 25/06/2025</span>
+                            </div>
+
+                        </div>
+                        <span class="mt-10 text-gray-600 text-sm fw-normal">
+                            Mô tả ngắn về bài viết để thu hút người đọc quan tâm và nhấp vào xem chi tiết...
+                        </span>
+                        <div class="flex-align gap-12 mt-10">
+                            <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="text-sm fw-semibold text-main-600 hover-text-decoration-underline transition-1">
+                                Đọc thêm <i class="ph-bold ph-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-3 col-xl-3 col-sm-6 col-xs-6">
+                <div class="border border-gray-100 hover-border-main-600 rounded-6 transition-1">
+                    <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                            <img src="{{ asset('assets/client') }}/images/thumbs/ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp" 
+                                 alt="" 
+                                 class="w-100 rounded-top-2" style="height: 230px; object-fit: cover;" />
+                    </a>
+                    <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                        <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                              <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="link text-line-2" tabindex="0">Ưu đãi cùng Siêu Thị Vina, xem ngày đừng chờ đợi nhé</a>
+                        </h6>
+                        <div class="flex-align justify-content-between mt-2">
+                            <div class="flex-align gap-6">
+                                <span class="text-xs fw-medium text-gray-500"><i class="ph-bold ph-calendar-blank"></i> 25/06/2025</span>
+                            </div>
+
+                        </div>
+                        <span class="mt-10 text-gray-600 text-sm fw-normal">
+                            Mô tả ngắn về bài viết để thu hút người đọc quan tâm và nhấp vào xem chi tiết...
+                        </span>
+                        <div class="flex-align gap-12 mt-10">
+                            <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="text-sm fw-semibold text-main-600 hover-text-decoration-underline transition-1">
+                                Đọc thêm <i class="ph-bold ph-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
   <!-- ========================= CÓ THỂ BẠN YÊU THÍCH end ================================ -->
   </div>
+
+
+
 
   <div class="page d-block d-lg-none">
       <!-- ============================ BANNER start =============================== -->
@@ -1680,6 +1809,132 @@
 
         </div>
       </div>
+    </div>
+  </section>
+  <section>
+    <div class="container container-lg overflow-hidden mb-20">
+      <div class="section-heading mb-24">
+          <div class="flex-between flex-wrap gap-2">
+            <h6 class="mb-0 wow fadeInLeft"><i class="ph-bold ph-hand-withdraw text-main-600"></i> Nhiều bài viết cần bạn khám phá
+            </h6>
+            <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 71%;"></div>
+            
+          </div>
+        </div>
+        <div class="row gy-4">
+            <div class="col-xxl-3 col-xl-3 col-sm-6 col-xs-6">
+                <div class="border border-gray-100 hover-border-main-600 rounded-6 transition-1">
+                    <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                            <img src="{{ asset('assets/client') }}/images/thumbs/ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp" 
+                                 alt="" 
+                                 class="w-100 rounded-top-2" style="height: 230px; object-fit: cover;" />
+                    </a>
+                    <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                        <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                              <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="link text-line-2" tabindex="0">Ưu đãi cùng Siêu Thị Vina, xem ngày đừng chờ đợi nhé</a>
+                        </h6>
+                        <div class="flex-align justify-content-between mt-2">
+                            <div class="flex-align gap-6">
+                                <span class="text-xs fw-medium text-gray-500"><i class="ph-bold ph-calendar-blank"></i> 25/06/2025</span>
+                            </div>
+
+                        </div>
+                        <span class="mt-10 text-gray-600 text-sm fw-normal">
+                            Mô tả ngắn về bài viết để thu hút người đọc quan tâm và nhấp vào xem chi tiết...
+                        </span>
+                        <div class="flex-align gap-12 mt-10">
+                            <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="text-sm fw-semibold text-main-600 hover-text-decoration-underline transition-1">
+                                Đọc thêm <i class="ph-bold ph-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-3 col-xl-3 col-sm-6 col-xs-6">
+                <div class="border border-gray-100 hover-border-main-600 rounded-6 transition-1">
+                    <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                            <img src="{{ asset('assets/client') }}/images/thumbs/ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp" 
+                                 alt="" 
+                                 class="w-100 rounded-top-2" style="height: 230px; object-fit: cover;" />
+                    </a>
+                    <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                        <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                              <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="link text-line-2" tabindex="0">Ưu đãi cùng Siêu Thị Vina, xem ngày đừng chờ đợi nhé</a>
+                        </h6>
+                        <div class="flex-align justify-content-between mt-2">
+                            <div class="flex-align gap-6">
+                                <span class="text-xs fw-medium text-gray-500"><i class="ph-bold ph-calendar-blank"></i> 25/06/2025</span>
+                            </div>
+
+                        </div>
+                        <span class="mt-10 text-gray-600 text-sm fw-normal">
+                            Mô tả ngắn về bài viết để thu hút người đọc quan tâm và nhấp vào xem chi tiết...
+                        </span>
+                        <div class="flex-align gap-12 mt-10">
+                            <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="text-sm fw-semibold text-main-600 hover-text-decoration-underline transition-1">
+                                Đọc thêm <i class="ph-bold ph-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-3 col-xl-3 col-sm-6 col-xs-6">
+                <div class="border border-gray-100 hover-border-main-600 rounded-6 transition-1">
+                    <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                            <img src="{{ asset('assets/client') }}/images/thumbs/ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp" 
+                                 alt="" 
+                                 class="w-100 rounded-top-2" style="height: 230px; object-fit: cover;" />
+                    </a>
+                    <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                        <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                              <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="link text-line-2" tabindex="0">Ưu đãi cùng Siêu Thị Vina, xem ngày đừng chờ đợi nhé</a>
+                        </h6>
+                        <div class="flex-align justify-content-between mt-2">
+                            <div class="flex-align gap-6">
+                                <span class="text-xs fw-medium text-gray-500"><i class="ph-bold ph-calendar-blank"></i> 25/06/2025</span>
+                            </div>
+
+                        </div>
+                        <span class="mt-10 text-gray-600 text-sm fw-normal">
+                            Mô tả ngắn về bài viết để thu hút người đọc quan tâm và nhấp vào xem chi tiết...
+                        </span>
+                        <div class="flex-align gap-12 mt-10">
+                            <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="text-sm fw-semibold text-main-600 hover-text-decoration-underline transition-1">
+                                Đọc thêm <i class="ph-bold ph-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-3 col-xl-3 col-sm-6 col-xs-6">
+                <div class="border border-gray-100 hover-border-main-600 rounded-6 transition-1">
+                    <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                            <img src="{{ asset('assets/client') }}/images/thumbs/ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao-1.webp" 
+                                 alt="" 
+                                 class="w-100 rounded-top-2" style="height: 230px; object-fit: cover;" />
+                    </a>
+                    <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                        <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                              <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="link text-line-2" tabindex="0">Ưu đãi cùng Siêu Thị Vina, xem ngày đừng chờ đợi nhé</a>
+                        </h6>
+                        <div class="flex-align justify-content-between mt-2">
+                            <div class="flex-align gap-6">
+                                <span class="text-xs fw-medium text-gray-500"><i class="ph-bold ph-calendar-blank"></i> 25/06/2025</span>
+                            </div>
+
+                        </div>
+                        <span class="mt-10 text-gray-600 text-sm fw-normal">
+                            Mô tả ngắn về bài viết để thu hút người đọc quan tâm và nhấp vào xem chi tiết...
+                        </span>
+                        <div class="flex-align gap-12 mt-10">
+                            <a href="{{ route('chi-tiet-bai-viet','slug') }}" class="text-sm fw-semibold text-main-600 hover-text-decoration-underline transition-1">
+                                Đọc thêm <i class="ph-bold ph-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
   </section>
   <!-- ========================= CÓ THỂ BẠN YÊU THÍCH end ================================ -->

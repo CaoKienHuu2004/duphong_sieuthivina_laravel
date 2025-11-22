@@ -35,5 +35,23 @@ class DonhangController extends Controller
 
         return redirect()->back()->with('error', 'Không thể hủy đơn hàng này.');
     }
+
+    public function tracuudonhang()
+    {
+        return view('client.thanhtoan.tracuudonhang');
+    }
+
+    public function tracuu(Request $request)
+    {
+        $madon = $request->input('madon');
+
+        $donhang = DonhangModel::where('madon', $madon)->first();
+
+        if ($donhang) {
+            return view('client.thanhtoan.tracuudonhang', compact('donhang'));
+        } else {
+            return redirect()->back()->with('error', 'Mã đơn hàng không tồn tại.');
+        }
+    }
     
 }
