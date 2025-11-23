@@ -37,6 +37,11 @@ class BientheModel extends Model
         return $this->belongsTo(LoaibientheModel::class, 'id_loaibienthe','id');
     }
 
+    public function quatangsukien()
+    {
+        return $this->hasOne(QuatangsukienModel::class, 'id_bienthe', 'id');
+    }
+
     // ===========================================================================================================================
     // BỘ TRUY CẬP (ACCESSORS)
     // ===========================================================================================================================

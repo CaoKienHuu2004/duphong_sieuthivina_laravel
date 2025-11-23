@@ -47,6 +47,11 @@ Route::get('/dieu-khoan', function () {
     return view('client.gioithieu.dieukhoan');
 });
 
+Route::prefix('/qua-tang')->group(function () {
+    Route::get('/', [client\QuatangsukienController::class, 'index'])->name('qua-tang');
+    Route::get('/{slug}', [client\QuatangsukienController::class, 'show'])->name('chi-tiet-qua-tang');
+});
+
 Route::get('/tra-cuu-don-hang', [client\DonhangController::class, 'tracuudonhang'])->name('tra-cuu-don-hang');
 Route::post('/tra-cuu-don-hang', [client\DonhangController::class, 'tracuu'])->name('xu-ly-tra-cuu-don-hang');
 
