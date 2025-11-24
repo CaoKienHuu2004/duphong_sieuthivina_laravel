@@ -337,21 +337,40 @@ class GiohangComponent extends Component
     private function capnhatgiohang(int $bientheId, int $soluong, float $thanhtien)
     {
         if (Auth::check()) {
-            GiohangModel::where('id_nguoidung', Auth::id())
+            // [LOGIC MỚI] Tìm dòng cụ thể để cập nhật thay vì update hàng loạt
+            
+            // 1. Tìm các sản phẩm trùng khớp (Lọc thanhtien > 0 để KHÔNG cập nhật nhầm vào dòng quà tặng 0đ)
+            $cartItems = GiohangModel::where('id_nguoidung', Auth::id())
                 ->where('id_bienthe', $bientheId)
-                ->update([
-                    'soluong' => $soluong,
-                    'thanhtien' => $thanhtien,
-                ]);
+                ->where('thanhtien', '>', 0) // Quan trọng: Chỉ lấy sản phẩm mua, không lấy quà tặng
+                ->get();
+
+            if ($cartItems->isEmpty()) {
+                // Trường hợp hy hữu: không tìm thấy item nào (có thể đã bị xóa)
+                return;
+            }
+
+            // 2. Lấy item đầu tiên để cập nhật
+            $firstItem = $cartItems->first();
+            $firstItem->update([
+                'soluong' => $soluong,
+                'thanhtien' => $thanhtien,
+            ]);
+
+            // 3. Nếu lỡ có các dòng trùng lặp khác (của cùng sản phẩm mua), xóa chúng đi
+            if ($cartItems->count() > 1) {
+                $idsToDelete = $cartItems->except($firstItem->id)->pluck('id');
+                GiohangModel::destroy($idsToDelete);
+            }
 
         } else {
-            // Chỉ cập nhật sản phẩm MUA (key là id_bienthe)
+            // Logic Session giữ nguyên, nhưng đảm bảo key chính xác
             $sessionCart = Session::get('cart', []);
             
+            // Chỉ cập nhật sản phẩm MUA (key là id_bienthe)
             if (isset($sessionCart[$bientheId])) {
                 $sessionCart[$bientheId]['soluong'] = $soluong;
                 $sessionCart[$bientheId]['thanhtien'] = $thanhtien;
-                
                 Session::put('cart', $sessionCart);
             }
         }

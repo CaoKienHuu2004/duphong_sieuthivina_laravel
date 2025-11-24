@@ -91,7 +91,7 @@
                     <div class="col-lg-9">
                         <!-- Top Start -->
                         <div class="flex-between gap-16 flex-wrap mb-40 ">
-                            <span class="text-gray-900">Hiển thị 12 trên 133 kết quả</span>
+                            <span class="text-gray-900">Hiển thị {{ $quatang->count() }} trên {{ $quatang->total() }} kết quả</span>
                             <div class="position-relative flex-align gap-16 flex-wrap">
                                 <button type="button"
                                     class="w-44 h-44 d-lg-none d-flex flex-center border border-gray-100 rounded-6 text-2xl sidebar-btn">
@@ -124,27 +124,36 @@
                                                     $ketthucngay = \Carbon\Carbon::parse($item->ngayketthuc);
                                                     $hientai = \Carbon\Carbon::now();
                                                     
-                                                    $ngayconlai = max(0, $ketthucngay->timestamp - $hientai->timestamp); // Tính ngược từ kết thúc đến hiện tại
-
-                                                    if ($ngayconlai > 0) {
-                                                        $days = floor($ngayconlai / (60 * 60 * 24));
-                                                        $remaining_after_days = $ngayconlai % (60 * 60 * 24);
+                                                    // Kiểm tra xem đã hết hạn chưa
+                                                    if ($ketthucngay->gt($hientai)) {
                                                         
-                                                        $hours = floor($remaining_after_days / (60 * 60));
-                                                        $remaining_after_hours = $remaining_after_days % (60 * 60);
+                                                        // Sử dụng hàm diff() để Carbon tự tính khoảng cách chính xác (Năm, Tháng, Ngày, Giờ...)
+                                                        $diff = $hientai->diff($ketthucngay);
                                                         
-                                                        $minutes = floor($remaining_after_hours / 60);
-                                                        $seconds = $remaining_after_hours % 60;
+                                                        $months = $diff->m + ($diff->y * 12); // Cộng dồn năm vào tháng (nếu thời gian > 1 năm)
+                                                        $days = $diff->d;
+                                                        $hours = $diff->h;
+                                                        $minutes = $diff->i;
+                                                        $seconds = $diff->s;
 
-                                                        if ($days > 0) {
+                                                        // Logic hiển thị ưu tiên đơn vị lớn nhất
+                                                        if ($months > 0) {
+                                                            // Nếu còn trên 1 tháng -> Hiển thị Tháng + Ngày
+                                                            $countdownDisplay = "{$months} tháng {$days} ngày";
+                                                        } elseif ($days > 0) {
+                                                            // Nếu còn trên 1 ngày -> Hiển thị Ngày + Giờ
                                                             $countdownDisplay = "{$days} ngày {$hours} giờ";
                                                         } elseif ($hours > 0) {
+                                                            // Nếu còn trên 1 giờ -> Hiển thị Giờ + Phút
                                                             $countdownDisplay = "{$hours} giờ {$minutes} phút";
                                                         } elseif ($minutes > 0) {
+                                                            // Nếu còn trên 1 phút -> Hiển thị Phút + Giây
                                                             $countdownDisplay = "{$minutes} phút {$seconds} giây";
                                                         } else {
+                                                            // Chỉ còn giây
                                                             $countdownDisplay = "{$seconds} giây";
                                                         }
+
                                                     } else {
                                                         $countdownDisplay = "Đã Hết Hạn";
                                                     }

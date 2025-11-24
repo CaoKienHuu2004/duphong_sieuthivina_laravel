@@ -50,6 +50,7 @@ Route::get('/dieu-khoan', function () {
 Route::prefix('/qua-tang')->group(function () {
     Route::get('/', [client\QuatangsukienController::class, 'index'])->name('qua-tang');
     Route::get('/{slug}', [client\QuatangsukienController::class, 'show'])->name('chi-tiet-qua-tang');
+    Route::post('/them-gio-hang', [client\QuatangsukienController::class, 'themgiohang'])->name('qua-tang.them-gio-hang');
 });
 
 Route::get('/tra-cuu-don-hang', [client\DonhangController::class, 'tracuudonhang'])->name('tra-cuu-don-hang');

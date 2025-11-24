@@ -8,6 +8,12 @@
     <div class="page">
         <section class="product-details pt-40 fix-scale-40">
             <div class="container container-lg">
+                @if (session()->has('success'))
+                    <div class="alert alert-success alert-dismissible fade show mt-10" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <form action="#" method="post" class="row gy-4">
                     <div class="col-xl-9">
                         <div class="row gy-4">
@@ -64,7 +70,7 @@
                                     </span>
                                     <div class="flex-align flex-wrap gap-12 mt-10">
                                         <div class="flex-align gap-8">
-                                            
+
                                             <span class="text-md fw-medium text-neutral-600">người xem</span>
                                             <span class="text-md fw-medium text-gray-500">{{ $quatang->luotxem }}</span>
                                         </div>
@@ -79,8 +85,7 @@
                                         <a href="#" class="border border-gray-100 rounded-8 flex-center"
                                             style="max-width: 80px; max-height: 80px; width: 100%; height: 100%">
                                             <img src="http://127.0.0.1:8000/assets/client/images/thumbs/{{ $quatang->bienthe->sanpham->hinhanhsanpham->first()->hinhanh }}"
-                                                alt="{{ $quatang->bienthe->sanpham->ten }}"
-                                                class="w-100 rounded-8">
+                                                alt="{{ $quatang->bienthe->sanpham->ten }}" class="w-100 rounded-8">
                                         </a>
                                         <div class="table-product__content text-start">
                                             <h6 class="title text-md fw-semibold mb-0">
@@ -97,6 +102,9 @@
                                             <div class="product-card__price mb-6">
                                                 <div class="flex-align gap-24">
                                                     <span class="text-heading text-sm fw-medium ">Số lượng: 1</span>
+                                                    @if($currentCount >= $targetCount)
+                                                    <span class="text-success text-sm fw-medium fst-italic">Quà tặng đã được thêm vào giỏ hàng !</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -104,25 +112,20 @@
 
                                     <span class="mt-10 mb-20 text-gray-700 border-top border-gray-100 d-block"></span>
 
-                                    {{-- <div class="alert alert-success alert-dismissible fade show mt-10" role="alert">
-                                        <strong>Tuyệt vời !</strong> Bạn đã thêm vào giỏ hàng thành công.
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
-                                    </div> --}}
-
                                     <div class="mt-8">
                                         <div class="flex-align">
                                             <div class="progress w-100 bg-color-three rounded-pill h-20" role="progressbar"
                                                 aria-label="Basic example" aria-valuenow="1" aria-valuemin="0"
                                                 aria-valuemax="2">
                                                 <div class="progress-bar bg-main-600 rounded-pill text-center"
-                                                    style="width: {{ $percent }}%">+ {{ $currentCount }} </div>
+                                                    style="width: {{ $percent }}%"> @if($currentCount < $targetCount) + @else  @endif{{ $currentCount }} </div>
                                             </div>
                                             @if ($percent >= 100)
                                                 <i class="ph-bold ph-seal-check text-3xl text-success-600"></i>
                                             @endif
                                         </div>
-                                        <span class="text-gray-900 text-sm fw-medium">Mua {{ $targetCount }} sản phẩm để nhận quà</span>
+                                        <span class="text-gray-900 text-sm fw-medium">Mua {{ $targetCount }} sản phẩm để
+                                            nhận quà</span>
                                     </div>
 
                                 </div>
@@ -139,7 +142,8 @@
                             </div>
 
                             <div class="mt-10">
-                                <a href="{{ url('san-pham?thuonghieu='.$quatang->bienthe->sanpham->thuonghieu->slug) }}" class="px-16 py-8 bg-main-50 rounded-8 flex-between gap-12 mb-0"
+                                <a href="{{ url('san-pham?thuonghieu=' . $quatang->bienthe->sanpham->thuonghieu->slug) }}"
+                                    class="px-16 py-8 bg-main-50 rounded-8 flex-between gap-12 mb-0"
                                     style="justify-content: start;">
                                     <span
                                         class="bg-white text-main-600 rounded-circle flex-center text-xl flex-shrink-0 p-4"
@@ -224,75 +228,80 @@
                         </div>
                     </div>
                     @if($suggestedProducts->count() > 0)
-                    <div class="new-arrival__slider arrow-style-two mt-20">
-                        @foreach($suggestedProducts as $item)
-                        <div>
-                            <div
-                                class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
-                                <a href="{{ route('chi-tiet-san-pham',$item->sanpham->slug) }}"
-                                    class="flex-center rounded-8 bg-gray-50 position-relative">
-                                    <img src="{{ asset('assets/client') }}/images/thumbs/{{ $item->sanpham->hinhanhsanpham->first()->hinhanh }}"
-                                        alt="{{ $item->sanpham->ten }}"
-                                        class="w-100 rounded-top-2">
-                                </a>
-                                <div
-                                    class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
-                                    <div>
-                                        <div class="flex-align justify-content-between mt-5">
-                                            <div class="flex-align gap-4 w-100">
-                                                <span class="text-main-600 text-md d-flex"><i
-                                                        class="ph-fill ph-storefront"></i></span>
-                                                <a href="{{ url('san-pham?thuonghieu='.$item->sanpham->thuonghieu->slug) }}"
-                                                    class="text-gray-500 text-xs"
-                                                    style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;"
-                                                    title="{{ $item->sanpham->thuonghieu->ten }}">{{ $item->sanpham->thuonghieu->ten }}</a>
+                        <div class="new-arrival__slider arrow-style-two mt-20">
+                            @foreach($suggestedProducts as $item)
+                                <div>
+                                    <div
+                                        class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
+                                        <a href="{{ route('chi-tiet-san-pham', $item->sanpham->slug) }}"
+                                            class="flex-center rounded-8 bg-gray-50 position-relative">
+                                            <img src="{{ asset('assets/client') }}/images/thumbs/{{ $item->sanpham->hinhanhsanpham->first()->hinhanh }}"
+                                                alt="{{ $item->sanpham->ten }}" class="w-100 rounded-top-2">
+                                        </a>
+                                        <div
+                                            class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">
+                                            <div>
+                                                <div class="flex-align justify-content-between mt-5">
+                                                    <div class="flex-align gap-4 w-100">
+                                                        <span class="text-main-600 text-md d-flex"><i
+                                                                class="ph-fill ph-storefront"></i></span>
+                                                        <a href="{{ url('san-pham?thuonghieu=' . $item->sanpham->thuonghieu->slug) }}"
+                                                            class="text-gray-500 text-xs"
+                                                            style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width:100%; display: inline-block;"
+                                                            title="{{ $item->sanpham->thuonghieu->ten }}">{{ $item->sanpham->thuonghieu->ten }}</a>
+                                                    </div>
+                                                </div>
+                                                <h6 class="title text-lg fw-semibold mt-2 mb-2">
+                                                    <a href="{{ route('chi-tiet-san-pham', $item->sanpham->slug) }}"
+                                                        class="link text-line-2" tabindex="0">{{ $item->sanpham->ten }}</a>
+                                                </h6>
+                                                <div class="flex-align gap-16 mb-6">
+                                                    <a href="#"
+                                                        class="btn bg-gray-50 text-line-2 text-xs text-gray-900 py-4 px-6 rounded-8 flex-align gap-8 fw-medium">
+                                                        {{ $item->loaibienthe->ten }}
+                                                    </a>
+                                                </div>
+                                                <div class="flex-align justify-content-between mt-2">
+                                                    <div class="flex-align gap-6">
+                                                        <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
+                                                        <span class="text-xs fw-medium text-gray-500">4.8
+                                                            <i class="ph-fill ph-star text-warning-600"></i></span>
+                                                    </div>
+                                                    <div class="flex-align gap-4">
+                                                        <span class="text-xs fw-medium text-gray-500">{{ $item->luotban }}</span>
+                                                        <span class="text-xs fw-medium text-gray-500">Đã bán</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <h6 class="title text-lg fw-semibold mt-2 mb-2">
-                                            <a href="{{ route('chi-tiet-san-pham',$item->sanpham->slug) }}"
-                                                class="link text-line-2" tabindex="0">{{ $item->sanpham->ten }}</a>
-                                        </h6>
-                                        <div class="flex-align gap-16 mb-6">
-                                            <a href="#"
-                                                class="btn bg-gray-50 text-line-2 text-xs text-gray-900 py-4 px-6 rounded-8 flex-align gap-8 fw-medium">
-                                                {{ $item->loaibienthe->ten }}
-                                            </a>
-                                        </div>
-                                        <div class="flex-align justify-content-between mt-2">
-                                            <div class="flex-align gap-6">
-                                                <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                                                <span class="text-xs fw-medium text-gray-500">4.8
-                                                    <i class="ph-fill ph-star text-warning-600"></i></span>
-                                            </div>
-                                            <div class="flex-align gap-4">
-                                                <span class="text-xs fw-medium text-gray-500">{{ $item->luotban }}</span>
-                                                <span class="text-xs fw-medium text-gray-500">Đã bán</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card__price mt-5">
-                                        @if($item->sanpham->giamgia > 0)
-                                            <div class="flex-align gap-4 text-main-two-600">
-                                                <i class="ph-fill ph-seal-percent text-sm"></i> -{{ $item->sanpham->giamgia }}%
-                                                <span class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
-                                                    {{ number_format($item->giagoc,0,',','.') }} đ
+                                            <div class="product-card__price mt-5">
+                                                @if($item->sanpham->giamgia > 0)
+                                                    <div class="flex-align gap-4 text-main-two-600">
+                                                        <i class="ph-fill ph-seal-percent text-sm"></i> -{{ $item->sanpham->giamgia }}%
+                                                        <span class="text-gray-400 text-sm fw-semibold text-decoration-line-through">
+                                                            {{ number_format($item->giagoc, 0, ',', '.') }} đ
+                                                        </span>
+                                                    </div>
+                                                @endif
+                                                <span class="text-heading text-lg fw-semibold">
+                                                    {{ number_format($item->giagoc * (100 - $item->sanpham->giamgia) / 100, 0, ',', '.') }}
+                                                    đ
                                                 </span>
                                             </div>
-                                        @endif
-                                        <span class="text-heading text-lg fw-semibold">
-                                            {{ number_format($item->giagoc * (100 - $item->sanpham->giamgia) / 100,0,',','.') }} đ
-                                        </span>
+                                        </div>
+                                        <form class="w-100 " action="{{ route('qua-tang.them-gio-hang') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="id_bienthe" value="{{ $item->id }}">
+                                            <input type="hidden" name="soluong" value="1">
+                                            <button type="submit"
+                                                class="mt-6 rounded-bottom-2 bg-gray-50 text-sm text-gray-900 w-100 hover-bg-main-600 hover-text-white py-6 px-24 flex-center gap-8 fw-medium transition-1"
+                                                tabindex="0">
+                                                <i class="ph ph-shopping-cart"></i> Thêm vào giỏ hàng
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
-                                <a href="cart.html"
-                                    class="mt-6 rounded-bottom-2 bg-gray-50 text-sm text-gray-900 w-100 hover-bg-main-600 hover-text-white py-6 px-24 flex-center gap-8 fw-medium"
-                                    tabindex="0">
-                                    <i class="ph ph-shopping-cart"></i> Thêm vào giỏ hàng
-                                </a>
-                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
-                    </div>
                     @else
                         @if($percent < 100)
                             <div class="alert alert-warning text-center">
@@ -346,7 +355,7 @@
                 }, 1000);
             }
 
-            countdownquatang('countdown-quatang', '2025-12-11');
+            countdownquatang('countdown-quatang', '{{ $quatang->ngayketthuc }}');
         </script>
     </div>
 
