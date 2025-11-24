@@ -84,7 +84,7 @@
                                     <div class="d-flex align-items-center gap-12">
                                         <a href="#" class="border border-gray-100 rounded-8 flex-center"
                                             style="max-width: 80px; max-height: 80px; width: 100%; height: 100%">
-                                            <img src="http://127.0.0.1:8000/assets/client/images/thumbs/{{ $quatang->bienthe->sanpham->hinhanhsanpham->first()->hinhanh }}"
+                                            <img src="{{ asset('assets/client') }}/images/thumbs/{{ $quatang->bienthe->sanpham->hinhanhsanpham->first()->hinhanh }}"
                                                 alt="{{ $quatang->bienthe->sanpham->ten }}" class="w-100 rounded-8">
                                         </a>
                                         <div class="table-product__content text-start">
