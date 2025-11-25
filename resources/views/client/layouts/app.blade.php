@@ -12,7 +12,7 @@
 
   <meta property="og:url" content="{{ url()->current() }}" />
   <meta property="og:type" content="" />
-  <meta property="og:title" content="Siêu Thị Vina - Nền Tảng Bán Hàng Trực Tuyến Siêu Thị Vina" />
+  <meta property="og:title" content="@yield('title')" />
   <meta property="og:description" content="Mua sắm online thả ga tại Siêu Thị Vina. Đa dạng ngành hàng, giá tốt mỗi ngày, giao hàng nhanh chóng trên toàn quốc. Trải nghiệm ngay!" />
   <meta property="og:image" content="{{ asset('assets/client/images/bg/Gemini_Generated_Image_l0fe8ml0fe8ml0fe.png') }}" />
 
