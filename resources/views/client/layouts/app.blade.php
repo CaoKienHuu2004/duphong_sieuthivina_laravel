@@ -6,6 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="description" content="Mua sắm online thả ga tại Siêu Thị Vina. Đa dạng ngành hàng, giá tốt mỗi ngày, giao hàng nhanh chóng trên toàn quốc. Trải nghiệm ngay!">
+  <meta name="keywords" content="Siêu thị Vina, Siêu Thị Vina, Mua sắm, Quà tặng">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:url" content="{{ url()->current() }}" />
+  <meta property="og:type" content="post" />
+  <meta property="og:title" content="Siêu Thị Vina - Nền Tảng Bán Hàng Trực Tuyến Siêu Thị Vina" />
+  <meta property="og:description" content="Mua sắm online thả ga tại Siêu Thị Vina. Đa dạng ngành hàng, giá tốt mỗi ngày, giao hàng nhanh chóng trên toàn quốc. Trải nghiệm ngay!" />
+  <meta property="og:image" content="{{ asset('assets/client/images/bg/Gemini_Generated_Image_l0fe8ml0fe8ml0fe.png') }}" />
+
   <!-- Title -->
   <title>@yield('title')</title>
   <!-- Favicon -->
@@ -25,7 +35,8 @@
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/aos.css" />
   <!-- Main css -->
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/main.css" />
-  {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+  {{--
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 </head>
 
 <body>
@@ -52,7 +63,7 @@
   <!-- ==================== Scroll to Top End Here ==================== -->
 
   <!-- ==================== Search Box Start Here ==================== -->
-  
+
   <!-- ==================== Search Box End Here ==================== -->
 
   <!-- ==================== Mobile Menu Start Here ==================== -->
@@ -70,11 +81,9 @@
 
           <li class="nav-menu__item">
             <form action="{{ route('tim-kiem') }}" class="position-relative w-100">
-              <input type="text"
-                name="query"
+              <input type="text" name="query"
                 class="form-control text-sm fw-medium placeholder-italic shadow-none bg-neutral-30 placeholder-fw-medium placeholder-light py-10 ps-20 pe-60"
-                placeholder="{{ $tukhoaplaceholder }}..."
-                required>
+                placeholder="{{ $tukhoaplaceholder }}..." required>
               <button type="submit"
                 class="position-absolute top-50 translate-middle-y text-main-600 end-0 me-36 text-xl line-height-1">
                 <i class="ph-bold ph-magnifying-glass"></i>
@@ -83,7 +92,8 @@
           </li>
           @guest
             <li class="av-menu__item pt-10">
-              <a href="{{ route('dang-ky') }}" class="nav-menu__link text-heading-two hover-text-main-600"><i class="ph-bold ph-user text-main-600"></i>
+              <a href="{{ route('dang-ky') }}" class="nav-menu__link text-heading-two hover-text-main-600"><i
+                  class="ph-bold ph-user text-main-600"></i>
                 Đăng ký thành viên</a>
             </li>
           @endguest
@@ -112,57 +122,59 @@
                 class="ph-bold ph-chat-dots text-main-600"></i> Liên hệ hỗ trợ</a>
           </li>
           @guest
-          <li class="nav-menu__item pt-10">
-            <a href="{{ route('login') }}"
-              class="d-flex justify-content-center align-content-around text-center gap-10 fw-medium text-white py-14 px-24 bg-main-600 rounded-pill line-height-1 hover-bg-main-50 hover-text-main-600">
-              <span class="d-lg-none d-flex line-height-1"><i class="ph-bold ph-user"></i></span>
-              Đăng nhập
-            </a>
+            <li class="nav-menu__item pt-10">
+              <a href="{{ route('login') }}"
+                class="d-flex justify-content-center align-content-around text-center gap-10 fw-medium text-white py-14 px-24 bg-main-600 rounded-pill line-height-1 hover-bg-main-50 hover-text-main-600">
+                <span class="d-lg-none d-flex line-height-1"><i class="ph-bold ph-user"></i></span>
+                Đăng nhập
+              </a>
 
-          </li>
+            </li>
           @endguest
           @auth
-          <li class="on-hover-item nav-menu__item has-submenu pt-10">
-            <a href="#"
-              class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-white py-10 px-20 bg-success-600 rounded-pill line-height-1 hover-bg-success-500">
-              <span class="d-lg-none d-flex line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/{{Auth::user()->avatar}}"
-                  class="rounded-circle object-fit-cover" style="width: 25px; height: 25px" alt=""></span>
-              {{ Auth::user()->hoten }}
-            </a>
-            <ul class="on-hover-dropdown common-dropdown nav-submenu scroll-sm">
-              <li class="common-dropdown__item nav-submenu__item">
-                <a href="{{ route('tai-khoan') }}"
-                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
-              </li>
-              @if(Auth::check() && Auth::user()->vaitro === 'admin')
-              <li class="common-dropdown__item nav-submenu__item">
-                <a href="{{ route('quan-tri-vien.trang-chu') }}"
-                  class="common-dropdown__link nav-submenu__link text-sm text-heading-two bg-warning-100 hover-bg-neutral-100"><i
-                    class="ph-bold ph-app-window text-main-600"></i> Truy cập quản trị</a>
-              </li>
-              @endif
-              <li class="common-dropdown__item nav-submenu__item">
-                <a href="{{ route('don-hang-cua-toi') }}"
-                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
-              </li>
-              <li class="common-dropdown__item nav-submenu__item">
-                <a href="cart.html"
-                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
-                    class="badge bg-success-600 rounded-circle">6</span></a>
-              </li>
-              <li class="common-dropdown__item nav-submenu__item">
-                <form action="{{ route('dang-xuat') }}" method="post" class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
-                  @csrf
-                  <button type="submit" class="">
-                    <i class="ph-bold ph-sign-out text-main-600"></i> Đăng xuất</button>
-                </form>
-              </li>
+            <li class="on-hover-item nav-menu__item has-submenu pt-10">
+              <a href="#"
+                class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-white py-10 px-20 bg-success-600 rounded-pill line-height-1 hover-bg-success-500">
+                <span class="d-lg-none d-flex line-height-1"><img
+                    src="{{asset('assets/client')}}/images/thumbs/{{Auth::user()->avatar}}"
+                    class="rounded-circle object-fit-cover" style="width: 25px; height: 25px" alt=""></span>
+                {{ Auth::user()->hoten }}
+              </a>
+              <ul class="on-hover-dropdown common-dropdown nav-submenu scroll-sm">
+                <li class="common-dropdown__item nav-submenu__item">
+                  <a href="{{ route('tai-khoan') }}"
+                    class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
+                      class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
+                </li>
+                @if(Auth::check() && Auth::user()->vaitro === 'admin')
+                  <li class="common-dropdown__item nav-submenu__item">
+                    <a href="{{ route('quan-tri-vien.trang-chu') }}"
+                      class="common-dropdown__link nav-submenu__link text-sm text-heading-two bg-warning-100 hover-bg-neutral-100"><i
+                        class="ph-bold ph-app-window text-main-600"></i> Truy cập quản trị</a>
+                  </li>
+                @endif
+                <li class="common-dropdown__item nav-submenu__item">
+                  <a href="{{ route('don-hang-cua-toi') }}"
+                    class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
+                      class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
+                </li>
+                <li class="common-dropdown__item nav-submenu__item">
+                  <a href="cart.html"
+                    class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
+                      class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
+                      class="badge bg-success-600 rounded-circle">6</span></a>
+                </li>
+                <li class="common-dropdown__item nav-submenu__item">
+                  <form action="{{ route('dang-xuat') }}" method="post"
+                    class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
+                    @csrf
+                    <button type="submit" class="">
+                      <i class="ph-bold ph-sign-out text-main-600"></i> Đăng xuất</button>
+                  </form>
+                </li>
 
-            </ul>
-          </li>
+              </ul>
+            </li>
           @endauth
 
         </ul>
@@ -197,8 +209,10 @@
               <ul class="scroll-sm p-0 py-8 w-300 max-h-400 overflow-y-auto">
                 @foreach ($danhmuc as $dm)
                   <li class="has-submenus-submenu">
-                    <a href="{{ url('san-pham?danhmuc=' . $dm->slug) }}" class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
-                      <span class="text-xl d-flex"><img src="{{asset('assets/client')}}/images/categories/{{ $dm->logo }}" alt="{{ $dm->ten }}" width="70%"></span>
+                    <a href="{{ url('san-pham?danhmuc=' . $dm->slug) }}"
+                      class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
+                      <span class="text-xl d-flex"><img src="{{asset('assets/client')}}/images/categories/{{ $dm->logo }}"
+                          alt="{{ $dm->ten }}" width="70%"></span>
                       <span>{{ $dm->ten }}</span>
                     </a>
                   </li>
@@ -239,11 +253,12 @@
           </li> --}}
           @guest
             <li class="flex-align">
-              <a href="{{ route('dang-ky') }}" class="text-white-6 text-sm hover-text-white"><i class="ph-bold ph-user text-white-6"></i>
+              <a href="{{ route('dang-ky') }}" class="text-white-6 text-sm hover-text-white"><i
+                  class="ph-bold ph-user text-white-6"></i>
                 Đăng ký thành viên</a>
             </li>
           @endguest
-          
+
           <li class="flex-align">
             <a href="" class="text-white-6 text-sm hover-text-white pe-1"><i class="ph-bold ph-info text-white-6"></i>
               Giới thiệu về Siêu Thị Vina </a>
@@ -256,7 +271,7 @@
           </li>
 
         </ul>
-        
+
         <ul class="header-top__right flex-align flex-wrap gap-16">
           <li class=" d-block on-hover-item text-white-6 flex-shrink-0">
             <button class="category__button flex-align gap-4 text-sm text-white-6 rounded-top">
@@ -276,14 +291,16 @@
               <ul class="scroll-sm p-0 py-8 w-300 max-h-400 overflow-y-auto">
                 @foreach ($danhmuc as $dm)
                   <li class="has-submenus-submenu">
-                    <a href="{{ url('san-pham?danhmuc=' . $dm->slug) }}" class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
-                      <span class="text-xl d-flex"><img src="{{asset('assets/client')}}/images/categories/{{ $dm->logo }}" alt="{{ $dm->ten }}" width="70%"></span>
+                    <a href="{{ url('san-pham?danhmuc=' . $dm->slug) }}"
+                      class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
+                      <span class="text-xl d-flex"><img src="{{asset('assets/client')}}/images/categories/{{ $dm->logo }}"
+                          alt="{{ $dm->ten }}" width="70%"></span>
                       <span>{{ $dm->ten }}</span>
                     </a>
                   </li>
                 @endforeach
-                
-                
+
+
               </ul>
             </div>
 
@@ -295,16 +312,16 @@
               Tra cứu đơn hàng</a>
           </li>
 
-            <li class="flex-align">
-              <a href="{{route('gio-hang')}}" class="text-white-6 text-sm hover-text-white">
-                <i class="ph-bold ph-shopping-cart"></i>
-                Giỏ hàng
-                <span class="badge bg-success-600 rounded-4 px-6 py-4">@auth{{ count($giohangauth) }}@endauth @guest
-                  {{ count($giohangsession) }}
-                @endguest</span>
-              </a>
-            </li>
-          
+          <li class="flex-align">
+            <a href="{{route('gio-hang')}}" class="text-white-6 text-sm hover-text-white">
+              <i class="ph-bold ph-shopping-cart"></i>
+              Giỏ hàng
+              <span class="badge bg-success-600 rounded-4 px-6 py-4">@auth{{ count($giohangauth) }}@endauth @guest
+                {{ count($giohangsession) }}
+              @endguest</span>
+            </a>
+          </li>
+
         </ul>
       </div>
     </div>
@@ -325,13 +342,12 @@
 
         <!-- Menu Start  -->
         <div class="header-menu w-50 d-lg-block d-none">
-          
+
           <div class="mx-20">
             <form action="{{ route('tim-kiem') }}" method="GET" class="position-relative w-100 d-md-block d-none">
               <input type="text"
                 class="form-control text-sm fw-normal placeholder-italic shadow-none bg-neutral-30 placeholder-fw-normal placeholder-light py-10 ps-30 pe-60"
-                placeholder="{{ $tukhoaplaceholder }}...."
-                name="query" required>
+                placeholder="{{ $tukhoaplaceholder }}...." name="query" required>
               <button type="submit"
                 class="position-absolute top-50 translate-middle-y text-main-600 end-0 me-36 text-xl line-height-1">
                 <i class="ph-bold ph-magnifying-glass"></i>
@@ -340,7 +356,8 @@
 
             <div class="flex-align mt-10 gap-12 title">
               @foreach ($tukhoaphobien as $keyword)
-                <a href="{{route('tim-kiem',['query'=>$keyword->tukhoa])}}" class="text-sm link text-gray-600 hover-text-main-600 fst-italic">{{ $keyword->tukhoa }}</a>
+                <a href="{{route('tim-kiem', ['query' => $keyword->tukhoa])}}"
+                  class="text-sm link text-gray-600 hover-text-main-600 fst-italic">{{ $keyword->tukhoa }}</a>
               @endforeach
             </div>
           </div>
@@ -348,64 +365,65 @@
 
         <!-- Middle Header Right start -->
         <div class="header-right flex-align">
-  
+
           @guest
-          <!-- ============Nút đăng nhập/đăng ký=============== -->
-          <ul class="header-top__right style-two style-three flex-align flex-wrap d-lg-block d-none">
-            <li class="d-sm-flex d-none">
-              <a href="{{ route('login') }}"
-                class="d-flex align-content-around gap-10 fw-medium text-main-600 py-14 px-24 bg-main-50 rounded-pill line-height-1 hover-bg-main-600 hover-text-white">
-                <span class="d-sm-flex d-none line-height-1"><i class="ph-bold ph-user"></i></span>
-                Đăng nhập
-              </a>
-            </li>
-          </ul>
-          <!-- ===============Nút đã đăng nhập============= -->
+            <!-- ============Nút đăng nhập/đăng ký=============== -->
+            <ul class="header-top__right style-two style-three flex-align flex-wrap d-lg-block d-none">
+              <li class="d-sm-flex d-none">
+                <a href="{{ route('login') }}"
+                  class="d-flex align-content-around gap-10 fw-medium text-main-600 py-14 px-24 bg-main-50 rounded-pill line-height-1 hover-bg-main-600 hover-text-white">
+                  <span class="d-sm-flex d-none line-height-1"><i class="ph-bold ph-user"></i></span>
+                  Đăng nhập
+                </a>
+              </li>
+            </ul>
+            <!-- ===============Nút đã đăng nhập============= -->
           @endguest
           @auth
-          <div
-            class="on-hover-item nav-menu__item has-submenu header-top__right style-two style-three flex-align flex-wrap d-lg-block d-none">
-            <a href="{{ route('tai-khoan') }}"
-              class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-gray-600 py-5 px-10 rounded-pill line-height-1 hover-text-main-600">
-              <span class="line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/{{Auth::user()->avatar}}"
-                  class="rounded-circle object-fit-cover" style="width: 35px; height: 35px" alt=""></span>
-              {{ Auth::user()->hoten }}
-            </a>
-            <ul class="on-hover-dropdown common-dropdown nav-submenu scroll-sm">
-              <li class="common-dropdown__item nav-submenu__item">
-                <a href="{{ route('tai-khoan') }}"
-                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
-              </li>
-              @if(Auth::check() && Auth::user()->vaitro === 'admin')
-              <li class="common-dropdown__item nav-submenu__item">
-                <a href="{{ route('quan-tri-vien.trang-chu') }}"
-                  class="common-dropdown__link nav-submenu__link text-heading-two bg-warning-100 hover-bg-neutral-100"><i
-                    class="ph-bold ph-app-window text-main-600"></i> Truy cập quản trị</a>
-              </li>
-              @endif
-              <li class="common-dropdown__item nav-submenu__item">
-                <a href="{{ route('don-hang-cua-toi') }}"
-                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
-              </li>
-              <li class="common-dropdown__item nav-submenu__item">
-                <a href="cart.html"
-                  class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                    class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
-                    class="badge bg-success-600 rounded-circle">6</span></a>
-              </li>
-              <li class="common-dropdown__item nav-submenu__item">
-                <form action="{{ route('dang-xuat') }}" method="post" class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
-                  @csrf
-                  <button type="submit" class="">
-                    <i class="ph-bold ph-sign-out text-main-600"></i> Đăng xuất</button>
-                </form>
-                
-              </li>
+            <div
+              class="on-hover-item nav-menu__item has-submenu header-top__right style-two style-three flex-align flex-wrap d-lg-block d-none">
+              <a href="{{ route('tai-khoan') }}"
+                class="d-flex justify-content-center flex-align align-content-around text-center gap-10 fw-medium text-gray-600 py-5 px-10 rounded-pill line-height-1 hover-text-main-600">
+                <span class="line-height-1"><img src="{{asset('assets/client')}}/images/thumbs/{{Auth::user()->avatar}}"
+                    class="rounded-circle object-fit-cover" style="width: 35px; height: 35px" alt=""></span>
+                {{ Auth::user()->hoten }}
+              </a>
+              <ul class="on-hover-dropdown common-dropdown nav-submenu scroll-sm">
+                <li class="common-dropdown__item nav-submenu__item">
+                  <a href="{{ route('tai-khoan') }}"
+                    class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
+                      class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
+                </li>
+                @if(Auth::check() && Auth::user()->vaitro === 'admin')
+                  <li class="common-dropdown__item nav-submenu__item">
+                    <a href="{{ route('quan-tri-vien.trang-chu') }}"
+                      class="common-dropdown__link nav-submenu__link text-heading-two bg-warning-100 hover-bg-neutral-100"><i
+                        class="ph-bold ph-app-window text-main-600"></i> Truy cập quản trị</a>
+                  </li>
+                @endif
+                <li class="common-dropdown__item nav-submenu__item">
+                  <a href="{{ route('don-hang-cua-toi') }}"
+                    class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
+                      class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
+                </li>
+                <li class="common-dropdown__item nav-submenu__item">
+                  <a href="cart.html"
+                    class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
+                      class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
+                      class="badge bg-success-600 rounded-circle">6</span></a>
+                </li>
+                <li class="common-dropdown__item nav-submenu__item">
+                  <form action="{{ route('dang-xuat') }}" method="post"
+                    class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
+                    @csrf
+                    <button type="submit" class="">
+                      <i class="ph-bold ph-sign-out text-main-600"></i> Đăng xuất</button>
+                  </form>
 
-            </ul>
-          </div>
+                </li>
+
+              </ul>
+            </div>
           @endauth
 
           <!-- Dropdown Select End -->
@@ -420,7 +438,7 @@
   <!-- ======================= Middle Header Two End ========================= -->
 
   @yield('content')
-  
+
 
   <!-- ==================== Footer Two Start Here ==================== -->
   <footer class="footer pt-30 overflow-hidden border-top fix-scale-20">
@@ -428,7 +446,8 @@
       <div class="footer-item-two-wrapper d-flex align-items-start flex-wrap">
         <div class="footer-item max-w-275" data-aos="fade-up" data-aos-duration="200">
           <div class="footer-item__logo">
-            <a href="{{ route('trang-chu') }}"> <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt=""></a>
+            <a href="{{ route('trang-chu') }}"> <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png"
+                alt=""></a>
           </div>
           <p class="mb-24">Trang thương mại điện tử Siêu Thị Vina cung cấp các sản phẩm đa dạng đến với khách hàng
           </p>
@@ -466,10 +485,12 @@
               <a href="{{ url('/dieu-khoan') }}" class="text-gray-600 hover-text-main-600">Điều khoản sử dụng</a>
             </li>
             <li class="mb-16">
-              <a href="{{ url('/chinh-sach-mua-hang') }}" class="text-gray-600 hover-text-main-600">Chính sách mua hàng</a>
+              <a href="{{ url('/chinh-sach-mua-hang') }}" class="text-gray-600 hover-text-main-600">Chính sách mua
+                hàng</a>
             </li>
             <li class="mb-16">
-              <a href="{{ url('/chinh-sach-nguoi-dung') }}" class="text-gray-600 hover-text-main-600">Chính sách người dùng</a>
+              <a href="{{ url('/chinh-sach-nguoi-dung') }}" class="text-gray-600 hover-text-main-600">Chính sách người
+                dùng</a>
             </li>
 
           </ul>

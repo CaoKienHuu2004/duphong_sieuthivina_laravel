@@ -79,8 +79,8 @@
                                                 </span>
                                             </li>
                                             @else
-                                            <li class="text-gray-400 mb-14 flex-align gap-14 bg-success-100 py-8 px-8 rounded-8">
-                                                <span class="w-30 h-30 bg-success-100 text-success-600 text-md flex-center rounded-circle">
+                                            <li class="text-gray-400 mb-14 flex-align gap-14 bg-success-50 py-8 px-8 rounded-8">
+                                                <span class="w-30 h-30 bg-success-200 text-success-700 text-md flex-center rounded-circle">
                                                     <i class="ph-bold ph-check"></i>
                                                 </span>
                                                 <span class="text-heading fw-medium">
@@ -98,8 +98,8 @@
                                                 </span>
                                             </li>
                                             @else
-                                            <li class="text-gray-400 mb-14 flex-align gap-14 bg-success-100 py-8 px-8 rounded-8">
-                                                <span class="w-30 h-30 bg-success-100 text-success-600 text-md flex-center rounded-circle">
+                                            <li class="text-gray-400 mb-14 flex-align gap-14 bg-success-50 py-8 px-8 rounded-8">
+                                                <span class="w-30 h-30 bg-success-200 text-success-700 text-md flex-center rounded-circle">
                                                     <i class="ph-bold ph-check"></i>
                                                 </span>
                                                 <span class="text-heading fw-medium">
