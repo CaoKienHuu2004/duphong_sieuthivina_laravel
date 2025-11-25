@@ -133,10 +133,15 @@ class GiohangComponent extends Component
     private function xacnhandieukienquatang()
     {
         $uniqueItemsByBrand = [];
+        $cartTotalValue = 0; // Biến tính tổng giá trị giỏ hàng thực tế (hàng mua)
         
+        // 1. Duyệt qua giỏ hàng để lấy thông tin Brand và Tổng tiền
         foreach ($this->giohang as $item) {
             // CHỈ XÉT SẢN PHẨM CHÍNH (có thành tiền > 0)
             if ($item['thanhtien'] > 0) { 
+                // Cộng dồn tổng giá trị để xét điều kiện dieukiengiatri
+                $cartTotalValue += $item['thanhtien'];
+
                 $thuonghieuId = $item['bienthe']['sanpham']['id_thuonghieu'] ?? null;
                 $bientheId = $item['id_bienthe'];
                 
@@ -144,19 +149,26 @@ class GiohangComponent extends Component
                     if (!isset($uniqueItemsByBrand[$thuonghieuId])) {
                         $uniqueItemsByBrand[$thuonghieuId] = [];
                     }
-                    
                     $uniqueItemsByBrand[$thuonghieuId][$bientheId] = true;
                 }
             }
         }
 
-        $quatangsukiendb = QuatangsukienModel::all(); 
+        // Lấy danh sách quà tặng đang active
+        $quatangsukiendb = QuatangsukienModel::where('trangthai', 'Hiển thị')->where('deleted_at', null)->get(); 
         $themquatang = []; 
         
         foreach ($quatangsukiendb as $rule) {
             $bientheduoctang = $rule->id_bienthe;
-            $dieukienduoctang = $rule->dieukien; // Đây là "Số lượng sản phẩm khác nhau" cần mua
+            $dieukienSoluong = $rule->dieukien; // Điều kiện 1: Số lượng sản phẩm khác nhau
+            $dieukienGiatri = $rule->dieukiengiatri ?? 0; // Điều kiện 2: Giá trị đơn hàng tối thiểu
             
+            // --- KIỂM TRA ĐIỀU KIỆN GIÁ TRỊ (MỚI) ---
+            // Nếu tổng tiền giỏ hàng chưa đủ điều kiện giá trị -> Bỏ qua quà này
+            if ($cartTotalValue < $dieukienGiatri) {
+                continue;
+            }
+
             $giftBienthe = BientheModel::with('sanpham')->find($bientheduoctang);
             
             if (!$giftBienthe) continue;
@@ -170,8 +182,9 @@ class GiohangComponent extends Component
                     $uniqueItemsCount = count($uniqueItemsByBrand[$requiredBrandId]);
                 }
                 
-                // KIỂM TRA ĐIỀU KIỆN MỚI: Nếu số lượng sản phẩm khác nhau >= điều kiện
-                if ($uniqueItemsCount >= $dieukienduoctang) {
+                // --- KIỂM TRA ĐIỀU KIỆN SỐ LƯỢNG BIẾN THỂ ---
+                // Cả 2 điều kiện (Giá trị & Số lượng) đều phải thỏa mãn
+                if ($uniqueItemsCount >= $dieukienSoluong) {
                     $soluongquatang = 1; 
 
                     if (!isset($themquatang[$bientheduoctang])) {
@@ -182,6 +195,7 @@ class GiohangComponent extends Component
             }
         }
         
+        // Thêm quà vào giỏ
         foreach ($themquatang as $id_bienthe => $soluong) {
             if ($soluong > 0) {
                 $this->addGiftToCart($id_bienthe, $soluong); 

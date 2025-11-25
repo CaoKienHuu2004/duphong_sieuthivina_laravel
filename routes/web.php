@@ -12,6 +12,11 @@ use App\Livewire;
 | 1. Client Routes (Cộng đồng và Đã đăng nhập)
 |--------------------------------------------------------------------------
 */
+// Fallback Route: Bắt mọi link không tồn tại và chạy qua Middleware 'web'
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
+
 
 Route::get('/', [client\HomeController::class, 'index'])->name('trang-chu');
 Route::get('/trang-chu', [client\HomeController::class, 'index']);

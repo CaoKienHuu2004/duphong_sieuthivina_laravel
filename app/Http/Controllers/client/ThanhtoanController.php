@@ -205,6 +205,7 @@ class ThanhtoanController extends Controller
                 ]);
 
                 // CHỈ TRỪ TỒN KHO CHO SẢN PHẨM MUA (thanhtien > 0)
+                // TRƯỜNG HỢP QUÀ TẶNG (thanhtien = 0) VẪN CẦN TRỪ TỒN KHO NHƯ BÌNH THƯỜNG VÀ CÒN TRỪ SỐ LƯỢNG TẶNG (LUOTTANG)
                 if ($item['thanhtien'] > 0) { 
                     $bienthe = BientheModel::find($bientheId);
                     if ($bienthe) {
@@ -216,17 +217,16 @@ class ThanhtoanController extends Controller
                         $bienthe->luotban += $soluong; 
                         $bienthe->save();
                     }
-                }
-
-                if ($item['thanhtien'] == 0) { 
+                }elseif ($item['thanhtien'] == 0) { 
                     $bienthe = BientheModel::find($bientheId);
                     if ($bienthe) {
                         $bienthe->soluong -= $soluong;
+                        $bienthe->luottang -= $soluong;
                         if ($bienthe->soluong < 0) {
                              DB::rollBack();
                              return redirect()->back()->with('error', 'Lỗi: Sản phẩm **' . ($bienthe->sanpham->ten ?? '') . '** không đủ số lượng tồn kho.');
                         }
-                        $bienthe->luottang += $soluong; 
+                        $bienthe->luotban += $soluong; 
                         $bienthe->save();
                     }
                 }

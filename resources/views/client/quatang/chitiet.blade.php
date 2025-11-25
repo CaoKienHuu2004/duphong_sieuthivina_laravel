@@ -68,13 +68,46 @@
                                     <span class="text-md fst-italic fw-normal text-gray-600">
                                         {{ $quatang->thongtin }}
                                     </span>
-                                    <div class="flex-align flex-wrap gap-12 mt-10">
-                                        <div class="flex-align gap-8">
-
-                                            <span class="text-md fw-medium text-neutral-600">người xem</span>
-                                            <span class="text-md fw-medium text-gray-500">{{ $quatang->luotxem }}</span>
-                                        </div>
-                                    </div>
+                                    <ul class="mt-20">
+                                            @if($quatang->dieukiensoluong > $currentCount)
+                                            <li class="text-gray-400 mb-14 flex-align gap-14">
+                                                <span class="w-30 h-30 bg-main-100 text-main-600 text-md flex-center rounded-circle">
+                                                    <i class="ph-bold ph-x"></i>
+                                                </span>
+                                                <span class="text-heading fw-medium">
+                                                    Mua tối thiểu <span class="text-main-600"> {{ $quatang->dieukiensoluong }} sản phẩm</span> bất kỳ cùng nhà cung cấp
+                                                </span>
+                                            </li>
+                                            @else
+                                            <li class="text-gray-400 mb-14 flex-align gap-14 bg-success-100 py-8 px-8 rounded-8">
+                                                <span class="w-30 h-30 bg-success-100 text-success-600 text-md flex-center rounded-circle">
+                                                    <i class="ph-bold ph-check"></i>
+                                                </span>
+                                                <span class="text-heading fw-medium">
+                                                    Mua tối thiểu <span class="text-success-600"> {{ $quatang->dieukiensoluong }} sản phẩm</span> bất kỳ cùng nhà cung cấp
+                                                </span>
+                                            </li>
+                                            @endif
+                                            @if($quatang->dieukiengiatri > $cartTotalValue)
+                                            <li class="text-gray-400 mb-14 flex-align gap-14 ">
+                                                <span class="w-30 h-30 bg-main-100 text-main-600 text-md flex-center rounded-circle">
+                                                    <i class="ph-bold ph-x"></i>
+                                                </span>
+                                                <span class="text-heading fw-medium">
+                                                    Giá trị đơn hàng tối thiểu <span class="text-main-600"> {{ number_format($targetValue, 0, ',', '.') }} đ</span>
+                                                </span>
+                                            </li>
+                                            @else
+                                            <li class="text-gray-400 mb-14 flex-align gap-14 bg-success-100 py-8 px-8 rounded-8">
+                                                <span class="w-30 h-30 bg-success-100 text-success-600 text-md flex-center rounded-circle">
+                                                    <i class="ph-bold ph-check"></i>
+                                                </span>
+                                                <span class="text-heading fw-medium">
+                                                    Giá trị đơn hàng tối thiểu <span class="text-success-600"> {{ number_format($targetValue, 0, ',', '.') }} đ</span>
+                                                </span>
+                                            </li>
+                                            @endif
+                                        </ul>
 
                                     <span class="mt-10 mb-10 text-gray-700 border-top border-gray-100 d-block"></span>
 
@@ -82,19 +115,19 @@
                                             class="ph-bold ph-gift text-main-600 text-lg pe-4"></i>Quà tặng bạn nhận
                                         được:</span>
                                     <div class="d-flex align-items-center gap-12">
-                                        <a href="#" class="border border-gray-100 rounded-8 flex-center"
+                                        <a href="{{ route('chi-tiet-san-pham',$quatang->bienthe->sanpham->slug) }}" class="border border-gray-100 rounded-8 flex-center"
                                             style="max-width: 80px; max-height: 80px; width: 100%; height: 100%">
                                             <img src="{{ asset('assets/client') }}/images/thumbs/{{ $quatang->bienthe->sanpham->hinhanhsanpham->first()->hinhanh }}"
                                                 alt="{{ $quatang->bienthe->sanpham->ten }}" class="w-100 rounded-8">
                                         </a>
                                         <div class="table-product__content text-start">
                                             <h6 class="title text-md fw-semibold mb-0">
-                                                <a href="#" class="link text-line-2"
+                                                <a href="{{ route('chi-tiet-san-pham',$quatang->bienthe->sanpham->slug) }}" class="link text-line-2"
                                                     title="{{ $quatang->bienthe->sanpham->ten }}"
                                                     style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">{{ $quatang->bienthe->sanpham->ten }}</a>
                                             </h6>
                                             <div class="flex-align gap-16 mb-6">
-                                                <a href="#"
+                                                <a href="{{ route('chi-tiet-san-pham',$quatang->bienthe->sanpham->slug) }}"
                                                     class="btn bg-gray-50 text-heading text-xs py-4 px-6 rounded-8 flex-center gap-8 fw-medium">
                                                     {{ $quatang->bienthe->loaibienthe->ten }}
                                                 </a>
@@ -102,7 +135,7 @@
                                             <div class="product-card__price mb-6">
                                                 <div class="flex-align gap-24">
                                                     <span class="text-heading text-sm fw-medium ">Số lượng: 1</span>
-                                                    @if($currentCount >= $targetCount)
+                                                    @if($percent == 100)
                                                     <span class="text-success text-sm fw-medium fst-italic">Quà tặng đã được thêm vào giỏ hàng !</span>
                                                     @endif
                                                 </div>
@@ -118,14 +151,13 @@
                                                 aria-label="Basic example" aria-valuenow="1" aria-valuemin="0"
                                                 aria-valuemax="2">
                                                 <div class="progress-bar bg-main-600 rounded-pill text-center"
-                                                    style="width: {{ $percent }}%"> @if($currentCount < $targetCount) + @else  @endif{{ $currentCount }} </div>
+                                                    style="width: {{ $percent }}%">{{ number_format($percent, 0) }}%</div>
                                             </div>
                                             @if ($percent >= 100)
                                                 <i class="ph-bold ph-seal-check text-3xl text-success-600"></i>
                                             @endif
                                         </div>
-                                        <span class="text-gray-900 text-sm fw-medium">Mua {{ $targetCount }} sản phẩm để
-                                            nhận quà</span>
+                                        <span class="text-gray-900 text-sm fw-medium">Hoàn thành điều kiện để tăng tiến độ nhận quà</span>
                                     </div>
 
                                 </div>
@@ -170,7 +202,7 @@
                                             class="on-hover-dropdown common-dropdown border-0 inset-inline-start-auto inset-inline-end-0">
                                             <ul class="flex-align gap-16">
                                                 <li>
-                                                    <a href="https://www.facebook.com"
+                                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('chi-tiet-qua-tang', ['slug' => $quatang->slug]) }}"
                                                         class="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white">
                                                         <i class="ph-fill ph-facebook-logo"></i>
                                                     </a>

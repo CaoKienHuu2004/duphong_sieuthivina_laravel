@@ -93,7 +93,13 @@ class HomeController extends Controller
         return $topdeals;
     }
     protected function quatang()
-    {
+    {   
+        QuatangsukienModel::where('trangthai', 'Hiển thị')
+            ->whereHas('bienthe', function ($q) {
+                $q->where('luottang', '<=', 0); // Điều kiện: Hết lượt tặng
+            })
+            ->update(['trangthai' => 'Tạm ẩn']);
+            
         $quatang = QuatangsukienModel::where('trangthai', 'Hiển thị')
                                 ->where('deleted_at', null)
                                 ->where('ngaybatdau', '<=', now())

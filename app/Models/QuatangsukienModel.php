@@ -16,7 +16,8 @@ class QuatangsukienModel extends Model
     protected $fillable = [
         'id_bienthe',
         'id_chuongtrinh',
-        'dieukien',
+        'dieukiensoluong',
+        'dieukiengiatri',
         'tieude',
         'thongtin',
         'hinhanh',

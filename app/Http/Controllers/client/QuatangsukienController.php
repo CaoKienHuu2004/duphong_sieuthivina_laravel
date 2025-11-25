@@ -15,10 +15,20 @@ class QuatangsukienController extends Controller
 {
     public function index(Request $request)
     {
+
+        QuatangsukienModel::where('trangthai', 'Hiển thị')
+            ->whereHas('bienthe', function ($q) {
+                $q->where('luottang', '<=', 0); // Điều kiện: Hết lượt tặng
+            })
+            ->update(['trangthai' => 'Tạm ẩn']);
+
         // 1. Khởi tạo Query và Eager Load để tránh n+1 query
         // Load sẵn bienthe -> sanpham -> thuonghieu để hiển thị ra view cho mượt
         $query = QuatangsukienModel::with(['bienthe.sanpham.thuonghieu'])
-            ->where('trangthai', 'Hiển thị'); // Giả sử chỉ lấy quà đang active
+            ->where('trangthai', 'Hiển thị')
+            ->where('deleted_at',null); // Giả sử chỉ lấy quà đang active
+
+        
 
         // =================================================================
         // LỌC THEO THƯƠNG HIỆU (NHÀ CUNG CẤP)
@@ -72,41 +82,61 @@ class QuatangsukienController extends Controller
         // 1. Lấy thông tin quà tặng
         $quatang = QuatangsukienModel::with('bienthe.sanpham.thuonghieu')->where('slug', $slug)->firstOrFail();
 
-        // Lấy thông tin thương hiệu yêu cầu từ sản phẩm quà tặng
-        $giftProduct = $quatang->bienthe->sanpham;
+        // Kiểm tra tồn kho quà tặng (luottang)
+        if ($quatang->bienthe->luottang <= 0) {
+            $quatang->trangthai = 'Tạm ẩn';
+            $quatang->save();
+            return redirect()->back()->withErrors(['message' => 'Quà tặng này hiện không còn sẵn có.']);
+        }
+
         $quatang->increment('luotxem');
+        
+        $giftProduct = $quatang->bienthe->sanpham;
         $requiredBrandId = $giftProduct->id_thuonghieu;
         $brandName = $giftProduct->thuonghieu->ten ?? 'Nhà cung cấp';
-        $targetCount = $quatang->dieukien; // Số lượng biến thể cần mua
+        
+        // --- LẤY ĐIỀU KIỆN ---
+        $targetCount = $quatang->dieukiensoluong;        // Điều kiện 1: Số lượng SP khác nhau
+        $targetValue = $quatang->dieukiengiatri ?? 0; // Điều kiện 2: Tổng giá trị đơn hàng (MỚI)
 
-        // 2. Lấy danh sách ID các biến thể ĐANG CÓ trong giỏ hàng
-        $cartBientheIds = $this->getCartBientheIds();
+        // 2. Lấy thông tin Giỏ hàng hiện tại
+        $cartBientheIds = $this->getCartBientheIds();   // Lấy danh sách ID để check số lượng
+        $cartTotalValue = $this->getCartTotalValue();   // Lấy tổng tiền để check giá trị (MỚI)
 
-        // 3. Tính toán tiến độ (Đếm xem trong giỏ có bao nhiêu món thuộc Brand này)
+        // 3. Tính toán tiến độ
+        
+        // a. Tiến độ theo Số lượng SP khác nhau
         $currentCount = 0;
-
         if (!empty($cartBientheIds)) {
-            // Query DB để check xem những món trong giỏ có thuộc Brand yêu cầu không
             $currentCount = BientheModel::whereIn('id', $cartBientheIds)
                 ->whereHas('sanpham', function ($q) use ($requiredBrandId) {
                     $q->where('id_thuonghieu', $requiredBrandId);
                 })
                 ->count();
         }
+        $percentCount = ($targetCount > 0) ? ($currentCount / $targetCount) * 100 : 100;
 
-        // Tính % hiển thị
-        $percent = ($targetCount > 0) ? ($currentCount / $targetCount) * 100 : 0;
+        // b. Tiến độ theo Giá trị đơn hàng (MỚI)
+        // Nếu targetValue = 0 thì coi như luôn đạt 100%
+        $percentValue = ($targetValue > 0) ? ($cartTotalValue / $targetValue) * 100 : 100;
+
+        // c. Tổng hợp % hiển thị (Lấy cái thấp hơn để hiển thị tiến độ thực tế)
+        // Ví dụ: Đủ tiền (100%) nhưng thiếu số lượng (50%) -> Hiển thị 50%
+        $percent = min($percentCount, $percentValue);
         $percent = min(100, $percent); // Tối đa 100%
-        $remaining = max(0, $targetCount - $currentCount); // Số lượng còn thiếu
 
-        // 4. Lấy danh sách Gợi ý (Cùng Brand, TRỪ những cái đã có trong giỏ)
+        // d. Tính phần còn thiếu
+        $remaining = max(0, $targetCount - $currentCount); // Còn thiếu bao nhiêu SP
+        $remainingValue = max(0, $targetValue - $cartTotalValue); // Còn thiếu bao nhiêu tiền (MỚI)
+
+        // 4. Lấy danh sách Gợi ý
         $suggestedProducts = BientheModel::with(['sanpham.hinhanhsanpham', 'loaibienthe'])
             ->whereHas('sanpham', function ($query) use ($requiredBrandId) {
                 $query->where('id_thuonghieu', $requiredBrandId);
             })
             ->whereIn('trangthai', ['Còn hàng', 'Sắp hết hàng'])
-            ->where('soluong', '>', 0) // Còn tồn kho thực tế
-            ->whereNotIn('id', $cartBientheIds) // Trừ những cái đã mua
+            ->where('soluong', '>', 0)
+            ->whereNotIn('id', $cartBientheIds)
             ->inRandomOrder()
             ->take(10)
             ->get();
@@ -118,7 +148,11 @@ class QuatangsukienController extends Controller
             'targetCount',
             'remaining',
             'brandName',
-            'suggestedProducts'
+            'suggestedProducts',
+            // Truyền thêm biến mới ra View để hiển thị thông báo "Cần mua thêm X tiền"
+            'cartTotalValue',
+            'targetValue',
+            'remainingValue'
         ));
     }
 
@@ -256,5 +290,23 @@ class QuatangsukienController extends Controller
         //     'status' => 'success', 
         //     'message' => $message 
         // ]);
+    }
+
+    private function getCartTotalValue()
+    {
+        if (Auth::check()) {
+            return GiohangModel::where('id_nguoidung', Auth::id())
+                ->where('thanhtien', '>', 0) // Chỉ tính hàng mua, không tính quà
+                ->sum('thanhtien');
+        } else {
+            $sessionCart = Session::get('cart', []);
+            $total = 0;
+            foreach ($sessionCart as $item) {
+                if (($item['thanhtien'] ?? 0) > 0) {
+                    $total += $item['thanhtien'];
+                }
+            }
+            return $total;
+        }
     }
 }
