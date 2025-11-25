@@ -150,7 +150,7 @@
                                             <div class="progress w-100 bg-color-three rounded-pill h-20" role="progressbar"
                                                 aria-label="Basic example" aria-valuenow="1" aria-valuemin="0"
                                                 aria-valuemax="2">
-                                                <div class="progress-bar bg-main-600 rounded-pill text-center"
+                                                <div class="progress-bar @if ($percent >= 100) bg-success-600 @else bg-main-600 @endif rounded-pill text-center"
                                                     style="width: {{ $percent }}%">{{ number_format($percent, 0) }}%</div>
                                             </div>
                                             @if ($percent >= 100)
