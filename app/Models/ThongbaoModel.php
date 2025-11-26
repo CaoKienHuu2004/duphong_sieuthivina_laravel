@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ThongbaoModel extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'thongbao';
     protected $primaryKey = 'id';
@@ -17,6 +17,7 @@ class ThongbaoModel extends Model
         'tieude',
         'noidung',
         'lienket',
+        'loaithongbao',
         'trangthai',
     ];
     public $timestamps = false;
@@ -26,9 +27,24 @@ class ThongbaoModel extends Model
     // ===========================================================================================================================
     public function nguoidung()
     {
-        return $this->belongsTo(NguoidungModel::class, 'id_nguoidung','id');
+        return $this->belongsTo(NguoidungModel::class, 'id_nguoidung', 'id');
     }
 
+
+    // ===========================================================================================================================
+    // HÀM TIỆN ÍCH
+    // ===========================================================================================================================
+    public static function khoitaothongbao($userId, $title, $content, $link = null, $loaithongbao)
+    {
+        self::create([
+            'id_nguoidung' => $userId,
+            'tieude' => $title,
+            'noidung' => $content,
+            'lienket' => $link,
+            'loaithongbao' => $loaithongbao,
+            'trangthai' => 'Chưa đọc', // Giá trị mặc định khi tạo mới
+        ]);
+    }
 
     public function scopeChuaDoc($query)
     {

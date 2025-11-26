@@ -29,4 +29,6 @@ class BaivietModel extends Model
     {
         return $this->belongsTo(NguoidungModel::class, 'id_nguoidung');
     }
+
+    
 }

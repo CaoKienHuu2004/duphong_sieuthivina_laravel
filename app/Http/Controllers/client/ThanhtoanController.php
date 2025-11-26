@@ -16,6 +16,7 @@ use App\Models\DiachinguoidungModel;
 use App\Models\GiohangModel;
 use App\Models\PhuongthucModel;
 use App\Models\PhivanchuyenModel;
+use App\Models\ThongbaoModel;
 use App\Models\MagiamgiaModel;
 use App\Models\BientheModel;
 use App\Livewire\GiohangComponent;
@@ -191,6 +192,14 @@ class ThanhtoanController extends Controller
             $currentDateTime = Carbon::now()->format('ymd');
             $order->madon = 'STV' . $currentDateTime . $order->id;
             $order->save();
+
+            ThongbaoModel::khoitaothongbao(
+                $order->id_nguoidung,
+                "Bạn đã đặt hàng thành công !",
+                "Mã đơn {$order->madon} của bạn, vui lòng kiểm tra đơn hàng của bạn.",
+                route('chi-tiet-don-hang', $order->madon), // Giả định có route xem chi tiết đơn hàng
+                'Đơn hàng'
+            );
 
             foreach ($cartItems as $item) {
                 $bientheId = $item['id_bienthe'];

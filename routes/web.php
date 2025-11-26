@@ -79,6 +79,9 @@ Route::middleware('auth')->group(function () {
     
     Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('dang-xuat');
     Route::get('/thong-tin-ca-nhan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
+    Route::get('/thong-bao', function () {
+    return view('client.nguoidung.thongbao');
+});
 
     Route::prefix('/don-hang')->group(function () {
         Route::get('/', [client\DonhangController::class, 'donhangcuatoi'])->name('don-hang-cua-toi');

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\DonhangModel;
+use App\Models\ThongbaoModel;
 use Illuminate\Support\Facades\Auth;
 
 class DonhangcuatoiComponent extends Component
@@ -144,6 +145,14 @@ class DonhangcuatoiComponent extends Component
             // Tùy chọn: Cập nhật trạng thái thanh toán nếu là Chờ thanh toán
             $donHang->trangthaithanhtoan = 'Hủy thanh toán'; 
             $donHang->save();
+
+            ThongbaoModel::khoitaothongbao(
+                $donHang->id_nguoidung,
+                "Đơn hàng của bạn đã bị hủy !",
+                "Mã đơn {$donHang->madon} của bạn đã bị hủy, vui lòng xem chi tiết đơn hàng.",
+                route('chi-tiet-don-hang', $donHang->madon),
+                'Đơn hàng'
+            );
 
             // Tải lại số lượng và danh sách đơn hàng
             $this->loadFilterCounts();
