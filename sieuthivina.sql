@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 26, 2025 at 01:30 PM
+-- Generation Time: Nov 27, 2025 at 05:47 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.16
 
@@ -98,7 +98,7 @@ INSERT INTO `bienthe` (`id`, `id_loaibienthe`, `id_sanpham`, `giagoc`, `soluong`
 (35, 15, 27, 245000, 421, 0, 15400, 'Còn hàng', NULL),
 (36, 17, 28, 110000, 231, 0, 9500, 'Còn hàng', NULL),
 (37, 18, 28, 290000, 423, 0, 4100, 'Còn hàng', NULL),
-(38, 19, 29, 340000, 18, 0, 3507, 'Còn hàng', NULL),
+(38, 19, 29, 340000, 17, 0, 3508, 'Còn hàng', NULL),
 (39, 20, 29, 360000, 0, 0, 6800, 'Còn hàng', NULL),
 (40, 22, 30, 43000, 95, 0, 1605, 'Còn hàng', NULL),
 (41, 21, 30, 265000, 99, 0, 787, 'Còn hàng', NULL),
@@ -161,7 +161,8 @@ INSERT INTO `chitiet_donhang` (`id`, `id_bienthe`, `id_donhang`, `soluong`, `don
 (49, 42, 29, 1, 44000, NULL),
 (50, 44, 29, 1, 0, NULL),
 (51, 29, 30, 1, 285000, NULL),
-(52, 38, 31, 1, 306000, NULL);
+(52, 38, 31, 1, 306000, NULL),
+(53, 38, 32, 1, 306000, NULL);
 
 -- --------------------------------------------------------
 
@@ -368,7 +369,8 @@ INSERT INTO `donhang` (`id`, `id_nguoidung`, `id_diachinguoidung`, `id_phivanchu
 (28, 3, 3, 1, 1, 2, 'STV25112528', 4, '138000', 88000, 'Thanh toán khi nhận hàng', 'Đã hủy đơn', '2025-11-24 23:32:57', '2025-11-24 23:32:57', NULL),
 (29, 3, 3, 1, 3, 2, 'STV25112529', 4, '138000', 88000, 'Hủy thanh toán', 'Đã hủy đơn', '2025-11-24 23:41:12', '2025-11-26 00:13:12', NULL),
 (30, 3, 3, 1, 1, 2, 'STV25112630', 1, '285000', 235000, 'Thanh toán khi nhận hàng', 'Đã hủy đơn', '2025-11-26 00:47:47', '2025-11-26 00:47:58', NULL),
-(31, 3, 3, 1, 1, 2, 'STV25112631', 1, '306000', 256000, 'Thanh toán khi nhận hàng', 'Đã hủy đơn', '2025-11-26 00:49:09', '2025-11-26 00:54:57', NULL);
+(31, 3, 3, 1, 1, 2, 'STV25112631', 1, '306000', 256000, 'Thanh toán khi nhận hàng', 'Chờ xác nhận', '2025-11-26 00:49:09', '2025-11-26 00:54:57', NULL),
+(32, 3, 3, 1, 1, 2, 'STV25112732', 1, '306000', 256000, 'Thanh toán khi nhận hàng', 'Đã hủy đơn', '2025-11-26 21:31:02', '2025-11-26 21:38:49', NULL);
 
 -- --------------------------------------------------------
 
@@ -793,7 +795,7 @@ INSERT INTO `sanpham` (`id`, `id_thuonghieu`, `ten`, `slug`, `mota`, `xuatxu`, `
 (26, 4, 'Yến tổ Nest100 (Hộp 50g + túi)', 'yen-to-nest100-hop-50g-tui', 'Tổ yến sào Nest100 là sản phẩm của Công ty Aquapharm – yến sào Nest100. Được sản xuất theo quy trình hiện đại, hệ thống quản lý chất lượng theo tiêu chuẩn quốc tế: ISO 22000, HACCP, GMP, FSSC 22000; các công đoạn chế biến từ nguyên liệu đến thành phẩm được quản lý, kiểm soát chặt chẽ. Cam kết chất lượng trong từng sợi yến, tổ yến nguyên chất 100%. Quá trình chế biến làm sạch tổ yến bằng nước RO qua hệ thống lọc tinh và tiệt trùng bằng tia UV. Dùng hệ thống sấy lạnh để giữ được trọn vẹn giá trị dinh dưỡng của tổ yến. Đảm bảo nguyên tắc 3 không trong quá trình chế biến: không chà dầu, không chà muối, không tẩy trắng.', 'Việt Nam', 'Việt Nam', 'Công khai', 5, 7408, NULL),
 (27, 5, 'Thực phẩm bảo vệ sức khoẻ ByeAlco (5 viên/vỉ)', 'thuc-pham-bao-ve-suc-khoe-byealco-5-vien-vi', 'BYEALCO là sản phẩm thiên nhiên với công thức đặc biệt được nghiên cứu chiết xuất từ các dược liệu quý. Sản phẩm giúp bảo vệ gan, tăng cường sức khỏe và giảm thiểu tác hại của rượu bia. Sản phẩm được sản xuất tại nhà máy đạt chuẩn GMP, ISO - Đạt các tiêu chuẩn nghiêm ngặt của Bộ y Tế Việt Nam và các tiêu chuẩn Quốc tế.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 7, NULL),
 (28, 5, 'Cà Phê Sâm Canada', 'ca-phe-sam-canada', 'Khi nhắc đến cà phê chất lượng cao, cả thế giới nghĩ ngay đến Việt Nam: Hương thơm nổi bật, vị đậm đà, mạnh mẽ - Là một tài sản quý giá mà thiên nhiên ban tặng cho mảnh đất hình chữ S vốn giàu truyền thống văn hóa, lịch sử. Ở bên kia bán cầu, thổ dân Canada đã sử dụng nhân sâm trong vài nghìn năm như một loại thảo mộc tăng cường sức khỏe. Cà phê sâm Canada ra đời xuất phát từ niềm đam mê bất tận dành cho cà phê và khao khát tạo nên một thức uống không chỉ thơm ngon mà còn giúp người dùng duy trì sức khỏe và sắc đẹp. Sự kết hợp hài hòa giữa công thức truyền thống và hiện đại với hạt cà phê thượng hạng và sâm Canada mang đến loại cà phê sức khỏe riêng biệt trên thị trường giúp người tiêu dùng vừa tận hưởng được hương vị cà phê đậm đà mỗi ngày, vừa chăm sóc sức khỏe từ bên trong', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 7, NULL),
-(29, 5, 'Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo', 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao', 'Thực phẩm bổ sung Lingzhi Coffee - Cà phê sức khỏe giúp tỉnh táo, hỗ trợ bảo vệ gan', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 43, NULL),
+(29, 5, 'Cà phê bào tử Linh Chi phá vách – Giúp tỉnh táo', 'ca-phe-bao-tu-linh-chi-pha-vach-giup-tinh-tao', 'Thực phẩm bổ sung Lingzhi Coffee - Cà phê sức khỏe giúp tỉnh táo, hỗ trợ bảo vệ gan', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 44, NULL),
 (30, 4, 'Nước Yến sào Đông trùng hạ thảo Nest100 - Có đường', 'nuoc-yen-sao-dong-trung-ha-thao-nest100-co-duong', 'Thành Phần: \r\nNước, yến sào đã chế biến (10-35%), đông trùng hạ thảo sấy thăng hoa (2500mg/L), đường phèn, chất làm dày (401, 415, 406, 327), chất bảo quản (211), màu tổng hợp (102, 110), hương tổng hợp dùng cho thực phẩm.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 149, NULL),
 (31, 4, 'Nước Yến Sâm Ginnest – Có đường', 'nuoc-yen-sam-ginnest-co-duong', 'Thành Phần: \r\nNước, yến sào đã chế biến (35%), Nhân sâm (2143mg/L), đường phèn, chất làm dày (401, 415, 406, 327), chất bảo quản (211), màu tổng hợp (150d, 110), hương sâm tổng hợp dùng cho thực phẩm.', 'Việt Nam', 'Việt Nam', 'Công khai', 0, 11, NULL),
 (32, 4, 'Hộp quà tặng Cao cấp - Ngũ Phúc Luxury tổ yến tinh chế và yến chưng Nest100 cao cấp (kèm túi)', 'hop-qua-tang-cao-cap-ngu-phuc-luxury-to-yen-tinh-che-va-yen-chung-nest100-cao-cap-kem-tui', 'Bộ quà tặng sức khỏe cao cấp bao gồm:\r\n01 hộp tổ yến tinh chế 10g\r\n01 lọ yến cao cấp đường phèn 70ml\r\n01 lọ yến cao cấp đường ăn kiêng 70ml\r\n01 lọ yến cao cấp Đông trùng hạ thảo 70ml\r\n01 lọ yến kids 2in1', 'Việt Nam', 'Việt Nam', 'Công khai', 10, 34, NULL);
@@ -811,16 +813,20 @@ CREATE TABLE `thongbao` (
   `noidung` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `lienket` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `loaithongbao` enum('Đơn hàng','Khuyến mãi','Hệ thống','Quà tặng') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `trangthai` enum('Đã đọc','Chưa đọc','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+  `trangthai` enum('Đã đọc','Chưa đọc','Tạm ẩn') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `thongbao`
 --
 
-INSERT INTO `thongbao` (`id`, `id_nguoidung`, `tieude`, `noidung`, `lienket`, `loaithongbao`, `trangthai`) VALUES
-(1, 3, 'Đơn hàng của bạn Đã hủy đơn', 'Mã đơn STV25112019 của bạn Đã hủy đơn.', 'http://127.0.0.1:8000/don-hang/STV25112019', 'Đơn hàng', 'Chưa đọc'),
-(2, 3, 'Đơn hàng của bạn Đã hủy đơn', 'Mã đơn STV25112631 của bạn Đã hủy đơn.', 'http://127.0.0.1:8000/don-hang/STV25112631', 'Đơn hàng', 'Chưa đọc');
+INSERT INTO `thongbao` (`id`, `id_nguoidung`, `tieude`, `noidung`, `lienket`, `loaithongbao`, `trangthai`, `created_at`, `updated_at`) VALUES
+(1, 3, 'Đơn hàng của bạn Đã hủy đơn', 'Mã đơn STV25112019 của bạn Đã hủy đơn.', 'http://127.0.0.1:8000/don-hang/STV25112019', 'Đơn hàng', 'Đã đọc', '2025-11-26 05:35:53', '0000-00-00 00:00:00'),
+(2, 3, 'Đơn hàng của bạn Đã hủy đơn', 'Mã đơn STV25112631 của bạn Đã hủy đơn.', 'http://127.0.0.1:8000/don-hang/STV25112631', 'Đơn hàng', 'Đã đọc', '2025-11-26 05:36:00', '0000-00-00 00:00:00'),
+(3, 3, 'Bạn đã đặt hàng thành công !', 'Mã đơn STV25112732 của bạn, vui lòng kiểm tra đơn hàng của bạn.', 'http://127.0.0.1:8000/don-hang/STV25112732', 'Đơn hàng', 'Đã đọc', '2025-11-26 05:36:04', '0000-00-00 00:00:00'),
+(4, 3, 'Đơn hàng của bạn đã bị hủy !', 'Mã đơn STV25112732 của bạn đã bị hủy, vui lòng xem chi tiết đơn hàng.', 'http://127.0.0.1:8000/don-hang/STV25112732', 'Đơn hàng', 'Đã đọc', '2025-11-26 21:38:49', '2025-11-26 21:39:14');
 
 -- --------------------------------------------------------
 
@@ -1079,7 +1085,7 @@ ALTER TABLE `bienthe`
 -- AUTO_INCREMENT for table `chitiet_donhang`
 --
 ALTER TABLE `chitiet_donhang`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `chuongtrinh`
@@ -1109,13 +1115,13 @@ ALTER TABLE `diachi_nguoidung`
 -- AUTO_INCREMENT for table `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `giohang`
 --
 ALTER TABLE `giohang`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=708;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=709;
 
 --
 -- AUTO_INCREMENT for table `hinhanh_sanpham`
@@ -1175,7 +1181,7 @@ ALTER TABLE `sanpham`
 -- AUTO_INCREMENT for table `thongbao`
 --
 ALTER TABLE `thongbao`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `thuonghieu`
