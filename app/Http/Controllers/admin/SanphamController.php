@@ -72,7 +72,7 @@ class SanphamController extends Controller
         $danhmucs = Danhmuc::all();
         $loaibienthes = Loaibienthe::all();
 
-        return view('taosanpham', compact('thuonghieus', 'danhmucs', 'loaibienthes'));
+        return view('admin.taosanpham', compact('thuonghieus', 'danhmucs', 'loaibienthes'));
     }
 
     /**

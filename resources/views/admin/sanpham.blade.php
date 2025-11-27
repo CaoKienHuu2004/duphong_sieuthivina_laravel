@@ -13,7 +13,7 @@
         </h6>
       </div>
       <div class="page-btn">
-        <a href="" class="btn btn-added"><img
+        <a href="{{ route('quan-tri-vien.tao-san-pham') }}" class="btn btn-added"><img
             src="{{asset('assets/admin/img/icons/plus.svg')}}"
             alt="img"
             class="me-1" />Tạo sản phẩm</a>
@@ -117,8 +117,8 @@
                 <th>Danh mục</th>
                 <th>Thương hiệu</th>
                 <th>Giá</th>
-                <th>Loại</th>
-                <th>Số lượng</th>
+                {{-- <th>Loại</th> --}}
+                {{-- <th>Số lượng</th> --}}
                 <th>Lượt mua</th>
                 <th>Trạng thái</th>
                 <th>Hành động</th>
@@ -135,12 +135,12 @@
                         </label>
                       </td> -->
                 <td class="productimgname">
-                  <a href="{{url('/')}}" class="product-img">
+                  <a href="{{ route('quan-tri-vien.chi-tiet-san-pham', ['id' => $sp->id, 'slug' => Str::slug($sp->ten)]) }}" class="product-img">
                     <img
                       src="{{ asset('assets/client/images/thumbs/' . $sp->hinhanhsanpham->first()->hinhanh) }}"
                       alt="Not found" />
                   </a>
-                  <a href="{{url('/')}}" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$sp->ten}}">{{$sp->ten}}</a>
+                  <a href="{{ route('quan-tri-vien.chi-tiet-san-pham', ['id' => $sp->id, 'slug' => Str::slug($sp->ten)]) }}" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$sp->ten}}">{{$sp->ten}}</a>
                 </td>
                 <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{!! $sp->danhmuc->pluck('ten')->implode(', ') ?: 'Chưa có danh mục' !!}">{!! $sp->danhmuc->pluck('ten')->implode(', ') ?: 'Chưa có danh mục' !!}</td>
                 <td>{{ $sp->thuonghieu->ten ?? 'Không có' }}</td>
@@ -160,13 +160,13 @@
                   Chưa có giá
                   @endif
                 </td>
-                <td>
+                {{-- <td>
                   @php
                   $tenbt = $sp->bienthe->pluck('loaiBienThe.ten')->implode(', ');
                   @endphp
                   <p style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$tenbt ?: 'Không có biến thể'}}">{{$tenbt ?: 'Không có biến thể'}}</p>
-                </td>
-                <td>{{ $sp->bienthe->sum('soluong') }}</td>
+                </td> --}}
+                {{-- <td>{{ $sp->bienthe->sum('soluong') }}</td> --}}
                 <td>{{ number_format($sp->bienthe->sum('luotban'), 0, ',', '.') }}</td>
                 <td>{{ $sp->trangthai }}</td>
                 <td>
