@@ -20,7 +20,7 @@ class ThongbaoModel extends Model
         'loaithongbao',
         'trangthai',
     ];
-    public $timestamps = false;
+    public $timestamps = true;
 
     // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
