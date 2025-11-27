@@ -25,7 +25,7 @@
                         {{-- Chọn icon dựa trên tên tab --}}
                         <i class="ph-bold 
                                 @if ($data['name'] == 'Đơn hàng') ph-notepad 
-                                @elseif ($data['name'] == 'Mã khuyến mãi') ph-ticket 
+                                @elseif ($data['name'] == 'Khuyến mãi') ph-ticket 
                                 @elseif ($data['name'] == 'Quà tặng') ph-gift 
                                 @else ph-gear 
                                 @endif text-lg">
@@ -47,14 +47,14 @@
             <div class="tab-pane fade {{ $activeTab === $tabId ? 'show active' : '' }}" id="{{ $tabId }}" role="tabpanel"
                 aria-labelledby="tab-{{ $tabId }}" tabindex="0">
 
-                <div wire:key="list-{{ $tabId }}">
+                <div wire:key="list-{{ $tabId }}" wire:loading.class="opacity-50">
                     {{-- Lặp qua dữ liệu đã được tải --}}
                     @forelse ($loadedNotifications as $notification)
                         @php
                             $isUnread = $notification['trangthai'] == 'Chưa đọc';
                             $cssClass = $isUnread ? 'bg-gray-50' : '';
                             $iconClass = match ($notification['loaithongbao']) {
-                                'Mã khuyến mãi' => 'ph-ticket',
+                                'Khuyến mãi' => 'ph-ticket',
                                 'Quà tặng' => 'ph-gift',
                                 'Hệ thống' => 'ph-gear',
                                 default => 'ph-notepad', // Đơn hàng
@@ -62,7 +62,7 @@
                         @endphp
 
                         <div
-                            class="border border-gray-100 {{ $cssClass }} box-shadow-sm text-main-900 rounded-4 px-20 py-16 mb-10 flex-align gap-8">
+                            class="border border-gray-100 {{ $cssClass }} box-shadow-sm text-main-900 rounded-4 px-20 py-16 mb-10 flex-align gap-8" wire:loading.class="opacity-50">
                             <i class="ph-bold {{ $iconClass }} text-main-600 text-4xl"></i>
                             <div class="w-100">
                                 <div class="flex-align flex-between gap-12">
@@ -83,7 +83,7 @@
                         </div>
                     @empty
                         @if ($activeTab === $tabId)
-                            <div class="alert alert-info text-center">Không có thông báo nào trong mục này.</div>
+                            <div class="alert alert-warning text-center">Không có thông báo nào trong mục này.</div>
                         @endif
                     @endforelse
                 </div>
