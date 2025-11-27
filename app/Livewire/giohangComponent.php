@@ -160,7 +160,7 @@ class GiohangComponent extends Component
         
         foreach ($quatangsukiendb as $rule) {
             $bientheduoctang = $rule->id_bienthe;
-            $dieukienSoluong = $rule->dieukien; // Điều kiện 1: Số lượng sản phẩm khác nhau
+            $dieukienSoluong = $rule->dieukiensoluong; // Điều kiện 1: Số lượng sản phẩm khác nhau
             $dieukienGiatri = $rule->dieukiengiatri ?? 0; // Điều kiện 2: Giá trị đơn hàng tối thiểu
             
             // --- KIỂM TRA ĐIỀU KIỆN GIÁ TRỊ (MỚI) ---
