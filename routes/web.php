@@ -70,25 +70,28 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::prefix('/gio-hang')->group(function () {
-    Route::get('/', function () {return view('client.thanhtoan.giohang'); })->name('gio-hang');
+    Route::get('/', function () {
+        return view('client.thanhtoan.giohang'); })->name('gio-hang');
 
     Route::post('/them-gio-hang', [client\GiohangController::class, 'themgiohang'])->name('them-gio-hang');
 });
 
 Route::middleware('auth')->group(function () {
-    
+
     Route::post('/dang-xuat', [client\NguoidungController::class, 'logout'])->name('dang-xuat');
     Route::get('/thong-tin-ca-nhan', [client\NguoidungController::class, 'profile'])->name('tai-khoan');
-    Route::get('/thong-bao', function () {
-    return view('client.nguoidung.thongbao');
-});
+
+    Route::prefix('/thong-bao')->group(function () {
+        Route::get('/', [client\ThongbaoController::class, 'index'])->name('thong-bao');
+        Route::post('/danh-dau-da-doc', [client\ThongbaoController::class, 'index'])->name('danh-dau-da-doc');
+    });
 
     Route::prefix('/don-hang')->group(function () {
         Route::get('/', [client\DonhangController::class, 'donhangcuatoi'])->name('don-hang-cua-toi');
         Route::get('/{madon}', [client\DonhangController::class, 'chitietdonhang'])->name('chi-tiet-don-hang');
         Route::delete('/huy-don-hang', [client\DonhangController::class, 'huydonhang'])->name('huy-don-hang');
     });
-    
+
     Route::get('/so-dia-chi', [client\DiachiController::class, 'index'])->name('so-dia-chi');
     Route::get('/them-dia-chi-giao-hang', [client\DiachiController::class, 'taodiachi'])->name('them-dia-chi-giao-hang');
     Route::post('/luu-dia-chi', [client\DiachiController::class, 'khoitaodiachi'])->name('luu-dia-chi');
@@ -96,8 +99,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/cap-nhat-dia-chi', [client\DiachiController::class, 'capnhatdiachi'])->name('cap-nhat-dia-chi');
     Route::delete('/xoa-dia-chi', [client\DiachiController::class, 'xoadiachi'])->name('xoa-dia-chi');
     Route::put('/cap-nhat-tai-khoan', [client\NguoidungController::class, 'updateProfile'])->name('cap-nhat-tai-khoan');
-    
-    
+
+
     Route::prefix('/thanh-toan')->group(function () {
         Route::get('/', [client\ThanhtoanController::class, 'index'])->name('thanh-toan');
         Route::post('/dat-hang', [client\ThanhtoanController::class, 'placeOrder'])->name('dat-hang');
@@ -114,7 +117,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 | Logic: Yêu cầu Đăng nhập VÀ phải có vai trò 'admin'
 */
-Route::middleware(['auth','vaitro:admin']) // Kiểm tra đăng nhập và role
+Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
     ->prefix('quan-tri-vien')        // Tất cả route bắt đầu bằng /admin
     ->name('quan-tri-vien.')         // Tiền tố tên route: admin.*
     ->group(function () {
@@ -152,8 +155,8 @@ Route::middleware(['auth','vaitro:admin']) // Kiểm tra đăng nhập và role
 
             Route::delete('/{slug}/xoa', [admin\DanhmucController::class, 'destroy'])->name('xoa-danh-muc');
         });
-        
-});
+
+    });
 
 
 

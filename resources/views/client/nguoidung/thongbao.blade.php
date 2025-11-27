@@ -139,11 +139,27 @@
                             </div>
                         </div>
                         @if (session()->has('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
+                            <div class="alert alert-success alert-dismissible fade show mt-10" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                         @endif
                         @if (session()->has('error'))
-                            <div class="alert alert-danger">{{ session('error') }}</div>
+                            <div class="alert alert-danger alert-dismissible fade show mt-10" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                         @endif
+                        @php
+                            // Đặt tên tab hoạt động dựa trên request, mặc định là content-7 (Đơn hàng)
+                            $activeTabId = request()->get('tab', 'content-7');
+
+                            // Hàm kiểm tra class 'active'
+                            function isActiveTab($currentTabId, $activeTabId)
+                            {
+                                return $currentTabId == $activeTabId ? 'active' : '';
+                            }
+                        @endphp
                         <div class="border border-gray-100 rounded-8 p-16">
                             <div class=" py-10 flex-between flex-align mb-20">
                                 <ul class="nav common-tab style-two nav-pills wow fadeInRight m-0" id="pills-tab"
@@ -185,6 +201,7 @@
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="content-7" role="tabpanel"
                                     aria-labelledby="tab-7" tabindex="0">
+                                    
                                     <div
                                         class="border border-gray-100 bg-gray-50 box-shadow-sm text-main-900 rounded-4 px-20 py-16 mb-10 flex-align gap-8">
                                         <i class="ph-bold ph-notepad text-main-600 text-4xl"></i>
@@ -232,13 +249,15 @@
                                         <i class="ph-bold ph-ticket text-main-600 text-4xl"></i>
                                         <div class="w-100">
                                             <div class="flex-align flex-between gap-12">
-                                                <span class="text-gray-900 text-lg fw-medium flex-align gap-8">Ưu đãi khuyến mãi, mua càng nhiều - lời càng to</span>
+                                                <span class="text-gray-900 text-lg fw-medium flex-align gap-8">Ưu đãi khuyến
+                                                    mãi, mua càng nhiều - lời càng to</span>
                                                 <a href=""
                                                     class="border border-main-600 text-main-600 hover-text-white hover-bg-main-600 px-8 py-4 rounded-4 text-sm">Xem
                                                     chi tiết</a>
                                             </div>
                                             <div class="flex-align gap-12">
-                                                <span class="text-gray-800 text-md fw-normal">Ưu đãi voucher khi mua tối thiểu 2.000.000đ được giảm giá 200.000đ, thêm vào giỏ hàng ngay</span>
+                                                <span class="text-gray-800 text-md fw-normal">Ưu đãi voucher khi mua tối
+                                                    thiểu 2.000.000đ được giảm giá 200.000đ, thêm vào giỏ hàng ngay</span>
                                             </div>
                                         </div>
                                     </div>
