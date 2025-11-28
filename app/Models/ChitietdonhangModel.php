@@ -15,6 +15,8 @@ class ChitietdonhangModel extends Model
     protected $fillable = [
         'id_bienthe',
         'id_donhang',
+        'tensanpham',
+        'tenbienthe',
         'soluong',
         'dongia',
     ];

@@ -17,7 +17,7 @@ class DonhangController extends Controller
 
     public function chitietdonhang($madon)
     {
-        $donhang = DonhangModel::where('madon', $madon)->first();
+        $donhang = DonhangModel::where('madon', $madon)->firstOrFail();
 
         return view('client.nguoidung.chitietdonhang', compact('donhang'));
     }

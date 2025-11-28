@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
+use App\Models\MaGiamGia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -174,11 +175,21 @@ class ThanhtoanController extends Controller
 
             // Sửa lỗi Foreign Key: Lấy ID mã giảm giá, nếu không có thì là NULL
             $voucherId = $appliedVoucher['id'] ?? null;
+            $magiamgiaModel = MagiamgiaModel::where('id',$voucherId)->firstOrFail();
             $order->id_magiamgia = $voucherId;
 
             // Mã đơn hàng ban đầu là một giá trị tạm thời (TEMP)
-            $order->madon = 'TEMP'; 
-            $order->tongsoluong = collect($cartItems)->sum('soluong');
+            $order->madon = 'TEMP';
+            $order->nguoinhan = $diachi->hoten;
+            $order->diachinhan = $diachi->diachi;
+            $order->khuvucgiao = $diachi->tinhthanh;
+            $order->hinhthucvanchuyen = $phivanchuyenModel->ten;
+            $order->phigiaohang = $phiVanChuyen;
+            $order->hinhthucthanhtoan = $phuongthuc->ten;
+            $order->sodienthoai = $diachi->sodienthoai;
+            $order->mavoucher = $magiamgiaModel->magiamgia;
+            $order->giagiam = $giamgiaVoucher;
+            // $order->tongsoluong = collect($cartItems)->sum('soluong');
             $order->tamtinh = $tamtinh;
             $order->thanhtien = $tongThanhTien;
             $order->trangthai = 'Chờ xác nhận'; 
@@ -203,12 +214,15 @@ class ThanhtoanController extends Controller
 
             foreach ($cartItems as $item) {
                 $bientheId = $item['id_bienthe'];
+                $bientheModel = BientheModel::where('id',$bientheId)->firstOrFail();
                 $soluong = $item['soluong'];
                 $dongia = $item['thanhtien']; 
 
                 ChitietdonhangModel::create([
                     'id_bienthe' => $bientheId,
                     'id_donhang' => $order->id,
+                    'tensanpham' => $bientheModel->sanpham->ten,
+                    'tenbienthe' => $bientheModel->loaibienthe->ten,
                     'soluong' => $soluong,
                     'dongia' => $dongia,
                 ]);

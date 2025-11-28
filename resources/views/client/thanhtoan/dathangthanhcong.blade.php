@@ -60,15 +60,15 @@
                                             @if($chitiet->dongia == 0)<span class="flex-align mt-10 mb-4 text-gray-900 text-sm fw-medium"><i class="ph-bold ph-gift text-main-600 text-lg pe-4"></i>Quà tặng của bạn</span>@endif
                                             <div class="d-flex align-items-center gap-12">
                                                 <a href="{{ route('chi-tiet-san-pham',$chitiet->bienthe->sanpham->slug) }}" class="border border-gray-100 rounded-8 flex-center" style="max-width: 90px; max-height: 90px; width: 100%; height: 100%">
-                                                    <img src="{{ asset('assets/client') }}/images/thumbs/{{ $chitiet->bienthe->sanpham->hinhanhsanpham->first()->hinhanh ?? 'default-image.jpg' }}" alt="{{ $chitiet->bienthe->sanpham->ten }}" class="w-100 rounded-8">
+                                                    <img src="{{ asset('assets/client') }}/images/thumbs/{{ $chitiet->bienthe->sanpham->hinhanhsanpham->first()->hinhanh ?? 'default-image.jpg' }}" alt="{{ $chitiet->tensanpham }}" class="w-100 rounded-8">
                                                 </a>
                                                 <div class="text-start w-100">
                                                     <h6 class="title text-md fw-semibold mb-0">
-                                                        <a href="#" class="link text-line-2" title="{{ $chitiet->bienthe->sanpham->ten }}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">{{ $chitiet->bienthe->sanpham->ten }}</a>
+                                                        <a href="{{ route('chi-tiet-san-pham',$chitiet->bienthe->sanpham->slug) }}" class="link text-line-2" title="{{ $chitiet->tensanpham }}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">{{ $chitiet->tensanpham }}</a>
                                                     </h6>
                                                     <div class="flex-align gap-16 mb-6">
-                                                        <a href="#" class="btn bg-gray-50 text-heading text-xs py-4 px-6 rounded-8 flex-center gap-8 fw-medium">
-                                                            {{ $chitiet->bienthe->loaibienthe->ten }}
+                                                        <a href="{{ route('chi-tiet-san-pham',$chitiet->bienthe->sanpham->slug) }}" class="btn bg-gray-50 text-heading text-xs py-4 px-6 rounded-8 flex-center gap-8 fw-medium">
+                                                            {{ $chitiet->tenbienthe }}
                                                         </a>
                                                     </div>
                                                     <div class="product-card__price mb-6">

@@ -114,9 +114,9 @@
                         </label>
                       </th> -->
                 <th>Tên sản phẩm</th>
+                <th>Giá</th>
                 <th>Danh mục</th>
                 <th>Thương hiệu</th>
-                <th>Giá</th>
                 {{-- <th>Loại</th> --}}
                 {{-- <th>Số lượng</th> --}}
                 <th>Lượt mua</th>
@@ -140,10 +140,8 @@
                       src="{{ asset('assets/client/images/thumbs/' . $sp->hinhanhsanpham->first()->hinhanh) }}"
                       alt="Not found" />
                   </a>
-                  <a href="{{ route('quan-tri-vien.chi-tiet-san-pham', ['id' => $sp->id, 'slug' => Str::slug($sp->ten)]) }}" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$sp->ten}}">{{$sp->ten}}</a>
+                  <a href="{{ route('quan-tri-vien.chi-tiet-san-pham', ['id' => $sp->id, 'slug' => Str::slug($sp->ten)]) }}" style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$sp->ten}}">{{$sp->ten}}</a>
                 </td>
-                <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{!! $sp->danhmuc->pluck('ten')->implode(', ') ?: 'Chưa có danh mục' !!}">{!! $sp->danhmuc->pluck('ten')->implode(', ') ?: 'Chưa có danh mục' !!}</td>
-                <td>{{ $sp->thuonghieu->ten ?? 'Không có' }}</td>
                 <td>
                   @if($sp->bienthe->count())
                   @php
@@ -160,6 +158,9 @@
                   Chưa có giá
                   @endif
                 </td>
+                <td style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{!! $sp->danhmuc->pluck('ten')->implode(', ') ?: 'Chưa có danh mục' !!}">{!! $sp->danhmuc->pluck('ten')->implode(', ') ?: 'Chưa có danh mục' !!}</td>
+                <td>{{ $sp->thuonghieu->ten ?? 'Không có' }}</td>
+                
                 {{-- <td>
                   @php
                   $tenbt = $sp->bienthe->pluck('loaiBienThe.ten')->implode(', ');

@@ -126,17 +126,17 @@
                                 <div class="col-lg-4 d-flex flex-column gap-5 p-0 px-6">
                                     <span class="text-lg fw-semibold text-gray-900">Địa chỉ người nhận</span>
                                     <div class="border border-gray-300 rounded-4 py-10 px-10 h-100">
-                                        <div class="text-sm fw-semibold text-gray-900">{{ $donhang->diachinguoidung->hoten }}</div>
-                                        <div class="text-sm text-gray-800 mt-5"><span class="fw-medium">Địa chỉ:</span> {{ $donhang->diachinguoidung->diachi }}, {{ $donhang->diachinguoidung->tinhthanh }}</div>
-                                        <div class="text-sm text-gray-800 mt-5"><span class="fw-medium">Số điện thoại:</span> {{ $donhang->diachinguoidung->sodienthoai }}</div>
+                                        <div class="text-sm fw-semibold text-gray-900">{{ $donhang->nguoinhan }}</div>
+                                        <div class="text-sm text-gray-800 mt-5"><span class="fw-medium">Địa chỉ:</span> {{ $donhang->diachinhan }}, {{ $donhang->khuvucgiao }}</div>
+                                        <div class="text-sm text-gray-800 mt-5"><span class="fw-medium">Số điện thoại:</span> {{ $donhang->sodienthoai }}</div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 d-flex flex-column gap-5 p-0 px-6">
                                     <span class="text-lg fw-semibold text-gray-900">Hình thức vận chuyển</span>
                                     <div class="border border-gray-300 rounded-4 py-10 px-10 h-100">
-                                        <div class="text-sm fw-semibold text-gray-900">Giao hàng {{ $donhang->phivanchuyen->ten }}</div>
-                                        <div class="text-sm text-gray-800 mt-5"><span class="fw-medium">Phí vận chuyển:</span> <span class="fst-italic">{{ number_format($donhang->phivanchuyen->phi,0,',','.') }} đ</span></div>
-                                        <div class="text-sm text-gray-800 mt-5"><span class="fw-medium">Khu vực giao:</span> <span class="fst-italic">{{ $donhang->diachinguoidung->tinhthanh }}</span></div>
+                                        <div class="text-sm fw-semibold text-gray-900">Giao hàng {{ $donhang->hinhthucvanchuyen }}</div>
+                                        <div class="text-sm text-gray-800 mt-5"><span class="fw-medium">Phí vận chuyển:</span> <span class="fst-italic">{{ number_format($donhang->phigiaohang,0,',','.') }} đ</span></div>
+                                        <div class="text-sm text-gray-800 mt-5"><span class="fw-medium">Khu vực giao:</span> <span class="fst-italic">{{ $donhang->khuvucgiao }}</span></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 d-flex flex-column gap-5 p-0 px-6">
@@ -156,15 +156,15 @@
                                                 @if($chitiet->dongia == 0)<span class="flex-align mt-10 mb-4 text-gray-900 text-md fw-medium"><i class="ph-bold ph-gift text-main-600 text-lg pe-4"></i>Quà tặng của bạn</span>@endif
                                                 <div class="d-flex align-items-center gap-12">
                                                     <a href="#" class="border border-gray-100 rounded-8 flex-center" style="max-width: 90px; max-height: 90px; width: 100%; height: 100%">
-                                                        <img src="{{ asset('assets/client') }}/images/thumbs/{{ $chitiet->bienthe->sanpham->hinhanhsanpham->first()->hinhanh }}" alt="{{ $chitiet->bienthe->sanpham->ten }}" class="w-100 rounded-8">
+                                                        <img src="{{ asset('assets/client') }}/images/thumbs/{{ $chitiet->bienthe->sanpham->hinhanhsanpham->first()->hinhanh }}" alt="{{ $chitiet->tensanpham }}" class="w-100 rounded-8">
                                                     </a>
                                                     <div class="text-start w-100">
                                                         <h6 class="title text-md fw-semibold mb-0">
-                                                            <a href="#" class="link text-line-2" title="{{ $chitiet->bienthe->sanpham->ten }}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">{{ $chitiet->bienthe->sanpham->ten }}</a>
+                                                            <a href="#" class="link text-line-2" title="{{ $chitiet->tensanpham }}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">{{ $chitiet->tensanpham }}</a>
                                                         </h6>
                                                         <div class="flex-align gap-16 mb-6">
                                                             <a href="#" class="btn bg-gray-50 text-heading text-sm py-4 px-6 rounded-8 flex-center gap-8 fw-normal">
-                                                                {{ $chitiet->bienthe->loaibienthe->ten }}
+                                                                {{ $chitiet->tenbienthe }}
                                                             </a>
                                                         </div>
                                                         <div class="product-card__price mb-6">
@@ -190,7 +190,7 @@
                                                 <span class="text-md text-gray-700"></span>
                                                 <div class="flex-align flex-between gap-24" style="width: 22%">
                                                     <span class="text-md text-gray-700">Phí giao hàng:</span>
-                                                    <span class="text-md text-info-900 fw-semibold">{{ number_format($donhang->phivanchuyen->phi,0,',','.') }} ₫</span>
+                                                    <span class="text-md text-info-900 fw-semibold" title="{{ $donhang->hinhthucvanchuyen }}">{{ number_format($donhang->phigiaohang,0,',','.') }} ₫</span>
                                                 </div>
                                             </div>
                                             @if($donhang->magiamgia != null)
@@ -198,7 +198,7 @@
                                                 <span class="text-md text-gray-700"></span>
                                                 <div class="flex-align flex-between gap-24" style="width: 22%">
                                                     <span class="text-md text-gray-700">Giảm giá:</span>
-                                                    <span class="text-md text-success-600 fw-semibold">- {{ number_format($donhang->magiamgia->giatri,0,',','.') }} ₫</span>
+                                                    <span class="text-md text-success-600 fw-semibold" title="{{ $donhang->mavoucher }}">- {{ number_format($donhang->giagiam,0,',','.') }} ₫</span>
                                                 </div>
                                             </div>
                                             @endif
