@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Xacnhandonhang;
+use Illuminate\Support\Facades\Mail;
 use App\Models\MaGiamGia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -259,6 +261,8 @@ class ThanhtoanController extends Controller
             GiohangModel::where('id_nguoidung', Auth::id())->delete();
             Session::forget('cart');
             Session::forget('applied_voucher');
+
+            Mail::to(Auth::user()->email)->send(new Xacnhandonhang($order, Auth::user()));
             
             // 5. Kết thúc Transaction
             DB::commit();
