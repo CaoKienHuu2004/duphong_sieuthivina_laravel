@@ -177,8 +177,13 @@ class ThanhtoanController extends Controller
 
             // Sửa lỗi Foreign Key: Lấy ID mã giảm giá, nếu không có thì là NULL
             $voucherId = $appliedVoucher['id'] ?? null;
-            $magiamgiaModel = MagiamgiaModel::where('id',$voucherId)->firstOrFail();
-            $order->id_magiamgia = $voucherId;
+            if($voucherId == null){
+                $order->id_magiamgia = null;
+            }else{
+                $magiamgiaModel = MagiamgiaModel::where('id',$voucherId)->firstOrFail();
+                $order->id_magiamgia = $voucherId;
+            }
+            
 
             // Mã đơn hàng ban đầu là một giá trị tạm thời (TEMP)
             $order->madon = 'TEMP';
