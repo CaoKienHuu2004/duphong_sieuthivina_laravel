@@ -194,8 +194,8 @@ class ThanhtoanController extends Controller
             $order->phigiaohang = $phiVanChuyen;
             $order->hinhthucthanhtoan = $phuongthuc->ten;
             $order->sodienthoai = $diachi->sodienthoai;
-            $order->mavoucher = $magiamgiaModel->magiamgia;
-            $order->giagiam = $giamgiaVoucher;
+            $order->mavoucher = $magiamgiaModel->magiamgia ?? null;
+            $order->giagiam = $giamgiaVoucher ?? null;
             // $order->tongsoluong = collect($cartItems)->sum('soluong');
             $order->tamtinh = $tamtinh;
             $order->thanhtien = $tongThanhTien;
