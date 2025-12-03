@@ -262,7 +262,7 @@ class ThanhtoanController extends Controller
             Session::forget('cart');
             Session::forget('applied_voucher');
 
-            Mail::to(Auth::user()->email)->send(new Xacnhandonhang($order, Auth::user()));
+            // Mail::to(Auth::user()->email)->send(new Xacnhandonhang($order, Auth::user()));
             
             // 5. Kết thúc Transaction
             DB::commit();
