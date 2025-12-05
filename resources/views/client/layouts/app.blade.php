@@ -162,7 +162,7 @@
                   <a href="cart.html"
                     class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
                       class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
-                      class="badge bg-success-600 rounded-circle">6</span></a>
+                      class="badge bg-success-600 rounded-circle">0</span></a>
                 </li>
                 <li class="common-dropdown__item nav-submenu__item">
                   <form action="{{ route('dang-xuat') }}" method="post"
@@ -410,7 +410,7 @@
                   <a href="cart.html"
                     class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
                       class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
-                      class="badge bg-success-600 rounded-circle">6</span></a>
+                      class="badge bg-success-600 rounded-circle">0</span></a>
                 </li>
                 <li class="common-dropdown__item nav-submenu__item">
                   <form action="{{ route('dang-xuat') }}" method="post"
