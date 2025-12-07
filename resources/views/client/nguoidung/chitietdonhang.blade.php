@@ -142,7 +142,7 @@
                                 <div class="col-lg-4 d-flex flex-column gap-5 p-0 px-6">
                                     <span class="text-lg fw-semibold text-gray-900">Hình thức thanh toán</span>
                                     <div class="border border-gray-300 rounded-4 py-10 px-10 h-100">
-                                        <div class="text-sm fw-semibold text-gray-900">Thanh toán khi nhận hàng (COD)</div>
+                                        <div class="text-sm fw-semibold text-gray-900">{{ $donhang->hinhthucthanhtoan }}</div>
                                         <div class="text-sm text-gray-800 mt-5"><span class="fw-medium">Trạng thái:</span> <span class="fst-italic @if($donhang->trangthaithanhtoan == 'Chờ thanh toán') text-warning-600 @elseif($donhang->trangthaithanhtoan == 'Đã thanh toán') text-success-600 @elseif($donhang->trangthaithanhtoan == 'Hủy thanh toán') text-main-600 @else text-info-600 @endif">{{ $donhang->trangthaithanhtoan }}</span></div>
                                     </div>
                                 </div>
