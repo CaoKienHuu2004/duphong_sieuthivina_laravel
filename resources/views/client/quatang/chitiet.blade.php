@@ -71,26 +71,26 @@
                                     <ul class="mt-20">
                                             @if($quatang->dieukiensoluong > $currentCount)
                                             <li class="text-gray-400 mb-14 flex-align gap-14">
-                                                <span class="w-30 h-30 bg-main-100 text-main-600 text-md flex-center rounded-circle">
+                                                <span class="w-30 h-30 bg-danger-100 text-danger-600 text-md flex-center rounded-circle">
                                                     <i class="ph-bold ph-x"></i>
                                                 </span>
                                                 <span class="text-heading fw-medium">
-                                                    Mua tối thiểu <span class="text-main-600"> {{ $quatang->dieukiensoluong }} sản phẩm</span> bất kỳ cùng nhà cung cấp
+                                                    Mua tối thiểu <span class="text-danger-600"> {{ $quatang->dieukiensoluong }} sản phẩm</span> bất kỳ cùng nhà cung cấp
                                                 </span>
                                             </li>
                                             @else
                                             <li class="text-gray-400 mb-14 flex-align gap-14 bg-success-50 py-8 px-8 rounded-8">
-                                                <span class="w-30 h-30 bg-success-200 text-success-700 text-md flex-center rounded-circle">
+                                                <span class="w-30 h-30 bg-main-two-600 text-white text-md flex-center rounded-circle">
                                                     <i class="ph-bold ph-check"></i>
                                                 </span>
                                                 <span class="text-heading fw-medium">
-                                                    Mua tối thiểu <span class="text-success-600"> {{ $quatang->dieukiensoluong }} sản phẩm</span> bất kỳ cùng nhà cung cấp
+                                                    Mua tối thiểu <span class="text-main-two-600"> {{ $quatang->dieukiensoluong }} sản phẩm</span> bất kỳ cùng nhà cung cấp
                                                 </span>
                                             </li>
                                             @endif
                                             @if($quatang->dieukiengiatri > $cartTotalValue)
                                             <li class="text-gray-400 mb-14 flex-align gap-14 ">
-                                                <span class="w-30 h-30 bg-main-100 text-main-600 text-md flex-center rounded-circle">
+                                                <span class="w-30 h-30 bg-main-100 text-danger-600 text-md flex-center rounded-circle">
                                                     <i class="ph-bold ph-x"></i>
                                                 </span>
                                                 <span class="text-heading fw-medium">
@@ -99,11 +99,11 @@
                                             </li>
                                             @else
                                             <li class="text-gray-400 mb-14 flex-align gap-14 bg-success-50 py-8 px-8 rounded-8">
-                                                <span class="w-30 h-30 bg-success-200 text-success-700 text-md flex-center rounded-circle">
+                                                <span class="w-30 h-30 bg-main-two-600 text-white text-md flex-center rounded-circle">
                                                     <i class="ph-bold ph-check"></i>
                                                 </span>
                                                 <span class="text-heading fw-medium">
-                                                    Giá trị đơn hàng tối thiểu <span class="text-success-600"> {{ number_format($targetValue, 0, ',', '.') }} đ</span>
+                                                    Giá trị đơn hàng tối thiểu <span class="text-main-two-600"> {{ number_format($targetValue, 0, ',', '.') }} đ</span>
                                                 </span>
                                             </li>
                                             @endif
@@ -136,7 +136,7 @@
                                                 <div class="flex-align gap-24">
                                                     <span class="text-heading text-sm fw-medium ">Số lượng: 1</span>
                                                     @if($percent == 100)
-                                                    <span class="text-success text-sm fw-medium fst-italic">Quà tặng đã được thêm vào giỏ hàng !</span>
+                                                    <span class="text-main-two-600 text-sm fw-medium fst-italic">Quà tặng đã được thêm vào giỏ hàng !</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -150,11 +150,11 @@
                                             <div class="progress w-100 bg-color-three rounded-pill h-20" role="progressbar"
                                                 aria-label="Basic example" aria-valuenow="1" aria-valuemin="0"
                                                 aria-valuemax="2">
-                                                <div class="progress-bar @if ($percent >= 100) bg-success-600 @else bg-main-600 @endif rounded-pill text-center"
+                                                <div class="progress-bar @if ($percent >= 100) bg-main-two-600 @else bg-main-600 @endif rounded-pill text-center"
                                                     style="width: {{ $percent }}%">{{ number_format($percent, 0) }}%</div>
                                             </div>
                                             @if ($percent >= 100)
-                                                <i class="ph-bold ph-seal-check text-3xl text-success-600"></i>
+                                                <i class="ph-bold ph-seal-check text-3xl text-main-two-600"></i>
                                             @endif
                                         </div>
                                         <span class="text-gray-900 text-sm fw-medium">Hoàn thành điều kiện để tăng tiến độ nhận quà</span>

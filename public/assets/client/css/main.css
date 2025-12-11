@@ -59,14 +59,14 @@
     --display-one: clamp(2.5rem, -0.0733rem + 6.3692vw, 7.5rem);
   /* Font Size End */
   /* template main color */
-    --main-h: 3;
-    --main-s: 71%;
-    --main-l: 56%;
+    --main-h: 21;
+    --main-s: 90%;
+    --main-l: 54%;
     --main: var(--main-h) var(--main-s) var(--main-l);
   /* template main color */
-    --main-two-h: 3;
-    --main-two-s: 71%;
-    --main-two-l: 56%;
+    --main-two-h: 180;
+    --main-two-s: 100%;
+    --main-two-l: 25%;
     --main-two: var(--main-two-h) var(--main-two-s) var(--main-two-l);
   /* White Color */
     --white: 0 0% 100%;
@@ -8526,6 +8526,7 @@ input:focus-visible {
     width: 100%;
     z-index: 8;
     backdrop-filter: blur(100px);
+    background-color: rgba(255,255,255, 0.9) ;
     animation: slideDown 0.35s ease-out;
     box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1);
 }
@@ -8547,17 +8548,17 @@ input:focus-visible {
 }
 
 .logo img {
-    max-width: 120px;
+    max-width: 160px;
 }
 
 @media screen and (max-width: 575px){
      .logo img {
-        max-width: 100px;
+        max-width: 130px;
     }
 }
 @media screen and (max-width: 424px) {
     .logo img {
-        max-width: 100px;
+        max-width: 130px;
     }
 }
 
@@ -9690,7 +9691,7 @@ input:focus-visible {
 }
 
 .feature-item-wrapper .feature-item:nth-child(10n+1) .feature-item__thumb {
-    background: #E8F9E9;
+    background: rgba(0, 128, 128, 0.05);
 }
 
 .feature-item-wrapper .feature-item:nth-child(10n+2) .feature-item__thumb {
@@ -10111,9 +10112,9 @@ input:focus-visible {
 /* ======================= Newsletter Css End =========================== */
 /* Home Two Css Start */
 .color-two:root {
-    --main-h: 3;
-    --main-s: 71%;
-    --main-l: 56%;
+    --main-h: 25;
+    --main-s: 100%;
+    --main-l: 50%;
 }
 
 .font-exo h1,

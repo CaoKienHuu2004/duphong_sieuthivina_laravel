@@ -1,8 +1,8 @@
 <div class="container container-lg">
     {{-- Hiển thị thông báo (Livewire Flash Messages) --}}
-    @if (session()->has('update_message') || session()->has('error_message') || session()->has('voucher_success') || session()->has('voucher_error') || session()->has('voucher_info'))
-        <div class="{{ session()->has('error_message') ? 'bg-main-200 border border-main-600 text-main-900 fw-medium' : 'bg-success-200 border border-success-600 text-success-900 fw-medium' }} mb-20 p-10 rounded-8">
-            {{ session('update_message') ?? $message ?? session('error_message') ?? session('voucher_success') ?? session('voucher_error') ?? session('voucher_info')}}
+    @if (session()->has('update_message') || session()->has('error_message') || session()->has('voucher_main-two') || session()->has('voucher_error') || session()->has('voucher_info'))
+        <div class="{{ session()->has('error_message') ? 'bg-main-200 border border-main-600 text-main-900 fw-medium' : 'bg-main-two-200 border border-main-two-600 text-main-two-900 fw-medium' }} mb-20 p-10 rounded-8">
+            {{ session('update_message') ?? $message ?? session('error_message') ?? session('voucher_main-two') ?? session('voucher_error') ?? session('voucher_info')}}
         </div>
     @endif
     @if(session('error'))
@@ -227,7 +227,7 @@
                     @foreach ($availableVouchers as $voucher)
                         <div class="flex-align flex-between gap-8 mt-10 border-dashed border-gray-200 py-10 px-12 rounded-4">
                             <span class="flex-align gap-8 text-sm fw-medium text-gray-900 pe-10">
-                                <i class="ph-bold ph-ticket text-main-600 text-2xl"></i>
+                                <i class="ph-bold ph-ticket text-main-two-600 text-2xl"></i>
                                 <div class="text-sm d-flex flex-column">
                                     <span class="text-sm text-gray-900 w-100">
                                         Giảm {{ number_format($voucher['giatri'],'0',',','.') }} đ
@@ -242,13 +242,13 @@
                             @endphp
                             @if($isApplied)
                                 <span class="flex-align gap-8 text-xs fw-medium text-gray-900">
-                                    <button wire:click="removeVoucher" wire:loading.attr="disabled" class="btn border-main-600 text-main-600 hover-bg-main-600 hover-text-white p-6 rounded-4 text-xs" style="cursor: pointer;">
+                                    <button wire:click="removeVoucher" wire:loading.attr="disabled" class="btn border-danger-600 text-danger-600 hover-bg-danger-600 hover-text-white hover-border-danger-600 p-6 rounded-4 text-xs" style="cursor: pointer;">
                                         Hủy
                                     </button>
                                 </span>
                             @else
                                 <span class="flex-align gap-8 text-xs fw-medium text-gray-900">
-                                    <button wire:click="applyVoucher('{{ $voucher['magiamgia'] }}')" class="btn bg-main-600 hover-bg-main-100 text-white hover-text-main-600 p-6 rounded-4 text-xs" style="cursor: pointer;">
+                                    <button wire:click="applyVoucher('{{ $voucher['magiamgia'] }}')" class="btn bg-main-two-600 hover-bg-white hover-border-main-two-600 text-white hover-text-main-two-600 p-6 rounded-4 text-xs" style="cursor: pointer;">
                                         Chọn
                                     </button>
                                 </span>
@@ -287,7 +287,7 @@
                 @if($giamgiaVoucher > 0)
                 <div class="flex-between gap-8">
                     <span class="text-gray-900 font-heading-two">Giảm giá Voucher:</span>
-                    <span class="text-success-600 fw-semibold"> -{{ number_format($giamgiaVoucher,'0',',','.') }} đ</span>
+                    <span class="text-main-two-600 fw-semibold"> -{{ number_format($giamgiaVoucher,'0',',','.') }} đ</span>
                 </div>
                 @endif
                 <div class="border-top border-gray-100 my-20 pt-24">
@@ -299,8 +299,8 @@
                     </div>
                     @if($tietkiem > 0)
                         <div class="text-end gap-8">
-                            <span class="text-success-600 text-sm fw-normal">Tiết kiệm:</span>
-                            <span class="text-success-600 text-sm fw-normal">
+                            <span class="text-main-two-600 text-sm fw-normal">Tiết kiệm:</span>
+                            <span class="text-main-two-600 text-sm fw-normal">
                                 {{ number_format($tietkiem,'0',',','.') }} đ
                             </span>
                         </div>
@@ -309,8 +309,8 @@
                 <a href="{{ route('thanh-toan') }}" class="btn btn-main py-14 w-100 rounded-8" wire:loading.class="opacity-50">Tiến hành thanh toán</a>
             </div>
             <span class="mt-20 w-100">
-                            <a href="{{ route('danhsachsanpham') }}" class="text-sm text-main-600 fw-medium flex-align d-flex flex-center transtional-2 link" style="cursor:pointer;">
-                                    <i class="ph-bold ph-arrow-fat-lines-left text-main-600 text-md pe-10"></i> <span>Tiếp tục mua hàng</span> 
+                            <a href="{{ route('danhsachsanpham') }}" class="text-sm text-main-two-600 fw-medium flex-align d-flex flex-center transtional-2 link" style="cursor:pointer;">
+                                    <i class="ph-bold ph-arrow-fat-lines-left text-main-two-600 text-md pe-10"></i> <span>Tiếp tục mua hàng</span> 
                                 </a>
                         </span>
         </div>

@@ -27,7 +27,7 @@
                             </div>
                             <div class="flex-align flex-wrap gap-4 mt-10">
                                 <span class="text-sm fw-normal text-gray-600"><span
-                                        class="text-xs fw-semibold text-white rounded-4 bg-success-400 px-6 ">Mặc định</span>
+                                        class="text-xs fw-semibold text-white rounded-4 bg-main-two-600 px-7 py-1">Mặc định</span>
                                     {{ $diachiMacDinh->diachi }}, {{ $diachiMacDinh->tinhthanh }}</span>
                             </div>
                             <input type="hidden" name="id_diachinguoidung" value="{{ $diachiMacDinh->id }}">
@@ -151,7 +151,7 @@
                                         </div>
                                     </span>
                                     <span class="flex-align gap-8 text-xs fw-medium text-gray-900">
-                                        <button class="btn bg-success-600 text-white hover-bg-white border hover-border-success-600 hover-text-success-600 p-6 rounded-4 text-xs" style="cursor: pointer;" disabled="">
+                                        <button class="btn bg-main-two-600 text-white hover-bg-white border hover-border-main-two-600 hover-text-main-two-600 p-6 rounded-4 text-xs" style="cursor: pointer;" disabled="">
                                             Đã chọn
                                         </button>
                                     </span>
@@ -194,7 +194,7 @@
                             @if($cartData['giamgiaVoucher'] > 0)
                             <div class="flex-between gap-8">
                                 <span class="text-gray-900 font-heading-two">Giảm giá:</span>
-                                <span class="text-success-600 fw-semibold"> - {{ number_format($cartData['giamgiaVoucher'], 0, ',', '.') }} ₫</span>
+                                <span class="text-main-two-600 fw-semibold"> - {{ number_format($cartData['giamgiaVoucher'], 0, ',', '.') }} ₫</span>
                             </div>
                             @endif
                             <div class="border-top border-gray-100 my-20 pt-24">
@@ -206,8 +206,8 @@
                                 </div>
                                 @if ($cartData['tietkiem'] > 0)
                                     <div class="text-end gap-8">
-                                        <span class="text-success-600 text-sm fw-normal">Tiết kiệm:</span>
-                                        <span class="text-success-600 text-sm fw-normal">
+                                        <span class="text-main-two-600 text-sm fw-normal">Tiết kiệm:</span>
+                                        <span class="text-main-two-600 text-sm fw-normal">
                                             {{ number_format($cartData['tietkiem'], 0, ',', '.') }} ₫
                                         </span>
                                     </div>
@@ -216,8 +216,8 @@
                             <button type="submit" class="btn btn-main py-14 w-100 rounded-8">Đặt hàng</button>
                         </div>
                         <span class="mt-20 w-100">
-                            <a href="{{ route('gio-hang') }}" class="text-sm text-main-600 fw-medium flex-align d-flex flex-center transition-1 link" style="cursor:pointer;">
-                                    <i class="ph-bold ph-arrow-fat-lines-left text-main-600 text-md pe-10"></i> <span>Quay lại giỏ hàng</span> 
+                            <a href="{{ route('gio-hang') }}" class="text-sm text-main-two-600 fw-medium flex-align d-flex flex-center transition-1 link" style="cursor:pointer;">
+                                    <i class="ph-bold ph-arrow-fat-lines-left text-main-two-600 text-md pe-10"></i> <span>Quay lại giỏ hàng</span> 
                                 </a>
                         </span>
                     </div>
@@ -361,7 +361,7 @@
                                 </div>
                                 <div class="flex-align gap-12">
                                     @if ($diachi->trangthai == 'Mặc định')
-                                        <span class="fw-medium text-xs text-success-700 bg-success-100 px-6 py-2 rounded-4 flex-align gap-8">{{ $diachi->trangthai }}</span>
+                                        <span class="fw-medium text-xs text-main-two-700 bg-main-two-100 px-6 py-2 rounded-4 flex-align gap-8">{{ $diachi->trangthai }}</span>
                                     @else
                                         <span class="fw-medium text-xs text-gray-700 bg-gray-100 px-6 py-2 rounded-4 flex-align gap-8">{{ $diachi->trangthai }}</span>
                                     @endif

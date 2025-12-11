@@ -19,7 +19,7 @@
   <!-- Title -->
   <title>@yield('title')</title>
   <!-- Favicon -->
-  <link rel="shortcut icon" href="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" />
+  <link rel="shortcut icon" href="{{asset('assets/client')}}/images/logo/icon_nguyenban.png" />
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/bootstrap.min.css" />
@@ -144,24 +144,24 @@
                 <li class="common-dropdown__item nav-submenu__item">
                   <a href="{{ route('tai-khoan') }}"
                     class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                      class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
+                      class="ph-bold ph-user text-main-two-600"></i> Tài khoản</a>
                 </li>
                 @if(Auth::check() && Auth::user()->vaitro === 'admin')
                   <li class="common-dropdown__item nav-submenu__item">
                     <a href="{{ route('quan-tri-vien.trang-chu') }}"
                       class="common-dropdown__link nav-submenu__link text-sm text-heading-two bg-warning-100 hover-bg-neutral-100"><i
-                        class="ph-bold ph-app-window text-main-600"></i> Truy cập quản trị</a>
+                        class="ph-bold ph-app-window text-main-two-600"></i> Truy cập quản trị</a>
                   </li>
                 @endif
                 <li class="common-dropdown__item nav-submenu__item">
                   <a href="{{ route('don-hang-cua-toi') }}"
                     class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                      class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
+                      class="ph-bold ph-notepad text-main-two-600"></i> Đơn hàng của tôi</a>
                 </li>
                 <li class="common-dropdown__item nav-submenu__item">
                   <a href="cart.html"
                     class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                      class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
+                      class="ph-bold ph-heart text-main-two-600"></i> Yêu thích <span
                       class="badge bg-success-600 rounded-circle">0</span></a>
                 </li>
                 <li class="common-dropdown__item nav-submenu__item">
@@ -211,7 +211,9 @@
                   <li class="has-submenus-submenu">
                     <a href="{{ url('san-pham?danhmuc=' . $dm->slug) }}"
                       class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
-                      <span class="text-xl d-flex"><img src="{{asset('assets/client')}}/images/categories/{{ $dm->logo }}"
+                      <span class="text-xl d-flex text-main-two-600">
+                        
+                        <img src="{{asset('assets/client')}}/images/categories/{{ $dm->logo }}"
                           alt="{{ $dm->ten }}" width="70%"></span>
                       <span>{{ $dm->ten }}</span>
                     </a>
@@ -260,11 +262,11 @@
           @endguest
 
           <li class="flex-align">
-            <a href="" class="text-white-6 text-sm hover-text-white pe-1"><i class="ph-bold ph-info text-white-6"></i>
+            <a href="" class="text-white text-sm hover-text-white pe-1"><i class="ph-bold ph-info text-white"></i>
               Giới thiệu về Siêu Thị Vina </a>
           </li>
           <li class="flex-align">
-            <a href="" class="text-white-6 text-sm hover-text-white">
+            <a href="" class="text-white text-sm hover-text-white">
               <i class="ph-bold ph-chat-dots"></i>
               Liên hệ hỗ trợ
             </a>
@@ -274,7 +276,7 @@
 
         <ul class="header-top__right flex-align flex-wrap gap-16">
           <li class=" d-block on-hover-item text-white-6 flex-shrink-0">
-            <button class="category__button flex-align gap-4 text-sm text-white-6 rounded-top">
+            <button class="category__button flex-align gap-4 text-sm text-white rounded-top">
               <span class="icon text-sm d-md-flex d-none"><i class="ph ph-squares-four"></i></span>
               <span class="d-sm-flex d-none">Danh mục</span>
             </button>
@@ -307,16 +309,16 @@
           </li>
 
           <li class="flex-align">
-            <a href="{{ route('tra-cuu-don-hang') }}" class="text-white-6 text-sm hover-text-white">
+            <a href="{{ route('tra-cuu-don-hang') }}" class="text-white text-sm hover-text-white">
               <i class="ph-bold ph-notepad"></i>
               Tra cứu đơn hàng</a>
           </li>
 
           <li class="flex-align">
-            <a href="{{route('gio-hang')}}" class="text-white-6 text-sm hover-text-white">
+            <a href="{{route('gio-hang')}}" class="text-white text-sm hover-text-white">
               <i class="ph-bold ph-shopping-cart"></i>
               Giỏ hàng
-              <span class="badge bg-success-600 rounded-4 px-6 py-4">@auth{{ count($giohangauth) }}@endauth @guest
+              <span class="badge bg-main-two-600 rounded-4 px-6 py-4">@auth{{ count($giohangauth) }}@endauth @guest
                 {{ count($giohangsession) }}
               @endguest</span>
             </a>
@@ -392,7 +394,7 @@
                 <li class="common-dropdown__item nav-submenu__item">
                   <a href="{{ route('tai-khoan') }}"
                     class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                      class="ph-bold ph-user text-main-600"></i> Tài khoản</a>
+                      class="ph-bold ph-user text-main-two-600"></i> Tài khoản</a>
                 </li>
                 @if(Auth::check() && Auth::user()->vaitro === 'admin')
                   <li class="common-dropdown__item nav-submenu__item">
@@ -404,20 +406,20 @@
                 <li class="common-dropdown__item nav-submenu__item">
                   <a href="{{ route('don-hang-cua-toi') }}"
                     class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                      class="ph-bold ph-notepad text-main-600"></i> Đơn hàng của tôi</a>
+                      class="ph-bold ph-notepad text-main-two-600"></i> Đơn hàng của tôi</a>
                 </li>
                 <li class="common-dropdown__item nav-submenu__item">
                   <a href="cart.html"
                     class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100"><i
-                      class="ph-bold ph-heart text-main-600"></i> Yêu thích <span
-                      class="badge bg-success-600 rounded-circle">0</span></a>
+                      class="ph-bold ph-heart text-main-two-600"></i> Yêu thích <span
+                      class="badge bg-main-two-600 rounded-circle">0</span></a>
                 </li>
                 <li class="common-dropdown__item nav-submenu__item">
                   <form action="{{ route('dang-xuat') }}" method="post"
                     class="common-dropdown__link nav-submenu__link text-heading-two hover-bg-neutral-100">
                     @csrf
                     <button type="submit" class="">
-                      <i class="ph-bold ph-sign-out text-main-600"></i> Đăng xuất</button>
+                      <i class="ph-bold ph-sign-out text-danger-600"></i> Đăng xuất</button>
                   </form>
 
                 </li>
@@ -441,55 +443,55 @@
 
 
   <!-- ==================== Footer Two Start Here ==================== -->
-  <footer class="footer pt-30 overflow-hidden border-top fix-scale-20">
+  <footer class="footer pt-30 overflow-hidden border-top fix-scale-20 bg-main-two-600 text-white">
     <div class="container container-lg">
       <div class="footer-item-two-wrapper d-flex align-items-start flex-wrap">
         <div class="footer-item max-w-275" data-aos="fade-up" data-aos-duration="200">
           <div class="footer-item__logo">
-            <a href="{{ route('trang-chu') }}"> <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png"
+            <a href="{{ route('trang-chu') }}"> <img src="{{asset('assets/client')}}/images/logo/logo_amban.png"
                 alt=""></a>
           </div>
-          <p class="mb-24">Trang thương mại điện tử Siêu Thị Vina cung cấp các sản phẩm đa dạng đến với khách hàng
+          <p class="mb-24 text-white">Trang thương mại điện tử Siêu Thị Vina cung cấp các sản phẩm đa dạng đến với khách hàng
           </p>
           <div class="flex-align gap-16 mb-16">
             <span
-              class="w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0"><i
-                class="ph-fill ph-phone-call"></i></span>
-            <a href="tel:+886911975996" class="text-md text-gray-900 hover-text-main-600">+886 0911 975 996</a>
+              class="text-white w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0"><i
+                class="ph-fill ph-phone-call text-white"></i></span>
+            <a href="tel:+886911975996" class="text-md  hover-text-main-600 text-white">+886 0911 975 996</a>
           </div>
-          <div class="flex-align gap-16 mb-16">
+          <div class="text-white flex-align gap-16 mb-16">
             <span
               class="w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0"><i
-                class="ph-fill ph-envelope"></i></span>
+                class="ph-fill ph-envelope text-white"></i></span>
             <a href="mailto:hotro@sieuthivina.com"
-              class="text-md text-gray-900 hover-text-main-600">hotro@sieuthivina.com</a>
+              class="text-md hover-text-main-600 text-white">hotro@sieuthivina.com</a>
           </div>
           <div class="flex-align gap-16 mb-16">
             <span
               class="w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0"><i
-                class="ph-fill ph-map-pin"></i></span>
-            <span class="text-md text-gray-900 ">801/2A Phạm Thế Hiển, Phường 4, Quận 8, TP.HCM</span>
+                class="ph-fill ph-map-pin text-white"></i></span>
+            <span class="text-md text-white ">801/2A Phạm Thế Hiển, Phường Chánh Hưng, TP.HCM</span>
           </div>
         </div>
 
         <div class="footer-item" data-aos="fade-up" data-aos-duration="400">
-          <h6 class="footer-item__title">Về chúng tôi</h6>
+          <h6 class="footer-item__title text-white">Về chúng tôi</h6>
           <ul class="footer-menu">
             <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Giới thiệu về Siêu thị Vina</a>
+              <a href="shop.html" class="text-white hover-text-main-600">Giới thiệu về Siêu thị Vina</a>
             </li>
             <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Liên hệ hỗ trợ</a>
+              <a href="shop.html" class="text-white hover-text-main-600">Liên hệ hỗ trợ</a>
             </li>
             <li class="mb-16">
-              <a href="{{ url('/dieu-khoan') }}" class="text-gray-600 hover-text-main-600">Điều khoản sử dụng</a>
+              <a href="{{ url('/dieu-khoan') }}" class="text-white hover-text-main-600">Điều khoản sử dụng</a>
             </li>
             <li class="mb-16">
-              <a href="{{ url('/chinh-sach-mua-hang') }}" class="text-gray-600 hover-text-main-600">Chính sách mua
+              <a href="{{ url('/chinh-sach-mua-hang') }}" class="text-white hover-text-main-600">Chính sách mua
                 hàng</a>
             </li>
             <li class="mb-16">
-              <a href="{{ url('/chinh-sach-nguoi-dung') }}" class="text-gray-600 hover-text-main-600">Chính sách người
+              <a href="{{ url('/chinh-sach-nguoi-dung') }}" class="text-white hover-text-main-600">Chính sách người
                 dùng</a>
             </li>
 
@@ -497,39 +499,39 @@
         </div>
 
         <div class="footer-item" data-aos="fade-up" data-aos-duration="600">
-          <h6 class="footer-item__title">Tài khoản</h6>
+          <h6 class="footer-item__title text-white">Tài khoản</h6>
           <ul class="footer-menu">
             <li class="mb-16">
-              <a href="{{ route('tai-khoan') }}" class="text-gray-600 hover-text-main-600">Truy cập tài khoản</a>
+              <a href="{{ route('tai-khoan') }}" class="text-white hover-text-main-600">Truy cập tài khoản</a>
             </li>
             <li class="mb-16">
-              <a href="contact.html" class="text-gray-600 hover-text-main-600">Lịch sử đơn hàng</a>
+              <a href="contact.html" class="text-white hover-text-main-600">Lịch sử đơn hàng</a>
             </li>
             <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Danh sách yêu thích</a>
+              <a href="shop.html" class="text-white hover-text-main-600">Danh sách yêu thích</a>
             </li>
             <li class="mb-16">
-              <a href="{{route('gio-hang')}}" class="text-gray-600 hover-text-main-600">Giỏ hàng của bạn</a>
+              <a href="{{route('gio-hang')}}" class="text-white hover-text-main-600">Giỏ hàng của bạn</a>
             </li>
 
           </ul>
         </div>
 
         <div class="footer-item" data-aos="fade-up" data-aos-duration="1000">
-          <h6 class="footer-item__title">Thông tin khác</h6>
+          <h6 class="footer-item__title text-white">Thông tin khác</h6>
           <ul class="footer-menu">
             <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Danh sách sản phẩm</a>
+              <a href="shop.html" class="text-white hover-text-main-600">Danh sách sản phẩm</a>
             </li>
             <li class="mb-16">
-              <a href="shop.html" class="text-gray-600 hover-text-main-600">Các cửa hàng</a>
+              <a href="shop.html" class="text-white hover-text-main-600">Các cửa hàng</a>
             </li>
 
           </ul>
         </div>
 
         <div class="footer-item" data-aos="fade-up" data-aos-duration="1200">
-          <h6 class="">Kết nối & theo dõi</h6>
+          <h6 class="text-white">Kết nối & theo dõi</h6>
           <p class="mb-16">Truy cập các nền tảng mạng xã hội <br> của chúng tôi.</p>
           <!-- <div class="flex-align gap-8 my-32">
             <a href="https://www.apple.com/store" class="">
@@ -543,25 +545,25 @@
           <ul class="flex-align gap-16">
             <li>
               <a href="https://www.facebook.com/sieuthivina"
-                class="w-44 h-44 flex-center bg-main-two-50 text-main-two-600 text-xl rounded-8 hover-bg-main-two-600 hover-text-white">
+                class="w-44 h-44 flex-center border border-white text-white text-xl rounded-8 hover-bg-main-600 hover-text-white hover-border-white">
                 <i class="ph-fill ph-facebook-logo"></i>
               </a>
             </li>
             <li>
               <a href="https://www.twitter.com"
-                class="w-44 h-44 flex-center bg-main-two-50 text-main-two-600 text-xl rounded-8 hover-bg-main-two-600 hover-text-white">
+                class="w-44 h-44 flex-center border border-white text-white text-xl rounded-8 hover-bg-main-600 hover-text-white hover-border-white">
                 <i class="ph-fill ph-twitter-logo"></i>
               </a>
             </li>
             <li>
               <a href="https://www.linkedin.com"
-                class="w-44 h-44 flex-center bg-main-two-50 text-main-two-600 text-xl rounded-8 hover-bg-main-two-600 hover-text-white">
+                class="w-44 h-44 flex-center border border-white text-white text-xl rounded-8 hover-bg-main-600 hover-text-white hover-border-white">
                 <i class="ph-fill ph-instagram-logo"></i>
               </a>
             </li>
             <li>
               <a href="https://www.pinterest.com"
-                class="w-44 h-44 flex-center bg-main-two-50 text-main-two-600 text-xl rounded-8 hover-bg-main-two-600 hover-text-white">
+                class="w-44 h-44 flex-center border border-white text-white text-xl rounded-8 hover-bg-main-600 hover-text-white hover-border-white">
                 <i class="ph-fill ph-linkedin-logo"></i>
               </a>
             </li>

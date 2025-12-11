@@ -483,7 +483,7 @@
                 @if($danhsachdmhangdau->isNotEmpty())
                   @foreach($danhsachdmhangdau as $key => $danhmuc)
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link fw-medium text-sm hover-border-main-600 {{$loop->first ? 'active' : '' }}"
+                      <button class="nav-link fw-medium text-sm border border-main-two-600 hover-text-main-600 hover-border-main-600 {{$loop->first ? 'active' : '' }}"
                         id="tab-{{ $danhmuc->id }}" data-bs-toggle="pill" data-bs-target="#content-{{ $danhmuc->id }}"
                         type="button" role="tab" aria-controls="content-{{ $danhmuc->id }}"
                         aria-selected="{{ $key == 0 ? 'true' : 'false' }}">
