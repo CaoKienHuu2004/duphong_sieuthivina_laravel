@@ -1,7 +1,7 @@
 <div class="container container-lg">
     {{-- Hiển thị thông báo (Livewire Flash Messages) --}}
     @if (session()->has('update_message') || session()->has('error_message') || session()->has('voucher_main-two') || session()->has('voucher_error') || session()->has('voucher_info'))
-        <div class="{{ session()->has('error_message') ? 'bg-main-200 border border-main-600 text-main-900 fw-medium' : 'bg-main-two-200 border border-main-two-600 text-main-two-900 fw-medium' }} mb-20 p-10 rounded-8">
+        <div class="{{ session()->has('error_message') ? 'bg-main-200 border border-main-600 text-main-900 fw-medium' : 'bg-white border border-main-two-600 text-main-two-900 fw-medium' }} mb-20 p-10 rounded-8">
             {{ session('update_message') ?? $message ?? session('error_message') ?? session('voucher_main-two') ?? session('voucher_error') ?? session('voucher_info')}}
         </div>
     @endif

@@ -140,6 +140,7 @@ class GiohangComponent extends Component
             }
         }
 
+
         // Lấy các chương trình quà tặng đang chạy
         $quatangsukiendb = QuatangsukienModel::where('trangthai', 'Hiển thị')
             ->whereNull('deleted_at')
