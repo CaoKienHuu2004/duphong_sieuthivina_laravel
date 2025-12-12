@@ -141,8 +141,7 @@ class QuatangsukienController extends Controller
         // 7. Lấy danh sách sản phẩm gợi ý để khách mua thêm
         $suggestedQuery = BientheModel::with(['sanpham.hinhanhsanpham', 'loaibienthe'])
             ->whereIn('trangthai', ['Còn hàng', 'Sắp hết hàng'])
-            ->where('soluong', '>', 0)
-            ->whereNotIn('id', $cartBientheIds); // Không gợi ý món đã có trong giỏ
+            ->where('soluong', '>', 0);// Không gợi ý món đã có trong giỏ
 
         // Nếu có danh sách tham gia cụ thể -> chỉ gợi ý món trong danh sách đó
         if (count($participatingIds) > 0) {

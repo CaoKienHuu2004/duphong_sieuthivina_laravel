@@ -232,7 +232,7 @@
                                     <span class="text-sm text-gray-900 w-100">
                                         Giảm {{ number_format($voucher['giatri'],'0',',','.') }} đ
                                     </span>
-                                    <span class="text-xs text-gray-500 w-100">
+                                    <span title="{{ $voucher['magiamgia'] }}" class="text-xs text-gray-500" style="width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                         {{ $voucher['magiamgia'] }}
                                     </span>
                                 </div>

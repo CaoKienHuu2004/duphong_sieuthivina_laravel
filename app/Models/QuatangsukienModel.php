@@ -47,6 +47,6 @@ class QuatangsukienModel extends Model
 
     public function sanphamduoctang()
     {
-        return $this->belongsToMany(BientheModel::class, 'sanphamduoctang_quatang', 'id_quatang', 'id_bienthe');
+        return $this->belongsToMany(BientheModel::class, 'sanphamduoctang_quatang', 'id_quatang', 'id_bienthe')->withPivot('soluongtang');;
     }
 }

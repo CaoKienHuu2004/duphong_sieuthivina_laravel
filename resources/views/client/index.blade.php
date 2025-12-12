@@ -303,7 +303,7 @@
                         <div class="flex-wrap flex-align justify-content-between mt-5">
                           <div class="flex-align gap-6">
                             <span class="text-xs fw-medium text-gray-500">Đánh giá</span>
-                            <span class="text-xs fw-medium text-gray-500">nullable
+                            <span class="text-xs fw-medium text-gray-500">5,0
                               <i class="ph-fill ph-star text-warning-600"></i></span>
                           </div>
                           <div class="flex-align gap-4">
@@ -312,8 +312,8 @@
                           </div>
                         </div>
                         <div class="product-card__price mt-5">
-                          <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                            {{ number_format($td->bienthe->giagoc, 0, ',', '.') }} ₫</span>
+                          {{-- <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
+                            {{ number_format($td->bienthe->giagoc, 0, ',', '.') }} ₫</span> --}}
                           <span class="text-heading text-md fw-semibold">{{ number_format($td->giadagiam, 0, ',', '.') }}
                             ₫</span>
                         </div>
@@ -336,7 +336,7 @@
           <div class="section-heading mb-24">
             <div class="flex-between flex-align flex-wrap gap-8 w-100">
               <h6 class="mb-0 wow fadeInLeft flex-align gap-8"><i class="ph-bold ph-gift text-main-600"></i> Chương trình ưu đãi quà tặng</h6>
-              <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 60%;"></div>
+              <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 55%;"></div>
               <div class="flex-align gap-16 wow fadeInRight">
                 <a href="{{ route('qua-tang') }}"
                   class="text-sm fw-semibold text-main-600 hover-text-main-600 hover-text-decoration-underline">Xem tất
@@ -1376,7 +1376,7 @@
                         <div class="flex-wrap flex-align justify-content-between mt-5">
                           <div class="flex-align gap-6">
                             <span class="text-xs fw-medium text-gray-500 flex-align gap-4"><i
-                                class="ph-fill ph-star text-warning-600 text-sm "></i> 4,7 (12)</span>
+                                class="ph-fill ph-star text-warning-600 text-sm "></i> 5,0 (12)</span>
                           </div>
                           <div class="flex-align gap-4">
                             <span class="text-xs fw-medium text-gray-500">Đã bán</span>
@@ -1384,8 +1384,7 @@
                           </div>
                         </div>
                         <div class="product-card__price mt-5">
-                          <span class="text-gray-400 text-xs fw-semibold text-decoration-line-through">
-                            {{ number_format($td->bienthe->giagoc, 0, ',', '.') }} ₫</span>
+                          
                           <div class="text-heading text-md fw-semibold">{{ number_format($td->giadagiam, 0, ',', '.') }} ₫
                           </div>
                         </div>

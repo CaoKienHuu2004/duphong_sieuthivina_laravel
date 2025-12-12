@@ -27,19 +27,23 @@ class GiohangComponent extends Component
 
     public function mount()
     {
-        // 1. Tải dữ liệu và xử lý quà tặng
+        // 1. Tải dữ liệu ban đầu
         $this->loadgiohang();
-        $this->xoaTatCaQuatang(); // Xóa quà cũ để tính lại từ đầu
-        $this->xacnhandieukienquatang(); // Tính toán và thêm quà mới
         
-        // 2. Tính toán tiền nong
+        // 2. Reset quà tặng để tính toán lại từ đầu (tránh cộng dồn sai)
+        $this->xoaTatCaQuatang(); 
+        
+        // 3. Tính toán và thêm quà tặng mới
+        $this->xacnhandieukienquatang(); 
+        
+        // 4. Tính toán tiền nong
         $this->tonggiatri();
         
-        // 3. Tải và áp dụng lại Voucher (nếu có trong session)
+        // 5. Tải và áp dụng lại Voucher (nếu có trong session)
         $this->loadAppliedVoucher(); 
         $this->tonggiatri(); // Tính lại lần cuối sau khi có voucher
 
-        // 4. Lấy danh sách voucher khả dụng để hiển thị
+        // 6. Lấy danh sách voucher khả dụng
         $this->loadAvailableVouchers();
     }
 
@@ -57,7 +61,7 @@ class GiohangComponent extends Component
                 'bienthe.loaibienthe'
             ])
             ->where('id_nguoidung', Auth::id())
-            ->where('trangthai', 'Hien thi') 
+            ->where('trangthai', 'Hiển thị') // FIX: Phải đúng chính tả như trong SQL
             ->get();
 
             $this->giohang = $giohangdb->toArray();
@@ -77,6 +81,7 @@ class GiohangComponent extends Component
                     ])->find($id_bienthe_actual); 
 
                     if ($bienthe) {
+                        // Xác định giá bán: Nếu là quà (thanhtien=0) thì giá là 0, ngược lại lấy giá giảm/gốc
                         $isGift = ($item['thanhtien'] ?? 1) == 0;
                         $giaban = $isGift ? 0 : ($bienthe->giadagiam ?? $bienthe->giagoc);
                         
@@ -91,7 +96,7 @@ class GiohangComponent extends Component
             }
         }
         
-        // Tách riêng mảng quà tặng để dễ quản lý (optional)
+        // Tách riêng mảng quà tặng để dễ hiển thị ở View
         $this->quatang = array_filter($this->giohang, fn($item) => $item['thanhtien'] == 0);
     }
 
@@ -102,9 +107,8 @@ class GiohangComponent extends Component
     {
         if (Auth::check()) {
             GiohangModel::where('id_nguoidung', Auth::id())
-                ->where('thanhtien', 0)
+                ->where('thanhtien', 0) // Quà tặng có thành tiền = 0
                 ->delete();
-
         } else {
             $sessionCart = Session::get('cart', []);
             $newCart = [];
@@ -118,6 +122,7 @@ class GiohangComponent extends Component
             Session::put('cart', $newCart);
         }
 
+        // Tải lại giỏ hàng (lúc này chỉ còn hàng khách mua)
         $this->loadgiohang();
     }
     
@@ -137,13 +142,10 @@ class GiohangComponent extends Component
 
         // Lấy các chương trình quà tặng đang chạy
         $quatangsukiendb = QuatangsukienModel::where('trangthai', 'Hiển thị')
-            ->where('deleted_at', null)
-            ->where('ngaybatdau', '<=', now())
-            ->where('ngayketthuc', '>=', now())
-            ->whereHas('sanphamduoctang', function ($query) {
-                // $query ở đây là SanphamduoctangQuatangModel
-                // Nó có quan hệ 'bienthe' trỏ tới BientheModel
-                $query->where('luottang', '>', 0);
+            ->whereNull('deleted_at')
+            ->where(function($q) {
+                $q->where('ngaybatdau', '<=', now())
+                  ->where('ngayketthuc', '>=', now());
             })
             ->get();
         
@@ -156,55 +158,59 @@ class GiohangComponent extends Component
             }
 
             $dieukienSoluong = (int)$rule->dieukiensoluong;
-            if ($dieukienSoluong <= 0) continue; // Tránh lỗi chia cho 0
+            if ($dieukienSoluong <= 0) continue; 
 
             // --- A. KIỂM TRA ĐIỀU KIỆN SẢN PHẨM MUA ---
             // Lấy danh sách sản phẩm KHÁCH PHẢI MUA để được quà
-            $sanphamThamGiaIds = SanphamthamgiaQuatangModel::where('id_quatang', $rule->id)
+            $sanphamThamGiaIds = SanphamthamgiaquatangModel::where('id_quatang', $rule->id)
                                     ->pluck('id_bienthe')
                                     ->toArray();
 
-            $soSuatQuaTang = 0; // Biến lưu số lần khách đạt điều kiện
+            $soSuatQuaTang = 0; 
 
             if (count($sanphamThamGiaIds) > 0) {
-                // LOGIC CHÍNH: Đếm tổng số lượng hàng khách đã mua nằm trong danh sách tham gia
+                // Đếm tổng số lượng hàng khách đã mua nằm trong danh sách tham gia
                 $matchingQuantity = 0;
 
                 foreach ($this->giohang as $item) {
+                    // Chỉ tính hàng mua (thanhtien > 0)
                     if ($item['thanhtien'] > 0 && in_array($item['id_bienthe'], $sanphamThamGiaIds)) {
                         $matchingQuantity += $item['soluong'];
                     }
                 }
 
                 // CÔNG THỨC: Số suất = Floor(Tổng mua / Điều kiện)
-                // Ví dụ: Mua 5 được 1. Khách mua 12 => 12 / 5 = 2.4 => Nhận 2 suất.
                 $soSuatQuaTang = floor($matchingQuantity / $dieukienSoluong);
 
             } else {
-                // LOGIC DỰ PHÒNG (Fallback): Nếu không cấu hình sản phẩm tham gia cụ thể
-                // Tạm thời bỏ qua hoặc bạn có thể thêm logic xét theo Thương hiệu tại đây nếu cần.
+                // Nếu chương trình không yêu cầu mua sp cụ thể (chỉ cần đạt giá trị đơn hàng)
+                // Logic này tùy thuộc vào yêu cầu của bạn, ở đây tôi tạm set là 0 nếu không cấu hình sp tham gia
+                // Nếu muốn áp dụng cho toàn bộ đơn hàng: $soSuatQuaTang = 1; (nếu đạt giá trị)
                 $soSuatQuaTang = 0; 
             }
 
             // --- B. LẤY QUÀ TẶNG TỪ BẢNG 'SANPHAMDUOCTANG_QUATANG' ---
             if ($soSuatQuaTang > 0) {
-                // Lấy danh sách các món quà được cấu hình cho sự kiện này
-                $danhSachQuaTang = SanphamduoctangQuatangModel::where('id_quatang', $rule->id)->get();
+                $danhSachQuaTang = SanphamduoctangquatangModel::where('id_quatang', $rule->id)->get();
 
                 foreach ($danhSachQuaTang as $qua) {
                     $id_bienthe_gift = $qua->id_bienthe;
-                    $soluong_gift_config = $qua->soluong; // Số lượng quà cho 1 suất (VD: tặng 1 cái)
+                    
+                    // FIX: Trong SQL cột là 'soluongtang', không phải 'soluong'
+                    $soluong_gift_config = $qua->soluongtang; 
 
-                    // Tổng quà khách nhận = (Cấu hình 1 suất) * (Số suất đạt được)
+                    // Tổng quà khách nhận
                     $tongSoluongGift = $soluong_gift_config * $soSuatQuaTang;
 
-                    if (!isset($themquatang[$id_bienthe_gift])) {
-                        $themquatang[$id_bienthe_gift] = 0;
+                    // Kiểm tra tồn kho thực tế của quà tặng (BientheModel)
+                    $bientheQuatang = BientheModel::find($id_bienthe_gift);
+                    if ($bientheQuatang && $bientheQuatang->soluong >= $tongSoluongGift) {
+                        if (!isset($themquatang[$id_bienthe_gift])) {
+                            $themquatang[$id_bienthe_gift] = 0;
+                        }
+                        // Lấy max để ưu tiên chương trình tặng nhiều hơn nếu trùng
+                        $themquatang[$id_bienthe_gift] = max($themquatang[$id_bienthe_gift], $tongSoluongGift);
                     }
-                    
-                    // Dùng hàm max để tránh trùng lặp nếu 1 sản phẩm quà nằm trong nhiều chương trình
-                    // (Lấy chương trình nào tặng nhiều hơn)
-                    $themquatang[$id_bienthe_gift] = max($themquatang[$id_bienthe_gift], $tongSoluongGift);
                 }
             }
         }
@@ -224,19 +230,13 @@ class GiohangComponent extends Component
      */
     private function addGiftToCart(int $bientheId, int $soluong)
     {
-        $giftBienthe = BientheModel::with('sanpham')->find($bientheId);
-        if (!$giftBienthe) return;
-        
-        // Kiểm tra xem món quà này đã tồn tại chưa (phòng hờ)
-        $isAlreadyInCart = false;
+        // 1. Kiểm tra xem món quà này ĐÃ TỒN TẠI trong giỏ hiện tại chưa (tránh loop)
+        // Lưu ý: xoaTatCaQuatang đã chạy trước đó, nhưng kiểm tra lại cho chắc chắn
         foreach ($this->giohang as $item) {
             if ($item['id_bienthe'] == $bientheId && $item['thanhtien'] == 0) {
-                $isAlreadyInCart = true;
-                break;
+                return; // Đã có rồi thì thôi
             }
         }
-        
-        if ($isAlreadyInCart) return;
         
         if (Auth::check()) {
             GiohangModel::updateOrCreate(
@@ -247,7 +247,7 @@ class GiohangComponent extends Component
                 ],
                 [
                     'soluong' => $soluong, 
-                    'trangthai' => 'Hien thi',
+                    'trangthai' => 'Hiển thị', // FIX: Đúng enum SQL
                 ]
             );
 
@@ -346,7 +346,7 @@ class GiohangComponent extends Component
                     // Cập nhật mảng local
                     $this->giohang[$index]['soluong'] = $soluong;
                     $this->giohang[$index]['thanhtien'] = $thanhtien_moi;
-                                                
+                                                    
                     // Cập nhật DB/Session
                     $this->capnhatgiohang($bientheId, $soluong, $thanhtien_moi); 
                     
@@ -425,7 +425,7 @@ class GiohangComponent extends Component
             return $item['id_bienthe'] != $bientheId;
         });
         
-        // Tính toán lại quà tặng
+        // Tính toán lại quà tặng (vì nếu xóa sp mua thì quà có thể mất)
         $this->xoaTatCaQuatang(); 
         $this->xacnhandieukienquatang(); 
 

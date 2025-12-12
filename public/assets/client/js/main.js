@@ -633,7 +633,7 @@
 
     // ========================= hot deals Slider Js Start ==============
     $(".gift-event-slider").slick({
-      slidesToShow: 6,
+      slidesToShow: 10,
       slidesToScroll: 1,
       autoplay: false,
       autoplaySpeed: 1500,
@@ -652,7 +652,7 @@
           breakpoint: 1599,
           settings: {
             slidesToShow: 5,
-            arrows: false,
+            arrows: true,
           },
         },
         {

@@ -135,7 +135,7 @@
                                             </div>
                                             <div class="product-card__price mb-6">
                                                 <div class="flex-align gap-24">
-                                                    <span class="text-heading text-sm fw-medium ">Số lượng: {{ $sanphamduoctang->soluongtang }}</span>
+                                                    <span class="text-heading text-sm fw-medium ">Số lượng: {{ $sanphamduoctang->pivot->soluongtang }}</span>
                                                     @if($percent == 100)
                                                     <span class="text-main-two-600 text-sm fw-medium fst-italic">Quà tặng đã được thêm vào giỏ hàng !</span>
                                                     @endif
