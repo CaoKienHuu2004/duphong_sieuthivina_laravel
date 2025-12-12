@@ -235,5 +235,9 @@
 @endsection
 
 @section('scripts')
-
+<style>
+    .dt-buttons {
+        display: none !important;
+    }
+</style>
 @endsection
