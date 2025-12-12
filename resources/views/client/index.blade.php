@@ -439,9 +439,9 @@
         <div class="col-lg-4">
           <div class="rounded-5">
             @if($promotionBanner1)
-              <a href="{{ $promotionBanner1->lienket }}" class="p-0 m-0">
+              <a href="{{ $promotionBanner1->lienket }}" class="p-0 m-0 w-100">
                 <img src="{{asset('assets/client')}}/images/bg/{{ $promotionBanner1->hinhanh }}" alt=""
-                  class="banner-img w-100 h-100 object-fit-cover rounded-10 mb-10">
+                  class="banner-img w-100 rounded-10">
               </a>
             @endif
           </div>
@@ -449,9 +449,9 @@
         <div class="col-lg-4">
           <div class="rounded-5">
             @if($promotionBanner2)
-              <a href="{{ $promotionBanner2->lienket }}" class="p-0 m-0">
+              <a href="{{ $promotionBanner2->lienket }}" class="p-0 m-0 w-100">
                 <img src="{{asset('assets/client')}}/images/bg/{{ $promotionBanner2->hinhanh }}" alt=""
-                  class="banner-img w-100 h-100 object-fit-cover rounded-10 mb-10">
+                  class="banner-img w-100 rounded-10">
               </a>
             @endif
           </div>
@@ -459,9 +459,9 @@
         <div class="col-lg-4">
           <div class="rounded-5">
             @if($promotionBanner3)
-              <a href="{{ $promotionBanner3->lienket }}" class="p-0 m-0">
+              <a href="{{ $promotionBanner3->lienket }}" class="p-0 m-0 w-100">
                 <img src="{{asset('assets/client')}}/images/bg/{{ $promotionBanner3->hinhanh }}" alt=""
-                  class="banner-img w-100 h-100 object-fit-cover rounded-10 mb-10">
+                  class="banner-img w-100 rounded-10">
               </a>
             @endif
           </div>

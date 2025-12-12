@@ -175,10 +175,10 @@
 
                                     
 
-                                    <a href="https://www.whatsapp.com" class="btn btn-black flex-center gap-8 rounded-8 py-16">
+                                    {{-- <a href="https://www.whatsapp.com" class="btn btn-black flex-center gap-8 rounded-8 py-16">
                                         <i class="ph ph-whatsapp-logo text-lg"></i>
                                     Liên hệ với cửa hàng
-                                    </a>
+                                    </a> --}}
                                     
                                     
 
