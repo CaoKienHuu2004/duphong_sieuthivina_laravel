@@ -255,8 +255,8 @@
           </li> --}}
           @guest
             <li class="flex-align">
-              <a href="{{ route('dang-ky') }}" class="text-white-6 text-sm hover-text-white"><i
-                  class="ph-bold ph-user text-white-6"></i>
+              <a href="{{ route('dang-ky') }}" class="text-white-6 text-sm text-white hover-text-white"><i
+                  class="ph-bold ph-user text-white"></i>
                 Đăng ký thành viên</a>
             </li>
           @endguest

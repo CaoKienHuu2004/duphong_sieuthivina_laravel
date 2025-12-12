@@ -77,7 +77,7 @@ class GiohangComponent extends Component
                     $bienthe = BientheModel::with([
                         'sanpham.thuonghieu',
                         'sanpham.hinhanhsanpham', 
-                        'sanpham.loaibienthe'
+                        'loaibienthe'
                     ])->find($id_bienthe_actual); 
 
                     if ($bienthe) {
@@ -186,7 +186,7 @@ class GiohangComponent extends Component
                 // Nếu chương trình không yêu cầu mua sp cụ thể (chỉ cần đạt giá trị đơn hàng)
                 // Logic này tùy thuộc vào yêu cầu của bạn, ở đây tôi tạm set là 0 nếu không cấu hình sp tham gia
                 // Nếu muốn áp dụng cho toàn bộ đơn hàng: $soSuatQuaTang = 1; (nếu đạt giá trị)
-                $soSuatQuaTang = 0; 
+                $soSuatQuaTang = 1; 
             }
 
             // --- B. LẤY QUÀ TẶNG TỪ BẢNG 'SANPHAMDUOCTANG_QUATANG' ---
