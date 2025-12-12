@@ -313,7 +313,7 @@
                                             </div>
 
 
-                                            <div class="mt-56">
+                                            {{-- <div class="mt-56">
                                                 <div class="">
                                                     <h6 class="mb-24">Viết bài đánh giá</h6>
                                                     <span class="text-heading mb-8">Bạn có hài lòng với sản phẩm này không ?</span>
@@ -335,7 +335,7 @@
                                                         <button type="submit" class="btn btn-main rounded-pill mt-20">Đăng tải</button>
                                                     </form>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="ms-xxl-5">

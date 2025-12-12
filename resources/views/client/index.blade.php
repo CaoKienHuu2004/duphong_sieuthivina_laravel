@@ -748,34 +748,7 @@
       </div>
     </section>
 
-    <!-- MÃ GIẢM GIÁ -->
-    <div class="">
-      <div class="container container-lg px-0">
-        <div
-          class="border border-main-500 bg-main-50 border-dashed rounded-8 py-20 d-flex align-items-center justify-content-evenly">
-          <p class="h6 text-main-600 fw-normal">
-            Áp dụng mã giảm giá ưu đãi cho
-            <a href="#"
-              class="fw-bold text-decoration-underline text-main-600 hover-text-decoration-none hover-text-primary-600">
-              thành viên mới</a>
-          </p>
-          <div class="position-relative">
-            <button
-              class="copy-coupon-btn px-32 py-10 text-white text-uppercase bg-main-600 rounded-pill border-0 hover-bg-main-800">
-              SIEUTHIVINA2025
-              <i class="ph ph-file-text text-lg line-height-1"></i>
-            </button>
-            <span
-              class="copy-text bg-main-600 text-white fw-normal position-absolute px-16 py-6 rounded-pill bottom-100 start-50 translate-middle-x min-w-max mb-8 text-xs"></span>
-          </div>
-          <p class="text-md text-main-600 fw-normal">
-            Áp dụng giảm giá đến
-            <span class="fw-bold text-main-600">20% </span> tổng giá trị mỗi đơn hàng
-          </p>
-        </div>
-      </div>
-    </div>
-    <!-- Super Discount End -->
+    
 
     <!-- ========================= HÀNG MỚI CHÀO SÂN ================================ -->
     <section class="trending-productss pt-16 overflow-hidden fix-scale-100">
