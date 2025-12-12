@@ -7,8 +7,8 @@ use App\Models\QuatangsukienModel;
 use App\Models\ThuonghieuModel;
 use App\Models\BientheModel;
 use App\Models\GiohangModel;
-use App\Models\SanphamthamgiaQuatangModel; // Model sản phẩm điều kiện (phải mua)
-use App\Models\SanphamduoctangQuatangModel; // Model sản phẩm quà tặng (được nhận)
+use App\Models\SanphamthamgiaquatangModel; // Model sản phẩm điều kiện (phải mua)
+use App\Models\SanphamduoctangquatangModel; // Model sản phẩm quà tặng (được nhận)
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
