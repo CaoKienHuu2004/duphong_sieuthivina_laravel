@@ -31,12 +31,22 @@ class QuatangsukienModel extends Model
     // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
     // ===========================================================================================================================
-    public function bienthe()
-    {
-        return $this->belongsTo(BientheModel::class, 'id_bienthe');
-    }
+    // public function bienthe()
+    // {
+    //     return $this->belongsTo(BientheModel::class, 'id_bienthe');
+    // }
     public function chuongtrinh()
     {
         return $this->belongsTo(ChuongtrinhModel::class, 'id_chuongtrinh');
+    }
+
+    public function sanphamthamgia()
+    {
+        return $this->belongsToMany(BientheModel::class, 'sanphamthamgia_quatang', 'id_quatang', 'id_bienthe');
+    }
+
+    public function sanphamduoctang()
+    {
+        return $this->belongsToMany(BientheModel::class, 'sanphamduoctang_quatang', 'id_quatang', 'id_bienthe');
     }
 }

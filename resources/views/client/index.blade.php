@@ -247,7 +247,7 @@
             <div class="flex-between flex-wrap gap-8">
               <h6 class="mb-0 wow fadeInLeft text-white">
                 <img src="{{asset('assets/client')}}/images/thumbs/top-deal-sieu-re.png" alt=""
-                  class="w-50 py-10 d-lg-block d-none">
+                  class="w-50 d-lg-block d-none">
                 <img src="{{asset('assets/client')}}/images/thumbs/top-deal-sieu-re.png" alt=""
                   class="py-10 d-lg-none d-block" width="70%">
               </h6>
@@ -274,15 +274,12 @@
                 @foreach ($topdeals as $td)
                   <div data-aos="fade-up" data-aos-duration="1000">
                     <div class="product-card bg-white hover-card-shadows h-100 rounded-10 position-relative transition-2">
-
                       <a href="{{ route('chi-tiet-san-pham', $td->slug) }}"
                         class="thumbhover flex-center rounded-10 position-relative bg-gray-50 w-100">
-                        @if($td->giamgia > 0)
                           <span
-                            class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">Giảm
-                            {{ $td->giamgia }}%
+                            class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0">
+                            <i class="ph-bold ph-gift text-white"></i> Quà tặng
                           </span>
-                        @endif
                         <div class="w-100">
                           <img src="{{asset('assets/client')}}/images/thumbs/{{ $td->hinhanhsanpham->first()->hinhanh }}"
                             alt="{{ $td->hinhanhsanpham->first()->hinhanh }}" class=""
@@ -338,8 +335,8 @@
         <div class="">
           <div class="section-heading mb-24">
             <div class="flex-between flex-align flex-wrap gap-8 w-100">
-              <h6 class="mb-0 wow fadeInLeft flex-align gap-8"><i class="ph-bold ph-gift text-main-600"></i> Quà tặng</h6>
-              <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 77%;"></div>
+              <h6 class="mb-0 wow fadeInLeft flex-align gap-8"><i class="ph-bold ph-gift text-main-600"></i> Chương trình ưu đãi quà tặng</h6>
+              <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 60%;"></div>
               <div class="flex-align gap-16 wow fadeInRight">
                 <a href="{{ route('qua-tang') }}"
                   class="text-sm fw-semibold text-main-600 hover-text-main-600 hover-text-decoration-underline">Xem tất
@@ -1410,7 +1407,7 @@
         <div class="">
           <div class="section-heading mb-24">
             <div class="flex-between flex-align gap-4 w-100">
-              <h6 class="mb-0  wow fadeInLeft flex-align gap-8"><i class="ph-bold ph-gift text-main-600"></i> Quà tặng
+              <h6 class="mb-0  wow fadeInLeft flex-align gap-8"><i class="ph-bold ph-gift text-main-600"></i> Chương trình ưu đãi quà tặng
               </h6>
               <div class="flex-align gap-16 wow fadeInRight">
                 <div class="flex-align gap-8">

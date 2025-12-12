@@ -18,7 +18,7 @@
     <link
       rel="shortcut icon"
       type="image/x-icon"
-      href="{{asset('assets/client/images/logo/logo_nguyenban.png')}}"
+      href="{{asset('assets/client/images/logo/icon_nguyenban.png')}}"
     />
 
     <link rel="stylesheet" href="{{asset('assets/admin/css/bootstrap.min.css')}}" />
@@ -55,423 +55,210 @@
 
     <div class="main-wrapper">
       <div class="header">
-        <div class="header-left active">
-          <a href="{{ route ('quan-tri-vien.trang-chu') }}" class="logo">
-            <img src="{{asset('assets/client/images/logo/logo_nguyenban.png')}}" alt="" />
-          </a>
-          <a href="{{ route ('quan-tri-vien.trang-chu') }}" class="logo-small">
-            <img src="{{asset('assets/client/images/logo/logo_nguyenban.png')}}" alt="" />
-          </a>
-          <a id="toggle_btn" href="javascript:void(0);"> </a>
-        </div>
-
-        <a id="mobile_btn" class="mobile_btn" href="#sidebar">
-          <span class="bar-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-        </a>
-
-        <ul class="nav user-menu">
-
-          <li class="nav-item dropdown">
-            <a
-              href="javascript:void(0);"
-              class="dropdown-toggle nav-link"
-              data-bs-toggle="dropdown"
-            >
-              <img src="{{asset('assets/admin/img/icons/notification-bing.svg')}}" alt="img" />
-              <span class="badge rounded-pill">4</span>
-            </a>
-            <div class="dropdown-menu notifications">
-              <div class="topnav-dropdown-header">
-                <span class="notification-title"><b>Thông báo</b></span>
-              </div>
-              <div class="noti-content">
-                <ul class="notification-list">
-
-                  <li class="notification-message">
-                    <a href="activities.html">
-                      <div class="media d-flex">
-
-                        <div class="media-body flex-grow-1">
-                          <p class="noti-details">
-                            Hiện có <span class="noti-title">3</span> sản phẩm đã hết hạn !
-                          </p>
-                          <p class="noti-time">
-                            <span class="notification-time"><u>nhấn để xem chi tiết</u></span>
-                          </p>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                </ul>
-              </div>
-              <div class="topnav-dropdown-footer">
-                <a href="activities.html">Xem tất cả thông báo </a>
-              </div>
-            </div>
-          </li>
-
-          <li class="nav-item dropdown has-arrow main-drop">
-            <a
-              href="javascript:void(0);"
-              class="dropdown-toggle nav-link userset"
-              data-bs-toggle="dropdown"
-            >
-              <span class="user-img"
-                ><img src="{{asset('assets/client/images/thumbs/' . auth()->user()->avatar)}}" alt="" />
-                <span class="status online"></span
-              ></span>
-            </a>
-            <div class="dropdown-menu menu-drop-user">
-              <div class="profilename">
-                <div class="profileset">
-                  <span class="user-img"
-                    ><img src="{{asset('assets/client/images/thumbs/' . auth()->user()->avatar)}}" alt="" />
-                    <span class="status online"></span
-                  ></span>
-                  <div class="profilesets">
-                    <h6>{{ auth()->user()->username }}</h6>
-                    <h5>{{ auth()->user()->hoten }}</h5>
-                  </div>
-                </div>
-                <hr class="m-0" />
-                <a class="dropdown-item" href=" ">
-                  <i class="me-2" data-feather="user"></i> Hồ sơ</a
-                >
-                <a class="dropdown-item" href="generalsettings.html"
-                  ><i class="me-2" data-feather="settings"></i>Cài đặt</a
-                >
-                <hr class="m-0" />
-                <a class="dropdown-item logout pb-0" href="#"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <img src="{{ asset('assets/admin/img/icons/log-out.svg') }}" class="me-2" alt="img" />
-                    Đăng xuất
+            <div class="header-left active">
+                <a href="index.html" class="logo">
+                    <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt style="width: 65%" />
                 </a>
-
-                <form id="logout-form" action="#" method="POST" class="d-none">
-                    @csrf
-                </form>
-              </div>
+                <a href="index.html" class="logo-small">
+                    <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt style="width: 60%" />
+                </a>
+                <a id="toggle_btn" href="javascript:void(0);"> </a>
             </div>
-          </li>
-        </ul>
 
-        <div class="dropdown mobile-user-menu">
-          <a
-            href="javascript:void(0);"
-            class="nav-link dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            ><i class="fa fa-ellipsis-v"></i
-          ></a>
-          <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="">Hồ sơ</a>
-            <a class="dropdown-item" href="generalsettings.html">Cài đặt</a>
-            <a class="dropdown-item" href="#">Đăng xuất</a>
-          </div>
+            <a id="mobile_btn" class="mobile_btn" href="#sidebar">
+                <span class="bar-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </a>
+
+            <ul class="nav user-menu">
+                <li class="nav-item">
+                    <div class="top-nav-search">
+                        <a href="javascript:void(0);" class="responsive-search">
+                            <i class="fa fa-search"></i>
+                        </a>
+                        <form action="#">
+                            <div class="searchinputs">
+                                <input type="text" placeholder="Tìm kiếm ..." />
+                                <div class="search-addon">
+                                    <span><img src="{{asset('assets/admin')}}/img/icons/closes.svg" alt="img" /></span>
+                                </div>
+                            </div>
+                            <a class="btn" id="searchdiv"><img src="{{asset('assets/admin')}}/img/icons/search.svg" alt="img" /></a>
+                        </form>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                        <img src="{{asset('assets/admin')}}/img/icons/notification-bing.svg" alt="img" />
+                        <span class="badge rounded-pill">4</span>
+                    </a>
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span class="notification-title fw-bold">Thông báo</span>
+                            <a href="javascript:void(0)" class="clear-noti">
+                                xem tất cả </a>
+                        </div>
+                        <div class="noti-content">
+                            <ul class="notification-list">
+                                <li class="notification-message">
+                                    <a href="activities.html">
+                                        <div class="media d-flex">
+                                            <div class="media-body flex-grow-1">
+                                                <p class="noti-details">
+                                                    <span class="noti-title">John Doe</span> added new task
+                                                    <span class="noti-title">Patient appointment booking</span>
+                                                </p>
+                                                <p class="noti-time">
+                                                    <span class="notification-time">4 phút trước</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="topnav-dropdown-footer">
+                            <a href="activities.html">Xem tất cả thông báo</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown has-arrow main-drop">
+                    <a href="#" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
+                        <span class="user-img"><img src="{{asset('assets/admin')}}/img/profiles/avator1.jpg" alt />
+                            <span class="status online"></span></span>
+                    </a>
+                    <div class="dropdown-menu menu-drop-user">
+                        <div class="profilename">
+                            <div class="profileset">
+                                <span class="user-img"><img src="{{asset('assets/admin')}}/img/profiles/avator1.jpg" alt />
+                                    <span class="status online"></span></span>
+                                <div class="profilesets">
+                                    <h6>Trần Bá Hộ</h6>
+                                    <h5>Quản trị viên</h5>
+                                </div>
+                            </div>
+                            <hr class="m-0" />
+                            <a class="dropdown-item" href="profile.html">
+                                <i class="me-2" data-feather="user"></i>
+                                Thông tin cá nhân</a>
+                            <a class="dropdown-item" href="https://sieuthivina.com">
+                                <i class="me-2" data-feather="globe"></i>Sieuthivina.com</a>
+                            <hr class="m-0" />
+                            <a class="dropdown-item logout pb-0" href="signin.html"><img
+                                    src="{{asset('assets/admin')}}/img/icons/log-out.svg" class="me-2" alt="img" />Đăng xuất</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="dropdown mobile-user-menu">
+                <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="profile.html">Thông tin
+                        cá nhân</a>
+                    <a class="dropdown-item" href="https://sieuthivina.com">Sieuthivina.com</a>
+                    <a class="dropdown-item" href="signin.html">Đăng
+                        xuất</a>
+                </div>
+            </div>
         </div>
-      </div>
 
       <div class="sidebar" id="sidebar">
-        <div class="sidebar-inner slimscroll">
-          <div id="sidebar-menu" class="sidebar-menu">
-            <ul>
-              <li class="{{ request()->routeIs('quan-tri-vien.trang-chu') ? 'active' : '' }}">
-                <a href="{{ route('quan-tri-vien.trang-chu') }}"
-                  ><img src="{{asset('assets/admin/img/icons/dashboard.svg')}}" alt="img" /><span>
-                    Tổng quan</span
-                  >
-                </a>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/product.svg')}}" alt="img" /><span>
-                    Sản phẩm</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-san-pham') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-san-pham') }}">Danh sách sản phẩm</a></li>
-                  <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-danh-muc') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-danh-muc') }}">Danh mục sản phẩm</a></li>
-                  <li><a class="" href="">Thương hiệu sản phẩm</a></li>
-                  <li><a class="" href="">Kho hàng</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/sales1.svg')}}" alt="img" /><span>
-                    Bán hàng</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="saleslist.html">Voucher</a></li>
-                  <li><a href="pos.html">Ưu đãi sản phẩm</a></li>
-                  <li><a href="pos.html">Sự kiện khuyến mãi</a></li>
-                  <li><a href="/">Đánh giá sản phẩm</a></li>
-                  <li><a href="pos.html">Danh sách đơn hàng</a></li>
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="{{ request()->routeIs('quan-tri-vien.trang-chu') ? 'active' : '' }}">
+                            <a href="{{ route('quan-tri-vien.trang-chu') }}"><i data-feather="home"></i>
+                                <span>Tổng quan</span>
+                            </a>
+                        </li>
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i data-feather="package"></i><span>
+                                    Sản phẩm</span>
+                                <span class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-san-pham') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-san-pham') }}">Danh sách sản phẩm</a></li>
+                                <li><a href="categorylist.html">Danh mục sản
+                                        phẩm</a></li>
+                                <li><a href="brandlist.html">Thương hiệu
+                                        sản phẩm</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i data-feather="shopping-cart"></i>
+                                <span>Bán hàng <span
+                                        class="bg-danger text-white text-center rounded-circle blinking-flash px-2 py-1"
+                                        style="font-size: 13px;">!</span></span>
+                                <span class="menu-arrow"></span></a>
+                            <ul>
+                                <!-- <li><a href="saleslist.html">Xác nhận thanh toán<span class="bg-warning text-white px-2 py-1 rounded-circle">4</span></a></li> -->
+                                <li><a href="saleslist.html">Chờ thanh toán đơn <span
+                                    class="bg-warning text-white px-2 py-1 rounded-circle">4</span></a></li>
+                                <li><a href="saleslist.html">Xác nhận đơn hàng <span
+                                    class="bg-warning text-white px-2 py-1 rounded-circle">4</span></a></li>
+                                <li><a href="saleslist.html">Đóng gói đơn hàng</a></li>
+                                <li><a href="saleslist.html">Vận chuyển đơn hàng</a></li>
+                                <li><a href="danhsachdonhang.html">Danh sách đơn hàng</a></li>
 
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/expense1.svg')}}" alt="img" /><span>
-                    Thanh toán</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="expenselist.html">Phương thức thanh toán</a></li>
-                  <li><a href="createexpense.html">Lịch sử thanh toán</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/users1.svg')}}" alt="img" /><span>
-                    Người dùng</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                    {{-- /* ===================== KHÁCH HÀNG ===================== */ --}}
-                  <li><a class="" href="">Danh sách khách hàng</a></li>
-                  {{-- /* ===================== CỬA HÀNG ===================== */ --}}
-                  <li><a class="" href="">Danh sách cửa hàng</a></li>
-                  {{-- /* ===================== ĐỘI NGŨ QUẢN TRỊ ===================== */ --}}
-                  <li><a class="" href="">Đội ngũ quản trị</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/quotation1.svg')}}" alt="img" /><span>
-                    Quotation</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="quotationList.html">Quotation List</a></li>
-                  <li><a href="addquotation.html">Add Quotation</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/transfer1.svg')}}" alt="img" /><span>
-                    Transfer</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="transferlist.html">Transfer List</a></li>
-                  <li><a href="addtransfer.html">Add Transfer </a></li>
-                  <li><a href="importtransfer.html">Import Transfer </a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/return1.svg')}}" alt="img" /><span>
-                    Return</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="salesreturnlist.html">Sales Return List</a></li>
-                  <li>
-                    <a href="createsalesreturn.html">Add Sales Return </a>
-                  </li>
-                  <li>
-                    <a href="purchasereturnlist.html">Purchase Return List</a>
-                  </li>
-                  <li>
-                    <a href="createpurchasereturn.html">Add Purchase Return </a>
-                  </li>
-                </ul>
-              </li>
-
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/places.svg')}}" alt="img" /><span>
-                    Places</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="newcountry.html">New Country</a></li>
-                  <li><a href="countrieslist.html">Countries list</a></li>
-                  <li><a href="newstate.html">New State </a></li>
-                  <li><a href="statelist.html">State list</a></li>
-                </ul>
-              </li>
-              <li>
-                <a href="components.html"
-                  ><i data-feather="layers"></i><span> Components</span>
-                </a>
-              </li>
-              <li>
-                <a href="blankpage.html"
-                  ><i data-feather="file"></i><span> Blank Page</span>
-                </a>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><i data-feather="alert-octagon"></i>
-                  <span> Error Pages </span> <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="error-404.html">404 Error </a></li>
-                  <li><a href="error-500.html">500 Error </a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><i data-feather="box"></i> <span>Elements </span>
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="sweetalerts.html">Sweet Alerts</a></li>
-                  <li><a href="tooltip.html">Tooltip</a></li>
-                  <li><a href="popover.html">Popover</a></li>
-                  <li><a href="ribbon.html">Ribbon</a></li>
-                  <li><a href="clipboard.html">Clipboard</a></li>
-                  <li><a href="drag-drop.html">Drag & Drop</a></li>
-                  <li><a href="rangeslider.html">Range Slider</a></li>
-                  <li><a href="rating.html">Rating</a></li>
-                  <li><a href="toastr.html">Toastr</a></li>
-                  <li><a href="text-editor.html">Text Editor</a></li>
-                  <li><a href="counter.html">Counter</a></li>
-                  <li><a href="scrollbar.html">Scrollbar</a></li>
-                  <li><a href="spinner.html">Spinner</a></li>
-                  <li><a href="notification.html">Notification</a></li>
-                  <li><a href="lightbox.html">Lightbox</a></li>
-                  <li><a href="stickynote.html">Sticky Note</a></li>
-                  <li><a href="timeline.html">Timeline</a></li>
-                  <li><a href="form-wizard.html">Form Wizard</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><i data-feather="bar-chart-2"></i> <span> Charts </span>
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="chart-apex.html">Apex Charts</a></li>
-                  <li><a href="chart-js.html">Chart Js</a></li>
-                  <li><a href="chart-morris.html">Morris Charts</a></li>
-                  <li><a href="chart-flot.html">Flot Charts</a></li>
-                  <li><a href="chart-peity.html">Peity Charts</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><i data-feather="award"></i><span> Icons </span>
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
-                  <li><a href="icon-feather.html">Feather Icons</a></li>
-                  <li><a href="icon-ionic.html">Ionic Icons</a></li>
-                  <li><a href="icon-material.html">Material Icons</a></li>
-                  <li><a href="icon-pe7.html">Pe7 Icons</a></li>
-                  <li><a href="icon-simpleline.html">Simpleline Icons</a></li>
-                  <li><a href="icon-themify.html">Themify Icons</a></li>
-                  <li><a href="icon-weather.html">Weather Icons</a></li>
-                  <li><a href="icon-typicon.html">Typicon Icons</a></li>
-                  <li><a href="icon-flag.html">Flag Icons</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><i data-feather="columns"></i> <span> Forms </span>
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="form-basic-inputs.html">Basic Inputs </a></li>
-                  <li><a href="form-input-groups.html">Input Groups </a></li>
-                  <li><a href="form-horizontal.html">Horizontal Form </a></li>
-                  <li><a href="form-vertical.html"> Vertical Form </a></li>
-                  <li><a href="form-mask.html">Form Mask </a></li>
-                  <li><a href="form-validation.html">Form Validation </a></li>
-                  <li><a href="form-select2.html">Form Select2 </a></li>
-                  <li><a href="form-fileupload.html">File Upload </a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><i data-feather="layout"></i> <span> Table </span>
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="tables-basic.html">Basic Tables </a></li>
-                  <li><a href="data-tables.html">Data Table </a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/product.svg')}}" alt="img" /><span>
-                    Application</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="chat.html">Chat</a></li>
-                  <li><a href="calendar.html">Calendar</a></li>
-                  <li><a href="email.html">Email</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/time.svg')}}" alt="img" /><span>
-                    Report</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li>
-                    <a href="purchaseorderreport.html">Purchase order report</a>
-                  </li>
-                  <li><a href="inventoryreport.html">Inventory Report</a></li>
-                  <li><a href="salesreport.html">Sales Report</a></li>
-                  <li><a href="invoicereport.html">Invoice Report</a></li>
-                  <li><a href="purchasereport.html">Purchase Report</a></li>
-                  <li><a href="supplierreport.html">Supplier Report</a></li>
-                  <li><a href="customerreport.html">Customer Report</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/users1.svg')}}" alt="img" /><span>
-                    Users</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="newuser.html">New User </a></li>
-                  <li><a href="userlists.html">Users List</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="{{asset('assets/admin/img/icons/settings.svg')}}" alt="img" /><span>
-                    Settings</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="generalsettings.html">General Settings</a></li>
-                  <li><a href="emailsettings.html">Email Settings</a></li>
-                  <li><a href="paymentsettings.html">Payment Settings</a></li>
-                  <li><a href="currencysettings.html">Currency Settings</a></li>
-                  <li><a href="grouppermissions.html">Group Permissions</a></li>
-                  <li><a href="taxrates.html">Tax Rates</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i data-feather="credit-card"></i><span>
+                                    Thanh toán</span>
+                                <span class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="#">Phương thức thanh toán</a></li>
+                                <li><a href="#">Lịch sử thanh toán</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i data-feather="award"></i><span>
+                                    Ưu đãi & quà tặng</span>
+                                <span class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="quotationList.html">Mã giảm giá</a></li>
+                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-qua-tang') ? 'active' : '' }} href="{{ route('quan-tri-vien.danh-sach-qua-tang') }}">Quà tặng ưu đãi</a></li>
+                                <li><a href="addquotation.html">Chương trình sự kiện</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i data-feather="users"></i><span>
+                                    Người dùng</span>
+                                <span class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="transferlist.html">Danh sách khách hàng</a></li>
+                                <li><a href="addtransfer.html">Danh sách quản trị viên</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="components.html"><i data-feather="bell"></i><span>
+                                    Thông báo</span>
+                            </a>
+                        </li>
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i data-feather="layout"></i><span>
+                                    Tùy chỉnh website</span>
+                                <span class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="transferlist.html">Trang nội dung</a></li>
+                                <li><a href="addtransfer.html">Banner quảng cáo</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="components.html"><i data-feather="layers"></i><span>
+                                    Components</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
 
          @yield('content')
 

@@ -463,8 +463,8 @@
             <span
               class="w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0"><i
                 class="ph-fill ph-envelope text-white"></i></span>
-            <a href="mailto:hotro@sieuthivina.com"
-              class="text-md hover-text-main-600 text-white">hotro@sieuthivina.com</a>
+            <a href="mailto:support@sieuthivina.com"
+              class="text-md hover-text-main-600 text-white">support@sieuthivina.com</a>
           </div>
           <div class="flex-align gap-16 mb-16">
             <span

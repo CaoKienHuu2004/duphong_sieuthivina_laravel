@@ -38,7 +38,7 @@
                                         @foreach($danhsachdanhmuc as $danhmuc)
                                         <li class="mb-20">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="danhmuc" id="danhmuc-{{ $danhmuc->id }}" value="{{ $danhmuc->slug }}">
+                                                <input class="form-check-input" type="radio" name="danhmuc" id="danhmuc-{{ $danhmuc->id }}" value="{{ $danhmuc->slug }}" onchange="this.form.submit()" {{ (request('danhmuc') == $danhmuc->slug) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="danhmuc-{{ $danhmuc->id }}">{{ $danhmuc->ten }} ({{ $danhmuc->sanpham_count }})</label>
                                             </div>         
                                         </li>
@@ -50,43 +50,50 @@
                                     <ul class="max-h-540 overflow-y-auto scroll-sm">
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="low100" id="low100">
+                                                <input class="form-check-input" type="radio" name="locgia" value="low100" id="low100" onchange="this.form.submit()" 
+                                                    {{ request('locgia') == 'low100' ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="low100">Dưới 100.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="to200" id="100-200">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to200" id="100-200" onchange="this.form.submit()"
+                                                    {{ request('locgia') == 'to200' ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="100-200">100.000đ - 200.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="to300" id="200-300">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to300" id="200-300" onchange="this.form.submit()"
+                                                    {{ request('locgia') == 'to300' ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="200-300">200.000đ - 300.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="to500" id="300-500">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to500" id="300-500" onchange="this.form.submit()"
+                                                    {{ request('locgia') == 'to500' ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="300-500">300.000đ - 500.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="to700" id="500-700">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to700" id="500-700" onchange="this.form.submit()"
+                                                    {{ request('locgia') == 'to700' ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="500-700">500.000đ - 700.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="to1000" id="700-1000">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to1000" id="700-1000" onchange="this.form.submit()"
+                                                    {{ request('locgia') == 'to1000' ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="700-1000">700.000đ - 1.000.000đ</label>
                                             </div>
                                         </li>
                                         <li class="mb-24">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="high1000" id="high1000">
+                                                <input class="form-check-input" type="radio" name="locgia" value="high1000" id="high1000" onchange="this.form.submit()"
+                                                    {{ request('locgia') == 'high1000' ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="high1000">Trên 1.000.000đ</label>
                                             </div>
                                         </li>
@@ -98,7 +105,7 @@
                                         @foreach ($danhsachthuonghieu as $thuonghieu)
                                             <li class="mb-16">
                                                 <div class="form-check common-check common-radio">
-                                                    <input class="form-check-input" type="radio" name="thuonghieu" id="thuonghieu{{ $thuonghieu->id }}" value="{{ $thuonghieu->slug }}">
+                                                    <input class="form-check-input" type="radio" name="thuonghieu" id="thuonghieu{{ $thuonghieu->id }}" value="{{ $thuonghieu->slug }}" onchange="this.form.submit()" {{ (request('thuonghieu') == $thuonghieu->slug) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="thuonghieu{{ $thuonghieu->id }}">{{ $thuonghieu->ten }}</label>
                                                 </div>
                                             </li>
@@ -106,9 +113,9 @@
                                     </ul>
                                 </div>
                                 <div class="shop-sidebar__box rounded-8 flex-align justify-content-between mb-32">
-                                    <button title="Lọc sản phẩm trong bộ lọc của bạn" type="submit" class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 w-100">
-                                        Lọc sản phẩm
-                                    </button>
+                                    <a href="{{ route('danhsachsanpham') }}"- class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 w-100">
+                                        Xóa bộ lọc
+                                    </a>
                                 </div>
                                 <div class="shop-sidebar__box rounded-8">
                                     <a href="{{ $bannerquangcao->first()->lienket }}">

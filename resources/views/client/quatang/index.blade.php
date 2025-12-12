@@ -111,9 +111,9 @@
                                         <div class=" w-100 h-100 align-items-stretch flex-column justify-content-between d-flex px-10 py-10">
                                             <div class="flex-align gap-4">
                                                 <span class="bg-white text-main-600 border border-1 border-gray-100 rounded-circle flex-center text-xl flex-shrink-0" style="width: 30px; height: 30px;">
-                                                    <img src="{{ asset('assets/client') }}/images/brands/{{ $item->bienthe->sanpham->thuonghieu->logo}}" alt="{{ $item->bienthe->sanpham->thuonghieu->ten}}" class="w-100">
+                                                    <img src="{{ asset('assets/client') }}/images/brands/{{ $item->sanphamduoctang->first()->sanpham->thuonghieu->logo}}" alt="{{ $item->sanphamduoctang->first()->sanpham->thuonghieu->ten}}" class="w-100">
                                                 </span>
-                                                <a href="{{ url('san-pham?thuonghieu=' . $item->bienthe->sanpham->thuonghieu->slug) }}" class="text-sm fw-medium text-gray-600">{{ $item->bienthe->sanpham->thuonghieu->ten}}</a>
+                                                <a href="{{ url('san-pham?thuonghieu=' . $item->sanphamduoctang->first()->sanpham->thuonghieu->slug) }}" class="text-sm fw-medium text-gray-600">{{ $item->sanphamduoctang->first()->sanpham->thuonghieu->ten}}</a>
                                             </div>
                                             <h6 class="title text-lg fw-semibold mt-2 mb-2">
                                                 <a href="{{ route('chi-tiet-qua-tang',$item->slug) }}" class="link text-line-2" tabindex="0">{{ $item->tieude }}</a>

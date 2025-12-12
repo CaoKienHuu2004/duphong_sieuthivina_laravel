@@ -9,6 +9,7 @@ use App\Models\QuangcaoModel;
 use App\Models\QuatangsukienModel;
 use App\Models\SanphamModel;
 use App\Models\ThuonghieuModel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -68,35 +69,45 @@ class HomeController extends Controller
 
     protected function topdeals()
     {
-        $topdeals = SanPhamModel::where('giamgia', '>', 0)
-            ->where('trangthai', 'Công khai')
-            ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
-            ->withSum('bienthe', 'luotban')
-            ->orderBy('bienthe_sum_luotban', 'desc')
-            ->limit(10)
-            ->get()
-            ->tap(function ($collection) {
-                $collection->each(function ($sanpham) {
-                    if ($sanpham->bienthe->isNotEmpty()) {
-                        $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
-                        $sanpham->bienthe = $cheapestVariant;
-                        $giagoc = $cheapestVariant->giagoc;
-                        $giamgiaPercent = $sanpham->giamgia / 100;
-                        $sanpham->giadagiam = $giagoc * (1 - $giamgiaPercent);
-                    } else {
-                        $sanpham->bienthe = null;
-                        $sanpham->giadagiam = null;
-                    }
-                });
-            });
+        $topdeals = SanPhamModel::where('trangthai', 'Công khai')
+    // --- THÊM ĐIỀU KIỆN LỌC MỚI ---
+    ->whereHas('bienthe', function ($query) {
+        // Chỉ lấy các biến thể có ID nằm trong bảng tham gia quà tặng
+        $query->whereIn('id', function($subQuery) {
+            $subQuery->select('id_bienthe')->from('sanphamthamgia_quatang');
+        });
+    })
+    // --------------------------------
+    ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
+    ->withSum('bienthe', 'luotban') // Tính tổng lượt bán của tất cả biến thể
+    ->orderBy('bienthe_sum_luotban', 'desc') // Sắp xếp giảm dần theo tổng lượt bán
+    ->limit(10)
+    ->get()
+    // Giữ nguyên phần xử lý giá hiển thị
+    ->tap(function ($collection) {
+        $collection->each(function ($sanpham) {
+            if ($sanpham->bienthe->isNotEmpty()) {
+                // Lấy biến thể giá thấp nhất để hiển thị giá "từ..."
+                $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
+                $sanpham->bienthe = $cheapestVariant;
+                
+                $giagoc = $cheapestVariant->giagoc;
+                $giamgiaPercent = $sanpham->giamgia / 100;
+                $sanpham->giadagiam = $giagoc * (1 - $giamgiaPercent);
+            } else {
+                $sanpham->bienthe = null;
+                $sanpham->giadagiam = null;
+            }
+        });
+    });
 
         return $topdeals;
     }
     protected function quatang()
     {   
         QuatangsukienModel::where('trangthai', 'Hiển thị')
-            ->whereHas('bienthe', function ($q) {
-                $q->where('luottang', '<=', 0); // Điều kiện: Hết lượt tặng
+            ->whereDoesntHave('sanphamduoctang', function (Builder $query) {
+                $query->where('luottang', '>', 0);
             })
             ->update(['trangthai' => 'Tạm ẩn']);
             
@@ -107,6 +118,7 @@ class HomeController extends Controller
                                 ->orderBy('luotxem', 'desc')
                                 ->limit(10)
                                 ->get();
+                                
         return $quatang;
     }
     protected function danhmuchangdau()

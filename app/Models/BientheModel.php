@@ -37,10 +37,10 @@ class BientheModel extends Model
         return $this->belongsTo(LoaibientheModel::class, 'id_loaibienthe','id');
     }
 
-    public function quatangsukien()
-    {
-        return $this->hasOne(QuatangsukienModel::class, 'id_bienthe', 'id');
-    }
+    // public function quatangsukien()
+    // {
+    //     return $this->hasOne(QuatangsukienModel::class, 'id_bienthe', 'id');
+    // }
 
     // ===========================================================================================================================
     // BỘ TRUY CẬP (ACCESSORS)
@@ -53,5 +53,15 @@ class BientheModel extends Model
 
         $giadagiam = $giagoc - ($giagoc * $giamgia_phantram / 100);
         return $giadagiam; 
+    }
+
+    public function sanphamthamgia()
+    {
+         return $this->belongsToMany(QuatangsukienModel::class, 'sanphamthamgia_quatang', 'id_bienthe', 'id_quatang');
+    }
+
+    public function sanphamduoctang()
+    {
+         return $this->belongsToMany(QuatangsukienModel::class, 'sanphamduoctang_quatang', 'id_bienthe', 'id_quatang');
     }
 }

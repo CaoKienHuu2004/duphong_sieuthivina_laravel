@@ -114,27 +114,28 @@
                                     <span class="flex-align mb-10 mt-10 text-gray-900 text-md fw-medium"><i
                                             class="ph-bold ph-gift text-main-600 text-lg pe-4"></i>Quà tặng bạn nhận
                                         được:</span>
+                                    @foreach ( $quatang->sanphamduoctang as $sanphamduoctang)
                                     <div class="d-flex align-items-center gap-12">
                                         <a href="{{ route('chi-tiet-san-pham',$quatang->bienthe->sanpham->slug) }}" class="border border-gray-100 rounded-8 flex-center"
                                             style="max-width: 80px; max-height: 80px; width: 100%; height: 100%">
                                             <img src="{{ asset('assets/client') }}/images/thumbs/{{ $quatang->bienthe->sanpham->hinhanhsanpham->first()->hinhanh }}"
-                                                alt="{{ $quatang->bienthe->sanpham->ten }}" class="w-100 rounded-8">
+                                                alt="{{ $sanphamduoctang->sanpham->ten }}" class="w-100 rounded-8">
                                         </a>
                                         <div class="table-product__content text-start">
                                             <h6 class="title text-md fw-semibold mb-0">
-                                                <a href="{{ route('chi-tiet-san-pham',$quatang->bienthe->sanpham->slug) }}" class="link text-line-2"
-                                                    title="{{ $quatang->bienthe->sanpham->ten }}"
-                                                    style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">{{ $quatang->bienthe->sanpham->ten }}</a>
+                                                <a href="{{ route('chi-tiet-san-pham',$sanphamduoctang->sanpham->slug) }}" class="link text-line-2"
+                                                    title="{{ $sanphamduoctang->sanpham->ten }}"
+                                                    style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 350px; display: inline-block;">{{ $sanphamduoctang->sanpham->ten }}</a>
                                             </h6>
                                             <div class="flex-align gap-16 mb-6">
-                                                <a href="{{ route('chi-tiet-san-pham',$quatang->bienthe->sanpham->slug) }}"
+                                                <a href="{{ route('chi-tiet-san-pham',$sanphamduoctang->sanpham->slug) }}"
                                                     class="btn bg-gray-50 text-heading text-xs py-4 px-6 rounded-8 flex-center gap-8 fw-medium">
-                                                    {{ $quatang->bienthe->loaibienthe->ten }}
+                                                    {{ $sanphamduoctang->loaibienthe->ten }}
                                                 </a>
                                             </div>
                                             <div class="product-card__price mb-6">
                                                 <div class="flex-align gap-24">
-                                                    <span class="text-heading text-sm fw-medium ">Số lượng: 1</span>
+                                                    <span class="text-heading text-sm fw-medium ">Số lượng: {{ $sanphamduoctang->soluongtang }}</span>
                                                     @if($percent == 100)
                                                     <span class="text-main-two-600 text-sm fw-medium fst-italic">Quà tặng đã được thêm vào giỏ hàng !</span>
                                                     @endif
@@ -142,6 +143,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endforeach
 
                                     <span class="mt-10 mb-20 text-gray-700 border-top border-gray-100 d-block"></span>
 

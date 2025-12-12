@@ -9,6 +9,8 @@ use App\Models\MagiamgiaModel;
 use App\Models\GiohangModel; 
 use App\Models\BientheModel;
 use App\Models\QuatangsukienModel; 
+use App\Models\SanphamthamgiaquatangModel; 
+use App\Models\SanphamduoctangquatangModel; 
 
 class GiohangComponent extends Component
 {
@@ -18,35 +20,31 @@ class GiohangComponent extends Component
     public $tietkiem = 0;
     public $quatang = [];
     public $tongsoquatang = 0;
-    public $voucherCode = ''; // Mã người dùng nhập vào form
-    public $appliedVoucher = null; // Voucher đã áp dụng (Model hoặc array)
-    public $giamgiaVoucher = 0; // Số tiền giảm từ voucher
-    public $availableVouchers = []; // Danh sách voucher đủ điều kiện để hiển thị
+    public $voucherCode = ''; 
+    public $appliedVoucher = null; 
+    public $giamgiaVoucher = 0; 
+    public $availableVouchers = []; 
 
     public function mount()
     {
-        // 1. Tải Giỏ hàng & Xử lý Quà tặng (Để có dữ liệu cơ bản)
+        // 1. Tải dữ liệu và xử lý quà tặng
         $this->loadgiohang();
-        $this->xoaTatCaQuatang(); 
-        $this->xacnhandieukienquatang();
+        $this->xoaTatCaQuatang(); // Xóa quà cũ để tính lại từ đầu
+        $this->xacnhandieukienquatang(); // Tính toán và thêm quà mới
         
-        // BƯỚC QUAN TRỌNG 1: Tính toán Tạm tính ($this->tamtinh) sau khi giỏ hàng ổn định
+        // 2. Tính toán tiền nong
         $this->tonggiatri();
         
-        // 2. Tải Voucher Đã Áp Dụng TỪ SESSION
-        // Hàm này sẽ kiểm tra Session và gán giá trị cho $this->appliedVoucher.
-        // Nếu voucher không hợp lệ (ví dụ: giỏ hàng không còn đủ điều kiện), nó sẽ bị xóa.
+        // 3. Tải và áp dụng lại Voucher (nếu có trong session)
         $this->loadAppliedVoucher(); 
-        
-        // 3. Tính toán Tổng giá trị CUỐI CÙNG (áp dụng Voucher nếu $appliedVoucher != null)
-        $this->tonggiatri(); 
+        $this->tonggiatri(); // Tính lại lần cuối sau khi có voucher
 
-        // 4. Tải danh sách voucher có thể áp dụng để hiển thị
+        // 4. Lấy danh sách voucher khả dụng để hiển thị
         $this->loadAvailableVouchers();
     }
 
     /**
-     * Tải giỏ hàng từ DB hoặc Session, bao gồm cả sản phẩm chính và quà tặng (thanhtien = 0).
+     * Tải giỏ hàng từ Database (Auth) hoặc Session (Guest)
      */
     public function loadgiohang()
     {
@@ -65,28 +63,26 @@ class GiohangComponent extends Component
             $this->giohang = $giohangdb->toArray();
 
         } else {
-            // FIX CHO NGƯỜI DÙNG CHƯA ĐĂNG NHẬP: Xử lý khóa Session độc lập cho quà tặng
             $giohangsession = Session::get('cart', []);
             
-            foreach ($giohangsession as $cartKey => $item) { // $cartKey có thể là '101' hoặc '101_GIFT_0D'
-                // Tách ID biến thể thực tế từ khóa Session
+            foreach ($giohangsession as $cartKey => $item) { 
+                // Tách ID thật từ key (ví dụ: '101_GIFT_0D' -> 101)
                 $id_bienthe_actual = (int)str_replace('_GIFT_0D', '', $cartKey); 
 
                 if (($item['soluong'] ?? 0) > 0) { 
                     $bienthe = BientheModel::with([
                         'sanpham.thuonghieu',
                         'sanpham.hinhanhsanpham', 
-                        'loaibienthe'
-                    ])->find($id_bienthe_actual); // SỬ DỤNG ID THỰC TẾ
+                        'sanpham.loaibienthe'
+                    ])->find($id_bienthe_actual); 
 
                     if ($bienthe) {
                         $isGift = ($item['thanhtien'] ?? 1) == 0;
                         $giaban = $isGift ? 0 : ($bienthe->giadagiam ?? $bienthe->giagoc);
                         
                         $this->giohang[] = [
-                            'id_bienthe' => $id_bienthe_actual, // Luôn lưu ID biến thể thực tế
+                            'id_bienthe' => $id_bienthe_actual, 
                             'soluong' => $item['soluong'],
-                            // Giữ lại thanhtien nếu có từ session, tránh tính toán lại quà tặng 0đ
                             'thanhtien' => $item['thanhtien'] ?? ($item['soluong'] * $giaban), 
                             'bienthe' => $bienthe->toArray(),
                         ];
@@ -95,123 +91,143 @@ class GiohangComponent extends Component
             }
         }
         
-        // Cập nhật $this->quatang bằng cách lọc $this->giohang có thanhtien = 0
+        // Tách riêng mảng quà tặng để dễ quản lý (optional)
         $this->quatang = array_filter($this->giohang, fn($item) => $item['thanhtien'] == 0);
     }
 
+    /**
+     * Xóa sạch các món quà hiện có trong giỏ hàng để chuẩn bị tính toán lại
+     */
     private function xoaTatCaQuatang()
     {
         if (Auth::check()) {
-            // Xóa quà tặng trong DB (những item có thanhtien = 0)
             GiohangModel::where('id_nguoidung', Auth::id())
                 ->where('thanhtien', 0)
                 ->delete();
 
         } else {
-            // Xóa quà tặng trong Session
             $sessionCart = Session::get('cart', []);
+            $newCart = [];
             
-            $sessionKeysToRemove = [];
-            foreach ($sessionCart as $cartKey => $item) {
-                // Quà tặng luôn được xác định bằng thanhtien = 0
-                if (($item['thanhtien'] ?? 1) == 0) { 
-                    $sessionKeysToRemove[] = $cartKey; // Lấy key chính xác
+            foreach ($sessionCart as $key => $item) {
+                // Giữ lại những món có thành tiền khác 0 (hàng mua)
+                if (($item['thanhtien'] ?? 1) != 0) {
+                    $newCart[$key] = $item;
                 }
             }
-            
-            foreach ($sessionKeysToRemove as $key) {
-                unset($sessionCart[$key]);
-            }
-            
-            Session::put('cart', $sessionCart);
+            Session::put('cart', $newCart);
         }
 
-        // Tải lại giỏ hàng (chỉ cần tải lại từ DB/Session sau khi xóa quà tặng)
         $this->loadgiohang();
     }
     
+    /**
+     * LOGIC CỐT LÕI: Xác định quà tặng dựa trên điều kiện Mua X Tặng Y
+     */
     private function xacnhandieukienquatang()
     {
-        $uniqueItemsByBrand = [];
-        $cartTotalValue = 0; // Biến tính tổng giá trị giỏ hàng thực tế (hàng mua)
+        $cartTotalValue = 0; 
         
-        // 1. Duyệt qua giỏ hàng để lấy thông tin Brand và Tổng tiền
+        // 1. Tính tổng giá trị đơn hàng (chỉ tính hàng mua)
         foreach ($this->giohang as $item) {
-            // CHỈ XÉT SẢN PHẨM CHÍNH (có thành tiền > 0)
             if ($item['thanhtien'] > 0) { 
-                // Cộng dồn tổng giá trị để xét điều kiện dieukiengiatri
                 $cartTotalValue += $item['thanhtien'];
-
-                $thuonghieuId = $item['bienthe']['sanpham']['id_thuonghieu'] ?? null;
-                $bientheId = $item['id_bienthe'];
-                
-                if ($thuonghieuId) {
-                    if (!isset($uniqueItemsByBrand[$thuonghieuId])) {
-                        $uniqueItemsByBrand[$thuonghieuId] = [];
-                    }
-                    $uniqueItemsByBrand[$thuonghieuId][$bientheId] = true;
-                }
             }
         }
 
-        // Lấy danh sách quà tặng đang active
-        $quatangsukiendb = QuatangsukienModel::where('trangthai', 'Hiển thị')->where('deleted_at', null)->get(); 
-        $themquatang = []; 
+        // Lấy các chương trình quà tặng đang chạy
+        $quatangsukiendb = QuatangsukienModel::where('trangthai', 'Hiển thị')
+            ->where('deleted_at', null)
+            ->where('ngaybatdau', '<=', now())
+            ->where('ngayketthuc', '>=', now())
+            ->whereHas('sanphamduoctang', function ($query) {
+                // $query ở đây là SanphamduoctangQuatangModel
+                // Nó có quan hệ 'bienthe' trỏ tới BientheModel
+                $query->where('luottang', '>', 0);
+            })
+            ->get();
+        
+        $themquatang = []; // Mảng chứa: [id_bienthe_quatang => so_luong_can_them]
         
         foreach ($quatangsukiendb as $rule) {
-            $bientheduoctang = $rule->id_bienthe;
-            $dieukienSoluong = $rule->dieukiensoluong; // Điều kiện 1: Số lượng sản phẩm khác nhau
-            $dieukienGiatri = $rule->dieukiengiatri ?? 0; // Điều kiện 2: Giá trị đơn hàng tối thiểu
-            
-            // --- KIỂM TRA ĐIỀU KIỆN GIÁ TRỊ (MỚI) ---
-            // Nếu tổng tiền giỏ hàng chưa đủ điều kiện giá trị -> Bỏ qua quà này
-            if ($cartTotalValue < $dieukienGiatri) {
+            // Điều kiện 1: Tổng giá trị đơn hàng tối thiểu
+            if ($cartTotalValue < ($rule->dieukiengiatri ?? 0)) {
                 continue;
             }
 
-            $giftBienthe = BientheModel::with('sanpham')->find($bientheduoctang);
-            
-            if (!$giftBienthe) continue;
+            $dieukienSoluong = (int)$rule->dieukiensoluong;
+            if ($dieukienSoluong <= 0) continue; // Tránh lỗi chia cho 0
 
-            $requiredBrandId = $giftBienthe->sanpham->id_thuonghieu ?? null;
-            
-            if ($requiredBrandId) {
-                // TÍNH TOÁN: Lấy số lượng biến thể DUY NHẤT đang có của Thương hiệu đó
-                $uniqueItemsCount = 0;
-                if (isset($uniqueItemsByBrand[$requiredBrandId])) {
-                    $uniqueItemsCount = count($uniqueItemsByBrand[$requiredBrandId]);
-                }
-                
-                // --- KIỂM TRA ĐIỀU KIỆN SỐ LƯỢNG BIẾN THỂ ---
-                // Cả 2 điều kiện (Giá trị & Số lượng) đều phải thỏa mãn
-                if ($uniqueItemsCount >= $dieukienSoluong) {
-                    $soluongquatang = 1; 
+            // --- A. KIỂM TRA ĐIỀU KIỆN SẢN PHẨM MUA ---
+            // Lấy danh sách sản phẩm KHÁCH PHẢI MUA để được quà
+            $sanphamThamGiaIds = SanphamthamgiaQuatangModel::where('id_quatang', $rule->id)
+                                    ->pluck('id_bienthe')
+                                    ->toArray();
 
-                    if (!isset($themquatang[$bientheduoctang])) {
-                        $themquatang[$bientheduoctang] = 0;
+            $soSuatQuaTang = 0; // Biến lưu số lần khách đạt điều kiện
+
+            if (count($sanphamThamGiaIds) > 0) {
+                // LOGIC CHÍNH: Đếm tổng số lượng hàng khách đã mua nằm trong danh sách tham gia
+                $matchingQuantity = 0;
+
+                foreach ($this->giohang as $item) {
+                    if ($item['thanhtien'] > 0 && in_array($item['id_bienthe'], $sanphamThamGiaIds)) {
+                        $matchingQuantity += $item['soluong'];
                     }
-                    $themquatang[$bientheduoctang] = max($themquatang[$bientheduoctang], $soluongquatang);
+                }
+
+                // CÔNG THỨC: Số suất = Floor(Tổng mua / Điều kiện)
+                // Ví dụ: Mua 5 được 1. Khách mua 12 => 12 / 5 = 2.4 => Nhận 2 suất.
+                $soSuatQuaTang = floor($matchingQuantity / $dieukienSoluong);
+
+            } else {
+                // LOGIC DỰ PHÒNG (Fallback): Nếu không cấu hình sản phẩm tham gia cụ thể
+                // Tạm thời bỏ qua hoặc bạn có thể thêm logic xét theo Thương hiệu tại đây nếu cần.
+                $soSuatQuaTang = 0; 
+            }
+
+            // --- B. LẤY QUÀ TẶNG TỪ BẢNG 'SANPHAMDUOCTANG_QUATANG' ---
+            if ($soSuatQuaTang > 0) {
+                // Lấy danh sách các món quà được cấu hình cho sự kiện này
+                $danhSachQuaTang = SanphamduoctangQuatangModel::where('id_quatang', $rule->id)->get();
+
+                foreach ($danhSachQuaTang as $qua) {
+                    $id_bienthe_gift = $qua->id_bienthe;
+                    $soluong_gift_config = $qua->soluong; // Số lượng quà cho 1 suất (VD: tặng 1 cái)
+
+                    // Tổng quà khách nhận = (Cấu hình 1 suất) * (Số suất đạt được)
+                    $tongSoluongGift = $soluong_gift_config * $soSuatQuaTang;
+
+                    if (!isset($themquatang[$id_bienthe_gift])) {
+                        $themquatang[$id_bienthe_gift] = 0;
+                    }
+                    
+                    // Dùng hàm max để tránh trùng lặp nếu 1 sản phẩm quà nằm trong nhiều chương trình
+                    // (Lấy chương trình nào tặng nhiều hơn)
+                    $themquatang[$id_bienthe_gift] = max($themquatang[$id_bienthe_gift], $tongSoluongGift);
                 }
             }
         }
         
-        // Thêm quà vào giỏ
+        // Thực hiện thêm các món quà đã tính toán vào giỏ
         foreach ($themquatang as $id_bienthe => $soluong) {
             if ($soluong > 0) {
                 $this->addGiftToCart($id_bienthe, $soluong); 
             }
         }
 
-        $this->loadgiohang();
+        $this->loadgiohang(); // Tải lại giỏ hàng để hiển thị ra View
     }
 
+    /**
+     * Thêm một món quà vào giỏ hàng (DB hoặc Session)
+     */
     private function addGiftToCart(int $bientheId, int $soluong)
     {
         $giftBienthe = BientheModel::with('sanpham')->find($bientheId);
-        
         if (!$giftBienthe) return;
         
-        // Kiểm tra xem quà tặng này đã có trong giỏ hàng chưa
+        // Kiểm tra xem món quà này đã tồn tại chưa (phòng hờ)
         $isAlreadyInCart = false;
         foreach ($this->giohang as $item) {
             if ($item['id_bienthe'] == $bientheId && $item['thanhtien'] == 0) {
@@ -220,17 +236,14 @@ class GiohangComponent extends Component
             }
         }
         
-        // Chỉ thêm nếu chưa có, vì Quà tặng cũ đã được xóa ở hàm xoaTatCaQuatang()
-        if ($isAlreadyInCart) {
-            return;
-        }
+        if ($isAlreadyInCart) return;
         
         if (Auth::check()) {
             GiohangModel::updateOrCreate(
                 [
                     'id_nguoidung' => Auth::id(),
                     'id_bienthe' => $bientheId,
-                    'thanhtien' => 0, // Luôn đảm bảo là quà tặng (thanhtien = 0)
+                    'thanhtien' => 0, // Đánh dấu là quà tặng
                 ],
                 [
                     'soluong' => $soluong, 
@@ -239,23 +252,22 @@ class GiohangComponent extends Component
             );
 
         } else {
-            // FIX CHO NGƯỜI DÙNG CHƯA ĐĂNG NHẬP: SỬ DỤNG KHÓA DUY NHẤT CHO QUÀ TẶNG
             $sessionCart = Session::get('cart', []);
-            
-            // Dùng key duy nhất cho quà tặng để tránh bị trùng với sản phẩm mua
+            // Tạo key đặc biệt để không trùng với sản phẩm mua
             $giftKey = $bientheId . '_GIFT_0D'; 
 
-            // Ghi đè quà tặng nếu tồn tại, hoặc thêm mới
             $sessionCart[$giftKey] = [
                 'soluong' => $soluong,
-                'thanhtien' => 0, // BẮT BUỘC thanhtien = 0 để phân biệt
+                'thanhtien' => 0, 
             ];
             
             Session::put('cart', $sessionCart);
         }
     }
 
-
+    /**
+     * Tính toán tổng giá trị giỏ hàng, áp dụng voucher
+     */
     public function tonggiatri()
     {
         $this->tamtinh = collect($this->giohang)->sum('thanhtien'); 
@@ -265,10 +277,12 @@ class GiohangComponent extends Component
         
         foreach ($this->giohang as $item) {
             if ($item['thanhtien'] == 0) {
+                // Xử lý quà tặng
                 $this->tongsoquatang += $item['soluong'];
                 $giaGocQuatang = $item['bienthe']['giagoc'] ?? 0;
                 $tongsanphamluutru += $giaGocQuatang * $item['soluong'];
             } else {
+                // Xử lý hàng mua (tính tiền tiết kiệm)
                 $giaGoc = $item['bienthe']['giagoc'] ?? 0;
                 $giaDaGiam = $item['bienthe']['giadagiam'] ?? $giaGoc;
                 $giatritietkiem = max(0, $giaGoc - $giaDaGiam);
@@ -281,39 +295,36 @@ class GiohangComponent extends Component
 
         $this->giamgiaVoucher = 0;
 
+        // Tính giảm giá Voucher
         if ($this->appliedVoucher) {
-            $voucher = (object)$this->appliedVoucher; // Chuyển sang object để dễ truy cập
+            $voucher = (object)$this->appliedVoucher; 
             
-            // Tái kiểm tra điều kiện (phòng trường hợp người dùng xóa sản phẩm khiến tamtinh không đủ)
+            // Check lại điều kiện tối thiểu
             if ($this->tamtinh >= $voucher->dieukien) {
-                // Voucher của bạn đang dùng trường 'giatri'. Giả sử đây là số tiền giảm cố định (VND).
                 $giamgia = (float) $voucher->giatri;
-                
-                // Đảm bảo số tiền giảm không vượt quá tổng giá trị giỏ hàng
                 $this->giamgiaVoucher = min($giamgia, $this->tamtinh);
-                
             } else {
-                // Nếu không còn đủ điều kiện, hủy bỏ voucher
+                // Nếu không đủ điều kiện nữa thì hủy voucher
                 $this->removeAppliedVoucher(true);
             }
         }
 
-        // Cập nhật tổng giá trị cuối cùng
         $this->tonggiatri = $this->tamtinh - $this->giamgiaVoucher;
-        
-        // Cập nhật giá trị tiết kiệm (cộng thêm phần giảm từ voucher)
         $this->tietkiem += $this->giamgiaVoucher;
 
-        // Tải lại danh sách voucher có thể áp dụng nếu tổng tiền thay đổi
         $this->loadAvailableVouchers();
     }
 
+    /**
+     * Cập nhật số lượng sản phẩm trong giỏ
+     */
     public function capnhatsoluong($bientheId, $soluong)
     {
         $soluong = max(1, (int)$soluong);
 
         foreach ($this->giohang as $index => $item) {
             if ($item['id_bienthe'] == $bientheId) {
+                // Không cho sửa số lượng quà tặng
                 if ($item['thanhtien'] == 0) {
                     session()->flash('error_message', "Không thể chỉnh sửa số lượng quà tặng.");
                     return; 
@@ -322,22 +333,26 @@ class GiohangComponent extends Component
                 $soluonghientai = $this->giohang[$index]['soluong'];
                 $giaban = $item['bienthe']['giadagiam'] ?? $item['bienthe']['giagoc'] ?? 0;
 
+                // Check tồn kho
                 $tonkho = $item['bienthe']['soluong'] ?? 0;
                 if ($soluong > $tonkho) {
-                    session()->flash('error_message', "Xin lỗi, số lượng tồn kho chỉ còn $tonkho sản phẩm. Không thể cập nhật số lượng lớn hơn.");
+                    session()->flash('error_message', "Xin lỗi, số lượng tồn kho chỉ còn $tonkho sản phẩm.");
                     return; 
                 }
 
                 if ($soluonghientai != $soluong) {
                     $thanhtien_moi = $soluong * $giaban;
+                    
+                    // Cập nhật mảng local
                     $this->giohang[$index]['soluong'] = $soluong;
                     $this->giohang[$index]['thanhtien'] = $thanhtien_moi;
-                                             
+                                                
+                    // Cập nhật DB/Session
                     $this->capnhatgiohang($bientheId, $soluong, $thanhtien_moi); 
                     
-                    // BƯỚC QUAN TRỌNG: Kiểm tra lại quà tặng sau khi cập nhật số lượng
-                    $this->xoaTatCaQuatang(); // Xóa quà tặng cũ
-                    $this->xacnhandieukienquatang(); // Thêm quà tặng mới (nếu đủ điều kiện)
+                    // QUAN TRỌNG: Tính toán lại quà tặng sau khi đổi số lượng
+                    $this->xoaTatCaQuatang(); 
+                    $this->xacnhandieukienquatang(); 
                     
                     $this->tonggiatri();
 
@@ -348,40 +363,33 @@ class GiohangComponent extends Component
         }
     }
 
+    /**
+     * Helper cập nhật DB hoặc Session
+     */
     private function capnhatgiohang(int $bientheId, int $soluong, float $thanhtien)
     {
         if (Auth::check()) {
-            // [LOGIC MỚI] Tìm dòng cụ thể để cập nhật thay vì update hàng loạt
-            
-            // 1. Tìm các sản phẩm trùng khớp (Lọc thanhtien > 0 để KHÔNG cập nhật nhầm vào dòng quà tặng 0đ)
             $cartItems = GiohangModel::where('id_nguoidung', Auth::id())
                 ->where('id_bienthe', $bientheId)
-                ->where('thanhtien', '>', 0) // Quan trọng: Chỉ lấy sản phẩm mua, không lấy quà tặng
+                ->where('thanhtien', '>', 0) // Chỉ cập nhật hàng mua
                 ->get();
 
-            if ($cartItems->isEmpty()) {
-                // Trường hợp hy hữu: không tìm thấy item nào (có thể đã bị xóa)
-                return;
-            }
+            if ($cartItems->isEmpty()) return;
 
-            // 2. Lấy item đầu tiên để cập nhật
             $firstItem = $cartItems->first();
             $firstItem->update([
                 'soluong' => $soluong,
                 'thanhtien' => $thanhtien,
             ]);
 
-            // 3. Nếu lỡ có các dòng trùng lặp khác (của cùng sản phẩm mua), xóa chúng đi
+            // Xóa bớt dòng trùng lặp nếu có lỗi data cũ
             if ($cartItems->count() > 1) {
                 $idsToDelete = $cartItems->except($firstItem->id)->pluck('id');
                 GiohangModel::destroy($idsToDelete);
             }
 
         } else {
-            // Logic Session giữ nguyên, nhưng đảm bảo key chính xác
             $sessionCart = Session::get('cart', []);
-            
-            // Chỉ cập nhật sản phẩm MUA (key là id_bienthe)
             if (isset($sessionCart[$bientheId])) {
                 $sessionCart[$bientheId]['soluong'] = $soluong;
                 $sessionCart[$bientheId]['thanhtien'] = $thanhtien;
@@ -390,6 +398,9 @@ class GiohangComponent extends Component
         }
     }
 
+    /**
+     * Xóa sản phẩm khỏi giỏ hàng
+     */
     public function xoagiohang($bientheId)
     {
         if (Auth::check()) {
@@ -398,97 +409,72 @@ class GiohangComponent extends Component
                 ->delete();
 
         } else {
-            // FIX CHO NGƯỜI DÙNG CHƯA ĐĂNG NHẬP: Xóa cả hai loại key (Mua & Quà tặng)
             $sessionCart = Session::get('cart', []);
             
             $purchasedKey = (string)$bientheId;
             $giftKey = $bientheId . '_GIFT_0D';
 
-            // Xóa item MUA (key là ID bienthe, nếu tồn tại)
             unset($sessionCart[$purchasedKey]);
-
-            // Xóa item QUÀ TẶNG (key là ID bienthe + '_GIFT_0D', nếu tồn tại)
-            unset($sessionCart[$giftKey]); 
+            unset($sessionCart[$giftKey]); // Xóa luôn quà đi kèm nếu có key này
             
             Session::put('cart', $sessionCart);
         }
         
-        // Lọc lại mảng Livewire ($this->giohang)
+        // Cập nhật lại mảng hiển thị
         $this->giohang = array_filter($this->giohang, function ($item) use ($bientheId) {
             return $item['id_bienthe'] != $bientheId;
         });
         
-        // BƯỚC QUAN TRỌNG: Kiểm tra lại quà tặng sau khi xóa sản phẩm chính
-        $this->xoaTatCaQuatang(); // Xóa quà tặng cũ
-        $this->xacnhandieukienquatang(); // Thêm quà tặng mới (nếu đủ điều kiện)
+        // Tính toán lại quà tặng
+        $this->xoaTatCaQuatang(); 
+        $this->xacnhandieukienquatang(); 
 
         $this->tonggiatri();
         session()->flash('update_message', 'Đã xóa sản phẩm khỏi giỏ hàng.');
     }
 
-    /**
-     * Tải voucher đã áp dụng từ Session và kiểm tra tính hợp lệ của nó.
-     * Đây là bước then chốt để giữ trạng thái sau khi refresh trang.
-     */
+    // --- CÁC HÀM VOUCHER ---
+
     private function loadAppliedVoucher()
     {
-        // Lấy dữ liệu từ Session
-        $voucherData = Session::get('applied_voucher', null); // <-- LẤY TỪ SESSION
+        $voucherData = Session::get('applied_voucher', null); 
 
         if ($voucherData) {
             $voucher = MagiamgiaModel::where('magiamgia', $voucherData['magiamgia'])->first();
 
-            // Kiểm tra lại điều kiện, ngày hết hạn
-            if ($voucher && $this->checkVoucherConditions($voucher, false)) { // Gửi false để không flash message
-                $this->appliedVoucher = $voucher->toArray(); // <-- LƯU VÀO BIẾN LIVEWIRE
+            if ($voucher && $this->checkVoucherConditions($voucher, false)) { 
+                $this->appliedVoucher = $voucher->toArray(); 
                 $this->voucherCode = $voucher->magiamgia;
             } else {
-                // Nếu không hợp lệ (ví dụ: đã hết hạn, giỏ hàng không đủ điều kiện), xóa nó khỏi Session
                 $this->removeAppliedVoucher(false);
             }
         }
     }
 
-    /**
-     * Kiểm tra các điều kiện cơ bản của voucher
-     */
     private function checkVoucherConditions($voucher, $flashMessage = true)
     {
         if (!$voucher || $voucher->trangthai !== 'Hoạt động') {
-             if ($flashMessage) {
-                 session()->flash('voucher_error', 'Mã giảm giá không hợp lệ hoặc không hoạt động.');
-             }
+             if ($flashMessage) session()->flash('voucher_error', 'Mã giảm giá không hợp lệ hoặc không hoạt động.');
             return false;
         }
 
-        // Kiểm tra ngày hết hạn (nếu có trường ngayketthuc)
         if ($voucher->ngayketthuc && now()->gt($voucher->ngayketthuc)) {
-             if ($flashMessage) {
-                 session()->flash('voucher_error', 'Mã giảm giá đã hết hạn sử dụng.');
-             }
+             if ($flashMessage) session()->flash('voucher_error', 'Mã giảm giá đã hết hạn sử dụng.');
             return false;
         }
 
-        // Điều kiện tối thiểu: Tổng giá trị giỏ hàng (tamtinh) phải lớn hơn hoặc bằng điều kiện
         if ($this->tamtinh < $voucher->dieukien) {
-            if ($flashMessage) {
-                session()->flash('voucher_error', 'Giỏ hàng chưa đủ điều kiện (Giá trị tối thiểu: ' . number_format($voucher->dieukien,0,',','.') . ' ₫).');
-            }
+            if ($flashMessage) session()->flash('voucher_error', 'Giỏ hàng chưa đủ điều kiện (Giá trị tối thiểu: ' . number_format($voucher->dieukien,0,',','.') . ' ₫).');
             return false;
         }
 
         return true;
     }
 
-    /**
-     * Lấy danh sách các voucher hợp lệ để hiển thị
-     */
     public function loadAvailableVouchers()
     {
-        // Lấy tất cả voucher đang hoạt động
         $allVouchers = MagiamgiaModel::where('trangthai', 'Hoạt động')
             ->where(function ($query) {
-                // Thêm điều kiện ngày hết hạn nếu có
                 $query->whereNull('ngayketthuc')
                       ->orWhere('ngayketthuc', '>=', now());
             })
@@ -497,16 +483,12 @@ class GiohangComponent extends Component
         $this->availableVouchers = [];
         
         foreach ($allVouchers as $voucher) {
-            // Chỉ hiển thị những voucher mà giỏ hàng đủ điều kiện áp dụng
             if ($this->tamtinh >= $voucher->dieukien) {
                 $this->availableVouchers[] = $voucher->toArray();
             }
         }
     }
 
-    /**
-     * Áp dụng voucher từ mã nhập hoặc chọn từ danh sách
-     */
     public function applyVoucher($code = null)
     {
         $codeToApply = strtoupper($code ?? trim($this->voucherCode));
@@ -516,7 +498,6 @@ class GiohangComponent extends Component
              return;
         }
         
-        // 1. Tìm kiếm Voucher
         $voucher = MagiamgiaModel::where('magiamgia', $codeToApply)->first();
 
         if (!$voucher) {
@@ -524,13 +505,10 @@ class GiohangComponent extends Component
             return;
         }
 
-        // 2. Kiểm tra Điều kiện áp dụng
         if (!$this->checkVoucherConditions($voucher)) {
-            // Flash message đã được xử lý trong checkVoucherConditions
             return;
         }
 
-        // 3. Áp dụng Voucher (Lưu vào Session/DB)
         $this->appliedVoucher = $voucher->toArray();
         $this->voucherCode = $voucher->magiamgia;
 
@@ -541,24 +519,17 @@ class GiohangComponent extends Component
             'giatri' => $voucher->giatri,
         ];
 
-        // Lưu vào Session để duy trì trạng thái khi refresh
         Session::put('applied_voucher', $voucherData);
         
-        // 4. Tính toán lại Tổng giá trị
         $this->tonggiatri();
-        
-        // 5. Cập nhật danh sách voucher có sẵn (để voucher vừa áp dụng không bị hiện ở mục 'Chọn')
         $this->loadAvailableVouchers(); 
 
         session()->flash('voucher_success', 'Đã áp dụng mã giảm giá **' . $codeToApply . '** thành công.');
     }
 
-    /**
-     * Hủy bỏ voucher đã áp dụng
-     */
     public function removeVoucher()
     {
-        $this->removeAppliedVoucher(true); // Gửi thông báo
+        $this->removeAppliedVoucher(true); 
     }
 
     private function removeAppliedVoucher(bool $flashMessage)
@@ -567,7 +538,6 @@ class GiohangComponent extends Component
         $this->voucherCode = '';
         $this->giamgiaVoucher = 0;
         
-        // Xóa khỏi Session
         Session::forget('applied_voucher');
 
         $this->tonggiatri();
@@ -577,7 +547,6 @@ class GiohangComponent extends Component
             session()->flash('voucher_info', 'Đã hủy bỏ mã giảm giá.');
         }
     }
-
 
     public function render()
     {

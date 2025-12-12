@@ -21,7 +21,7 @@ class SanphamController extends Controller
      */
     public function index(Request $request)
     {
-        $query = SanPham::with('bienThe', 'danhmuc');
+        $query = SanPham::with('bienthe', 'danhmuc');
 
         // Filter theo thương hiệu
         if ($request->filled('thuonghieu')) {

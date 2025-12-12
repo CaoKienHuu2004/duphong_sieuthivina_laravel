@@ -277,8 +277,8 @@
                         </div>
                         <div class="product-dContent__box py-20">
                             <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab" tabindex="0">
-                                    {{ $sanpham->mota }}
+                                <div class="tab-pane fade show active text-black" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab" tabindex="0">
+                                    {!! $sanpham->mota !!}
                                 </div>
                                 <div class="tab-pane fade" id="pills-reviews" role="tabpanel" aria-labelledby="pills-reviews-tab" tabindex="0">
                                     <div class="row g-4">

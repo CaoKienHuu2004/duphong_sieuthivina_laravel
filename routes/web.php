@@ -156,6 +156,18 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::delete('/{slug}/xoa', [admin\DanhmucController::class, 'destroy'])->name('xoa-danh-muc');
         });
 
+        Route::prefix('qua-tang')->group(function () {
+            Route::get('/danh-sach', [admin\QuatangsukienController::class, 'index']);
+            Route::get('/', [admin\QuatangsukienController::class, 'index'])->name('danh-sach-qua-tang');
+
+            Route::get('/tao-qua-tang', [admin\QuatangsukienController::class, 'create'])->name('tao-qua-tang');
+            Route::post('/luu', [admin\QuatangsukienController::class, 'store'])->name('luu-qua-tang');
+
+            Route::get('/{slug}/chinh-sua', [admin\QuatangsukienController::class, 'edit'])->name('chinh-sua-qua-tang');
+            Route::post('/{slug}/cap-nhat', [admin\QuatangsukienController::class, 'update'])->name('cap-nhat-qua-tang');
+
+            Route::delete('/{slug}/xoa', [admin\QuatangsukienController::class, 'destroy'])->name('xoa-qua-tang');
+        });
     });
 
 
