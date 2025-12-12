@@ -223,7 +223,7 @@
                                 <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="quotationList.html">Mã giảm giá</a></li>
-                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-qua-tang') ? 'active' : '' }} href="{{ route('quan-tri-vien.danh-sach-qua-tang') }}">Quà tặng ưu đãi</a></li>
+                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-qua-tang') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-qua-tang') }}">Quà tặng ưu đãi</a></li>
                                 <li><a href="addquotation.html">Chương trình sự kiện</a></li>
                             </ul>
                         </li>
