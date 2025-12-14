@@ -63,7 +63,9 @@ class HomeController extends Controller
 
     protected function alldanhmuc()
     {
-       $alldanhmuc = DanhmucModel::where('trangthai', 'Hiển thị')->get();
+       $alldanhmuc = DanhmucModel::where('trangthai', 'Hiển thị')
+                    ->orderBy('sapxep', 'asc')
+                    ->get();
        return $alldanhmuc;
     }
 
