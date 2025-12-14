@@ -57,7 +57,8 @@ class DiachiController extends Controller
         // return response()->json([
         //     'tinhThanhs' => $tinhThanhs,
         // ]);
-        return view('client.nguoidung.taodiachi',compact('tinhThanhs'));
+        // trả về trang back() trước
+        return redirect()->back()->with('tinhThanhs', $tinhThanhs);
     }
 
     public function khoitaodiachi(Request $request)
