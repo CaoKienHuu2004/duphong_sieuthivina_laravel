@@ -58,7 +58,7 @@ class DiachiController extends Controller
         //     'tinhThanhs' => $tinhThanhs,
         // ]);
         // trả về trang back() trước
-        return redirect()->back()->with('tinhThanhs', $tinhThanhs);
+        return redview('client.nguoidung.taodiachi',compact('tinhThanhs'));
     }
 
     public function khoitaodiachi(Request $request)
@@ -97,7 +97,7 @@ class DiachiController extends Controller
                 'trangthai' => $isDefault ? 'Mặc định' : 'Khác', 
             ]);
 
-            return redirect()->route('so-dia-chi')->with('success', 'Đã thêm địa chỉ giao hàng mới thành công!');
+            return redirect()->back()->with('success', 'Đã thêm địa chỉ giao hàng mới thành công!');
 
         } catch (\Exception $e) {
             // Log lỗi
