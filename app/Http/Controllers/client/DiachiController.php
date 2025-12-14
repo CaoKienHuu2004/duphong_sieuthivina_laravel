@@ -58,7 +58,7 @@ class DiachiController extends Controller
         //     'tinhThanhs' => $tinhThanhs,
         // ]);
         // trả về trang back() trước
-        return redview('client.nguoidung.taodiachi',compact('tinhThanhs'));
+        return view('client.nguoidung.taodiachi',compact('tinhThanhs'));
     }
 
     public function khoitaodiachi(Request $request)
