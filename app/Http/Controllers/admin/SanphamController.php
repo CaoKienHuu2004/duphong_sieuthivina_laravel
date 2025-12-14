@@ -203,7 +203,8 @@ class SanphamController extends Controller
                     // Đặt tên file theo Slug để chuẩn SEO: ten-san-pham-2-1.jpg
                     $filename = $slug . '-' . $i . '.' . $extension;
                     
-                    $file->move(public_path('assets/client/images/thumbs/'), $filename);
+                    $file->move('assets/client/images/thumbs/', $filename);
+                    // $file->move(public_path('assets/client/images/thumbs/'), $filename);
 
                     Anhsp::create([
                         'id_sanpham' => $sanpham->id,
