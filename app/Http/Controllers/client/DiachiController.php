@@ -97,7 +97,8 @@ class DiachiController extends Controller
                 'trangthai' => $isDefault ? 'Mặc định' : 'Khác', 
             ]);
 
-            return redirect()->back()->with('success', 'Đã thêm địa chỉ giao hàng mới thành công!');
+            $url = $request->input('url_back', route('trang-chu'));
+            return redirect($url)->with('success', 'Đã thêm địa chỉ giao hàng mới thành công!');
 
         } catch (\Exception $e) {
             // Log lỗi

@@ -202,6 +202,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-24">
+                                        <input type="hidden" name="url_back" value="{{ url()->previous() }}">
                                         <button type="submit" class="btn btn-main py-14 px-40">Thêm địa chỉ mới</button>
                                     </div>
                                 </div>
