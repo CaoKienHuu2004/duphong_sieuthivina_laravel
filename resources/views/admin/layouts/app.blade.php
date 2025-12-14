@@ -373,7 +373,7 @@
         } = window.CKEDITOR;
 
         const LICENSE_KEY =
-          'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3ODczNTY3OTksImp0aSI6IjM3OTJmZDBhLTgxOTQtNDRlZi05MDFmLTRhMjAwOWQ2NDAyMiIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIiwiRTJQIiwiRTJXIl0sInZjIjoiNDExMjYxNTkifQ.9YG3z9toN0pcTRdXGXTj42xVsK5KTxt-ZUqJpw-6QeaoPtDbkgbY3CjMdxWNi7Dorln7D8yWImhoSrcWHIqZEg';
+          'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3OTcyOTI3OTksImp0aSI6ImYzMTc0OGExLWI0MTUtNGNhMS04MzcyLTNlOWUxYTI2MjIxMCIsImxpY2Vuc2VkSG9zdHMiOlsic2lldXRoaXZpbmEuY29tIl0sInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCIsIkUyUCIsIkUyVyJdLCJ2YyI6IjYyOWEwNWE3In0.azrlhSGtxhZ6CppYF0mej-jpibqJJgARkTPddO1EZXclKcj8ZGSbi-8Yw9qZhLUv0aiRLt6bMuG-60yytWgYzA';
 
         const editorConfig = {
           toolbar: {
@@ -477,8 +477,8 @@
             WordCount
           ],
           mediaEmbed: {
-              previewsInData: true
-          },
+            previewsInData: true
+        },
           fontFamily: {
             supportAllValues: true
           },
