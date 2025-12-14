@@ -12,6 +12,7 @@ use App\Models\LoaibientheModel as LoaiBienThe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class SanphamController extends Controller
@@ -69,163 +70,211 @@ class SanphamController extends Controller
     public function create()
     {
         $thuonghieus = Thuonghieu::all();
+        // Lấy danh mục cha để hiển thị đệ quy
         $danhmucs = Danhmuc::all();
         $loaibienthes = Loaibienthe::all();
 
         return view('admin.taosanpham', compact('thuonghieus', 'danhmucs', 'loaibienthes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        // --- 1. TIỀN XỬ LÝ DỮ LIỆU (Pre-processing) ---
+        
+        // Xử lý giá tiền: Xóa dấu chấm phân cách (VD: "100.000" -> "100000")
+        if ($request->has('bienthe')) {
+            $bientheClean = $request->bienthe;
+            foreach ($bientheClean as $key => $item) {
+                if (isset($item['gia'])) {
+                    // Chỉ giữ lại số
+                    $bientheClean[$key]['gia'] = preg_replace('/[^0-9]/', '', $item['gia']);
+                }
+            }
+            // Gộp lại dữ liệu đã làm sạch vào request để validate
+            $request->merge(['bienthe' => $bientheClean]);
+        }
+
+        // --- 2. VALIDATION ---
         $request->validate(
             [
-                'tensp'        => 'required|string|max:255',
-                'id_danhmuc'   => 'required|array',
-                'id_danhmuc.*' => 'integer|exists:danh_muc,id',
-                'id_thuonghieu' => 'required|integer',
-                'xuatxu'   => 'required|string|max:255',
-                'sanxuat'  => 'nullable|string|max:255',
-                'mo_ta'        => 'required|string',
-                'anhsanpham.*' => 'image',
+                'tensp'         => 'required|string|max:255',
+                'xuatxu'        => 'required|string|max:255',
+                'sanxuat'       => 'nullable|string|max:255',
+                'mo_ta'         => 'required',
+                'id_danhmuc'    => 'required|array',
+                'id_danhmuc.*'  => 'integer|exists:danhmuc,id',
+                'id_thuonghieu' => 'required|integer|exists:thuonghieu,id',
+                'anhsanpham'    => 'required|array|min:1', // Bắt buộc ít nhất 1 ảnh
+                'anhsanpham.*'  => 'image', // Max 5MB
+                'bienthe'       => 'required|array',
                 'bienthe.*.gia' => 'required|numeric|min:0',
                 'bienthe.*.soluong' => 'required|integer|min:0',
             ],
             [
-                // Sản phẩm
-                'tensp.required'         => 'Hãy nhập tên sản phẩm !',
-                'tensp.string'           => 'Tên sản phẩm phải là chuỗi ký tự',
-                'tensp.max'              => 'Tên sản phẩm không quá 255 ký tự',
+                // 1. Tên sản phẩm
+                'tensp.required'    => 'Vui lòng nhập tên sản phẩm.',
+                'tensp.string'      => 'Tên sản phẩm phải là chuỗi ký tự.',
+                'tensp.max'         => 'Tên sản phẩm không được vượt quá 255 ký tự.',
 
-                'id_danhmuc.required'    => 'Vui lòng chọn ít nhất một danh mục',
-                'id_danhmuc.array'       => 'Danh mục không hợp lệ',
-                'id_danhmuc.*.integer'   => 'Danh mục không hợp lệ',
-                'id_danhmuc.*.exists'    => 'Danh mục đã chọn không tồn tại',
+                // 2. Xuất xứ
+                'xuatxu.required'   => 'Vui lòng nhập xuất xứ sản phẩm.',
+                'xuatxu.string'     => 'Xuất xứ phải là chuỗi ký tự.',
+                'xuatxu.max'        => 'Xuất xứ không được vượt quá 255 ký tự.',
 
-                'id_thuonghieu.required' => 'Vui lòng chọn thương hiệu',
-                'id_thuonghieu.integer'  => 'Thương hiệu không hợp lệ',
+                // 3. Nơi sản xuất (Không bắt buộc nhưng nếu nhập phải đúng)
+                'sanxuat.string'    => 'Nơi sản xuất phải là chuỗi ký tự.',
+                'sanxuat.max'       => 'Nơi sản xuất không được vượt quá 255 ký tự.',
 
-                'xuatxu.required'        => 'Vui lòng nhập xuất xứ',
-                'xuatxu.string'          => 'Xuất xứ phải là chuỗi ký tự',
-                'xuatxu.max'             => 'Xuất xứ không quá 255 ký tự',
+                // 4. Mô tả
+                'mo_ta.required'    => 'Vui lòng nhập mô tả chi tiết cho sản phẩm.',
 
-                'sanxuat.string'         => 'Tên nơi sản xuất phải là chuỗi ký tự',
-                'sanxuat.max'            => 'Tên nơi sản xuất không quá 255 ký tự',
+                // 5. Danh mục
+                'id_danhmuc.required'   => 'Vui lòng chọn ít nhất một danh mục sản phẩm.',
+                'id_danhmuc.array'      => 'Dữ liệu danh mục không hợp lệ.',
+                'id_danhmuc.*.integer'  => 'Mã danh mục phải là số nguyên.',
+                'id_danhmuc.*.exists'   => 'Danh mục đã chọn không tồn tại trong hệ thống.',
 
-                'mo_ta.required'         => 'Vui lòng nhập mô tả sản phẩm',
-                'mo_ta.string'           => 'Mô tả sản phẩm không hợp lệ',
+                // 6. Thương hiệu
+                'id_thuonghieu.required' => 'Vui lòng chọn thương hiệu sản phẩm.',
+                'id_thuonghieu.integer'  => 'Mã thương hiệu phải là số nguyên.',
+                'id_thuonghieu.exists'   => 'Thương hiệu đã chọn không tồn tại trong hệ thống.',
 
-                // Ảnh
-                'anhsanpham.*.image'     => 'Mỗi file tải lên phải là hình ảnh',
+                // 7. Hình ảnh
+                'anhsanpham.required'   => 'Vui lòng tải lên hình ảnh cho sản phẩm.',
+                'anhsanpham.array'      => 'Dữ liệu hình ảnh không hợp lệ.',
+                'anhsanpham.min'        => 'Vui lòng tải lên ít nhất 1 hình ảnh.',
+                'anhsanpham.*.image'    => 'File tải lên phải là định dạng hình ảnh (jpg, jpeg, png, webp, gif).',
 
-                // Biến thể
-                'bienthe.*.gia.required' => 'Vui lòng nhập giá cho biến thể',
-                'bienthe.*.gia.numeric'  => 'Giá biến thể phải là số',
-                'bienthe.*.gia.min'      => 'Giá biến thể không được nhỏ hơn 0',
+                // 8. Biến thể (Chung)
+                'bienthe.required'      => 'Vui lòng thêm ít nhất một biến thể sản phẩm.',
+                'bienthe.array'         => 'Dữ liệu biến thể không hợp lệ.',
 
-                'bienthe.*.soluong.required' => 'Vui lòng nhập số lượng cho biến thể',
-                'bienthe.*.soluong.integer'  => 'Số lượng biến thể phải là số nguyên',
-                'bienthe.*.soluong.min'      => 'Số lượng biến thể không được nhỏ hơn 0',
+                // 9. Giá bán (Từng dòng biến thể)
+                'bienthe.*.gia.required' => 'Vui lòng nhập giá bán cho biến thể.',
+                'bienthe.*.gia.numeric'  => 'Giá bán phải là số (Vui lòng kiểm tra lại định dạng tiền tệ).',
+                'bienthe.*.gia.min'      => 'Giá bán không được nhỏ hơn 0.',
+
+                // 10. Số lượng (Từng dòng biến thể)
+                'bienthe.*.soluong.required' => 'Vui lòng nhập số lượng kho cho biến thể.',
+                'bienthe.*.soluong.integer'  => 'Số lượng phải là số nguyên.',
+                'bienthe.*.soluong.min'      => 'Số lượng không được nhỏ hơn 0.',
+            
             ]
         );
 
         DB::beginTransaction();
         try {
-            // Tạo sản phẩm
+            // --- 3. XỬ LÝ SMART SLUG (Tự động đánh số nếu trùng) ---
+            $baseSlug = Str::slug($request->tensp);
+            $slug = $baseSlug;
+            $counter = 1;
+
+            // Vòng lặp kiểm tra: Nếu slug đã tồn tại (kể cả trong thùng rác) thì thêm số
+            // Sanpham::withTrashed() giúp tránh lỗi khi khôi phục sản phẩm cũ
+            while (Sanpham::withTrashed()->where('slug', $slug)->exists()) {
+                $slug = $baseSlug . '-' . $counter;
+                $counter++;
+            }
+            // Kết quả: $slug bây giờ là DUY NHẤT (VD: ten-san-pham-2)
+
+            // --- 4. TẠO SẢN PHẨM ---
             $sanpham = Sanpham::create([
-                'ten'        => $request->tensp,
+                'ten'           => $request->tensp,
+                'slug'          => $slug,
                 'id_thuonghieu' => $request->id_thuonghieu,
-                'xuatxu'   => $request->xuatxu,
-                'sanxuat'  => $request->sanxuat,
-                'mediaurl'      => $request->mediaurl,
-                'trangthai'    => $request->trangthai,
-                'mota'         => $request->mo_ta,
+                'xuatxu'        => $request->xuatxu,
+                'sanxuat'       => $request->sanxuat,
+                'mota'          => $request->mo_ta,
+                'trangthai'     => $request->trangthai ?? 'Công khai',
+                'giamgia'       => 0,
+                'luotxem'       => 0,
             ]);
 
-            // $sanpham->danhmuc()->attach($request->id_danhmuc);
+            // --- 5. LƯU DANH MỤC (Pivot Table) ---
             if ($request->id_danhmuc) {
                 $sanpham->danhmuc()->attach($request->id_danhmuc);
             }
 
+            // --- 6. LƯU HÌNH ẢNH ---
             if ($request->hasFile('anhsanpham')) {
                 $i = 1;
-                // Chuẩn hóa tên sản phẩm thành slug để đặt tên file
-                $slugName = Str::slug($request->tensp);
-
                 foreach ($request->file('anhsanpham') as $file) {
                     $extension = $file->getClientOriginalExtension();
-                    $filename = $slugName . '-' . $i . '.' . $extension;
+                    // Đặt tên file theo Slug để chuẩn SEO: ten-san-pham-2-1.jpg
+                    $filename = $slug . '-' . $i . '.' . $extension;
+                    
+                    $file->move(public_path('assets/client/images/thumbs/'), $filename);
 
-                    // Lưu vào thư mục public/storage/images
-                    $file->move(public_path('img/product'), $filename);
-
-                    // Lưu thông tin vào DB
                     Anhsp::create([
                         'id_sanpham' => $sanpham->id,
-                        'media'      => $filename,
+                        'hinhanh'    => $filename,
+                        'trangthai'  => 'Hiển thị'
                     ]);
-
                     $i++;
                 }
             }
 
+            // --- 7. LƯU BIẾN THỂ (Kèm logic tạo loại mới) ---
             foreach ($request->bienthe as $bt) {
-                if (!empty($bt['id_tenloai']) && !empty($bt['gia'])) {
+                $id_tenloai = null;
 
-                    // Nếu chọn từ select => id là số
+                if (isset($bt['id_tenloai'])) {
+                    // CASE 1: Người dùng chọn từ danh sách (Giá trị là ID số)
                     if (is_numeric($bt['id_tenloai'])) {
                         $id_tenloai = $bt['id_tenloai'];
-                    } else {
-                        // Chuẩn hóa text (trim + strtolower cho chắc)
-                        $tenLoai = trim($bt['id_tenloai']);
+                    } 
+                    // CASE 2: Người dùng nhập text mới (Select2 Tags)
+                    else {
+                        $tenLoaiMoi = trim($bt['id_tenloai']);
+                        // Kiểm tra lại trong DB xem tên này có chưa (tránh trùng lặp do viết hoa/thường)
+                        $loaiTonTai = Loaibienthe::whereRaw('LOWER(ten) = ?', [strtolower($tenLoaiMoi)])->first();
 
-                        // Tìm trong DB xem đã có chưa
-                        $existingLoai = Loaibienthe::whereRaw('LOWER(ten) = ?', [strtolower($tenLoai)])->first();
-
-                        if ($existingLoai) {
-                            // Nếu đã có -> lấy id cũ
-                            $id_tenloai = $existingLoai->id;
+                        if ($loaiTonTai) {
+                            $id_tenloai = $loaiTonTai->id;
                         } else {
-                            // Nếu chưa có -> tạo mới
-                            $newLoai = Loaibienthe::create(['ten' => $tenLoai]);
+                            // Tạo loại biến thể mới
+                            $newLoai = Loaibienthe::create([
+                                'ten' => $tenLoaiMoi,
+                                'trangthai' => 'Hiển thị'
+                            ]);
                             $id_tenloai = $newLoai->id;
                         }
                     }
+                }
 
-                    // Tạo biến thể sản phẩm
+                // Lưu vào bảng bienthe
+                if ($id_tenloai) {
                     Bienthesp::create([
-                        'id_sanpham' => $sanpham->id,
-                        'id_tenloai' => $id_tenloai,
-                        'gia'        => $bt['gia'],
-                        'soluong'    => $bt['soluong'] ?? 0,
-                        'trangthai'  => 0,
+                        'id_sanpham'     => $sanpham->id,
+                        'id_loaibienthe' => $id_tenloai,
+                        'giagoc'         => $bt['gia'], // Đã clean ở bước 1
+                        'soluong'        => $bt['soluong'] ?? 0,
+                        'luottang'       => $bt['luottang'] ?? 0,
+                        'luotban'        => 0,
+                        'trangthai'      => ($bt['soluong'] > 0) ? 'Còn hàng' : 'Hết hàng',
                     ]);
                 }
             }
 
+            DB::commit(); // Lưu tất cả xuống DB
+            
+            return redirect()->route('quan-tri-vien.danh-sach-san-pham')
+                             ->with('success', 'Thêm sản phẩm thành công!');
 
-            // // Lưu biến thể
-            // if ($request->bienthe) {
-            //     foreach ($request->bienthe as $bt) {
-            //         if (!empty($bt['id_tenloai']) && !empty($bt['gia'])) {
-            //             Bienthesp::create([
-            //                 'id_sanpham' => $sanpham->id,
-            //                 'id_tenloai' => $bt['id_tenloai'],
-            //                 'gia'        => $bt['gia'],
-            //                 'soluong'    => $bt['soluong'] ?? 0,
-            //                 'trangthai'  => 0,
-            //             ]);
-            //         }
-            //     }
-            // }
-
-            DB::commit();
-            return redirect()->route('danh-sach')->with('success', 'Thêm sản phẩm thành công!');
         } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->withErrors(['msg' => 'Có lỗi: ' . $e->getMessage()]);
+            DB::rollBack(); // Hoàn tác dữ liệu DB nếu lỗi
+            
+            // DỌN DẸP FILE RÁC:
+            // Nếu DB lỗi nhưng ảnh đã kịp upload, ta cần xóa ảnh đi để sạch server
+            if (isset($slug)) {
+                // Tìm tất cả file bắt đầu bằng slug này trong thư mục
+                $files = File::glob(public_path('assets/client/images/thumbs/') . $slug . '-*');
+                foreach ($files as $file) {
+                    File::delete($file);
+                }
+            }
+
+            return back()->withInput()->with('error', 'Lỗi hệ thống: ' . $e->getMessage());
         }
     }
 
@@ -360,19 +409,12 @@ class SanphamController extends Controller
             // Xoá ảnh sản phẩm
             if ($sanpham->anhSanPham && $sanpham->anhSanPham->count()) {
                 foreach ($sanpham->anhSanPham as $anh) {
-                    $filePath = public_path('img/product/' . $anh->media);
-                    if (file_exists($filePath)) {
-                        unlink($filePath); // xoá file thật
-                    }
-                    $anh->delete(); // xoá record DB
+                    $anh->delete();
                 }
             }
 
             // Xoá biến thể
             Bienthesp::where('id_sanpham', $sanpham->id)->delete();
-
-            // Xoá liên kết danh mục (nếu có belongsToMany)
-            $sanpham->danhmuc()->detach();
 
             // Xoá sản phẩm chính
             $sanpham->delete();
@@ -386,7 +428,7 @@ class SanphamController extends Controller
         }
     }
 
-    public function show($slug,$id)
+    public function show($slug, $id)
     {
         $sanpham = SanPham::with(['anhsanpham', 'danhmuc', 'bienthe.loaiBienThe'])->findOrFail($id);
 

@@ -345,7 +345,7 @@
           Italic,
           Link,
           LinkImage,
-          Markdown,
+          MediaEmbed,
           Paragraph,
           PasteFromOffice,
           RemoveFormat,
@@ -406,6 +406,7 @@
               'link',
               'bookmark',
               'insertImage',
+              'MediaEmbed',
               'insertTable',
               'highlight',
               'blockQuote',
@@ -444,12 +445,12 @@
             ImageInsertViaUrl,
             ImageToolbar,
             ImageUpload,
+            MediaEmbed,
             Indent,
             IndentBlock,
             Italic,
             Link,
             LinkImage,
-            Markdown,
             Paragraph,
             PasteFromOffice,
             RemoveFormat,
@@ -475,6 +476,9 @@
             Underline,
             WordCount
           ],
+          mediaEmbed: {
+              previewsInData: true
+          },
           fontFamily: {
             supportAllValues: true
           },
