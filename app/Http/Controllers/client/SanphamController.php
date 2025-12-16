@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\DB;
 
 class SanphamController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
         $title = 'Danh sách sản phẩm';
         $filterdanhmuc = $request->input('danhmuc');
@@ -29,7 +30,7 @@ class SanphamController extends Controller
             ->withSum('bienthe', 'luotban');
 
         if (!empty($filterdanhmuc)) {
-            $danhmuc = DanhmucModel::where('slug', $filterdanhmuc)->first(); 
+            $danhmuc = DanhmucModel::where('slug', $filterdanhmuc)->first();
             if ($danhmuc) {
                 $id_danhmuc = $danhmuc->id;
                 $query->whereHas('danhmuc', function ($q) use ($id_danhmuc) {
@@ -37,7 +38,7 @@ class SanphamController extends Controller
                 });
 
                 if (!$filterthuonghieu) {
-                    $title = 'Danh mục: '. $danhmuc->ten;
+                    $title = 'Danh mục: ' . $danhmuc->ten;
                 }
             }
         }
@@ -48,7 +49,7 @@ class SanphamController extends Controller
                 $id_thuonghieu = $thuonghieu->id;
                 $query->where('id_thuonghieu', $id_thuonghieu);
                 if (!$filterdanhmuc) {
-                    $title = 'Thương hiệu: '. $thuonghieu->ten;
+                    $title = 'Thương hiệu: ' . $thuonghieu->ten;
                 }
             }
         }
@@ -72,8 +73,8 @@ class SanphamController extends Controller
 
             if ($price_min !== null || $price_max !== null) {
                 $query->whereHas('bienthe', function ($q) use ($price_min, $price_max) {
-                    $q->select('id_sanpham') 
-                      ->groupBy('id_sanpham'); 
+                    $q->select('id_sanpham')
+                        ->groupBy('id_sanpham');
 
                     if ($price_min !== null) {
                         $q->havingRaw('MIN(giagoc) >= ?', [$price_min]);
@@ -94,11 +95,11 @@ class SanphamController extends Controller
             if (count($parts) === 2) {
                 $categorySlugForSort = $parts[1];
                 // Thiết lập $sortby thành key chung để khớp với switch-case
-                $sortby = 'danhmuchangdau'; 
+                $sortby = 'danhmuchangdau';
             }
         }
         // --- END BỔ SUNG LOGIC ---
-        
+
         // 6. SẮP XẾP (sortby)
         switch ($sortby) {
             case 'sanphamhangdau':
@@ -130,19 +131,19 @@ class SanphamController extends Controller
             case 'gia_asc':
                 $query->leftJoin('bienthe AS cheapest_variant', function ($join) {
                     $join->on('cheapest_variant.id_sanpham', '=', 'sanpham.id')
-                          ->whereRaw('cheapest_variant.giagoc = (SELECT MIN(giagoc) FROM bienthe WHERE id_sanpham = sanpham.id)');
+                        ->whereRaw('cheapest_variant.giagoc = (SELECT MIN(giagoc) FROM bienthe WHERE id_sanpham = sanpham.id)');
                 })
-                ->orderBy('cheapest_variant.giagoc', 'asc')
-                ->select('sanpham.*');
+                    ->orderBy('cheapest_variant.giagoc', 'asc')
+                    ->select('sanpham.*');
                 break;
 
             case 'gia_desc':
                 $query->leftJoin('bienthe AS cheapest_variant', function ($join) {
                     $join->on('cheapest_variant.id_sanpham', '=', 'sanpham.id')
-                          ->whereRaw('cheapest_variant.giagoc = (SELECT MIN(giagoc) FROM bienthe WHERE id_sanpham = sanpham.id)');
+                        ->whereRaw('cheapest_variant.giagoc = (SELECT MIN(giagoc) FROM bienthe WHERE id_sanpham = sanpham.id)');
                 })
-                ->orderBy('cheapest_variant.giagoc', 'desc')
-                ->select('sanpham.*');
+                    ->orderBy('cheapest_variant.giagoc', 'desc')
+                    ->select('sanpham.*');
                 break;
 
             case 'quantamnhieunhat':
@@ -160,10 +161,10 @@ class SanphamController extends Controller
             ->through(function ($sanpham) {
                 if ($sanpham->bienthe->isNotEmpty()) {
                     $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
-                    $sanpham->bienthe = $cheapestVariant; 
+                    $sanpham->bienthe = $cheapestVariant;
                     $giagoc = $cheapestVariant->giagoc;
                     $giamgiaPercent = $sanpham->giamgia / 100;
-                    $sanpham->giadagiam = intval($giagoc * (1 - $giamgiaPercent)); 
+                    $sanpham->giadagiam = intval($giagoc * (1 - $giamgiaPercent));
                     $sanpham->is_sale = intval($sanpham->giadagiam) < intval($giagoc);
                 } else {
                     $sanpham->bienthe = null;
@@ -192,14 +193,14 @@ class SanphamController extends Controller
     }
 
     public function search(Request $request)
-    {   
+    {
 
         $keyword = trim($request->input('query'));
         $keyword = strtolower($keyword);
-        
+
         $products = new LengthAwarePaginator([], 0, 12, 1); // Khởi tạo Paginator RỖNG mặc định
         $results_count = 0; // Khởi tạo results_count mặc định
-        
+
         if (!empty($keyword)) {
             $tukhoa = TukhoaModel::where('tukhoa', $keyword)->first();
             if ($tukhoa) {
@@ -217,26 +218,33 @@ class SanphamController extends Controller
                 ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
                 ->withSum('bienthe', 'luotban')
                 ->orderBy('id', 'desc');
-            
+
             if ($danhmuc) {
                 $query->whereHas('danhmuc', function ($q) use ($danhmuc) {
                     $q->where('id_danhmuc', $danhmuc->id);
                 });
             } else {
-                $query->where('ten', 'like', '%' . $keyword . '%');
+                $words = explode(' ', $keyword);
+                $words = array_filter($words); 
+
+                $query->where(function ($q) use ($words) {
+                    foreach ($words as $word) {
+                        $q->where('ten', 'like', '%' . $word . '%');
+                    }
+                });
             }
 
             $totalResults = $query->count();
             $results_count = $totalResults;
-            
+
             $products = $query->paginate(20)
                 ->through(function ($sanpham) {
                     if ($sanpham->bienthe->isNotEmpty()) {
                         $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
-                        $sanpham->bienthe = $cheapestVariant; 
+                        $sanpham->bienthe = $cheapestVariant;
                         $giagoc = $cheapestVariant->giagoc;
                         $giamgiaPercent = $sanpham->giamgia / 100;
-                        $sanpham->giadagiam = intval($giagoc * (1 - $giamgiaPercent)); 
+                        $sanpham->giadagiam = intval($giagoc * (1 - $giamgiaPercent));
                         $sanpham->is_sale = intval($sanpham->giadagiam) < intval($giagoc);
                     } else {
                         $sanpham->bienthe = null;
@@ -280,7 +288,7 @@ class SanphamController extends Controller
         $sanpham->bienthe->each(function ($bienthe) use ($sanpham) {
             $giagoc = $bienthe->giagoc;
             $giamgiaPercent = $sanpham->giamgia / 100;
-            $bienthe->giadagiam = intval($giagoc * (1 - $giamgiaPercent)); 
+            $bienthe->giadagiam = intval($giagoc * (1 - $giamgiaPercent));
             $bienthe->is_sale = intval($bienthe->giadagiam) < intval($giagoc);
         });
 
@@ -313,7 +321,7 @@ class SanphamController extends Controller
                 // Lấy các sản phẩm có ít nhất một danh mục chung
                 $q->whereIn('id_danhmuc', $sanpham->danhmuc->pluck('id'));
             })
-            ->with(['danhmuc','hinhanhsanpham', 'thuonghieu', 'bienthe'])
+            ->with(['danhmuc', 'hinhanhsanpham', 'thuonghieu', 'bienthe'])
             ->withSum('bienthe', 'luotban')
             ->orderByDesc('bienthe_sum_luotban')
             ->limit(10)
@@ -322,11 +330,11 @@ class SanphamController extends Controller
                 if ($relatedSanpham->bienthe->isNotEmpty()) {
                     // Xử lý: Lấy biến thể rẻ nhất, tính giá đã giảm và xác định cờ giảm giá
                     $cheapestVariant = $relatedSanpham->bienthe->sortBy('giagoc')->first();
-                    $relatedSanpham->bienthe = $cheapestVariant; 
+                    $relatedSanpham->bienthe = $cheapestVariant;
                     $giagoc = $cheapestVariant->giagoc;
                     $giamgiaPercent = $relatedSanpham->giamgia / 100;
-                    
-                    $relatedSanpham->giadagiam = intval($giagoc * (1 - $giamgiaPercent)); 
+
+                    $relatedSanpham->giadagiam = intval($giagoc * (1 - $giamgiaPercent));
                     $relatedSanpham->is_sale = intval($relatedSanpham->giadagiam) < intval($giagoc);
                 } else {
                     // Xử lý khi không có biến thể
