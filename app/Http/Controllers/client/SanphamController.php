@@ -229,7 +229,7 @@ class SanphamController extends Controller
 
                 $query->where(function ($q) use ($words) {
                     foreach ($words as $word) {
-                        $q->where('ten', 'like', '%' . $word . '%');
+                        $q->orWhere('ten', 'like', '%' . $word . '%');
                     }
                 });
             }
