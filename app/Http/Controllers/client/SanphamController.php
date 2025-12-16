@@ -194,10 +194,6 @@ class SanphamController extends Controller
         ]);
     }
 
-    use Illuminate\Pagination\LengthAwarePaginator;
-    use Illuminate\Pagination\Paginator;
-    use Illuminate\Support\Collection;
-
     // ... (Các use khác của bạn)
 
     public function search(Request $request)
