@@ -11,6 +11,8 @@ use App\Models\TukhoaModel;
 use App\Models\QuangcaoModel;
 use App\Models\BientheModel;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -192,40 +194,63 @@ class SanphamController extends Controller
         ]);
     }
 
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use Illuminate\Pagination\Paginator;
+    use Illuminate\Support\Collection;
+
+    // ... (Các use khác của bạn)
+
     public function search(Request $request)
     {
-
         $keyword = trim($request->input('query'));
-        $keyword = strtolower($keyword);
 
-        $products = new LengthAwarePaginator([], 0, 12, 1); // Khởi tạo Paginator RỖNG mặc định
-        $results_count = 0; // Khởi tạo results_count mặc định
+        // Lưu ý: keyword để tính toán similar_text không nên strtolower ngay ở đây
+        // để giữ nguyên hoa thường nếu cần, nhưng similar_text nên so sánh cùng loại.
+        // Ta sẽ strtolower khi so sánh.
+        $keywordClean = strtolower($keyword);
 
-        if (!empty($keyword)) {
-            $tukhoa = TukhoaModel::where('tukhoa', $keyword)->first();
+        // 1. Xử lý lưu lịch sử từ khóa (Giữ nguyên)
+        if (!empty($keywordClean)) {
+            $tukhoa = TukhoaModel::where('tukhoa', $keywordClean)->first();
             if ($tukhoa) {
                 $tukhoa->increment('luottruycap');
             } else {
-                TukhoaModel::create([
-                    'tukhoa' => $keyword,
-                    'luottruycap' => 1,
-                ]);
+                TukhoaModel::create(['tukhoa' => $keywordClean, 'luottruycap' => 1]);
             }
+        }
 
-            $danhmuc = DanhmucModel::whereRaw('LOWER(ten) = ?', [$keyword])->first();
+        // 2. Khởi tạo Query cơ bản
+        $query = SanPhamModel::where('trangthai', 'Công khai')
+            ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
+            ->withSum('bienthe', 'luotban')
+            ->orderBy('id', 'desc');
 
-            $query = SanPhamModel::where('trangthai', 'Công khai')
-                ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
-                ->withSum('bienthe', 'luotban')
-                ->orderBy('id', 'desc');
+        // 3. Kiểm tra xem từ khóa có phải tên Danh Mục không?
+        $danhmuc = DanhmucModel::whereRaw('LOWER(ten) = ?', [$keywordClean])->first();
 
-            if ($danhmuc) {
-                $query->whereHas('danhmuc', function ($q) use ($danhmuc) {
-                    $q->where('id_danhmuc', $danhmuc->id);
-                });
-            } else {
-                $words = explode(' ', $keyword);
-                $words = array_filter($words); 
+        // =================================================================================
+        // TRƯỜNG HỢP 1: TÌM THEO DANH MỤC (Giữ nguyên logic cũ cho nhanh)
+        // =================================================================================
+        if ($danhmuc) {
+            $query->whereHas('danhmuc', function ($q) use ($danhmuc) {
+                $q->where('id_danhmuc', $danhmuc->id);
+            });
+
+            // Phân trang Database thuần túy
+            $products = $query->paginate(20)->through(function ($sanpham) {
+                return $this->calcPriceInfo($sanpham); // Gọi hàm phụ tách ra cho gọn
+            });
+
+            $results_count = $products->total();
+        }
+        // =================================================================================
+        // TRƯỜNG HỢP 2: TÌM THEO TỪ KHÓA (Áp dụng Similar Text & Manual Pagination)
+        // =================================================================================
+        else {
+            // A. Lọc thô từ Database (Lấy tất cả sản phẩm có chứa ít nhất 1 từ)
+            if (!empty($keywordClean)) {
+                $words = explode(' ', $keywordClean);
+                $words = array_filter($words);
 
                 $query->where(function ($q) use ($words) {
                     foreach ($words as $word) {
@@ -234,33 +259,50 @@ class SanphamController extends Controller
                 });
             }
 
-            $totalResults = $query->count();
-            $results_count = $totalResults;
+            // Lấy toàn bộ dữ liệu thô (Chưa phân trang)
+            $candidates = $query->get();
 
-            $products = $query->paginate(20)
-                ->through(function ($sanpham) {
-                    if ($sanpham->bienthe->isNotEmpty()) {
-                        $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
-                        $sanpham->bienthe = $cheapestVariant;
-                        $giagoc = $cheapestVariant->giagoc;
-                        $giamgiaPercent = $sanpham->giamgia / 100;
-                        $sanpham->giadagiam = intval($giagoc * (1 - $giamgiaPercent));
-                        $sanpham->is_sale = intval($sanpham->giadagiam) < intval($giagoc);
-                    } else {
-                        $sanpham->bienthe = null;
-                        $sanpham->giadagiam = null;
-                        $sanpham->is_sale = false;
-                    }
-                    return $sanpham;
-                });
+            // B. Xử lý PHP: Tính toán giá & Chấm điểm độ giống nhau
+            $processedProducts = $candidates->map(function ($sanpham) use ($keywordClean) {
+                // 1. Tính toán giá (Biến thể, giảm giá...)
+                $sanpham = $this->calcPriceInfo($sanpham);
+
+                // 2. Tính điểm giống nhau (Relevance Score)
+                $percent = 0;
+                // So sánh tên sản phẩm với từ khóa tìm kiếm
+                similar_text(strtolower($sanpham->ten), $keywordClean, $percent);
+                $sanpham->relevance_score = $percent;
+
+                return $sanpham;
+            })
+                // C. Lọc: Chỉ lấy sản phẩm giống trên 40% (Bạn có thể chỉnh số này)
+                ->filter(function ($sanpham) {
+                    return $sanpham->relevance_score >= 40;
+                })
+                // D. Sắp xếp: Sản phẩm giống nhất lên đầu
+                ->sortByDesc('relevance_score')
+                ->values(); // Reset lại key array
+
+            // E. Phân trang thủ công (Manual Pagination) cho Collection
+            $results_count = $processedProducts->count(); // Đếm số lượng sau khi lọc
+            $perPage = 20;
+            $currentPage = Paginator::resolveCurrentPage();
+
+            // Cắt dữ liệu cho trang hiện tại
+            $currentPageItems = $processedProducts->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+            $products = new LengthAwarePaginator(
+                $currentPageItems,
+                $results_count,
+                $perPage,
+                $currentPage,
+                ['path' => Paginator::resolveCurrentPath(), 'query' => $request->query()]
+            );
         }
 
-        $danhsachdanhmuc = DanhmucModel::where('trangthai', 'Hiển thị')
-            ->withCount('sanpham')
-            ->get();
-        $danhsachthuonghieu = ThuonghieuModel::where('trangthai', 'Hoạt động')
-            ->withCount('sanpham')
-            ->get();
+        // 4. Lấy dữ liệu sidebar (Giữ nguyên)
+        $danhsachdanhmuc = DanhmucModel::where('trangthai', 'Hiển thị')->withCount('sanpham')->get();
+        $danhsachthuonghieu = ThuonghieuModel::where('trangthai', 'Hoạt động')->withCount('sanpham')->get();
         $bannerquangcao = QuangcaoModel::where('trangthai', 'Hiển thị')->where('vitri', 'home_banner_product')->get();
 
         return view('client.sanpham.search', [
@@ -271,6 +313,28 @@ class SanphamController extends Controller
             'danhsachthuonghieu' => $danhsachthuonghieu,
             'bannerquangcao' => $bannerquangcao,
         ]);
+    }
+
+    /**
+     * Hàm phụ: Tính toán thông tin giá và biến thể
+     * Tách ra để dùng chung cho cả 2 trường hợp
+     */
+    private function calcPriceInfo($sanpham)
+    {
+        if ($sanpham->bienthe->isNotEmpty()) {
+            $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
+            $sanpham->bienthe = $cheapestVariant;
+            $giagoc = $cheapestVariant->giagoc;
+            $giamgiaPercent = $sanpham->giamgia / 100;
+
+            $sanpham->giadagiam = intval($giagoc * (1 - $giamgiaPercent));
+            $sanpham->is_sale = intval($sanpham->giadagiam) < intval($giagoc);
+        } else {
+            $sanpham->bienthe = null;
+            $sanpham->giadagiam = null;
+            $sanpham->is_sale = false;
+        }
+        return $sanpham;
     }
 
     public function show($slug)
