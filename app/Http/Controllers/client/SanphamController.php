@@ -273,7 +273,7 @@ class SanphamController extends Controller
             })
                 // C. Lọc: Chỉ lấy sản phẩm giống trên 40% (Bạn có thể chỉnh số này)
                 ->filter(function ($sanpham) {
-                    return $sanpham->relevance_score >= 40;
+                    return $sanpham->relevance_score >= 30;
                 })
                 // D. Sắp xếp: Sản phẩm giống nhất lên đầu
                 ->sortByDesc('relevance_score')
