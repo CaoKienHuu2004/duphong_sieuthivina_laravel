@@ -42,7 +42,7 @@
                 <div class="banner-item-two__slider">
                   @if(isset($banner['home_banner_slider']) && $banner['home_banner_slider']->isNotEmpty())
                     @foreach ($banner['home_banner_slider'] as $banner)
-                      <a href="{{ $banner->lienket }}"
+                      <a title="{{ $banner->mota }}" href="{{ $banner->lienket }}"
                         class="d-flex align-items-center justify-content-between flex-wrap-reverse flex-sm-nowrap gap-32">
                         <img src="{{asset('assets/client')}}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}"
                           class=" d-lg-block d-none rounded-5" style="width: 100%; height: 595px; object-fit: cover;" />
@@ -51,7 +51,7 @@
                       </a>
                     @endforeach
                   @else
-                    <a href="#"
+                    <a title="{{ $banner->mota }}" href="#"
                       class="d-flex align-items-center justify-content-between flex-wrap-reverse flex-sm-nowrap gap-32">
                       <img src="{{asset('assets/client')}}/images/bg/shopee-3.jpg" alt="shopee-3.jpg"
                         class=" d-lg-block d-none rounded-5" style="width: 100%; height: 570px; object-fit: cover;" />
