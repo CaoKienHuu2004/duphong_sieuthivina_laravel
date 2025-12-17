@@ -9691,7 +9691,7 @@ input:focus-visible {
 }
 
 .feature-item-wrapper .feature-item:nth-child(10n+1) .feature-item__thumb {
-    background: rgba(0, 128, 128, 0.05);
+    background: rgb(255, 255, 255);
 }
 
 .feature-item-wrapper .feature-item:nth-child(10n+2) .feature-item__thumb {

@@ -322,13 +322,13 @@
         {
           breakpoint: 1699,
           settings: {
-            slidesToShow: 10,
+            slidesToShow: 6,
           },
         },
         {
           breakpoint: 1599,
           settings: {
-            slidesToShow: 10,
+            slidesToShow: 6,
           },
         },
         {
