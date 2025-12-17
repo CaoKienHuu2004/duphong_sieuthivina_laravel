@@ -304,7 +304,7 @@
 
     // ========================= hot deals Slider Js Start ==============
     $(".feature-item-wrapper").slick({
-      slidesToShow: 10,
+      slidesToShow: 6,
       slidesToScroll: 1,
       autoplay: false,
       autoplaySpeed: 2000,
@@ -635,8 +635,8 @@
     $(".gift-event-slider").slick({
       slidesToShow: 6,
       slidesToScroll: 1,
-      autoplay: false,
-      autoplaySpeed: 1500,
+      autoplay: true,
+      autoplaySpeed: 2500,
       speed: 1000,
       dots: false,
       pauseOnHover: false,
