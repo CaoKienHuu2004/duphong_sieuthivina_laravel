@@ -649,6 +649,13 @@
       prevArrow: "#gift-event-prev",
       responsive: [
         {
+          breakpoint: 2000,
+          settings: {
+            slidesToShow: 5,
+            arrows: true,
+          },
+        },
+        {
           breakpoint: 1599,
           settings: {
             slidesToShow: 5,
