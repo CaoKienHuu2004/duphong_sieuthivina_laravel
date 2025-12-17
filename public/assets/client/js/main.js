@@ -633,7 +633,7 @@
 
     // ========================= hot deals Slider Js Start ==============
     $(".gift-event-slider").slick({
-      slidesToShow: 10,
+      slidesToShow: 6,
       slidesToScroll: 1,
       autoplay: false,
       autoplaySpeed: 1500,
@@ -649,35 +649,28 @@
       prevArrow: "#gift-event-prev",
       responsive: [
         {
-          breakpoint: 2000,
+          breakpoint: 1920,
           settings: {
             slidesToShow: 5,
             arrows: true,
           },
         },
         {
-          breakpoint: 1599,
+          breakpoint: 1366,
           settings: {
-            slidesToShow: 5,
-            arrows: true,
-          },
-        },
-        {
-          breakpoint: 1399,
-          settings: {
-            slidesToShow: 3,
+            slidesToShow: 4,
             arrows: false,
           },
         },
         {
-          breakpoint: 1199,
+          breakpoint: 1280,
           settings: {
             slidesToShow: 2,
             arrows: false,
           },
         },
         {
-          breakpoint: 575,
+          breakpoint: 576,
           settings: {
             slidesToShow: 2,
             arrows: false,
