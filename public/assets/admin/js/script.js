@@ -53,88 +53,99 @@ $(document).ready(function () {
       responsive: { 0: { items: 2 }, 768: { items: 4 }, 1170: { items: 8 } },
     });
   }
-  if ($(".datanew").length > 0) {
-    // Khởi tạo Datatables và lưu instance vào biến 'table'
-    var table = $(".datanew").DataTable({
-        // Giữ nguyên các tùy chỉnh DOM và cơ bản
-        bFilter: true,
-        sDom: "fBtlpi", // 'B' để kích hoạt Buttons
-        pagingType: "numbers",
-        ordering: false,
-        language: {
-            search: " ",
-            sLengthMenu: "_MENU_",
-            searchPlaceholder: "Search...",
-            info: "_START_ - _END_ of _TOTAL_ items",
-        },
-        initComplete: (settings, json) => {
-            $(".dataTables_filter").appendTo("#tableSearch");
-            $(".dataTables_filter").appendTo(".search-input");
-            
-            // ẨN CÁC NÚT MẶC ĐỊNH của Datatables (nếu bạn không muốn chúng hiển thị)
-            $('.dt-buttons').hide();
-        },
+  if ($(".dataold").length > 0) {
+    $(".dataold").DataTable({
+      bFilter: true,
+      sDom: "ftlpi",
+      pagingType: "numbers",
+      ordering: false,
+      language: {
+        search: " ",
+        sLengthMenu: "_MENU_",
+        searchPlaceholder: "Tìm kiếm...",
+        info: "_START_ - _END_ of _TOTAL_ items",
+      },
+      initComplete: (settings, json) => {
+        $(".dataTables_filter").appendTo("#tableSearch");
+        $(".dataTables_filter").appendTo(".search-input");
+      },
+    });
+  }
+  $(document).ready(function() {
+    if ($(".datanew").length > 0) {
         
-        // =======================================================
-        // ĐỊNH NGHĨA CÁC NÚT EXPORT VÀ PRINT 
-        // =======================================================
-        buttons: [
-            // 1. Nút Xuất ra Excel
-            {
-                extend: 'excelHtml5',
-                text: 'Excel Export Button', // Tên nội bộ
-                className: 'buttons-excel', // Class mặc định của Datatables
-                exportOptions: {
-                    // Loại bỏ cột 0 (Checkbox) và cột cuối (Action)
-                    columns: ':visible:not(:first):not(:last)'
-                }
-            },
-            // 2. Nút Xuất ra PDF
-            {
-                extend: 'pdfHtml5',
-                text: 'PDF Export Button', // Tên nội bộ
-                className: 'buttons-pdf', // Class mặc định của Datatables
-                orientation: 'landscape',
-                pageSize: 'A4',
-                exportOptions: {
-                    columns: ':visible:not(:first):not(:last)' 
-                }
-            },
-            // 3. Nút In ấn
-            {
-                extend: 'print',
-                text: 'Print Button', // Tên nội bộ
-                className: 'buttons-print', // Class mặc định của Datatables
-                exportOptions: {
-                    columns: ':visible:not(:first):not(:last)' 
-                }
-            }
-        ],
-        // =======================================================
-    });
+        // DÙNG VÒNG LẶP ĐỂ XỬ LÝ TỪNG BẢNG RIÊNG BIỆT
+        $(".datanew").each(function() {
+            
+            // 1. Xác định bảng hiện tại và thẻ bao ngoài (wrapper) của nó
+            var $currentTable = $(this);
+            var $wrapper = $currentTable.closest('.tab-pane');
 
-    // =======================================================
-    // KẾT NỐI NÚT GIAO DIỆN VỚI CHỨC NĂNG DATATABLES
-    // =======================================================
-    
-    // Kết nối nút PDF
-    $("#export-pdf-button").on("click", function () {
-        // Kích hoạt chức năng PDF của Datatables
-        table.button('.buttons-pdf').trigger();
-    });
+            // 2. Khởi tạo DataTables cho bảng này
+            var table = $currentTable.DataTable({
+                bFilter: true,
+                sDom: "Btlpi", // Đã tắt 'f' (thanh search mặc định)
+                pagingType: "numbers",
+                ordering: false,
+                language: {
+                    search: " ",
+                    sLengthMenu: "_MENU_",
+                    searchPlaceholder: "tìm kiếm...",
+                    info: "_START_ - _END_ of _TOTAL_ items",
+                },
+                initComplete: (settings, json) => {
+                    // Ẩn nút mặc định
+                    $wrapper.find('.dt-buttons').hide();
+                },
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        className: 'buttons-excel', // Class định danh để gọi
+                        exportOptions: { columns: ':visible:not(:first):not(:last)' }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        className: 'buttons-pdf',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        exportOptions: { columns: ':visible:not(:first):not(:last)' }
+                    },
+                    {
+                        extend: 'print',
+                        className: 'buttons-print',
+                        exportOptions: { columns: ':visible:not(:first):not(:last)' }
+                    }
+                ]
+            });
 
-    // Kết nối nút EXCEL
-    $("#export-excel-button").on("click", function () {
-        // Kích hoạt chức năng Excel của Datatables
-        table.button('.buttons-excel').trigger();
-    });
+            // =======================================================
+            // KẾT NỐI NÚT GIAO DIỆN (TÌM TRONG $wrapper)
+            // =======================================================
+            
+            // 1. Kết nối ô Search riêng
+            // Tìm ô input có class .custom-search nằm trong wrapper này
+            $wrapper.find(".search-pane").on("keyup", function () {
+                table.search(this.value).draw();
+            });
 
-    // Kết nối nút PRINT
-    $("#print-button").on("click", function () {
-        // Kích hoạt chức năng Print của Datatables
-        table.button('.buttons-print').trigger();
-    });
-}
+            // 2. Kết nối nút PDF
+            // Tìm nút có class .btn-export-pdf nằm trong wrapper này
+            $wrapper.find(".btn-export-pdf").on("click", function () {
+                table.button('.buttons-pdf').trigger();
+            });
+
+            // 3. Kết nối nút EXCEL
+            $wrapper.find(".btn-export-excel").on("click", function () {
+                table.button('.buttons-excel').trigger();
+            });
+
+            // 4. Kết nối nút PRINT
+            $wrapper.find(".btn-print").on("click", function () {
+                table.button('.buttons-print').trigger();
+            });
+        });
+    }
+});
   function readURL(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();

@@ -168,6 +168,17 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
 
             Route::delete('/{slug}/xoa', [admin\QuatangsukienController::class, 'destroy'])->name('xoa-qua-tang');
         });
+
+        Route::prefix('don-hang')->group(function () {
+            Route::get('/danh-sach', [admin\DonhangController::class, 'index']);
+            Route::get('/', [admin\DonhangController::class, 'index'])->name('danh-sach-don-hang');
+
+            Route::get('/tao-don-hang', [admin\DonhangController::class, 'create'])->name('tao-don-hang');
+            Route::post('/luu', [admin\DonhangController::class, 'store'])->name('luu-don-hang');
+            Route::get('/{slug}/chinh-sua', [admin\DonhangController::class, 'edit'])->name('chinh-sua-don-hang');
+            Route::post('/{slug}/cap-nhat', [admin\DonhangController::class, 'update'])->name('cap-nhat-don-hang');
+            Route::delete('/{slug}/xoa', [admin\DonhangController::class, 'destroy'])->name('xoa-don-hang');
+        });
     });
 
 

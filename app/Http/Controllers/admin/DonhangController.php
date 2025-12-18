@@ -14,63 +14,11 @@ use App\Models\BientheModel as Bienthe;
 class DonhangController extends Controller
 {
     // Danh sách đơn hàng
-    public function index(Request $request)
+    public function index()
     {
-        $query = Donhang::with(['khachhang', 'chitiet']);
-        // ->where('is_deleted', 0); // nếu bạn muốn lọc đơn chưa xóa thì bỏ comment
+        $donhangs = Donhang::orderByDesc('created_at')->get();
 
-        // Filter theo mã đơn
-        if ($request->filled('ma_donhang')) {
-            $query->where('ma_donhang', 'like', '%' . $request->ma_donhang . '%');
-        }
-
-        // Filter theo trạng thái
-        if ($request->filled('trangthai')) {
-            $query->where('trangthai', $request->trangthai);
-        }
-
-        // Filter theo khách hàng
-        if ($request->filled('id_nguoidung')) {
-            $query->where('id_nguoidung', $request->id_nguoidung);
-        }
-
-        // Filter theo ngày tạo
-        if ($request->filled('from_date')) {
-            $query->whereDate('created_at', '>=', $request->from_date);
-        }
-        if ($request->filled('to_date')) {
-            $query->whereDate('created_at', '<=', $request->to_date);
-        }
-
-        // Filter theo giá
-        if ($request->filled('min_price')) {
-            $query->where('tongtien', '>=', $request->min_price);
-        }
-        if ($request->filled('max_price')) {
-            $query->where('tongtien', '<=', $request->max_price);
-        }
-
-        $donhangs = $query->orderByDesc('created_at')->paginate(10);
-
-        // Format dữ liệu
-        $donhangs->getCollection()->transform(function ($donhang) {
-            $donhang->tongsoluong   = $donhang->chitiet->sum('soluong');
-            $donhang->tong_tien     = $donhang->chitiet->sum('tongtien');
-            $donhang->ngay_tao      = $donhang->created_at
-                ? $donhang->created_at->format('d/m/Y H:i')
-                : null;
-            $donhang->ten_khachhang = $donhang->khachhang->name ?? 'Khách lạ';
-            $donhang->trangthai_text = match ($donhang->trangthai) {
-                0 => 'Chờ thanh toán',
-                1 => 'Đang giao',
-                2 => 'Đã giao',
-                3 => 'Đã hủy',
-                default => 'Không rõ',
-            };
-            return $donhang;
-        });
-
-        return view('donhang.index', compact('donhangs'));
+        return view('admin.donhang.index', compact('donhangs'));
     }
 
     // Hiển thị form tạo đơn hàng

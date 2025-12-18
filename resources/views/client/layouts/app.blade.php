@@ -455,7 +455,7 @@
   <!-- ==================== Footer Two Start Here ==================== -->
   <footer class="footer pt-30 overflow-hidden border-top fix-scale-20 bg-main-two-600 text-white">
     <div class="container container-lg">
-      <div class="footer-item-two-wrapper d-flex align-items-start flex-wrap">
+      <div class="footer-item-two-wrapper d-flex align-items-start flex-between flex-wrap gap-12">
         <div class="footer-item max-w-275" data-aos="fade-up" data-aos-duration="200">
           <div class="footer-item__logo">
             <a href="{{ route('trang-chu') }}"> <img src="{{asset('assets/client')}}/images/logo/logo_amban.png"
