@@ -192,19 +192,17 @@
                         </li>
                         <li class="submenu">
                             <a href="javascript:void(0);"><i data-feather="shopping-cart"></i>
-                                <span>Bán hàng <span
-                                        class="bg-danger text-white text-center rounded-circle blinking-flash px-2 py-1"
-                                        style="font-size: 13px;">!</span></span>
+                                <span>Bán hàng 
+                                  @if($donhangs->where('trangthai','Chờ xác nhận')->count() > 0)
+                                    <span class="bg-danger text-white px-2 py-1 rounded-circle blinking-flash">!</span>
+                                  @endif
+                                </span>
                                 <span class="menu-arrow"></span></a>
                             <ul>
                                 <!-- <li><a href="saleslist.html">Xác nhận thanh toán<span class="bg-warning text-white px-2 py-1 rounded-circle">4</span></a></li> -->
-                                <li><a href="saleslist.html">Chờ thanh toán đơn <span
-                                    class="bg-warning text-white px-2 py-1 rounded-circle">4</span></a></li>
-                                <li><a href="saleslist.html">Xác nhận đơn hàng <span
-                                    class="bg-warning text-white px-2 py-1 rounded-circle">4</span></a></li>
-                                <li><a href="saleslist.html">Đóng gói đơn hàng</a></li>
-                                <li><a href="saleslist.html">Vận chuyển đơn hàng</a></li>
-                                <li><a href="danhsachdonhang.html">Danh sách đơn hàng</a></li>
+                                <li><a href="{{ route('quan-tri-vien.danh-sach-don-hang') }}">Danh sách đơn hàng @if($donhangs->where('trangthai','Chờ xác nhận')->count() > 0)
+                                    <span class="bg-warning text-white px-2 py-1 rounded-circle blinking-flash">!</span>
+                                  @endif</a></li>
 
                             </ul>
                         </li>

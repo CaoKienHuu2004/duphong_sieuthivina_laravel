@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\DanhmucModel;
+use App\Models\DonhangModel;
 use App\Models\TukhoaModel;
 use App\Models\NguoidungModel;
 use Illuminate\Support\Facades\Session;
@@ -55,6 +56,20 @@ class ComposerServiceProvider extends ServiceProvider
 
                 // 4. Truyền dữ liệu vào View
                 $view->with(compact('danhmuc', 'tukhoaplaceholder', 'tukhoaphobien', 'giohangauth', 'giohangsession'));
+            }
+        );
+
+        View::composer(
+            [
+                'admin.layouts.app',
+                // Thêm các Views khác nếu cần
+            ],
+            function ($view) {
+                // 1. Lấy danh sách Danh mục
+                $donhangs = DonhangModel::get();
+
+                // 4. Truyền dữ liệu vào View
+                $view->with(compact('donhangs'));
             }
         );
     }

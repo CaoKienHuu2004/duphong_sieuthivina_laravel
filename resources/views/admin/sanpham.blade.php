@@ -160,7 +160,7 @@
             </div>
 
             <div class="table-responsive">
-              <table class="table datanew">
+              <table class="table dataold">
                 <!-- có thể thêm datanew sau class table -->
                 <thead>
                   <tr>

@@ -9,9 +9,10 @@
       <div class="content">
         <div class="page-header">
           <div class="page-title">
-            <h4>Danh sách đơn hàng của bạn <span
-                class="bg-danger text-white text-center rounded-circle blinking-flash px-2 py-1"
-                style="font-size: 13px;">!</span></h4>
+            <h4>Danh sách đơn hàng của bạn 
+              @if($donhangs->where('trangthai','Chờ xác nhận')->count() > 0)
+                  <span class="bg-danger text-white px-2 py-1 rounded-circle blinking-flash">!</span>
+                  @endif
             <h6>Những đơn hàng có ở trên hệ thống của bạn</h6>
           </div>
         </div>
@@ -21,22 +22,27 @@
             <ul class="nav nav-tabs">
               <li class="nav-item">
                 <a class="nav-link active" href="#solid-tab1" data-bs-toggle="tab">Chờ xác nhận
-                  <span class="bg-danger text-white px-2 py-1 rounded-circle blinking-flash">{{ $donhangs->where('trangthai','Chờ xác nhận')->count() }}</span></a>
+                  @if($donhangs->where('trangthai','Chờ xác nhận')->count() > 0)
+                  <span class="bg-danger text-white px-2 py-1 rounded-circle blinking-flash">{{ $donhangs->where('trangthai','Chờ xác nhận')->count() }}</span>
+                  @else
+                  (0)
+                  @endif
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#solid-tab2" data-bs-toggle="tab">Đang xử lý (4)</a>
+                <a class="nav-link" href="#solid-tab2" data-bs-toggle="tab">Đang xử lý ({{ $donhangs->where('trangthai','Đang đóng gói')->count() }})</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#solid-tab3" data-bs-toggle="tab">Đang giao hàng (4)</a>
+                <a class="nav-link" href="#solid-tab3" data-bs-toggle="tab">Đang giao hàng ({{ $donhangs->where('trangthai','Đang giao hàng')->count() }})</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#solid-tab4" data-bs-toggle="tab">Đã giao hàng (4)</a>
+                <a class="nav-link" href="#solid-tab4" data-bs-toggle="tab">Đã giao hàng ({{ $donhangs->where('trangthai','Đã giao hàng')->count() }})</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#solid-tab5" data-bs-toggle="tab">Đã hoàn thành (4)</a>
+                <a class="nav-link" href="#solid-tab5" data-bs-toggle="tab">Đã hoàn thành ({{ $donhangs->where('trangthai','Đã giao hàng')->where('trangthaithanhtoan','Đã thanh toán')->count() }})</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#solid-tab6" data-bs-toggle="tab">Đơn đã bị hủy (4)</a>
+                <a class="nav-link" href="#solid-tab6" data-bs-toggle="tab">Đơn đã bị hủy ({{ $donhangs->where('trangthai','Đã hủy đơn')->count() }})</a>
               </li>
             </ul>
             <div class="tab-content">
@@ -69,59 +75,36 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td class="text-start">
-                          <a class="fw-bold" href="sales-details.html">#STV25120944</a>
-                        </td>
-                        <td class="text-start">
-                          <p class="fw-bold text-black m-0" style="font-size: 14px;">Trần Bá Hộ</p>
-                          <div class="text-black" style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">801/2A Phạm Thế Hiển, Phường 4, Quận 8, Thành phố Hồ Chí Minh</div>
-                        </td>
-                        <td class="text-start text-black fw-bold"><span class="text-danger">300.000 đ</span></td>
-                        <td class="text-start text-black" style="width: 50px;">
-                          09/12/2025 - 16:59
-                        </td>
-                        <td class="text-center"><span class="badges bg-lightyellow">Chờ xác
-                            nhận</span></td>
-                        <td class="text-center"><span class="badges bg-lightgreen">Đã thanh toán</span></td>
-                        <td class="text-center">
-                          <a class="me-3" href="editproduct.html">
-                            <i data-feather="check-circle" class="text-success" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Xác nhận đơn hàng"></i>
-                          </a>
-                          <a class="confirm-text" href="javascript:void(0);">
-                            <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Từ chối và hủy đơn"></i>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-start">
-                          <a class="fw-bold" href="javascript:void(0);">#STV25120944</a>
-                        </td>
-                        <td class="text-start">
-                          <p class="fw-bold text-black m-0" style="font-size: 14px;">Trần Bá Hộ</p>
-                          <div class="text-black" style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">801/2A Phạm Thế Hiển, Phường 4, Quận 8, Thành phố Hồ Chí Minh</div>
-                        </td>
-                        <td class="text-start text-black fw-bold"><span class="text-danger">300.000 đ</span></td>
-                        <td class="text-start text-black" style="width: 50px;">
-                          09/12/2025 - 16:59
-                        </td>
-
-                        <td class="text-center"><span class="badges bg-lightyellow">Chờ xác nhận</span></td>
-                        <td class="text-center"><span class="badges bg-lightpurple">Chưa thanh
-                            toán</span></td>
-                        <td class="text-center">
-                          <a class="me-3" href="editproduct.html">
-                            <i data-feather="check-circle" class="text-success" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Xác nhận thanh toán và tiến hành thanh toán"></i>
-                          </a>
-                          <a class="confirm-text" href="javascript:void(0);">
-                            <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Từ chối và hủy đơn"></i>
-                          </a>
-                        </td>
-                      </tr>
+                      @foreach ($donhangs->where('trangthai','Chờ xác nhận') as $donhang)
+                        <tr>
+                          <td class="text-start">
+                            <a class="fw-bold" href="sales-details.html">#{{ $donhang->madon }}</a>
+                          </td>
+                          <td class="text-start">
+                            <p class="fw-bold text-black m-0" style="font-size: 14px;">{{ $donhang->nguoinhan }}</p>
+                            <div class="text-black" style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">{{ $donhang->diachinhan }}, {{ $donhang->khuvucgiao }}</div>
+                          </td>
+                          <td class="text-start text-black fw-bold"><span class="text-danger">{{ number_format($donhang->thanhtien,0,',','.') }} đ</span></td>
+                          <td class="text-start text-black" style="width: 50px;">
+                            {{ $donhang->created_at->format('d/m/Y - H:i') }}
+                          </td>
+                          <td class="text-center">
+                            <span class="badges bg-lightyellow">{{ $donhang->trangthai }}</span>
+                            </td>
+                          <td class="text-center"><span class="badges @if($donhang->trangthaithanhtoan == 'Đã thanh toán') bg-lightgreen @elseif($donhang->trangthaithanhtoan == 'Chưa thanh toán') bg-lightpurple @else bg-lightred @endif">{{ $donhang->trangthaithanhtoan }}</span></td>
+                          <td class="text-center">
+                            <a class="me-3" href="editproduct.html">
+                              <i data-feather="check-circle" class="text-success" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Xác nhận đơn hàng"></i>
+                            </a>
+                            <a class="confirm-text" href="javascript:void(0);">
+                              <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Từ chối và hủy đơn"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      @endforeach
+                      
                     </tbody>
                   </table>
                 </div>
@@ -155,6 +138,35 @@
                       </tr>
                     </thead>
                     <tbody>
+                      @foreach ($donhangs->where('trangthai','Đang đóng gói') as $donhang)
+                        <tr>
+                          <td class="text-start">
+                            <a class="fw-bold" href="sales-details.html">#{{ $donhang->madon }}</a>
+                          </td>
+                          <td class="text-start">
+                            <p class="fw-bold text-black m-0" style="font-size: 14px;">{{ $donhang->nguoinhan }}</p>
+                            <div class="text-black" style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">{{ $donhang->diachinhan }}, {{ $donhang->khuvucgiao }}</div>
+                          </td>
+                          <td class="text-start text-black fw-bold"><span class="text-danger">{{ number_format($donhang->thanhtien,0,',','.') }} đ</span></td>
+                          <td class="text-start text-black" style="width: 50px;">
+                            {{ $donhang->created_at->format('d/m/Y - H:i') }}
+                          </td>
+                          <td class="text-center">
+                            <span class="badges bg-lightyellow">{{ $donhang->trangthai }}</span>
+                            </td>
+                          <td class="text-center"><span class="badges @if($donhang->trangthaithanhtoan == 'Đã thanh toán') bg-lightgreen @elseif($donhang->trangthaithanhtoan == 'Chưa thanh toán') bg-lightpurple @else bg-lightred @endif">{{ $donhang->trangthaithanhtoan }}</span></td>
+                          <td class="text-center">
+                            <a class="me-3" href="editproduct.html">
+                              <i data-feather="truck" class="text-success" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Tiến hành giao hàng"></i>
+                            </a>
+                            <a class="confirm-text" href="javascript:void(0);">
+                              <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Từ chối và hủy đơn"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      @endforeach
                       <tr>
                         <td class="text-start">
                           <a class="fw-bold" href="javascript:void(0);">#STV25120944</a>
