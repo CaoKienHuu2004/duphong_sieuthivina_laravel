@@ -91,7 +91,7 @@
                           <td class="text-center">
                             <span class="badges bg-lightyellow">{{ $donhang->trangthai }}</span>
                             </td>
-                          <td class="text-center"><span class="badges @if($donhang->trangthaithanhtoan == 'Đã thanh toán') bg-lightgreen @elseif($donhang->trangthaithanhtoan == 'Chưa thanh toán') bg-lightpurple @else bg-lightred @endif">{{ $donhang->trangthaithanhtoan }}</span></td>
+                          <td class="text-center"><span class="badges @if($donhang->trangthaithanhtoan == 'Đã thanh toán') bg-lightgreen @elseif($donhang->trangthaithanhtoan == 'Chờ thanh toán') bg-lightpurple @else bg-lightred @endif">{{ $donhang->trangthaithanhtoan }}</span></td>
                           <td class="text-center">
                             <a class="me-3" href="editproduct.html">
                               <i data-feather="check-circle" class="text-success" data-bs-toggle="tooltip"
@@ -141,7 +141,7 @@
                       @foreach ($donhangs->where('trangthai','Đang đóng gói') as $donhang)
                         <tr>
                           <td class="text-start">
-                            <a class="fw-bold" href="sales-details.html">#{{ $donhang->madon }}</a>
+                            <a class="fw-bold" href="{{ route('tra-cuu-don-hang') }}">#{{ $donhang->madon }}</a>
                           </td>
                           <td class="text-start">
                             <p class="fw-bold text-black m-0" style="font-size: 14px;">{{ $donhang->nguoinhan }}</p>
@@ -152,9 +152,9 @@
                             {{ $donhang->created_at->format('d/m/Y - H:i') }}
                           </td>
                           <td class="text-center">
-                            <span class="badges bg-lightyellow">{{ $donhang->trangthai }}</span>
+                            <span class="badges bg-lightblue">{{ $donhang->trangthai }}</span>
                             </td>
-                          <td class="text-center"><span class="badges @if($donhang->trangthaithanhtoan == 'Đã thanh toán') bg-lightgreen @elseif($donhang->trangthaithanhtoan == 'Chưa thanh toán') bg-lightpurple @else bg-lightred @endif">{{ $donhang->trangthaithanhtoan }}</span></td>
+                          <td class="text-center"><span class="badges @if($donhang->trangthaithanhtoan == 'Đã thanh toán') bg-lightgreen @elseif($donhang->trangthaithanhtoan == 'Chờ thanh toán') bg-lightpurple @else bg-lightred @endif">{{ $donhang->trangthaithanhtoan }}</span></td>
                           <td class="text-center">
                             <a class="me-3" href="editproduct.html">
                               <i data-feather="truck" class="text-success" data-bs-toggle="tooltip"
@@ -167,56 +167,6 @@
                           </td>
                         </tr>
                       @endforeach
-                      <tr>
-                        <td class="text-start">
-                          <a class="fw-bold" href="javascript:void(0);">#STV25120944</a>
-                        </td>
-                        <td class="text-start">
-                          <p class="fw-bold text-black m-0" style="font-size: 14px;">Trần Bá Hộ</p>
-                          <div class="text-black" style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">801/2A Phạm Thế Hiển, Phường 4, Quận 8, Thành phố Hồ Chí Minh</div>
-                        </td>
-                        <td class="text-start text-black fw-bold"><span class="text-danger">300.000 đ</span></td>
-                        <td class="text-start text-black" style="width: 50px;">
-                          09/12/2025 - 16:59
-                        </td>
-                        <td class="text-center"><span class="badges bg-lightblue">Chờ đóng gói</span></td>
-                        <td class="text-center"><span class="badges bg-lightgreen">Đã thanh toán</span></td>
-                        <td class="text-center">
-                          <a class="me-3" href="editproduct.html">
-                            <i data-feather="truck" class="text-success" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Tiến hành giao hàng"></i>
-                          </a>
-                          <a class="confirm-text" href="javascript:void(0);">
-                            <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Từ chối và hủy đơn"></i>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-start">
-                          <a class="fw-bold" href="javascript:void(0);">#STV25120944</a>
-                        </td>
-                        <td class="text-start">
-                          <p class="fw-bold text-black m-0" style="font-size: 14px;">Trần Bá Hộ</p>
-                          <div class="text-black" style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;"> 801/2A Phạm Thế Hiển, Phường 4, Quận 8, Thành phố Hồ Chí Minh</div>
-                        </td>
-                        <td class="text-start text-black fw-bold"><span class="text-danger">300.000 đ</span></td>
-                        <td class="text-start text-black" style="width: 50px;">
-                          09/12/2025 - 16:59
-                        </td>
-                        <td class="text-center"><span class="badges bg-lightblue">Chờ đóng gói</span></td>
-                        <td class="text-center"><span class="badges bg-lightgreen">Đã thanh toán</span></td>
-                        <td class="text-center">
-                          <a class="me-3" href="editproduct.html">
-                            <i data-feather="truck" class="text-success" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Tiến hành giao hàng"></i>
-                          </a>
-                          <a class="confirm-text" href="javascript:void(0);">
-                            <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Từ chối và hủy đơn"></i>
-                          </a>
-                        </td>
-                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -250,56 +200,35 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td class="text-start">
-                          <a class="fw-bold" href="javascript:void(0);">#STV25120944</a>
-                        </td>
-                        <td class="text-start">
-                          <p class="fw-bold text-black m-0" style="font-size: 14px;">Trần Bá Hộ</p>
-                          <div class="text-black" style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">801/2A Phạm Thế Hiển, Phường 4, Quận 8, Thành phố Hồ Chí Minh</div>
-                        </td>
-                        <td class="text-start text-black fw-bold"><span class="text-danger">300.000 đ</span></td>
-                        <td class="text-start text-black" style="width: 50px;">
-                          09/12/2025 - 16:59
-                        </td>
-                        <td class="text-center"><span class="badges bg-lightblue">Đang giao hàng</span></td>
-                        <td class="text-center"><span class="badges bg-lightgreen">Đã thanh toán</span></td>
-                        <td class="text-center">
-                          <a class="me-3" href="editproduct.html">
-                            <i data-feather="user-check" class="text-success" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Hoàn thành đơn hàng (giao thành công)"></i>
-                          </a>
-                          <a class="confirm-text" href="javascript:void(0);">
-                            <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Từ chối và hủy đơn"></i>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-start">
-                          <a class="fw-bold" href="javascript:void(0);">#STV25120944</a>
-                        </td>
-                        <td class="text-start">
-                          <p class="fw-bold text-black m-0" style="font-size: 14px;">Trần Bá Hộ</p>
-                          <div class="text-black" style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">801/2A Phạm Thế Hiển, Phường 4, Quận 8, Thành phố Hồ Chí Minh</div>
-                        </td>
-                        <td class="text-start text-black fw-bold"><span class="text-danger">300.000 đ</span></td>
-                        <td class="text-start text-black" style="width: 50px;">
-                          09/12/2025 - 16:59
-                        </td>
-                        <td class="text-center"><span class="badges bg-lightblue">Đang giao hàng</span></td>
-                        <td class="text-center"><span class="badges bg-lightgreen">Đã thanh toán</span></td>
-                        <td class="text-center">
-                          <a class="me-3" href="editproduct.html">
-                            <i data-feather="user-check" class="text-success" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Hoàn thành đơn hàng (giao thành công)"></i>
-                          </a>
-                          <a class="confirm-text" href="javascript:void(0);">
-                            <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
-                              data-bs-placement="top" title="Từ chối và hủy đơn"></i>
-                          </a>
-                        </td>
-                      </tr>
+                      @foreach ($donhangs->where('trangthai','Đang giao hàng') as $donhang)
+                        <tr>
+                          <td class="text-start">
+                            <a class="fw-bold" href="{{ route('tra-cuu-don-hang') }}">#{{ $donhang->madon }}</a>
+                          </td>
+                          <td class="text-start">
+                            <p class="fw-bold text-black m-0" style="font-size: 14px;">{{ $donhang->nguoinhan }}</p>
+                            <div class="text-black" style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">{{ $donhang->diachinhan }}, {{ $donhang->khuvucgiao }}</div>
+                          </td>
+                          <td class="text-start text-black fw-bold"><span class="text-danger">{{ number_format($donhang->thanhtien,0,',','.') }} đ</span></td>
+                          <td class="text-start text-black" style="width: 50px;">
+                            {{ $donhang->created_at->format('d/m/Y - H:i') }}
+                          </td>
+                          <td class="text-center">
+                            <span class="badges bg-lightblue">{{ $donhang->trangthai }}</span>
+                            </td>
+                          <td class="text-center"><span class="badges @if($donhang->trangthaithanhtoan == 'Đã thanh toán') bg-lightgreen @elseif($donhang->trangthaithanhtoan == 'Chờ thanh toán') bg-lightpurple @else bg-lightred @endif">{{ $donhang->trangthaithanhtoan }}</span></td>
+                          <td class="text-center">
+                            <a class="me-3" href="editproduct.html">
+                              <i data-feather="user-check" class="text-success" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Giao hàng thành công"></i>
+                            </a>
+                            <a class="confirm-text" href="javascript:void(0);">
+                              <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Từ chối và hủy đơn"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      @endforeach
                     </tbody>
                   </table>
                 </div>
