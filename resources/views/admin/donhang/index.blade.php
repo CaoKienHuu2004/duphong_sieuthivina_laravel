@@ -103,11 +103,16 @@
                             @endif
                           </td>
                           <td class="text-center">
-                            <a class="me-3" href="editproduct.html">
-                              <i data-feather="check-circle" class="text-success" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Xác nhận đơn hàng"></i>
-                            </a>
-                            @if ($donhang->trangthaithanhtoan == 'Thanh toán khi nhận hàng' || $donhang->trangthaithanhtoan == 'Chờ thanh toán')
+                            <form action="{{ route('quan-tri-vien.cap-nhat-don-hang', $donhang->madon) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <button type="submit" class="me-3 bg-none border-0 p-0">
+                                <input type="hidden" name="madon" value="{{ $donhang->madon }}">
+                                <input type="hidden" name="trangthai" value="{{ $donhang->trangthai }}">
+                                <i data-feather="check-circle" class="text-success" data-bs-toggle="tooltip"
+                                  data-bs-placement="top" title="Xác nhận đơn hàng"></i>
+                              </button>
+                              @if ($donhang->trangthaithanhtoan == 'Thanh toán khi nhận hàng' || $donhang->trangthaithanhtoan == 'Chờ thanh toán')
                               <a class="me-3" href="editproduct.html">
                                 <i data-feather="dollar-sign" class="text-warning" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Tiến hành thanh toán"></i>
@@ -117,6 +122,8 @@
                               <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
                                 data-bs-placement="top" title="Từ chối và hủy đơn"></i>
                             </a>
+                            </form>
+                            
                           </td>
                         </tr>
                       @endforeach

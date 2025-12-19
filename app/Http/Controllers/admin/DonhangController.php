@@ -21,6 +21,20 @@ class DonhangController extends Controller
         return view('admin.donhang.index', compact('donhangs'));
     }
 
+    public function updated(Request $request, $madon)
+    {
+        $donhang = Donhang::where('madon', $madon)->firstOrFail();
+
+        $validated = $request->validate([
+            'trangthai' => 'required|string|in:Chờ xác nhận,Đang đóng gói,Đang giao hàng,Đã giao hàng,Đã hủy đơn',
+        ]);
+        $donhang->trangthai = $validated['trangthai'];
+        $donhang->save();
+
+        return redirect()->route('quan-tri-vien.danh-sach-don-hang', ['madon' => $madon])
+            ->with('success', 'Cập nhật trạng thái đơn hàng thành công!');
+    }
+
     // Chi tiết đơn hàng
     public function show($madon)
     {
