@@ -21,51 +21,36 @@ class DonhangController extends Controller
         return view('admin.donhang.index', compact('donhangs'));
     }
 
-    // Hiển thị form tạo đơn hàng
-    public function create()
-    {
-        $customers = Nguoidung::all();
-        $products  = Sanpham::with('bienthe')->get();
-        return view('donhang.create', compact('customers', 'products'));
-    }
-
-    // Lưu đơn hàng mới
-    public function store(Request $request)
-    {
-        $ma_donhang = $this->generateUniqueOrderCode();
-
-        $validated = $request->validate([
-            'ghichu'       => 'nullable|string',
-            'trangthai'    => 'required|integer|in:0,1,2,3',
-            'id_nguoidung' => 'nullable|integer',
-            'id_magiamgia' => 'nullable|integer',
-        ]);
-
-        $validated['ma_donhang'] = $ma_donhang;
-
-        Donhang::create($validated);
-
-        return redirect()->route('danh-sach-don-hang')
-            ->with('success', 'Tạo đơn hàng thành công!');
-    }
-
-    // Hàm tạo mã đơn hàng ngẫu nhiên và duy nhất
-    private function generateUniqueOrderCode()
-    {
-        do {
-            $code = Str::upper(Str::random(5));
-        } while (Donhang::where('ma_donhang', $code)->exists());
-
-        return $code;
-    }
-
     // Chi tiết đơn hàng
-    public function show($id)
+    public function show($madon)
     {
-        $donhang = Donhang::with(['khachhang', 'chitiet.sanpham'])
-            ->findOrFail($id);
+        $donhang = Donhang::where('madon', $madon)->firstOrFail();
 
-        return view('donhang.show', compact('donhang'));
+        // --- TẠO MÃ QR VIETQR TỰ ĐỘNG ---
+        $qrCodeUrl = null;
+
+        if ($donhang->trangthaithanhtoan !== 'Đã thanh toán') {
+            
+            $bankId = 'TPB'; 
+            $accountNo = '00117137001'; 
+            $accountName = 'TRAN BA HO'; 
+            $template = 'compact2'; 
+
+            $amount = $donhang->thanhtien;
+            
+            // CẬP NHẬT: Nội dung có dấu cách và thêm tiền tố
+            $rawContent = "Thanh toan don hang " . $donhang->madon;
+            
+            // MÃ HÓA URL (URL Encode) để xử lý khoảng trắng
+            $description = urlencode($rawContent);
+            
+            // Mã hóa cả tên tài khoản cho an toàn (phòng trường hợp có ký tự lạ)
+            $encodedAccountName = urlencode($accountName);
+
+            $qrCodeUrl = "https://img.vietqr.io/image/{$bankId}-{$accountNo}-{$template}.png?amount={$amount}&addInfo={$description}&accountName={$encodedAccountName}";
+        }
+
+        return view('admin.donhang.chitiet', compact('donhang', 'qrCodeUrl'));
     }
 
     // API chi tiết đơn hàng
