@@ -34,12 +34,19 @@ class HomeController extends Controller
     protected function banner() {
         return QuangcaoModel::where('trangthai', 'Hiển thị')
             ->get()
+            ->map(function($item) {
+                $item->hinhanh = asset('assets/client/images/bg/' . $item->hinhanh);
+                return $item;
+            })
             ->groupBy('vitri'); 
     }
 
     // 2. Danh sách danh mục
     protected function alldanhmuc() {
-        return DanhmucModel::where('trangthai', 'Hiển thị')->orderBy('sapxep', 'asc')->get();
+        return DanhmucModel::where('trangthai', 'Hiển thị')->orderBy('sapxep', 'asc')->get()->map(function($item) {
+            $item->logo = asset('assets/client/images/categories/' . $item->logo);
+            return $item;
+        });
     }
 
     // 3. Sản phẩm tham gia quà tặng

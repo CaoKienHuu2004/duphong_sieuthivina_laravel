@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Sanctum\HasApiTokens;
 
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,7 +16,7 @@ use Illuminate\Notifications\Notifiable;
 class NguoidungModel extends Authenticatable
 // class NguoidungModel extends User
 {
-    use HasFactory, SoftDeletes;
+    use HasApiTokens,HasFactory, SoftDeletes, Notifiable;
 
     protected $table = 'nguoidung';
     protected $primaryKey = 'id';

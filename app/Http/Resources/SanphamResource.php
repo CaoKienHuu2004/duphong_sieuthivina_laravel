@@ -6,57 +6,64 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SanphamResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
     public function toArray($request)
     {
-        // 1. Lấy biến thể đầu tiên để lấy giá gốc đại diện
-        // Lưu ý: Đảm bảo trong Controller đã eager load 'bienthe'
-        $variant = $this->bienthe->first(); 
+        // 1. Lấy biến thể đầu tiên để lấy giá gốc (Bảng 'bienthe')
+        // SQL của bạn: id, id_sanpham, tenbienthe, giagoc, soluong, luotban, trangthai
+        $variant = $this->bienthe->sortBy('giagoc')->first(); 
+        $giaGoc = $variant->giagoc ?? 0;
         
-        $giaGoc = $variant ? $variant->giagoc : 0;
-        
-        // 2. Tính toán giá đã giảm dựa trên cột 'giamgia' (ví dụ: 10 nghĩa là giảm 10%)
+        // 2. Tính giá sau giảm (Cột 'giamgia' trong bảng 'sanpham')
         $phanTramGiam = $this->giamgia ?? 0;
         $giaDaGiam = $giaGoc * (1 - ($phanTramGiam / 100));
 
         return [
             'id' => $this->id,
-            'ten_san_pham' => $this->ten, // Đã sửa từ 'ten' thành 'tensanpham'
-            'slug' => $this->slug,
-            
-            // Trả về danh sách hình ảnh từ bảng hinhanh_sanpham
-            'hinh_anh' => $this->hinhanhsanpham->map(function($img) {
+            'tensanpham' => $this->ten, // Cột 'tensanpham'
+            'slug' => $this->slug,           // Cột 'slug'
+            'giamgia' => $phanTramGiam,       // Cột 'giamgia'
+            'mota' => $this->mota,           // Cột 'mota'
+            'luotxem' => $this->luotxem,     // Cột 'luotxem'
+            'trangthai' => $this->trangthai, // Cột 'trangthai'
+
+            // 3. Hình ảnh (Bảng 'hinhanh_sanpham')
+            // SQL: id, id_sanpham, hinhanh
+            'hinhanh' => $this->hinhanhsanpham->map(function($img) {
                 return [
                     'id' => $img->id,
-                    'duong_dan' => $img->hinhanh // Tên cột ảnh trong bảng hinhanh_sanpham
+                    'url' => $img->hinhanh 
                 ];
             }),
-            
-            'phan_tram_giam' => $phanTramGiam . '%',
-            
-            'gia_hien_thi' => [
-                'gia_goc' => $giaGoc,
-                'gia_goc_format' => number_format($giaGoc, 0, ',', '.') . 'đ',
-                'gia_da_giam' => $giaDaGiam,
-                'gia_da_giam_format' => number_format($giaDaGiam, 0, ',', '.') . 'đ',
+
+            // 4. Thương hiệu (Bảng 'thuonghieu')
+            // SQL: id, tenthuonghieu, hinhanh, trangthai
+            'thuonghieu' => [
+                'id' => $this->thuonghieu->id ?? null,
+                'ten' => $this->thuonghieu->ten ?? null,
+                'logo' => $this->thuonghieu->logo ?? null,
             ],
-            
-            // Lấy từ withSum('bienthe', 'luotban') trong Controller
-            'tong_luot_ban' => (int) ($this->bienthe_sum_luotban ?? 0),
-            
-            // Thông tin thương hiệu (Cột tenthuonghieu trong bảng thuonghieu)
-            'thuong_hieu' => $this->thuonghieu->ten ?? 'Không có thương hiệu',
-            
-            // Thông tin danh mục (Lấy tên danh mục đầu tiên nếu có)
-            'danh_muc' => $this->danhmuc->first()->ten ?? null,
-            
-            'luot_xem' => $this->luotxem,
-            'trang_thai' => $this->trangthai,
+
+            // 5. Danh mục (Bảng trung gian 'danhmuc_sanpham')
+            // SQL kết nối: sanpham.id -> danhmuc_sanpham.id_sanpham | danhmuc_sanpham.id_danhmuc -> danhmuc.id
+            'danhmuc' => $this->danhmuc->map(function($dm) {
+                return [
+                    'id' => $dm->id,
+                    'ten' => $dm->ten,
+                    'slug' => $dm->slug,
+                    'logo' => $dm->logo,
+                ];
+            }),
+
+            // 6. Thông tin giá thô và định dạng
+            'gia' => [
+                'giagoc' => (int)$giaGoc,
+                'giadagiam' => (int)$giaDaGiam,
+                'formatted_giagoc' => number_format($giaGoc, 0, ',', '.') . 'đ',
+                'formatted_giadagiam' => number_format($giaDaGiam, 0, ',', '.') . 'đ',
+            ],
+
+            // 7. Thống kê lượt bán (Tính tổng từ các biến thể)
+            'tong_luotban' => (int) ($this->bienthe_sum_luotban ?? 0),
         ];
     }
 }
