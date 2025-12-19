@@ -61,7 +61,7 @@
                                         </a>
                                     </li>
                                 @endif
-                                @if ($donhang->trangthai != 'Đã hủy đơn')
+                                @if ($donhang->trangthai != 'Đã hủy đơn' || $donhang->trangthai != 'Đã giao hàng')
                                     <li class="mx-1">
                                         <a href="editproduct.html" class="badge bg-danger rounded-circle p-2" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Từ chối (hủy đơn)">
