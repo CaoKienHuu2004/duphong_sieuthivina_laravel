@@ -31,7 +31,7 @@ class SanphamResource extends JsonResource
             'hinhanh' => $this->hinhanhsanpham->map(function($img) {
                 return [
                     'id' => $img->id,
-                    'url' => $img->hinhanh 
+                    'url' => asset('assets/client/images/thumbs/' . $img->hinhanh)
                 ];
             }),
 
@@ -40,7 +40,7 @@ class SanphamResource extends JsonResource
             'thuonghieu' => [
                 'id' => $this->thuonghieu->id ?? null,
                 'ten' => $this->thuonghieu->ten ?? null,
-                'logo' => $this->thuonghieu->logo ?? null,
+                'logo' => asset('assets/client/images/brands/' . $this->thuonghieu->logo ?? null),
             ],
 
             // 5. Danh mục (Bảng trung gian 'danhmuc_sanpham')
@@ -50,7 +50,7 @@ class SanphamResource extends JsonResource
                     'id' => $dm->id,
                     'ten' => $dm->ten,
                     'slug' => $dm->slug,
-                    'logo' => $dm->logo,
+                    'logo' => asset('assets/client/images/categories/' . $dm->logo) ?? null,
                 ];
             }),
 
