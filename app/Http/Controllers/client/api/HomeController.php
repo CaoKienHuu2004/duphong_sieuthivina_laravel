@@ -19,14 +19,14 @@ class HomeController extends Controller
         return response()->json([
             'status' => 200,
             'banners' => $this->banner(),
-            'all_categories' => $this->alldanhmuc(),
+            'tatcadanhmuc' => $this->alldanhmuc(),
             'top_deals' => SanphamResource::collection($this->topdeals()),
-            'gifts' => $this->quatang(),
-            'top_categories_products' => $this->danhmuchangdau(),
-            'top_brands' => $this->thuonghieuhangdau(),
-            'top_products' => SanphamResource::collection($this->sanphamhangdau()),
-            'new_arrivals' => SanphamResource::collection($this->hangmoichaosan()),
-            'maybe_you_like' => SanphamResource::collection($this->cothebanyeuthich()),
+            'chuongtrinhuudaiquatang' => $this->quatang(),
+            'danhmuchangdau' => $this->danhmuchangdau(),
+            'thuonghieuhangdau' => $this->thuonghieuhangdau(),
+            'sanphamhangdau' => SanphamResource::collection($this->sanphamhangdau()),
+            'hangmoichaosan' => SanphamResource::collection($this->hangmoichaosan()),
+            'duocquantamnhieunhat' => SanphamResource::collection($this->cothebanyeuthich()),
         ]);
     }
 
