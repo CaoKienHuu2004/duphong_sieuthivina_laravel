@@ -14,6 +14,19 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+
+    /**
+     * @OA\Get(
+     * path="/trang-chu",
+     * tags={"Trang chủ"},
+     * summary="Lấy toàn bộ dữ liệu hiển thị trang chủ",
+     * description="Trả về Banner, Danh mục, Top Deals, Quà tặng, Sản phẩm hàng đầu...",
+     * @OA\Response(
+     * response=200,
+     * description="Thành công"
+     * )
+     * )
+     */
     public function index()
     {
         return response()->json([
@@ -68,27 +81,79 @@ class HomeController extends Controller
     }
 
     // 5. Danh mục hàng đầu + Sản phẩm thuộc danh mục đó
-    protected function danhmuchangdau() {
-        $topCatIds = BientheModel::join('sanpham', 'bienthe.id_sanpham', '=', 'sanpham.id')
-            ->join('danhmuc_sanpham', 'sanpham.id', '=', 'danhmuc_sanpham.id_sanpham')
-            ->select('danhmuc_sanpham.id_danhmuc')
-            ->selectRaw('SUM(bienthe.luotban) as total')
-            ->groupBy('danhmuc_sanpham.id_danhmuc')
-            ->orderByDesc('total')->limit(5)->pluck('id_danhmuc');
+    protected function danhmuchangdau()
+{
+    // 1. Lấy Top 5 danh mục bán chạy nhất (Logic gốc)
+    $topCategorySales = BientheModel::whereIn('bienthe.trangthai', ['Còn hàng', 'Sắp hết hàng'])
+        ->whereNull('bienthe.deleted_at')
+        ->join('sanpham', 'bienthe.id_sanpham', '=', 'sanpham.id')
+        ->join('danhmuc_sanpham', 'sanpham.id', '=', 'danhmuc_sanpham.id_sanpham')
+        ->select('danhmuc_sanpham.id_danhmuc')
+        ->selectRaw('SUM(bienthe.luotban) as total_sales')
+        ->groupBy('danhmuc_sanpham.id_danhmuc')
+        ->orderByDesc('total_sales')
+        ->limit(5)
+        ->get();
 
-        $categories = DanhmucModel::whereIn('id', $topCatIds)->get();
-        
-        $result = $categories->map(function($cat) {
-            $prods = SanphamModel::whereHas('danhmuc', fn($q) => $q->where('id_danhmuc', $cat->id))
-                ->with(['bienthe'])->withSum('bienthe', 'luotban')
-                ->limit(12)->get();
-            return [
-                'category' => $cat,
-                'products' => SanphamResource::collection($prods)
-            ];
-        });
-        return $result;
+    $topCategoryIds = $topCategorySales->pluck('id_danhmuc')->toArray();
+
+    // 2. Lấy danh sách thông tin danh mục & Xử lý URL hình ảnh
+    $topCategoriesList = DanhmucModel::whereIn('id', $topCategoryIds)
+        ->get()
+        ->map(function($dm) {
+            if($dm->hinhanh) {
+                $dm->hinhanh = asset('assets/client/images/thumbs/' . $dm->hinhanh);
+            }
+            return $dm;
+        })
+        ->sortBy(function ($category) use ($topCategorySales) {
+            $salesData = $topCategorySales->firstWhere('id_danhmuc', $category->id);
+            return $salesData ? $salesData->total_sales : 0;
+        }, SORT_REGULAR, true)
+        ->values(); // Reset key mảng để trả về JSON dạng [{}, {}]
+
+    $topProductsByCategory = collect();
+
+    // 3. Lấy sản phẩm cho từng danh mục
+    foreach ($topCategoryIds as $categoryId) {
+        $products = SanphamModel::with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe.loaibienthe'])
+            ->whereHas('danhmuc', function ($query) use ($categoryId) {
+                $query->where('id_danhmuc', $categoryId);
+            })
+            ->join('bienthe', 'sanpham.id', '=', 'bienthe.id_sanpham')
+            ->select('sanpham.*')
+            ->selectRaw('SUM(bienthe.luotban) as product_total_sales')
+            ->whereIn('bienthe.trangthai', ['Còn hàng', 'Sắp hết hàng'])
+            ->whereNull('sanpham.deleted_at')
+            ->whereNull('bienthe.deleted_at')
+            ->groupBy('sanpham.id')
+            ->orderByDesc('product_total_sales')
+            ->limit(12)
+            ->get()
+            ->each(function ($sanpham) {
+                // Xử lý biến thể rẻ nhất & tính giá đã giảm
+                if ($sanpham->bienthe->isNotEmpty()) {
+                    $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
+                    $sanpham->bienthe_display = $cheapestVariant; // Gán vào thuộc tính mới để tránh mất collection bienthe
+                    
+                    $giagoc = $cheapestVariant->giagoc;
+                    $sanpham->giadagiam = $giagoc * (1 - ($sanpham->giamgia / 100));
+                }
+
+                // Chuyển đổi toàn bộ mảng hình ảnh sản phẩm thành URL tuyệt đối
+                $sanpham->hinhanhsanpham->each(function($img) {
+                    $img->hinhanh = asset('assets/client/images/thumbs/' . $img->hinhanh);
+                });
+            });
+
+        $topProductsByCategory->put($categoryId, $products);
     }
+
+    return [
+        'danhsachdmhangdau' => $topCategoriesList,
+        'sanphamthuocdanhmuc' => $topProductsByCategory,
+    ];
+}
 
     // 6. Thương hiệu hàng đầu
     protected function thuonghieuhangdau() {

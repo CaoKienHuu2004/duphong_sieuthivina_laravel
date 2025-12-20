@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\client\api\HomeController;
 use App\Http\Controllers\client\api\SanphamController;
 use App\Http\Controllers\client\api\NguoidungController;
+use App\Http\Controllers\client\api\QuatangsukienController;
 
 
 /*
@@ -38,4 +39,9 @@ Route::prefix('v1')->group(function () {
         Route::post('/thong-tin-ca-nhan/cap-nhat', [NguoidungController::class, 'updateProfile']);
         Route::post('/dang-xuat', [NguoidungController::class, 'logout']);
     });
+
+    Route::get('/qua-tang', [QuatangsukienController::class, 'index']);
+    Route::get('/qua-tang/{slug}', [QuatangsukienController::class, 'show']);
+    Route::post('/qua-tang/them-gio-hang', [QuatangsukienController::class, 'themgiohang']);
+    Route::post('/qua-tang/sync', [QuatangsukienController::class, 'syncCart'])->middleware('auth:sanctum');
 });

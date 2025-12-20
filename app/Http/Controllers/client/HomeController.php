@@ -44,18 +44,7 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
 
-    /**
-     * @OA\Get(
-     * path="/trang-chu",
-     * tags={"Trang chủ"},
-     * summary="Lấy toàn bộ dữ liệu hiển thị trang chủ",
-     * description="Trả về Banner, Danh mục, Top Deals, Quà tặng, Sản phẩm hàng đầu...",
-     * @OA\Response(
-     * response=200,
-     * description="Thành công"
-     * )
-     * )
-     */
+    
     public function index()
     {
         $banner = $this->banner();
