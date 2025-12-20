@@ -16,13 +16,17 @@ class Authenticate
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
+        // Kiểm tra: Nếu là API thì check guard sanctum, nếu là Web thì check guard web
+        $guard = $request->expectsJson() ? 'sanctum' : 'web';
+
+        if (!Auth::guard($guard)->check()) {
             if ($request->expectsJson()) {
-                return response()->json(['message' => 'Unauthenticated.'], 401);
+                return response()->json(['message' => 'Bạn chưa đăng nhập hoặc phiên làm việc hết hạn.'], 401);
             }
 
             return redirect()->route('login');
         }
+
         return $next($request);
     }
 }
