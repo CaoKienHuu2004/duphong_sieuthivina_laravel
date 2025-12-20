@@ -41,6 +41,7 @@ class HomeController extends Controller
             'sanphamhangdau' => SanphamResource::collection($this->sanphamhangdau()),
             'hangmoichaosan' => SanphamResource::collection($this->hangmoichaosan()),
             'duocquantamnhieunhat' => SanphamResource::collection($this->cothebanyeuthich()),
+            'baivietnoibat' => $this->baivietnoibat(),
         ]);
     }
 
