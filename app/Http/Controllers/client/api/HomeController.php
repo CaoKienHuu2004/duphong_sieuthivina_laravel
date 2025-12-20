@@ -101,8 +101,8 @@ class HomeController extends Controller
     $topCategoriesList = DanhmucModel::whereIn('id', $topCategoryIds)
         ->get()
         ->map(function($dm) {
-            if($dm->hinhanh) {
-                $dm->hinhanh = asset('assets/client/images/thumbs/' . $dm->hinhanh);
+            if($dm->logo) {
+                $dm->logo = asset('assets/client/images/categories/' . $dm->logo);
             }
             return $dm;
         })
