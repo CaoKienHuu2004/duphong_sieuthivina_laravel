@@ -23,7 +23,6 @@ class Authenticate
 
             return redirect()->route('login');
         }
-
         return $next($request);
     }
 }

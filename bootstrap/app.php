@@ -12,9 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+
+        $middleware->statefulApi();
         //
         $middleware->alias([
-            'auth' => \App\Http\Middleware\Authenticate::class,
+            // 'auth' => \App\Http\Middleware\Authenticate::class,
             'vaitro' => \App\Http\Middleware\Vaitro::class,
             'auth.api' => \App\Http\Middleware\AuthApiToken::class,
         ]);

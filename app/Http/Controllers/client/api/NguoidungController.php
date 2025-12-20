@@ -148,10 +148,7 @@ class NguoidungController extends Controller
     public function profile(Request $request)
     {
         $user = $request->user();
-        // Nối link full cho avatar để FE hiển thị ngay
-        if($user->avatar) {
-            $user->avatar = asset('assets/client/images/thumbs/' . $user->avatar);
-        }
+        
         return response()->json([
             'status' => 200,
             'user' => new NguoidungResource($request->user())
