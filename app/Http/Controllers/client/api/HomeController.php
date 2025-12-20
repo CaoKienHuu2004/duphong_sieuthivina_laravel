@@ -9,6 +9,7 @@ use App\Models\SanphamModel;
 use App\Models\QuatangsukienModel;
 use App\Models\ThuonghieuModel;
 use App\Models\BientheModel;
+use App\Models\BaivietModel;
 use App\Http\Resources\SanphamResource;
 use Illuminate\Http\Request;
 
@@ -180,5 +181,10 @@ class HomeController extends Controller
     protected function cothebanyeuthich() {
         return SanphamModel::where('trangthai', 'Công khai')
             ->orderByDesc('luotxem')->limit(18)->get();
+    }
+
+    protected function baivietnoibat() {
+        return BaivietModel::with(['nguoidung']) // Load danh mục và tác giả
+            ->where('trangthai', 'Hiển thị')->orderBy('luotxem', 'desc')->limit(4)->get();
     }
 }

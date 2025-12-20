@@ -7,6 +7,7 @@ use App\Http\Controllers\client\api\HomeController;
 use App\Http\Controllers\client\api\SanphamController;
 use App\Http\Controllers\client\api\NguoidungController;
 use App\Http\Controllers\client\api\QuatangsukienController;
+use App\Http\Controllers\client\api\BaivietController;
 
 
 /*
@@ -42,4 +43,9 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/qua-tang', [QuatangsukienController::class, 'index']);
     Route::get('/qua-tang/{slug}', [QuatangsukienController::class, 'show']);
+
+    Route::prefix('bai-viet')->group(function () {
+        Route::get('/', [BaivietController::class, 'index']); // Lấy danh sách
+        Route::get('/{slug}', [BaivietController::class, 'show']); // Chi tiết bài viết
+    });
 });
