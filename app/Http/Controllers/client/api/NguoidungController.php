@@ -75,16 +75,21 @@ class NguoidungController extends Controller
     }
 
     // Đăng xuất
-    public function logout(Request $request)        
+    public function logout(Request $request)
     {
-        // Xóa token hiện tại (API Logout)
-        $request->user()->currentAccessToken()->delete();
-        Auth::logout();
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Đăng xuất thành công, Token đã bị hủy.'
+            ]);
+        }
 
         return response()->json([
-            'status' => 200,
-            'message' => 'Đăng xuất thành công'
-        ]);
+            'status' => 401,
+            'message' => 'Không tìm thấy thông tin xác thực.'
+        ], 401);
     }
 
     // Xử lý đăng ký
@@ -125,12 +130,12 @@ class NguoidungController extends Controller
         // Tạo user (Giữ nguyên logic của bạn)
         $user = NguoidungModel::create([
             'username' => $request->username,
-            'password' => Hash::make($request->password), 
+            'password' => Hash::make($request->password),
             'hoten' => $request->hoten,
             'email' => $request->email,
             'sodienthoai' => $request->sodienthoai,
-            'vaitro' => 'client', 
-            'trangthai' => 'Hoạt động', 
+            'vaitro' => 'client',
+            'trangthai' => 'Hoạt động',
         ]);
 
         // Tự động đăng nhập và tạo token
@@ -148,7 +153,7 @@ class NguoidungController extends Controller
     public function profile(Request $request)
     {
         $user = $request->user();
-        
+
         return response()->json([
             'status' => 200,
             'user' => new NguoidungResource($request->user())
@@ -164,7 +169,7 @@ class NguoidungController extends Controller
             'hoten' => 'required',
             'sodienthoai' => 'required|numeric|digits_between:10,12|unique:nguoidung,sodienthoai,' . $user->id,
             'gioitinh' => 'required',
-            'ngaysinh' => 'required|date|before_or_equal:today', 
+            'ngaysinh' => 'required|date|before_or_equal:today',
             'email' => 'required|email:rfc,dns|unique:nguoidung,email,' . $user->id,
         ]);
 
@@ -179,9 +184,9 @@ class NguoidungController extends Controller
 
             $file = $request->file('avatar');
             $extension = $file->getClientOriginalExtension();
-            
-            $fileName = uniqid() . '_' . time() . '_' . $user->id . '.' . $extension; 
-            
+
+            $fileName = uniqid() . '_' . time() . '_' . $user->id . '.' . $extension;
+
             // 2a. LƯU FILE MỚI VÀO PUBLIC
             $file->move(public_path($publicPath), $fileName);
 

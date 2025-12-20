@@ -128,4 +128,8 @@ return [
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
 
     ])->toArray(),
+
+    'annotations' => [
+        base_path('app/Http/Controllers'), // Nó sẽ quét sạch mọi file .php trong này
+    ],
 ];

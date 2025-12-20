@@ -1,0 +1,141 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Siêu Thị Vina API Documentation",
+        "description": "API documentation for Siêu Thị Vina application",
+        "contact": {
+            "name": "Cao Kiến Hựu",
+            "url": "kienhuu.id.vn",
+            "email": "lyhuu5570@gmail.com"
+        },
+        "license": {
+            "name": "sieuthivina.com License",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0."
+    },
+    "servers": [
+        {
+            "url": "https://sieuthivina.com/api/v1",
+            "description": "Trung tâm dữ liệu thử API của Siêu Thị Vina"
+        }
+    ],
+    "paths": {
+        "/trang-chu": {
+            "get": {
+                "tags": [
+                    "Trang chủ"
+                ],
+                "summary": "Lấy toàn bộ dữ liệu hiển thị trang chủ",
+                "description": "Trả về Banner, Danh mục, Top Deals, Quà tặng, Sản phẩm hàng đầu...",
+                "operationId": "415272e102d1e93229df1db5eaf4e4b0",
+                "responses": {
+                    "200": {
+                        "description": "Thành công"
+                    }
+                }
+            }
+        },
+        "/api/v1/san-pham": {
+            "get": {
+                "tags": [
+                    "Sản phẩm"
+                ],
+                "summary": "Danh sách sản phẩm mới nhất (có áp dụng bộ lọc và sắp xếp)",
+                "operationId": "55db0b26f50d3ee0511e0d72742e30aa",
+                "responses": {
+                    "200": {
+                        "description": "Thành công"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ProductHome": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tensanpham": {
+                        "type": "string",
+                        "example": "Rượu Vang Đỏ"
+                    },
+                    "giamgia": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "giadagiam": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 450000
+                    },
+                    "bienthe_sum_luotban": {
+                        "type": "integer",
+                        "example": 150
+                    },
+                    "bienthe": {
+                        "description": "Biến thể rẻ nhất",
+                        "type": "object"
+                    },
+                    "thuonghieu": {
+                        "type": "object"
+                    },
+                    "hinhanhsanpham": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "CategoryHome": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tendanhmuc": {
+                        "type": "string",
+                        "example": "Đồ uống"
+                    },
+                    "hinhanh": {
+                        "type": "string",
+                        "example": "danhmuc.jpg"
+                    }
+                },
+                "type": "object"
+            },
+            "BannerHome": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tendanhmuc": {
+                        "type": "string",
+                        "example": "Đồ uống"
+                    },
+                    "hinhanh": {
+                        "type": "string",
+                        "example": "danhmuc.jpg"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Trang chủ",
+            "description": "Trang chủ"
+        },
+        {
+            "name": "Sản phẩm",
+            "description": "Sản phẩm"
+        }
+    ]
+}

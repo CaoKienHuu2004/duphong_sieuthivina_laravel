@@ -37,9 +37,5 @@ Route::prefix('v1')->group(function () {
         Route::get('/thong-tin-ca-nhan', [NguoidungController::class, 'profile']);
         Route::post('/thong-tin-ca-nhan/cap-nhat', [NguoidungController::class, 'updateProfile']);
         Route::post('/dang-xuat', [NguoidungController::class, 'logout']);
-        // Route::get('/address', [ApiNguoidungController::class, 'getMyAddress']);
-        // Route::post('/address/add', [ApiNguoidungController::class, 'addAddress']);
-        // Route::delete('/address/delete/{id}', [ApiNguoidungController::class, 'deleteAddress']);
-        
     });
 });

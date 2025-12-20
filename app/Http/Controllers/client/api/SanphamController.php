@@ -15,7 +15,16 @@ use Illuminate\Support\Facades\DB;
 
 class SanphamController extends Controller
 {
-    // Hàm index: Danh sách sản phẩm + Lọc + Sắp xếp
+    /**
+     * @OA\Get(
+     * path="/api/v1/san-pham",
+     * tags={"Sản phẩm"},
+     * summary="Danh sách sản phẩm mới nhất (có áp dụng bộ lọc và sắp xếp)",
+     * @OA\Response(response=200, description="Thành công")
+     * )
+     * 
+     * @SWG\Response(response=200, description="successful operation"),
+     */
     public function index(Request $request)
     {
         $filterdanhmuc = $request->input('danhmuc');
