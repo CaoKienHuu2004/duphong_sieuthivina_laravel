@@ -21,11 +21,10 @@ use App\Models\BientheModel;
 class ThanhtoanController extends Controller
 {
     /**
-     * 1. Xử lý Đặt hàng & Thanh toán Momo
+     * 1. ĐẶT HÀNG & TẠO THANH TOÁN VNPAY
      */
     public function placeOrder(Request $request)
     {
-        // Vì đã bọc middleware 'auth:sanctum' nên chắc chắn đã login
         $user = Auth::user();
 
         $request->validate([
@@ -35,20 +34,18 @@ class ThanhtoanController extends Controller
 
         DB::beginTransaction();
         try {
-            // Lấy data giỏ hàng từ Engine đã viết ở GiohangController
-            $cartData = app(\App\Http\Controllers\client\api\ApiGiohangController::class)->getCartDetails($request)->getData()->data;
-            
-            if (empty($cartData->items)) throw new \Exception('Giỏ hàng của bạn đang trống.');
+            // Lấy dữ liệu giỏ hàng từ engine GiohangController đã viết
+            $cartData = app(\App\Http\Controllers\client\api\GiohangController::class)->getCartDetails($request)->getData()->data;
+            if (empty($cartData->items)) throw new \Exception('Giỏ hàng trống.');
 
-            // Lấy địa chỉ mặc định
             $diachi = DiachinguoidungModel::where('id_nguoidung', $user->id)->where('trangthai', 'Mặc định')->first();
-            if (!$diachi) throw new \Exception('Vui lòng thiết lập địa chỉ mặc định trước khi đặt hàng.');
+            if (!$diachi) throw new \Exception('Vui lòng thiết lập địa chỉ mặc định.');
 
             $phuongthuc = PhuongthucModel::find($request->id_phuongthuc);
             $shipping = $this->calculateShippingFee($diachi->tinhthanh);
             $tongThanhToan = $cartData->summary->tonggiatri + $shipping['phi'];
 
-            // Tạo đơn hàng
+            // Khởi tạo đơn hàng
             $order = new DonhangModel();
             $order->id_nguoidung = $user->id;
             $order->id_phuongthuc = $phuongthuc->id;
@@ -74,11 +71,8 @@ class ThanhtoanController extends Controller
             $order->madon = 'STV' . Carbon::now()->format('ymd') . $order->id;
             $order->save();
 
-            // Lưu chi tiết & Trừ kho
+            // Lưu chi tiết & Trừ tồn kho
             foreach ($cartData->items as $item) {
-                $bienthe = BientheModel::find($item->id_bienthe);
-                if ($bienthe->soluong < $item->soluong) throw new \Exception("Sản phẩm {$bienthe->sanpham->ten} đã hết hàng.");
-
                 ChitietdonhangModel::create([
                     'id_bienthe' => $item->id_bienthe,
                     'id_donhang' => $order->id,
@@ -88,29 +82,30 @@ class ThanhtoanController extends Controller
                     'dongia' => $item->thanhtien > 0 ? ($item->thanhtien / $item->soluong) : 0,
                 ]);
 
-                $bienthe->soluong -= $item->soluong;
-                if ($item->thanhtien == 0) $bienthe->luottang -= $item->soluong; // Trừ lượt tặng nếu là quà
-                $bienthe->luotban += $item->soluong;
-                $bienthe->save();
+                $bt = BientheModel::find($item->id_bienthe);
+                $bt->soluong -= $item->soluong;
+                if ($item->thanhtien == 0) $bt->luottang -= $item->soluong;
+                $bt->luotban += $item->soluong;
+                $bt->save();
             }
 
-            // Xóa giỏ hàng sau khi đặt thành công
+            // Xóa giỏ hàng database
             GiohangModel::where('id_nguoidung', $user->id)->delete();
-            
             DB::commit();
 
-            // Gửi thông báo
-            ThongbaoModel::khoitaothongbao($user->id, "Đặt hàng thành công", "Đơn hàng {$order->madon} đang chờ xác nhận.", "#", "Đơn hàng");
-
-            // XỬ LÝ THANH TOÁN MOMO
-            if ($phuongthuc->maphuongthuc == 'MOMO') {
-                return $this->processMomoPayment($order);
+            // XỬ LÝ THANH TOÁN VNPAY (Nếu chọn phương thức VNPAY)
+            $paymentUrl = null;
+            if ($phuongthuc->maphuongthuc == 'QRCODE') {
+                $paymentUrl = $this->createVnpayPayment($order);
             }
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Đặt hàng thành công (COD)!',
-                'data' => ['madon' => $order->madon]
+                'message' => 'Đặt hàng thành công!',
+                'data' => [
+                    'madon' => $order->madon,
+                    'payment_url' => $paymentUrl // FE sẽ dùng link này để redirect khách
+                ]
             ]);
 
         } catch (\Exception $e) {
@@ -120,64 +115,93 @@ class ThanhtoanController extends Controller
     }
 
     /**
-     * Tích hợp Momo (Cấu hình đầy đủ tham số)
+     * 2. TẠO URL THANH TOÁN VNPAY
      */
-    private function processMomoPayment($order)
+    private function createVnpayPayment($order)
     {
-        $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create"; // Link test
+        $vnp_TmnCode = env('VNP_TMN_CODE');
+        $vnp_HashSecret = env('VNP_HASH_SECRET');
+        $vnp_Url = env('VNP_URL');
+        $vnp_Returnurl = env('VNP_RETURN_URL');
 
-        $partnerCode = env('MOMO_PARTNER_CODE', 'MOMOBKUN20180529');
-        $accessKey = env('MOMO_ACCESS_KEY', 'klm05nuEHM7HGDLS');
-        $secretKey = env('MOMO_SECRET_KEY', 'at67qH6mk8w5Y1n71y98uQ94L7uU8LbE');
-        
-        $orderInfo = "Thanh toán đơn hàng " . $order->madon . " tại Siêu Thị Vina";
-        $redirectUrl = url('/api/v1/checkout/momo-return'); // Link FE nhận kết quả
-        $ipnUrl = url('/api/v1/checkout/momo-ipn'); // Link BE nhận kết quả ngầm
-        $amount = (string)$order->thanhtien;
-        $orderId = $order->madon . "_" . time(); // Đảm bảo ID duy nhất cho mỗi lần bấm thanh toán
-        $requestId = (string)time();
-        $requestType = "captureWallet";
-        $extraData = "";
+        $vnp_TxnRef = $order->madon; 
+        $vnp_OrderInfo = "Thanh toan don hang " . $order->madon;
+        $vnp_OrderType = 'billpayment';
+        $vnp_Amount = $order->thanhtien * 100; // VNPay tính theo đơn vị VND * 100
+        $vnp_Locale = 'vn';
+        $vnp_IpAddr = request()->ip();
 
-        // Tạo chữ ký (Signature) theo chuẩn Momo
-        $rawHash = "accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType";
-        $signature = hash_hmac("sha256", $rawHash, $secretKey);
+        $inputData = array(
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        );
 
-        $data = [
-            'partnerCode' => $partnerCode,
-            'requestId' => $requestId,
-            'amount' => $amount,
-            'orderId' => $orderId,
-            'orderInfo' => $orderInfo,
-            'redirectUrl' => $redirectUrl,
-            'ipnUrl' => $ipnUrl,
-            'extraData' => $extraData,
-            'requestType' => $requestType,
-            'signature' => $signature,
-            'lang' => 'vi'
-        ];
-
-        // Gửi request lên Momo
-        $ch = curl_init($endpoint);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        $res = json_decode($result, true);
-
-        if (isset($res['payUrl'])) {
-            return response()->json([
-                'status' => 200,
-                'message' => 'Chuyển hướng đến Momo',
-                'payUrl' => $res['payUrl'],
-                'madon' => $order->madon
-            ]);
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
         }
 
-        return response()->json(['status' => 500, 'message' => 'Lỗi kết nối Momo: ' . ($res['message'] ?? 'Unknown')], 500);
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        }
+
+        return $vnp_Url;
+    }
+
+    /**
+     * 3. XỬ LÝ IPN (WEBHOOK VNPAY GỌI NGẦM)
+     */
+    public function vnpayIpn(Request $request)
+    {
+        $vnp_HashSecret = env('VNP_HASH_SECRET');
+        $inputData = $request->all();
+        $vnp_SecureHash = $inputData['vnp_SecureHash'];
+        unset($inputData['vnp_SecureHash']);
+        ksort($inputData);
+        $i = 0;
+        $hashData = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashData .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashData .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+        }
+
+        $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
+        if ($secureHash == $vnp_SecureHash) {
+            $order = DonhangModel::where('madon', $inputData['vnp_TxnRef'])->first();
+            if ($order) {
+                if ($inputData['vnp_ResponseCode'] == '00') {
+                    $order->update(['trangthaithanhtoan' => 'Đã thanh toán']);
+                }
+                return response()->json(['RspCode' => '00', 'Message' => 'Confirm Success']);
+            }
+            return response()->json(['RspCode' => '01', 'Message' => 'Order not found']);
+        }
+        return response()->json(['RspCode' => '97', 'Message' => 'Invalid signature']);
     }
 
     private function calculateShippingFee($tinhThanh)

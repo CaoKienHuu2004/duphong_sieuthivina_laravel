@@ -9,6 +9,7 @@ use App\Http\Controllers\client\api\NguoidungController;
 use App\Http\Controllers\client\api\QuatangsukienController;
 use App\Http\Controllers\client\api\BaivietController;
 use App\Http\Controllers\client\api\GiohangController;
+use App\Http\Controllers\client\api\ThanhtoanController;
 
 
 /*
@@ -56,4 +57,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/{slug}', [BaivietController::class, 'show']); // Chi tiết bài viết
         
     });
+
+    // Đặt hàng (Auth)
+    Route::middleware('auth:sanctum')->post('/thanh-toan/dat-hang', [ThanhtoanController::class, 'placeOrder']);
+
+    // IPN VNPay (Public - Nhận thông báo từ VNPay)
+    Route::get('/thanh-toan/vnpay-ipn', [ThanhtoanController::class, 'vnpayIpn']);
 });
