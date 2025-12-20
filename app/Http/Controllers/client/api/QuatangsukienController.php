@@ -11,17 +11,15 @@ use App\Models\SanphamthamgiaquatangModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
 class QuatangsukienController extends Controller
 {
     /**
-     * Danh sách quà tặng: Load kèm chi tiết Thương hiệu và Hình ảnh
+     * Danh sách chương trình quà tặng (Index)
      */
     public function index(Request $request)
     {
-        // Tự động cập nhật trạng thái nếu hết quà
+        // Tự động ẩn chương trình hết quà
         QuatangsukienModel::where('trangthai', 'Hiển thị')
             ->whereDoesntHave('sanphamduoctang', function (Builder $query) {
                 $query->where('luottang', '>', 0);
@@ -30,34 +28,26 @@ class QuatangsukienController extends Controller
         $query = QuatangsukienModel::with([
             'sanphamduoctang.sanpham.thuonghieu',
             'sanphamduoctang.sanpham.hinhanhsanpham',
-            'sanphamduoctang.loaibienthe' // Khai rõ loại biến thể (Hộp, gói, vỉ...)
+            'sanphamduoctang.loaibienthe'
         ])
-            ->where('trangthai', 'Hiển thị')
-            ->where('deleted_at', null);
+        ->where('trangthai', 'Hiển thị')
+        ->where('deleted_at', null);
 
-        // Lọc & Sắp xếp (giữ nguyên logic)
+        // Lọc & Sắp xếp
         if ($request->filled('provider')) {
-            $query->whereHas('sanphamduoctang.sanpham', function ($q) use ($request) {
-                $q->where('id_thuonghieu', $request->provider);
-            });
+            $query->whereHas('sanphamduoctang.sanpham', fn($q) => $q->where('id_thuonghieu', $request->provider));
         }
 
         $sort = $request->input('sort', 'popular');
         switch ($sort) {
-            case 'newest':
-                $query->orderBy('ngaybatdau', 'desc');
-                break;
-            case 'expiring':
-                $query->where('ngayketthuc', '>=', now())->orderBy('ngayketthuc', 'asc');
-                break;
-            default:
-                $query->orderBy('luotxem', 'desc');
-                break;
+            case 'newest': $query->orderBy('ngaybatdau', 'desc'); break;
+            case 'expiring': $query->where('ngayketthuc', '>=', now())->orderBy('ngayketthuc', 'asc'); break;
+            default: $query->orderBy('luotxem', 'desc'); break;
         }
 
         $quatang = $query->paginate(12);
 
-        // Chuyển đổi tên file thành URL cho từng item trong danh sách
+        // Chuẩn hóa URL ảnh
         $quatang->getCollection()->transform(function ($item) {
             if ($item->hinhanh) {
                 $item->hinhanh = asset('assets/client/images/thumbs/' . $item->hinhanh);
@@ -73,7 +63,7 @@ class QuatangsukienController extends Controller
     }
 
     /**
-     * Chi tiết: Load đầy đủ ParticipatingProducts thay vì chỉ trả ID
+     * Chi tiết chương trình: Trả về Quà tặng + Sản phẩm tham gia + Tiến độ
      */
     public function show(Request $request, $slug)
     {
@@ -83,53 +73,51 @@ class QuatangsukienController extends Controller
             'sanphamduoctang.loaibienthe'
         ])->where('slug', $slug)->firstOrFail();
 
-        // Khai báo sản phẩm khách PHẢI MUA (Full thông tin cho FE)
-        $participatingProducts = BientheModel::with([
-            'sanpham.thuonghieu',
-            'sanpham.hinhanhsanpham',
-            'loaibienthe'
-        ])
+        // 1. Chuẩn hóa ảnh Banner sự kiện
+        if ($quatang->hinhanh) {
+            $quatang->hinhanh = asset('assets/client/images/thumbs/' . $quatang->hinhanh);
+        }
+
+        // 2. Lấy danh sách SẢN PHẨM THAM GIA (Khách phải mua)
+        $participatingProducts = BientheModel::with(['sanpham.thuonghieu', 'sanpham.hinhanhsanpham', 'loaibienthe'])
             ->whereHas('sanphamthamgia', fn($q) => $q->where('id_quatang', $quatang->id))
-            ->get();
+            ->get()
+            ->each(function($variant) {
+                $variant->sanpham->hinhanhsanpham->each(function($img) {
+                    $img->hinhanh = asset('assets/client/images/thumbs/' . $img->hinhanh);
+                });
+            });
 
         $participatingIds = $participatingProducts->pluck('id')->toArray();
         $representativeGift = $quatang->sanphamduoctang->first();
         $requiredBrandId = $representativeGift->sanpham->id_thuonghieu;
 
-        // Tính toán tiến độ giỏ hàng
+        // 3. Lấy dữ liệu giỏ hàng để tính toán (Auth DB hoặc localStorage gửi lên)
         $cartData = Auth::guard('sanctum')->check()
             ? GiohangModel::where('id_nguoidung', Auth::guard('sanctum')->id())->where('thanhtien', '>', 0)->get()
             : (is_string($request->cart_items) ? json_decode($request->cart_items, true) : ($request->cart_items ?? []));
 
         $metrics = $this->calculateCartMetrics($participatingIds, $requiredBrandId, $cartData);
 
-        // Gợi ý sản phẩm liên quan (Full thông tin)
-        $suggestedProducts = BientheModel::with(['sanpham.thuonghieu', 'sanpham.hinhanhsanpham', 'loaibienthe'])
-            ->whereIn('trangthai', ['Còn hàng', 'Sắp hết hàng'])->where('soluong', '>', 0)
-            ->when(
-                count($participatingIds) > 0,
-                fn($q) => $q->whereIn('id', $participatingIds),
-                fn($q) => $q->whereHas('sanpham', fn($sq) => $sq->where('id_thuonghieu', $requiredBrandId))
-            )->inRandomOrder()->take(10)->get();
+        $quatang->increment('luotxem');
 
         return response()->json([
             'status' => 200,
-            'quatang' => $quatang,
-            'sanphamthamgia' => $participatingProducts,
+            'quatang' => $quatang, // Trong này đã có sanphamduoctang (Quà tặng)
+            'sanphamthamgia' => $participatingProducts, // Sản phẩm điều kiện
             'progress' => [
                 'percent' => round($this->calcPercent($quatang, $metrics), 2),
                 'currentCount' => $metrics['count'],
-                'targetCount' => $quatang->dieukiensoluong,
+                'targetCount' => (int)$quatang->dieukiensoluong,
                 'currentValue' => $metrics['totalValue'],
-                'targetValue' => $quatang->dieukiengiatri ?? 0,
+                'targetValue' => (float)($quatang->dieukiengiatri ?? 0),
             ],
         ]);
     }
 
     private function calculateCartMetrics($pIds, $brandId, $cartItems)
     {
-        $count = 0;
-        $total = 0;
+        $count = 0; $total = 0;
         foreach ($cartItems as $item) {
             $item = (object) $item;
             $bt = BientheModel::with('sanpham')->find($item->id_bienthe ?? null);
