@@ -17,6 +17,8 @@ use App\Models\PhuongthucModel;
 use App\Models\PhivanchuyenModel;
 use App\Models\BientheModel;
 use App\Models\ThongbaoModel;
+use App\Mail\DathangthanhcongMail;
+use Illuminate\Support\Facades\Mail;
 
 class ThanhtoanController extends Controller
 {
@@ -79,8 +81,8 @@ class ThanhtoanController extends Controller
             // Thông tin giao hàng
             $order->madon = 'TEMP'; // Tạm thời để TEMP, update sau khi có ID
             $order->nguoinhan = $diachi->hoten;
-            $order->diachinhan = $diachi->diachi . ', ' . $diachi->phuongxa . ', ' . $diachi->quanhuyen . ', ' . $diachi->tinhthanh;
-            $order->khuvucgiao = $diachi->tinhthanh;
+            $order->diachinhan = $diachi->diachi;
+            $order->khuvucgiao = $diachi->tinhthanh .', ';
             $order->sodienthoai = $diachi->sodienthoai;
 
             // Thông tin tài chính
@@ -136,6 +138,21 @@ class ThanhtoanController extends Controller
             GiohangModel::where('id_nguoidung', $user->id)->delete();
 
             DB::commit();
+
+            // ================================================================
+            // [MỚI] GỬI MAIL XÁC NHẬN ĐƠN HÀNG (SAU KHI DB COMMIT THÀNH CÔNG)
+            // ================================================================
+            try {
+                // Nạp quan hệ chi tiết đơn hàng để hiển thị trong Mail View
+                $order->load('chitietdonhang');
+                
+                // Gửi mail đến email của user đang đăng nhập
+                Mail::to($user->email)->send(new DathangthanhcongMail($order));
+            } catch (\Exception $e) {
+                // Log lỗi mail nhưng KHÔNG return lỗi (để quy trình đặt hàng vẫn thành công)
+                Log::error("Gửi mail đơn hàng {$order->madon} thất bại: " . $e->getMessage());
+            }
+            // ================================================================
 
             try {
                         ThongbaoModel::khoitaothongbao(
