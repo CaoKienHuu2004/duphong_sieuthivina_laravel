@@ -81,8 +81,13 @@ Route::prefix('v1')->group(function () {
         // Tra cứu đơn hàng (POST) - Bảo mật hơn GET vì gửi SĐT trong Body
         // URL: {{base_url}}/api/v1/orders/tracking
         // Body: { "madon": "STV251221001", "sodienthoai": "0987654321" }
+        // 1. Lấy danh sách đơn hàng (index)
+        Route::get('/', [DonhangController::class, 'index']);
 
+        // 2. Mua lại đơn hàng cũ (reOrder)
+        Route::post('/mua-lai', [DonhangController::class, 'reOrder']);
     });
+    
     Route::post('/don-hang/tra-cuu', [DonhangController::class, 'trackOrder']);
 
     Route::get('/provinces', [DiachiController::class, 'getProvinces']);
@@ -92,7 +97,7 @@ Route::prefix('v1')->group(function () {
 
         // Lấy danh sách
         Route::get('/dia-chi', [DiachiController::class, 'index']);
-        
+
         // Thêm mới
         Route::post('/dia-chi', [DiachiController::class, 'store']);
 
@@ -106,6 +111,6 @@ Route::prefix('v1')->group(function () {
         Route::delete('/dia-chi/{id}', [DiachiController::class, 'destroy']);
 
         // Đặt làm mặc định
-        Route::patch('/dia-chi/set-default/{id}', [DiachiController::class, 'setDefault']);
+        Route::patch('/dia-chi/mac-dinh/{id}', [DiachiController::class, 'setDefault']);
     });
 });

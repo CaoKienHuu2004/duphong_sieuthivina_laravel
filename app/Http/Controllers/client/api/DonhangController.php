@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\client\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ChitietdonhangModel;
+use App\Models\DanhgiaModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +14,79 @@ use App\Models\ThongbaoModel;
 
 class DonhangController extends Controller
 {
+
+    /**
+     * 4. LẤY DANH SÁCH ĐƠN HÀNG (Kèm bộ lọc)
+     * Thay thế cho: loadDonHangs() bên Livewire
+     * Method: GET
+     * Params: ?status=Chờ xác nhận & payment_status=Tất cả & page=1
+     */
+    public function index(Request $request)
+    {
+        $user = Auth::user();
+        $status = $request->input('status', 'Tất cả'); // Mặc định lấy tất cả nếu không truyền
+        $paymentStatus = $request->input('payment_status', 'Tất cả');
+
+        $query = DonhangModel::where('id_nguoidung', $user->id);
+
+        // 1. Lọc theo trạng thái Đơn hàng
+        if ($status !== 'Tất cả') {
+            $query->where('trangthai', $status);
+        }
+
+        // 2. Lọc theo trạng thái Thanh toán (Logic giống Livewire)
+        if ($paymentStatus !== 'Tất cả') {
+            // Nếu lọc thanh toán, thường đi kèm status đơn hàng cụ thể hoặc logic riêng
+            $query->where('trangthaithanhtoan', $paymentStatus);
+        }
+
+        // 3. Eager Loading (Nạp sẵn dữ liệu quan hệ)
+        $donhangs = $query->with([
+                'chitietdonhang.bienthe.sanpham', // Lấy thông tin sản phẩm
+                'chitietdonhang.bienthe.loaibienthe', // Lấy màu/size
+                'phivanchuyen'
+            ])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); // API nên phân trang (10 đơn/trang)
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Lấy danh sách đơn hàng thành công',
+            'data' => $donhangs
+        ]);
+    }
+
+    /**
+     * 5. LẤY SỐ LƯỢNG ĐƠN HÀNG THEO TRẠNG THÁI (Để hiển thị Badge trên Tab)
+     * Thay thế cho: loadFilterCounts() bên Livewire
+     * Method: GET
+     */
+    public function getOrderCounts()
+    {
+        $userId = Auth::id();
+
+        // 1. Đếm theo trạng thái xử lý
+        $processingCounts = DonhangModel::where('id_nguoidung', $userId)
+            ->selectRaw('trangthai, count(*) as count')
+            ->groupBy('trangthai')
+            ->pluck('count', 'trangthai')
+            ->toArray();
+
+        // 2. Đếm trạng thái "Chờ thanh toán" riêng (như logic Livewire của bạn)
+        $pendingPaymentCount = DonhangModel::where('id_nguoidung', $userId)
+            ->where('trangthaithanhtoan', 'Chờ thanh toán')
+            ->count();
+
+        // Merge lại để trả về FE
+        $result = $processingCounts;
+        $result['ChoThanhToan'] = $pendingPaymentCount; // Đặt key không dấu cho dễ gọi ở FE
+
+        return response()->json([
+            'status' => 200,
+            'data' => $result
+        ]);
+    }
+
     /**
      * 1. CHI TIẾT ĐƠN HÀNG
      * Yêu cầu: Đăng nhập + Đơn hàng đó phải của người dùng đó
@@ -157,4 +232,108 @@ class DonhangController extends Controller
             ], 404);
         }
     }
+
+    /**
+     * 6. MUA LẠI (Re-order)
+     * Logic: Copy sản phẩm từ đơn cũ bỏ vào giỏ hàng
+     * Method: POST
+     */
+    public function reOrder(Request $request)
+    {
+        // 1. Validate dữ liệu đầu vào là một Mảng
+        $validator = Validator::make($request->all(), [
+            'items' => 'required|array',
+            'items.*.id_bienthe' => 'required|exists:bienthe,id',
+            'items.*.soluong' => 'required|integer|min:1',
+        ], [
+            'items.required' => 'Không có sản phẩm nào được chọn để mua lại.',
+            'items.*.exists' => 'Sản phẩm không tồn tại hoặc đã ngừng kinh doanh.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 422, 'errors' => $validator->errors()], 422);
+        }
+
+        $user = Auth::user();
+        $itemsToAdd = $request->items;
+        
+        $addedCount = 0;
+        $failedItems = []; // Mảng chứa thông báo lỗi cho từng món (ví dụ: hết hàng)
+
+        DB::beginTransaction();
+        try {
+            foreach ($itemsToAdd as $item) {
+                $idBienthe = $item['id_bienthe'];
+                $soLuongMuonMua = $item['soluong'];
+
+                // Check tồn kho
+                $bienthe = BientheModel::with('sanpham')->find($idBienthe);
+
+                // Kiểm tra nếu sản phẩm bị xóa mềm hoặc ẩn (nếu có logic đó)
+                if (!$bienthe || !$bienthe->sanpham) {
+                    $failedItems[] = "Sản phẩm ID $idBienthe không tồn tại.";
+                    continue;
+                }
+
+                // Kiểm tra số lượng tồn kho
+                if ($bienthe->soluong < $soLuongMuonMua) {
+                    $tenSp = $bienthe->sanpham->ten_sanpham ?? "Sản phẩm $idBienthe";
+                    $failedItems[] = "$tenSp hiện chỉ còn {$bienthe->soluong} sản phẩm (Bạn muốn mua $soLuongMuonMua).";
+                    continue; 
+                }
+
+                // --- LOGIC THÊM VÀO GIỎ HÀNG ---
+                // 1. Tìm xem trong giỏ của user đã có món này chưa
+                $cartItem = GiohangModel::where('id_nguoidung', $user->id)
+                                        ->where('id_bienthe', $idBienthe)
+                                        ->first();
+
+                if ($cartItem) {
+                    // Nếu có rồi -> Cộng dồn số lượng
+                    // (Tùy chọn: Check lại tồn kho tổng thể lần nữa nếu muốn chặt chẽ)
+                    $newQty = $cartItem->soluong + $soLuongMuonMua;
+                    if ($newQty > $bienthe->soluong) {
+                         $tenSp = $bienthe->sanpham->ten_sanpham;
+                         $failedItems[] = "Không thể thêm $tenSp. Tổng số lượng trong giỏ vượt quá tồn kho.";
+                         continue;
+                    }
+                    $cartItem->soluong = $newQty;
+                    $cartItem->save();
+                } else {
+                    // Nếu chưa có -> Tạo mới
+                    GiohangModel::create([
+                        'id_nguoidung' => $user->id,
+                        'id_bienthe' => $idBienthe,
+                        'soluong' => $soLuongMuonMua
+                    ]);
+                }
+
+                $addedCount++;
+            }
+
+            DB::commit();
+
+            // Phản hồi kết quả
+            if ($addedCount > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => "Đã thêm thành công $addedCount sản phẩm vào giỏ hàng.",
+                    'warnings' => $failedItems // Trả về danh sách các món bị lỗi (hết hàng) để FE hiển thị Toast
+                ]);
+            } else {
+                // Không thêm được món nào (do hết hàng hết chẳng hạn)
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'Không thể thêm sản phẩm nào vào giỏ hàng.',
+                    'errors' => $failedItems
+                ], 400);
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 500, 'message' => 'Lỗi server: ' . $e->getMessage()], 500);
+        }
+    }
+
+
 }
