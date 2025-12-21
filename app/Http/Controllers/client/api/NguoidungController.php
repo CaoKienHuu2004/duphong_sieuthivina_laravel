@@ -116,7 +116,7 @@ class NguoidungController extends Controller
                 // TRƯỜNG HỢP 1: Đã có tài khoản -> Đăng nhập luôn
 
                 // Kiểm tra xem tài khoản có bị khóa không
-                if (!$user->trangthai) {
+                if ($user->trangthai == 'Tạm khóa') {
                     return response()->json(['status' => 403, 'message' => 'Tài khoản đã bị khóa.'], 403);
                 }
             } else {

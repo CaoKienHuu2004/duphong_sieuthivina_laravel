@@ -15,12 +15,12 @@
                     <form action="{{ route('handleLogin') }}" method="POST">
                         @csrf
                         <div class="mb-24">
-                            <label for="username" class="text-neutral-900 text-lg mb-8 fw-medium">Tên đăng nhập <span class="text-danger">*</span> </label>
-                            <input type="text" class="text-md common-input @error('username') is-invalid @enderror"
-                                   id="username" name="username"
-                                   placeholder="Nhập tên đăng nhập"
-                                   value="{{ old('username') }}" required>
-                            @error('username')
+                            <label for="phonemail" class="text-neutral-900 text-lg mb-8 fw-medium">Email hoặc Điện thoại<span class="text-danger">*</span> </label>
+                            <input type="text" class="text-md common-input @error('phonemail') is-invalid @enderror"
+                                   id="phonemail" name="phonemail"
+                                   placeholder="Nhập email hoặc số điện thoại"
+                                   value="{{ old('phonemail') }}" required>
+                            @error('phonemail')
                                 <div class="text-danger text-sm mt-4">{{ $message }}</div>
                             @enderror
                         </div>
@@ -52,7 +52,11 @@
                         </div>
                         
                     </form>
+                    
                 </div>
+                {{-- <a href="{{ route('login.google') }}" class="btn btn-white border border-gray-100 hover-border-gray-200 mt-10 mb-20 flex-align gap-8 justify-content-center" style="width: 100%; text-align: center;">
+                        <i class="ph-bold ph-google-logo text-2xl"></i> Đăng nhập bằng Google
+                    </a> --}}
             </div>
 
         </div>

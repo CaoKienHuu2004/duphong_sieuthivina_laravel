@@ -26,14 +26,12 @@ Route::prefix('/san-pham')->group(function () {
 
     Route::get('/', [client\SanphamController::class, 'index'])->name('danhsachsanpham');
     Route::get('/{slug}', [client\SanphamController::class, 'show'])->name('chi-tiet-san-pham');
-
 });
 
 Route::prefix('/bai-viet')->group(function () {
 
     Route::get('/', [client\BaivietController::class, 'index'])->name('danh-sach-bai-viet');
     Route::get('/{slug}', [client\BaivietController::class, 'chitiet'])->name('chi-tiet-bai-viet');
-
 });
 
 Route::get('/lien-he', function () {
@@ -69,9 +67,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/xac-thuc-dang-ky', [client\NguoidungController::class, 'handleRegister'])->name('handleRegister');
 });
 
+Route::get('auth/google', [client\NguoidungController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('auth/google/callback', [client\NguoidungController::class, 'handleGoogleCallback']);
+
 Route::prefix('/gio-hang')->group(function () {
     Route::get('/', function () {
-        return view('client.thanhtoan.giohang'); })->name('gio-hang');
+        return view('client.thanhtoan.giohang');
+    })->name('gio-hang');
 
     Route::post('/them-gio-hang', [client\GiohangController::class, 'themgiohang'])->name('them-gio-hang');
 });
@@ -178,6 +180,3 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::delete('/{madon}/xoa', [admin\DonhangController::class, 'destroy'])->name('xoa-don-hang');
         });
     });
-
-
-

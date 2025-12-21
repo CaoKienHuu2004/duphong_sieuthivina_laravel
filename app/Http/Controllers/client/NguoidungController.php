@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\NguoidungModel;
 use Illuminate\Support\Facades\File;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 
 class NguoidungController extends Controller
 {
@@ -24,28 +26,42 @@ class NguoidungController extends Controller
     // Xử lý đăng nhập
     public function handleLogin(Request $request)
     {
+        // 1. Validate: Vẫn giữ key là 'username' từ form gửi lên (để đỡ sửa nhiều)
+        // Nhưng thông báo lỗi sẽ sửa lại cho phù hợp
         $request->validate([
-            'username' => 'required|string',
+            'phonemail' => 'required|string',
             'password' => 'required|string',
-        ],[
-            'username.required' => 'Vui lòng nhập Tên tài khoản để đăng nhập.',
-            'username.string' => 'Tên tài khoản không hợp lệ.',
+        ], [
+            'phonemail.required' => 'Vui lòng nhập Email hoặc Số điện thoại.',
+            'phonemail.string'   => 'Tài khoản không hợp lệ.',
             'password.required' => 'Vui lòng nhập Mật khẩu.',
-            'password.string' => 'Mật khẩu không hợp lệ.',
+            'password.string'   => 'Mật khẩu không hợp lệ.',
         ]);
 
-        $credentials = $request->only('username', 'password');
+        // 2. Logic nhận diện Email hay SĐT
+        $loginInput = $request->input('phonemail');
 
+        // Kiểm tra: Nếu đúng định dạng Email thì gán cột tìm kiếm là 'email', ngược lại là 'sodienthoai'
+        $fieldType = filter_var($loginInput, FILTER_VALIDATE_EMAIL) ? 'email' : 'sodienthoai';
+
+        // 3. Tạo mảng chứng thực
+        $credentials = [
+            $fieldType => $loginInput, // Ví dụ: ['email' => 'a@gmail.com'] hoặc ['sodienthoai' => '09123...']
+            'password' => $request->input('password')
+        ];
+
+        // 4. Tiến hành đăng nhập
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             $user = Auth::user();
 
             // Kiểm tra trạng thái tài khoản
-            if (!$user->trangthai) {
+            // Lưu ý: Đảm bảo cột 'trangthai' trong DB trả về giá trị check được (boolean hoặc string cụ thể)
+            if (!$user->trangthai || $user->trangthai == 'Khóa') {
                 Auth::logout();
                 return back()->withErrors([
-                    'username' => 'Tài khoản của bạn đã bị khóa.',
+                    'phonemail' => 'Tài khoản của bạn đã bị khóa.',
                 ]);
             }
 
@@ -59,10 +75,80 @@ class NguoidungController extends Controller
             }
         }
 
-        // Sai thông tin
+        // 5. Sai thông tin
         return back()->withErrors([
-            'username' => 'Tên tài khoản hoặc mật khẩu không đúng.',
-        ])->withInput($request->only('username'));
+            'phonemail' => 'Email/Số điện thoại hoặc mật khẩu không đúng.',
+        ])->withInput($request->only('phonemail'));
+    }
+
+    // ---------------------------------------------------------
+    // BỔ SUNG: LOGIC GOOGLE
+    // ---------------------------------------------------------
+
+    // 1. Chuyển hướng sang Google
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    // 2. Xử lý khi Google trả về
+    public function handleGoogleCallback()
+    {
+        try {
+            // Lấy thông tin từ Google
+            $googleUser = Socialite::driver('google')->user();
+            $email = $googleUser->getEmail();
+
+            if (!$email) {
+                return redirect()->route('login')->withErrors(['username' => 'Không lấy được Email từ Google.']);
+            }
+
+            // A. Tìm xem email này đã có trong DB chưa
+            $user = NguoidungModel::where('email', $email)->first();
+
+            // B. Nếu chưa có -> Tự động tạo tài khoản mới
+            if (!$user) {
+                // Tự sinh username từ email (ví dụ: nguyenvan@gmail -> nguyenvan)
+                $newUsername = explode('@', $email)[0];
+
+                // Kiểm tra nếu username đã tồn tại thì nối thêm số ngẫu nhiên
+                if (NguoidungModel::where('username', $newUsername)->exists()) {
+                    $newUsername .= '_' . rand(100, 999);
+                }
+
+                $user = NguoidungModel::create([
+                    'username'    => $newUsername, // Bắt buộc phải có vì DB bạn yêu cầu
+                    'email'       => $email,
+                    'hoten'       => $googleUser->getName() ?? $newUsername,
+                    'password'    => Hash::make(Str::random(16)), // Mật khẩu ngẫu nhiên bảo mật
+                    'sodienthoai' => null, // Google ko trả về SĐT, chấp nhận null hoặc cập nhật sau
+                    'avatar'      => null, // Có thể lưu $googleUser->getAvatar() nếu muốn
+                    'vaitro'      => 'client',
+                    'trangthai'   => 'Hoạt động', // Theo code cũ của bạn
+                ]);
+            }
+
+            // C. Kiểm tra trạng thái khóa (Logic giống handleLogin cũ)
+            // Lưu ý: Code cũ bạn check (!$user->trangthai) nên mình giữ nguyên logic đó
+            if (!$user->trangthai || $user->trangthai == 'Khóa') { // Check thêm trường hợp string nếu cần
+                return redirect()->route('client.login')->withErrors(['username' => 'Tài khoản của bạn đã bị khóa.']);
+            }
+
+            // D. Đăng nhập
+            Auth::login($user);
+
+            // E. Chuyển hướng (Logic giống handleLogin cũ)
+            if ($user->vaitro === 'admin') {
+                return redirect()->intended(route('quan-tri-vien.trang-chu'));
+            } elseif ($user->vaitro === 'seller') {
+                return redirect()->intended(route('nguoi-ban-hang.trang-chu'));
+            } else {
+                return redirect()->intended(route('trang-chu'));
+            }
+        } catch (\Exception $e) {
+            // Log lỗi ra để debug nếu cần
+            return redirect()->route('client.login')->withErrors(['username' => 'Lỗi đăng nhập Google: ' . $e->getMessage()]);
+        }
     }
 
     // Đăng xuất
@@ -91,19 +177,19 @@ class NguoidungController extends Controller
             'email' => 'required|email:rfc,dns|unique:nguoidung,email',
             'sodienthoai' => 'required|string|max:20|unique:nguoidung,sodienthoai',
             'password' => 'required|string|min:6|confirmed',
-        ],[
+        ], [
             // Username (Tên tài khoản)
             'username.required' => 'Vui lòng nhập tên tài khoản.',
             'username.string' => 'Tên tài khoản phải là chuỗi ký tự.',
             'username.max' => 'Tên tài khoản không được vượt quá :max ký tự.',
             'username.unique' => 'Tên tài khoản này đã được sử dụng. Vui lòng chọn tên khác.',
-            
+
             // Password (Mật khẩu)
             'password.required' => 'Vui lòng nhập mật khẩu.',
             'password.string' => 'Mật khẩu phải là chuỗi ký tự.',
             'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
-            
+
             // Hoten (Họ tên)
             'hoten.required' => 'Vui lòng nhập họ và tên.',
             'hoten.string' => 'Họ và tên phải là chuỗi ký tự.',
@@ -113,7 +199,7 @@ class NguoidungController extends Controller
             'email.required' => 'Vui lòng nhập địa chỉ email.',
             'email.email' => 'Địa chỉ email không đúng định dạng.',
             'email.unique' => 'Địa chỉ email này đã được đăng ký.',
-            
+
             // Sodienthoai (Số điện thoại)
             'sodienthoai.required' => 'Vui lòng nhập số điện thoại.',
             'sodienthoai.string' => 'Số điện thoại không hợp lệ.',
@@ -159,7 +245,7 @@ class NguoidungController extends Controller
 
         // 2. XỬ LÝ ẢNH AVATAR
         if ($request->hasFile('avatar')) {
-            
+
             // Chỉ định đường dẫn thư mục trong public: assets/client/images/thumb
             $publicPath = 'assets/client/images/thumbs';
             $destinationPath = public_path($publicPath); // Đường dẫn vật lý đầy đủ
@@ -167,27 +253,26 @@ class NguoidungController extends Controller
             // --- TỐI ƯU HÓA TÊN FILE ---
             $file = $request->file('avatar');
             $extension = $file->getClientOriginalExtension();
-            
+
             // Sử dụng uniqid() kết hợp với thời gian và ID để tạo tên file gần như độc nhất
-            $fileName = uniqid() . '_' . time() . '_' . $user->id . '.' . $extension; 
-            
+            $fileName = uniqid() . '_' . time() . '_' . $user->id . '.' . $extension;
+
             // 2a. LƯU FILE MỚI VÀO PUBLIC
             $file->move($publicPath, $fileName);
 
             // Đường dẫn tương đối để lưu vào DB
             $user->avatar = $fileName;
             $user->save();
-            
+
             // 2b. XÓA FILE CŨ (NẾU CÓ)
             if ($user->avatar) {
                 $oldAvatarPath = public_path($user->avatar);
-                
+
                 // Dùng File::exists() và File::delete() để xóa file
                 if (File::exists($oldAvatarPath)) {
                     File::delete($oldAvatarPath);
                 }
             }
-            
         }
 
         NguoidungModel::where('id', $user->id)->update([

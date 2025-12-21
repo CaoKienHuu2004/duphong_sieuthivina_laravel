@@ -36,6 +36,7 @@ Route::prefix('v1')->group(function () {
     // --- CÁC ROUTE KHÔNG CẦN ĐĂNG NHẬP ---
     Route::post('/dang-nhap', [NguoidungController::class, 'handleLogin']);
     Route::post('/dang-ky', [NguoidungController::class, 'handleRegister']);
+    Route::post('/login-google', [NguoidungController::class, 'loginWithGoogle']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/thong-tin-ca-nhan', [NguoidungController::class, 'profile']);
