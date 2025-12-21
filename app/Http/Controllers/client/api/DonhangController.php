@@ -183,7 +183,7 @@ class DonhangController extends Controller
             ThongbaoModel::khoitaothongbao(
                 $user->id,
                 "Đơn hàng đã bị hủy",
-                "Mã đơn {$donhang->madon} đã được hủy thành công.",
+                "Mã đơn {$donhang->madon} đã được hủy.",
                 "#", // Link FE (nếu có)
                 'Đơn hàng'
             );

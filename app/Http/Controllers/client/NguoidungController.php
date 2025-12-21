@@ -13,6 +13,7 @@ use App\Models\NguoidungModel;
 use Illuminate\Support\Facades\File;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+// use Illuminate\Notifications\Notifiable;
 
 class NguoidungController extends Controller
 {

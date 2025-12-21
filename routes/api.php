@@ -14,6 +14,8 @@ use App\Http\Controllers\client\api\DonhangController;
 use App\Http\Controllers\client\api\DiachiController;
 use App\Http\Controllers\client\api\DanhgiaController;
 use App\Http\Controllers\client\api\GlobalController;
+use App\Http\Controllers\client\api\ThongbaoController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -89,12 +91,12 @@ Route::prefix('v1')->group(function () {
         Route::post('/mua-lai', [DonhangController::class, 'reOrder']);
     });
 
-        Route::post('/don-hang/tra-cuu', [DonhangController::class, 'trackOrder']);
+    Route::post('/don-hang/tra-cuu', [DonhangController::class, 'trackOrder']);
 
-        Route::get('/provinces', [DiachiController::class, 'getProvinces']);
+    Route::get('/provinces', [DiachiController::class, 'getProvinces']);
 
-        // Các API cần đăng nhập
-        Route::middleware('auth:sanctum')->group(function () {
+    // Các API cần đăng nhập
+    Route::middleware('auth:sanctum')->group(function () {
 
         // Lấy danh sách
         Route::get('/dia-chi', [DiachiController::class, 'index']);
@@ -126,5 +128,30 @@ Route::prefix('v1')->group(function () {
 
         // Gửi đánh giá
         Route::post('/danh-gia', [DanhgiaController::class, 'store']);
+    });
+
+    Route::middleware('auth:sanctum')->group(function () {
+
+        // Lấy danh sách (kèm số lượng chưa đọc)
+        Route::get('/thong-bao', [ThongbaoController::class, 'index']);
+
+        // Đánh dấu 1 cái đã đọc
+        Route::post('/thong-bao/read', [ThongbaoController::class, 'markAsRead']);
+
+        // Đánh dấu tất cả đã đọc
+        Route::post('/thong-bao/read-all', [ThongbaoController::class, 'markAllRead']);
+
+        // Xóa thông báo
+        Route::delete('/thong-bao/{id}', [ThongbaoController::class, 'destroy']);
+    });
+
+    // Gửi mail yêu cầu (Form nhập email)
+    Route::post('/mat-khau/email', [NguoidungController::class, 'sendResetLink']);
+
+    // Đổi mật khẩu (Form nhập pass mới)
+    Route::post('/mat-khau/reset', [NguoidungController::class, 'resetPassword']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/nguoi-dung/doi-mat-khau', [NguoidungController::class, 'changePassword']);
     });
 });

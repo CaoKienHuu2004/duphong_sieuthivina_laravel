@@ -21,6 +21,8 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Filter;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\QuenmatkhauNotification;
+use Carbon\Carbon; // <--- Thêm dòng này vào
 
 class NguoidungController extends Controller
 {
@@ -293,6 +295,145 @@ class NguoidungController extends Controller
             'status' => 200,
             'message' => 'Cập nhật thông tin thành công!',
             'user' => new NguoidungResource($user->fresh())
+        ]);
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        // 1. Validate (Giữ nguyên)
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:nguoidung,email',
+        ]);
+        if ($validator->fails()) return response()->json(['status' => 422, 'errors' => $validator->errors()], 422);
+
+        $email = $request->email;
+        $token = \Illuminate\Support\Str::random(60);
+
+        // 2. Lưu Token vào DB (Giữ nguyên logic cũ)
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $email],
+            ['email' => $email, 'token' => $token, 'created_at' => now()]
+        );
+
+        // 3. Gửi Mail bằng Notification (Dùng view có sẵn của Laravel)
+        try {
+            // Lấy thông tin user để gửi thông báo
+            $user = NguoidungModel::where('email', $email)->first();
+            
+            // Gửi Notification (Laravel tự lo phần giao diện mail)
+            $user->notify(new QuenmatkhauNotification($token, $email));
+
+            return response()->json([
+                'status' => 200, 
+                'message' => 'Link đặt lại mật khẩu đã được gửi vào email của bạn!'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['status' => 500, 'message' => 'Lỗi gửi mail: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        // 1. Validate
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:nguoidung,email',
+            'token' => 'required',
+            'password' => 'required|min:6|confirmed', // password_confirmation bắt buộc phải khớp
+        ], [
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 422, 'errors' => $validator->errors()], 422);
+        }
+
+        // 2. Kiểm tra Token trong DB
+        $resetRecord = DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->where('token', $request->token)
+            ->first();
+
+        if (!$resetRecord) {
+            return response()->json(['status' => 400, 'message' => 'Token không hợp lệ hoặc sai email.'], 400);
+        }
+
+        // 3. Kiểm tra thời hạn Token (Ví dụ: 60 phút)
+        $tokenTime = Carbon::parse($resetRecord->created_at);
+        if ($tokenTime->addMinutes(60)->isPast()) {
+            // Xóa token hết hạn
+            DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+            return response()->json(['status' => 400, 'message' => 'Link đổi mật khẩu đã hết hạn. Vui lòng thử lại.'], 400);
+        }
+
+        // 4. Cập nhật Mật khẩu mới cho User
+        $user = NguoidungModel::where('email', $request->email)->first();
+        
+        // Lưu ý: Nếu bạn dùng Hash::make() thì cập nhật, nếu lưu thô (MD5 - không khuyến khích) thì sửa tương ứng
+        // Ở đây mình giả định bạn dùng Hash chuẩn Laravel
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // 5. Xóa Token sau khi dùng xong (Để không dùng lại được)
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+        return response()->json([
+            'status' => 200, 
+            'message' => 'Mật khẩu đã được cập nhật thành công! Bạn có thể đăng nhập ngay.'
+        ]);
+    }
+
+    /**
+     * 3. ĐỔI MẬT KHẨU (User đang đăng nhập)
+     * Method: POST
+     * Body: {
+     * "current_password": "matkhaucu",
+     * "new_password": "matkhaumoi",
+     * "new_password_confirmation": "matkhaumoi"
+     * }
+     */
+    public function changePassword(Request $request)
+    {
+        // Lấy user hiện tại từ Token
+        $user = $request->user(); 
+
+        // 1. Validate dữ liệu
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:6|confirmed|different:current_password',
+        ], [
+            'current_password.required' => 'Vui lòng nhập mật khẩu hiện tại.',
+            'new_password.required' => 'Vui lòng nhập mật khẩu mới.',
+            'new_password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự.',
+            'new_password.confirmed' => 'Xác nhận mật khẩu mới không khớp.',
+            'new_password.different' => 'Mật khẩu mới không được trùng với mật khẩu cũ.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 422, 'errors' => $validator->errors()], 422);
+        }
+
+        // 2. Kiểm tra mật khẩu cũ có đúng không
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Mật khẩu hiện tại không chính xác.',
+                'errors' => ['current_password' => ['Mật khẩu hiện tại không chính xác.']] // Trả về dạng lỗi field để FE dễ hiển thị
+            ], 400);
+        }
+
+        // 3. Cập nhật mật khẩu mới
+        // Lưu ý: Phải gán vào user hiện tại và save()
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        // (Tùy chọn) Xóa các token cũ để đăng xuất khỏi các thiết bị khác (bảo mật cao)
+        // $user->tokens()->where('id', '!=', $user->currentAccessToken()->id)->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Đổi mật khẩu thành công!'
         ]);
     }
 }

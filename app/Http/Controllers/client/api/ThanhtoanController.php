@@ -137,6 +137,19 @@ class ThanhtoanController extends Controller
 
             DB::commit();
 
+            try {
+                        ThongbaoModel::khoitaothongbao(
+                            $order->id_nguoidung,
+                            "Bạn đã đặt hàng thành công !",
+                            "Mã đơn {$order->madon} của bạn, vui lòng kiểm tra đơn hàng của bạn.",
+                            "#",
+                            "Đơn hàng"
+                        );
+                    } catch (\Exception $e) {
+                        // Log lỗi thông báo nhưng không chặn quy trình thanh toán
+                        \Log::error('Lỗi tạo thông báo: ' . $e->getMessage());
+                    }
+
             // --- BƯỚC 7: XỬ LÝ THANH TOÁN ---
             $paymentUrl = null;
 

@@ -40,7 +40,8 @@ class GiohangController extends Controller
         return response()->json([
             'status' => 200,
             'data' => [
-                'items' => $this->formatCartResponse($fullCart),
+                'items' => $this->formatCartResponse($rawItems),
+                'gifts' => $this->formatCartResponse($gifts),
                 'summary' => [
                     'tamtinh' => $tamtinh,
                     'tietkiem' => $tietkiem,
