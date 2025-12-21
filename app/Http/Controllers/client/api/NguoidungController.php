@@ -17,19 +17,24 @@ use App\Http\Resources\NguoidungResource;
 use App\Models\NguoidungModel;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Filter;
+use Illuminate\Support\Facades\DB;
 
 class NguoidungController extends Controller
 {
     // Xử lý đăng nhập
     public function handleLogin(Request $request)
     {
-        // Giữ nguyên logic validate
+        // 1. Validate: Chỉ cần kiểm tra có nhập hay không
+        // Ta vẫn giữ key 'username' gửi từ FE để đỡ phải sửa FE, nhưng hiểu ngầm nó là "Tài khoản"
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string',
+            'phonemail' => 'required|string', // FE gửi lên là 'username' nhưng giá trị là email hoặc sdt
             'password' => 'required|string',
         ], [
-            'username.required' => 'Vui lòng nhập Tên tài khoản để đăng nhập.',
-            'username.string' => 'Tên tài khoản không hợp lệ.',
+            'phonemail.required' => 'Vui lòng nhập Email hoặc Số điện thoại.',
+            'phonemail.string' => 'Tài khoản không hợp lệ.',
             'password.required' => 'Vui lòng nhập Mật khẩu.',
             'password.string' => 'Mật khẩu không hợp lệ.',
         ]);
@@ -38,13 +43,23 @@ class NguoidungController extends Controller
             return response()->json(['status' => 422, 'errors' => $validator->errors()], 422);
         }
 
-        $credentials = $request->only('username', 'password');
+        // 2. Xử lý Logic nhận diện Email hay Số điện thoại
+        $loginInput = $request->input('phonemail');
 
+        // Dùng filter_var để kiểm tra xem input có phải là email không
+        $fieldType = filter_var($loginInput, FILTER_VALIDATE_EMAIL) ? 'email' : 'sodienthoai';
+
+        // Tạo mảng credentials để Auth kiểm tra đúng cột trong database
+        $credentials = [
+            $fieldType => $loginInput, // Tự động gán key là 'email' hoặc 'sodienthoai'
+            'password' => $request->input('password')
+        ];
+
+        // 3. Tiến hành đăng nhập
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            // Trong API không dùng session regenerate, ta tạo Token thay thế
             $user = Auth::user();
 
-            // Kiểm tra trạng thái tài khoản (Giữ nguyên logic của bạn)
+            // Kiểm tra trạng thái tài khoản
             if (!$user->trangthai) {
                 Auth::logout();
                 return response()->json([
@@ -53,10 +68,9 @@ class NguoidungController extends Controller
                 ], 403);
             }
 
-            // Tạo token (Sanctum)
+            // Tạo Token Sanctum
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            // Chuyển hướng theo vai trò (Thay redirect bằng data vaitro để FE xử lý)
             return response()->json([
                 'status' => 200,
                 'message' => 'Đăng nhập thành công',
@@ -67,11 +81,74 @@ class NguoidungController extends Controller
             ]);
         }
 
-        // Sai thông tin (Giữ nguyên logic trả về lỗi)
+        // 4. Trả về lỗi nếu sai
         return response()->json([
             'status' => 401,
-            'message' => 'Tên tài khoản hoặc mật khẩu không đúng.'
+            'message' => 'Thông tin đăng nhập hoặc mật khẩu không đúng.'
         ], 401);
+    }
+
+    public function loginWithGoogle(Request $request)
+    {
+        // 1. Chỉ nhận token từ FE
+        $validator = Validator::make($request->all(), [
+            'access_token' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 422, 'errors' => $validator->errors()], 422);
+        }
+
+        try {
+            // 2. Lấy thông tin Email từ Google (Stateless)
+            $googleUser = Socialite::driver('google')->stateless()->userFromToken($request->access_token);
+            $googleEmail = $googleUser->getEmail();
+
+            if (!$googleEmail) {
+                return response()->json(['status' => 401, 'message' => 'Không lấy được Email từ Google.'], 401);
+            }
+
+            // 3. Tự động kiếm mail trong Database
+            $user = NguoidungModel::where('email', $googleEmail)->first();
+
+            // 4. Xử lý logic Đăng nhập
+            if ($user) {
+                // TRƯỜNG HỢP 1: Đã có tài khoản -> Đăng nhập luôn
+
+                // Kiểm tra xem tài khoản có bị khóa không
+                if (!$user->trangthai) {
+                    return response()->json(['status' => 403, 'message' => 'Tài khoản đã bị khóa.'], 403);
+                }
+            } else {
+                // TRƯỜNG HỢP 2: Chưa có tài khoản -> Tạo mới nhanh (để họ vào luôn)
+                // Nếu bạn CHỈ muốn cho người đã đăng ký rồi mới được login, thì xóa đoạn else này và return lỗi 404.
+
+                $user = NguoidungModel::create([
+                    'name' => $googleUser->getName() ?? 'Người dùng Google', // Lấy tên từ Google
+                    'email' => $googleEmail,
+                    'password' => Hash::make(Str::random(16)), // Tạo pass ngẫu nhiên để không bị lỗi DB
+                    'vaitro' => 'khachhang',
+                    'trangthai' => 1,
+                ]);
+            }
+
+            // 5. Cấp Token (Giống hệt hàm handleLogin cũ)
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Đăng nhập Google thành công',
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'vaitro' => $user->vaitro,
+                'user' => new NguoidungResource($user)
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Lỗi hệ thống: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     // Đăng xuất

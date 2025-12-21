@@ -10,7 +10,7 @@ use App\Http\Controllers\client\api\QuatangsukienController;
 use App\Http\Controllers\client\api\BaivietController;
 use App\Http\Controllers\client\api\GiohangController;
 use App\Http\Controllers\client\api\ThanhtoanController;
-
+use App\Http\Controllers\client\api\DonhangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,4 +65,21 @@ Route::prefix('v1')->group(function () {
         // FE sẽ gọi API này sau khi VNPay redirect về
         Route::get('/vnpay-return', [ThanhtoanController::class, 'vnpayReturn']);
     });
+
+    Route::middleware('auth:sanctum')->prefix('/don-hang')->group(function () {
+        // Chi tiết đơn hàng (GET)
+        // URL: {{base_url}}/api/v1/orders/detail/STV251221001
+        Route::get('/{madon}', [DonhangController::class, 'getOrderDetail']);
+
+        // Hủy đơn hàng (POST)
+        // URL: {{base_url}}/api/v1/orders/cancel
+        // Body: { "id_donhang": 1, "ly_do": "Đổi ý không mua nữa" }
+        Route::post('/huy-don-hang', [DonhangController::class, 'cancelOrder']);
+
+        // Tra cứu đơn hàng (POST) - Bảo mật hơn GET vì gửi SĐT trong Body
+        // URL: {{base_url}}/api/v1/orders/tracking
+        // Body: { "madon": "STV251221001", "sodienthoai": "0987654321" }
+        
+    });
+        Route::post('/don-hang/tra-cuu', [DonhangController::class, 'trackOrder']);
 });
