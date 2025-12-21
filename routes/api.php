@@ -12,6 +12,7 @@ use App\Http\Controllers\client\api\GiohangController;
 use App\Http\Controllers\client\api\ThanhtoanController;
 use App\Http\Controllers\client\api\DonhangController;
 use App\Http\Controllers\client\api\DiachiController;
+use App\Http\Controllers\client\api\DanhgiaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,7 +88,7 @@ Route::prefix('v1')->group(function () {
         // 2. Mua lại đơn hàng cũ (reOrder)
         Route::post('/mua-lai', [DonhangController::class, 'reOrder']);
     });
-    
+
     Route::post('/don-hang/tra-cuu', [DonhangController::class, 'trackOrder']);
 
     Route::get('/provinces', [DiachiController::class, 'getProvinces']);
@@ -112,5 +113,18 @@ Route::prefix('v1')->group(function () {
 
         // Đặt làm mặc định
         Route::patch('/dia-chi/mac-dinh/{id}', [DiachiController::class, 'setDefault']);
+    });
+
+
+
+    // === NHÓM PUBLIC (Ai cũng xem được) ===
+    // Lấy danh sách đánh giá của 1 sản phẩm
+    Route::get('/san-pham/{slug}/danh-gia', [DanhgiaController::class, 'index']);
+
+    // === NHÓM PRIVATE (Phải đăng nhập mới được làm) ===
+    Route::middleware('auth:sanctum')->group(function () {
+
+        // Gửi đánh giá
+        Route::post('/danh-gia', [DanhgiaController::class, 'store']);
     });
 });
