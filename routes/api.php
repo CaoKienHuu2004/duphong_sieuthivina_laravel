@@ -11,6 +11,7 @@ use App\Http\Controllers\client\api\BaivietController;
 use App\Http\Controllers\client\api\GiohangController;
 use App\Http\Controllers\client\api\ThanhtoanController;
 use App\Http\Controllers\client\api\DonhangController;
+use App\Http\Controllers\client\api\DiachiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,7 +81,31 @@ Route::prefix('v1')->group(function () {
         // Tra cứu đơn hàng (POST) - Bảo mật hơn GET vì gửi SĐT trong Body
         // URL: {{base_url}}/api/v1/orders/tracking
         // Body: { "madon": "STV251221001", "sodienthoai": "0987654321" }
-        
+
     });
-        Route::post('/don-hang/tra-cuu', [DonhangController::class, 'trackOrder']);
+    Route::post('/don-hang/tra-cuu', [DonhangController::class, 'trackOrder']);
+
+    Route::get('/provinces', [DiachiController::class, 'getProvinces']);
+
+    // Các API cần đăng nhập
+    Route::middleware('auth:sanctum')->group(function () {
+
+        // Lấy danh sách
+        Route::get('/dia-chi', [DiachiController::class, 'index']);
+        
+        // Thêm mới
+        Route::post('/dia-chi', [DiachiController::class, 'store']);
+
+        // Xem chi tiết 1 cái
+        // Route::get('/dia-chi/{id}', [DiachiController::class, 'show']);
+
+        // Cập nhật thông tin
+        Route::put('/dia-chi/{id}', [DiachiController::class, 'update']);
+
+        // Xóa
+        Route::delete('/dia-chi/{id}', [DiachiController::class, 'destroy']);
+
+        // Đặt làm mặc định
+        Route::patch('/dia-chi/set-default/{id}', [DiachiController::class, 'setDefault']);
+    });
 });
