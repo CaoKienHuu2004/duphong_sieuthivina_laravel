@@ -41,7 +41,6 @@ Route::prefix('v1')->group(function () {
         Route::get('/thong-tin-ca-nhan', [NguoidungController::class, 'profile']);
         Route::post('/thong-tin-ca-nhan/cap-nhat', [NguoidungController::class, 'updateProfile']);
         Route::post('/dang-xuat', [NguoidungController::class, 'logout']);
-        
     });
 
     Route::get('/qua-tang', [QuatangsukienController::class, 'index']);
@@ -55,12 +54,15 @@ Route::prefix('v1')->group(function () {
     Route::prefix('bai-viet')->group(function () {
         Route::get('/', [BaivietController::class, 'index']); // Lấy danh sách
         Route::get('/{slug}', [BaivietController::class, 'show']); // Chi tiết bài viết
-        
+
     });
 
-    // Đặt hàng (Auth)
-    Route::middleware('auth:sanctum')->post('/thanh-toan/dat-hang', [ThanhtoanController::class, 'placeOrder']);
+    Route::middleware('auth:sanctum')->prefix('/thanh-toan')->group(function () {
+        // 1. API Đặt hàng (POST)
+        Route::post('/dat-hang', [ThanhtoanController::class, 'placeOrder']);
 
-    // IPN VNPay (Public - Nhận thông báo từ VNPay)
-    Route::get('/thanh-toan/vnpay-ipn', [ThanhtoanController::class, 'vnpayIpn']);
+        // 2. API Check kết quả VNPay (GET)
+        // FE sẽ gọi API này sau khi VNPay redirect về
+        Route::get('/vnpay-return', [ThanhtoanController::class, 'vnpayReturn']);
+    });
 });

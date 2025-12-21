@@ -31,6 +31,7 @@ class DonhangModel extends Model
         'tamtinh',
         'thanhtien',
         'trangthai',
+        'trangthaithanhtoan',
     ];
     public $timestamps = true;
 
