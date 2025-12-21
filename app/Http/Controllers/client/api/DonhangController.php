@@ -10,7 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\DonhangModel;
 use App\Models\BientheModel;
+use App\Models\GiohangModel;
 use App\Models\ThongbaoModel;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\SanphamResource;
+
 
 class DonhangController extends Controller
 {
@@ -240,13 +244,13 @@ class DonhangController extends Controller
      */
     public function reOrder(Request $request)
     {
-        // 1. Validate dữ liệu đầu vào là một Mảng
+        // 1. Validate dữ liệu đầu vào
         $validator = Validator::make($request->all(), [
             'items' => 'required|array',
             'items.*.id_bienthe' => 'required|exists:bienthe,id',
             'items.*.soluong' => 'required|integer|min:1',
         ], [
-            'items.required' => 'Không có sản phẩm nào được chọn để mua lại.',
+            'items.required' => 'Không có sản phẩm nào để mua lại.',
             'items.*.exists' => 'Sản phẩm không tồn tại hoặc đã ngừng kinh doanh.',
         ]);
 
@@ -258,7 +262,7 @@ class DonhangController extends Controller
         $itemsToAdd = $request->items;
         
         $addedCount = 0;
-        $failedItems = []; // Mảng chứa thông báo lỗi cho từng món (ví dụ: hết hàng)
+        $failedItems = []; // Mảng chứa các món bị lỗi (hết hàng)
 
         DB::beginTransaction();
         try {
@@ -266,45 +270,69 @@ class DonhangController extends Controller
                 $idBienthe = $item['id_bienthe'];
                 $soLuongMuonMua = $item['soluong'];
 
-                // Check tồn kho
+                // 2. Load Biến thể kèm Sản phẩm cha để ném vào Resource
                 $bienthe = BientheModel::with('sanpham')->find($idBienthe);
 
-                // Kiểm tra nếu sản phẩm bị xóa mềm hoặc ẩn (nếu có logic đó)
+                // Kiểm tra dữ liệu sản phẩm
                 if (!$bienthe || !$bienthe->sanpham) {
-                    $failedItems[] = "Sản phẩm ID $idBienthe không tồn tại.";
+                    $failedItems[] = "Sản phẩm biến thể ID $idBienthe bị lỗi dữ liệu.";
                     continue;
                 }
 
-                // Kiểm tra số lượng tồn kho
+                // 3. Kiểm tra Tồn kho
                 if ($bienthe->soluong < $soLuongMuonMua) {
-                    $tenSp = $bienthe->sanpham->ten_sanpham ?? "Sản phẩm $idBienthe";
-                    $failedItems[] = "$tenSp hiện chỉ còn {$bienthe->soluong} sản phẩm (Bạn muốn mua $soLuongMuonMua).";
+                    $tenSp = $bienthe->sanpham->ten;
+                    $failedItems[] = "$tenSp chỉ còn {$bienthe->soluong} sản phẩm (không đủ $soLuongMuonMua).";
                     continue; 
                 }
 
-                // --- LOGIC THÊM VÀO GIỎ HÀNG ---
-                // 1. Tìm xem trong giỏ của user đã có món này chưa
+                // ====================================================
+                // 4. [QUAN TRỌNG] LẤY GIÁ TỪ SANPHAM RESOURCE
+                // ====================================================
+                
+                // B4.1: Khởi tạo Resource và Resolve ra mảng dữ liệu
+
+                // B4.2: Lấy giá từ mảng data vừa resolve
+                // BÀ CHÚ Ý: Mở file SanphamResource.php xem key giá tên là gì rồi sửa dòng dưới nhé
+                // Tui đang để mặc định các trường hợp phổ biến:
+                $giaGoc = $bienthe->giagoc ?? 0;
+                $phanTramGiam = $bienthe->sanpham->giamgia ?? 0;
+                $giadaGiam = $giaGoc * (1 - ($phanTramGiam / 100));
+
+                $donGia = $giadaGiam;
+                // Tính thành tiền
+                $thanhTienMoi = $donGia * $soLuongMuonMua;
+
+                // ====================================================
+                // 5. THÊM VÀO GIỎ HÀNG (CẬP NHẬT HOẶC TẠO MỚI)
+                // ====================================================
                 $cartItem = GiohangModel::where('id_nguoidung', $user->id)
                                         ->where('id_bienthe', $idBienthe)
                                         ->first();
 
                 if ($cartItem) {
-                    // Nếu có rồi -> Cộng dồn số lượng
-                    // (Tùy chọn: Check lại tồn kho tổng thể lần nữa nếu muốn chặt chẽ)
+                    // TRƯỜNG HỢP 1: Đã có trong giỏ -> Cộng dồn số lượng & Tính lại tiền
                     $newQty = $cartItem->soluong + $soLuongMuonMua;
+                    
+                    // Check lại tồn kho tổng (Tùy chọn, nên có cho chặt chẽ)
                     if ($newQty > $bienthe->soluong) {
                          $tenSp = $bienthe->sanpham->ten_sanpham;
-                         $failedItems[] = "Không thể thêm $tenSp. Tổng số lượng trong giỏ vượt quá tồn kho.";
+                         $failedItems[] = "Không thể thêm $tenSp. Tổng số lượng trong giỏ ($newQty) vượt quá tồn kho.";
                          continue;
                     }
+
                     $cartItem->soluong = $newQty;
+                    $cartItem->thanhtien = $newQty * $donGia; // Cập nhật thành tiền mới
                     $cartItem->save();
+
                 } else {
-                    // Nếu chưa có -> Tạo mới
+                    // TRƯỜNG HỢP 2: Chưa có -> Tạo mới
                     GiohangModel::create([
                         'id_nguoidung' => $user->id,
                         'id_bienthe' => $idBienthe,
-                        'soluong' => $soLuongMuonMua
+                        'soluong' => $soLuongMuonMua,
+                        'thanhtien' => $thanhTienMoi, // Lưu thành tiền
+                        'trangthai' => 'Hiển thị'     // Mặc định hiển thị
                     ]);
                 }
 
@@ -313,25 +341,24 @@ class DonhangController extends Controller
 
             DB::commit();
 
-            // Phản hồi kết quả
+            // 6. Trả về kết quả
             if ($addedCount > 0) {
                 return response()->json([
                     'status' => 200,
                     'message' => "Đã thêm thành công $addedCount sản phẩm vào giỏ hàng.",
-                    'warnings' => $failedItems // Trả về danh sách các món bị lỗi (hết hàng) để FE hiển thị Toast
+                    'warnings' => $failedItems // Trả về danh sách lỗi (nếu có món nào hết hàng)
                 ]);
             } else {
-                // Không thêm được món nào (do hết hàng hết chẳng hạn)
                 return response()->json([
                     'status' => 400,
-                    'message' => 'Không thể thêm sản phẩm nào vào giỏ hàng.',
+                    'message' => 'Không thêm được sản phẩm nào (Có thể do hết hàng).',
                     'errors' => $failedItems
                 ], 400);
             }
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['status' => 500, 'message' => 'Lỗi server: ' . $e->getMessage()], 500);
+            return response()->json(['status' => 500, 'message' => 'Lỗi hệ thống: ' . $e->getMessage()], 500);
         }
     }
 
