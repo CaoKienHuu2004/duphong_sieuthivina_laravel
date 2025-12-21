@@ -13,6 +13,7 @@ use App\Http\Controllers\client\api\ThanhtoanController;
 use App\Http\Controllers\client\api\DonhangController;
 use App\Http\Controllers\client\api\DiachiController;
 use App\Http\Controllers\client\api\DanhgiaController;
+use App\Http\Controllers\client\api\GlobalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,11 +26,10 @@ use App\Http\Controllers\client\api\DanhgiaController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::prefix('v1')->group(function () {
+    Route::get('/header-data', [GlobalController::class, 'getHeaderData']);
+
     Route::get('/trang-chu', [HomeController::class, 'index']);
 
     Route::get('/san-pham', [SanphamController::class, 'index']);
@@ -89,12 +89,12 @@ Route::prefix('v1')->group(function () {
         Route::post('/mua-lai', [DonhangController::class, 'reOrder']);
     });
 
-    Route::post('/don-hang/tra-cuu', [DonhangController::class, 'trackOrder']);
+        Route::post('/don-hang/tra-cuu', [DonhangController::class, 'trackOrder']);
 
-    Route::get('/provinces', [DiachiController::class, 'getProvinces']);
+        Route::get('/provinces', [DiachiController::class, 'getProvinces']);
 
-    // Các API cần đăng nhập
-    Route::middleware('auth:sanctum')->group(function () {
+        // Các API cần đăng nhập
+        Route::middleware('auth:sanctum')->group(function () {
 
         // Lấy danh sách
         Route::get('/dia-chi', [DiachiController::class, 'index']);
