@@ -10,6 +10,9 @@ use App\Models\TukhoaModel;
 use App\Models\GiohangModel;
 use App\Models\SanphamModel; // Thêm model sản phẩm để làm chức năng tìm kiếm
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail; // [MỚI] Để gửi mail
+use Illuminate\Support\Facades\Validator;
+use App\Mail\LienheMail;
 
 class GlobalController extends Controller
 {
@@ -73,5 +76,64 @@ class GlobalController extends Controller
                 // 'cart_auth_items' => $cartItems // Nếu muốn trả về chi tiết giỏ hàng luôn thì mở cái này
             ]
         ]);
+    }
+
+    /**
+     * 2. XỬ LÝ GỬI LIÊN HỆ (Gửi mail đến Admin)
+     * Method: POST
+     */
+    /**
+     * GỬI LIÊN HỆ (Sử dụng Mail Template)
+     * Method: POST
+     * Body: hoten, email, sodienthoai, noidung
+     */
+    public function submitContact(Request $request)
+    {
+        // 1. Validate dữ liệu
+        $validator = Validator::make($request->all(), [
+            'hoten' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'sodienthoai' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'noidung' => 'required|string',
+        ], [
+            'hoten.required' => 'Vui lòng nhập họ tên.',
+            'email.required' => 'Vui lòng nhập email.',
+            'email.email' => 'Email không đúng định dạng.',
+            'sodienthoai.required' => 'Vui lòng nhập số điện thoại.',
+            'noidung.required' => 'Vui lòng nhập nội dung.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            // 2. Chuẩn bị dữ liệu gửi sang Template
+            $dataInfo = [
+                'hoten' => $request->hoten,
+                'email' => $request->email,
+                'phone' => $request->sodienthoai,
+                'content' => $request->noidung,
+                'time' => now()->format('d/m/Y H:i:s')
+            ];
+
+            // 3. Gửi Mail sử dụng Class Mailable (ContactEmail)
+            // Gửi đến email quản trị viên (ví dụ: admin@sieuthivina.com)
+            Mail::to('hotb@fpt.edu.vn')->send(new LienheMail($dataInfo));
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm nhất.',
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Lỗi gửi mail: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

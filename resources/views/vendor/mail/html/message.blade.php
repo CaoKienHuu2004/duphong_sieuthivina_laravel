@@ -21,7 +21,7 @@
 {{-- Footer --}}
 <x-slot:footer>
 <x-mail::footer>
-© {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}
+© {{ date('Y') }} Siêu Thị Vina - {{ __('Công ty TNHH Siêu Thị Vina') }}
 </x-mail::footer>
 </x-slot:footer>
 </x-mail::layout>

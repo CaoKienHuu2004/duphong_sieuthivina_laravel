@@ -154,4 +154,6 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/nguoi-dung/doi-mat-khau', [NguoidungController::class, 'changePassword']);
     });
+
+    Route::post('/lien-he', [GlobalController::class, 'submitContact']);
 });
