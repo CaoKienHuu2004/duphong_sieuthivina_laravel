@@ -23,6 +23,7 @@ use App\Models\ThongbaoModel;
 use App\Models\MagiamgiaModel;
 use App\Models\BientheModel;
 use App\Livewire\GiohangComponent;
+use App\Mail\DathangthanhcongMail;
 
 class ThanhtoanController extends Controller
 {
@@ -210,6 +211,22 @@ class ThanhtoanController extends Controller
             $currentDateTime = Carbon::now()->format('ymd');
             $order->madon = 'STV' . $currentDateTime . $order->id;
             $order->save();
+
+            $user = Auth::user();
+            // ================================================================
+            // [MỚI] GỬI MAIL XÁC NHẬN ĐƠN HÀNG (SAU KHI DB COMMIT THÀNH CÔNG)
+            // ================================================================
+            try {
+                // Nạp quan hệ chi tiết đơn hàng để hiển thị trong Mail View
+                $order->load('chitietdonhang');
+                
+                // Gửi mail đến email của user đang đăng nhập
+                Mail::to($user->email)->send(new DathangthanhcongMail($order));
+            } catch (\Exception $e) {
+                // Log lỗi mail nhưng KHÔNG return lỗi (để quy trình đặt hàng vẫn thành công)
+                Log::error("Gửi mail đơn hàng {$order->madon} thất bại: " . $e->getMessage());
+            }
+            // ================================================================
 
             ThongbaoModel::khoitaothongbao(
                 $order->id_nguoidung,
