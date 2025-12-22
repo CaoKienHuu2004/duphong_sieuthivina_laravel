@@ -9,7 +9,7 @@ Cảm ơn bạn đã mua sắm tại Siêu Thị Vina. Đơn hàng của bạn �
 **Mã đơn hàng:** {{ $order->madon }}<br>
 **Ngày đặt:** {{ $order->created_at->format('d/m/Y H:i') }}<br>
 **Hình thức thanh toán:** {{ $order->hinhthucthanhtoan }}<br>
-**Địa chỉ giao:** {{ $order->diachinhan }}
+**Địa chỉ giao:** {{ $order->diachinhan }}, {{ $order->khuvucgiao }}.
 </x-mail::panel>
 
 ## Chi tiết đơn hàng

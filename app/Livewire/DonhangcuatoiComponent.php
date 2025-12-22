@@ -2,10 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Mail\HuydonhangMail;
 use Livewire\Component;
 use App\Models\DonhangModel;
 use App\Models\ThongbaoModel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class DonhangcuatoiComponent extends Component
 {
@@ -153,6 +156,21 @@ class DonhangcuatoiComponent extends Component
                 route('chi-tiet-don-hang', $donHang->madon),
                 'Đơn hàng'
             );
+
+            // GỬI MAIL
+            try {
+                
+                // Nạp chi tiết để hiển thị trong mail
+                $donHang->load('chitietdonhang'); 
+                
+                // Lấy email người đặt (hoặc người nhận tùy logic)
+                $emailNhan = $donHang->nguoidung->email; // Đảm bảo lấy đúng email
+
+                Mail::to($emailNhan)->send(new HuydonhangMail($donHang));
+                
+            } catch (\Exception $e) {
+                Log::error("Gửi mail hủy đơn thất bại: " . $e->getMessage());
+            }
 
             // Tải lại số lượng và danh sách đơn hàng
             $this->loadFilterCounts();

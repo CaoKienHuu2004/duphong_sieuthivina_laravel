@@ -20,7 +20,7 @@
             {{-- 1. DANH SÁCH SẢN PHẨM CHÍNH ($giohang) --}}
             {{-- ================================================================= --}}
             <div class="cart-table border border-gray-100 rounded-8 p-30 pb-0" wire:loading.class="opacity-50">
-                <form action="" method="post" class="">
+                <form action="#" class="">
                     <div class="overflow-x-auto scroll-sm scroll-sm-horizontal">
                         <table class="table style-three">
                             <thead>
