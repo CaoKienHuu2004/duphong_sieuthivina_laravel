@@ -6,9 +6,9 @@ Xin chào **{{ $order->nguoinhan }}**,
 Cảm ơn bạn đã mua sắm tại Siêu Thị Vina. Đơn hàng của bạn đã được ghi nhận thành công.
 
 <x-mail::panel>
-**Mã đơn hàng:** {{ $order->madon }}
-**Ngày đặt:** {{ $order->created_at->format('d/m/Y H:i') }}
-**Hình thức thanh toán:** {{ $order->hinhthucthanhtoan }}
+**Mã đơn hàng:** {{ $order->madon }}<br>
+**Ngày đặt:** {{ $order->created_at->format('d/m/Y H:i') }}<br>
+**Hình thức thanh toán:** {{ $order->hinhthucthanhtoan }}<br>
 **Địa chỉ giao:** {{ $order->diachinhan }}
 </x-mail::panel>
 

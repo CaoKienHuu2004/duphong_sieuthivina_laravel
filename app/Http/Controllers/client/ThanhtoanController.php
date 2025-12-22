@@ -212,29 +212,7 @@ class ThanhtoanController extends Controller
             $order->madon = 'STV' . $currentDateTime . $order->id;
             $order->save();
 
-            $user = Auth::user();
-            // ================================================================
-            // [MỚI] GỬI MAIL XÁC NHẬN ĐƠN HÀNG (SAU KHI DB COMMIT THÀNH CÔNG)
-            // ================================================================
-            try {
-                // Nạp quan hệ chi tiết đơn hàng để hiển thị trong Mail View
-                $order->load('chitietdonhang');
-                
-                // Gửi mail đến email của user đang đăng nhập
-                Mail::to($user->email)->send(new DathangthanhcongMail($order));
-            } catch (\Exception $e) {
-                // Log lỗi mail nhưng KHÔNG return lỗi (để quy trình đặt hàng vẫn thành công)
-                Log::error("Gửi mail đơn hàng {$order->madon} thất bại: " . $e->getMessage());
-            }
-            // ================================================================
-
-            ThongbaoModel::khoitaothongbao(
-                $order->id_nguoidung,
-                "Bạn đã đặt hàng thành công !",
-                "Mã đơn {$order->madon} của bạn, vui lòng kiểm tra đơn hàng của bạn.",
-                route('chi-tiet-don-hang', $order->madon), // Giả định có route xem chi tiết đơn hàng
-                'Đơn hàng'
-            );
+            
 
             foreach ($cartItems as $item) {
                 $bientheId = $item['id_bienthe'];
@@ -288,6 +266,32 @@ class ThanhtoanController extends Controller
             
             // 5. Kết thúc Transaction
             DB::commit();
+
+            $user = Auth::user();
+            
+
+            ThongbaoModel::khoitaothongbao(
+                $order->id_nguoidung,
+                "Bạn đã đặt hàng thành công !",
+                "Mã đơn {$order->madon} của bạn, vui lòng kiểm tra đơn hàng của bạn.",
+                route('chi-tiet-don-hang', $order->madon), // Giả định có route xem chi tiết đơn hàng
+                'Đơn hàng'
+            );
+
+            // ================================================================
+            // [MỚI] GỬI MAIL XÁC NHẬN ĐƠN HÀNG (SAU KHI DB COMMIT THÀNH CÔNG)
+            // ================================================================
+            try {
+                // Nạp quan hệ chi tiết đơn hàng để hiển thị trong Mail View
+                $order->load('chitietdonhang');
+                
+                // Gửi mail đến email của user đang đăng nhập
+                Mail::to($user->email)->send(new DathangthanhcongMail($order));
+            } catch (\Exception $e) {
+                // Log lỗi mail nhưng KHÔNG return lỗi (để quy trình đặt hàng vẫn thành công)
+                Log::error("Gửi mail đơn hàng {$order->madon} thất bại: " . $e->getMessage());
+            }
+            // ================================================================
 
             return redirect()->route('dat-hang-thanh-cong', ['madon' => $order->madon])
                              ->with('success', 'Đơn hàng **' . $order->madon . '** của bạn đã được đặt thành công!');
