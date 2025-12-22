@@ -47,7 +47,7 @@ class HomeController extends Controller
             ->get();
 
         // ===== SẢN PHẨM =====
-        $sanPhamHetHang = BientheModel::with(['sanpham','hinhanhsanpham'])
+        $sanPhamHetHang = BientheModel::with(['sanpham.hinhanhsanpham'])
             ->whereNull('deleted_at')
             ->where('soluong', '<', 10)
             ->orderBy('soluong', 'asc')
