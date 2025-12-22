@@ -40,7 +40,7 @@ class HuydonhangMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.huydonhang', // Tên view blade
+            markdown: 'mail.huydonhang', 
         );
     }
 }
