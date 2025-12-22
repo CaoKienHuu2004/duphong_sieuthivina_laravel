@@ -267,7 +267,7 @@ class NguoidungController extends Controller
 
             // 2b. XÓA FILE CŨ (NẾU CÓ)
             if ($user->avatar) {
-                $oldAvatarPath = public_path($user->avatar);
+                $oldAvatarPath = $publicPath . '/' . $user->avatar;
 
                 // Dùng File::exists() và File::delete() để xóa file
                 if (File::exists($oldAvatarPath)) {
