@@ -184,10 +184,8 @@
                                 <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-san-pham') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-san-pham') }}">Danh sách sản phẩm</a></li>
-                                <li><a href="categorylist.html">Danh mục sản
-                                        phẩm</a></li>
-                                <li><a href="brandlist.html">Thương hiệu
-                                        sản phẩm</a></li>
+                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-danh-muc') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-danh-muc') }}">Danh mục sản phẩm</a></li>
+                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-thuong-hieu') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-thuong-hieu') }}">Thương hiệu sản phẩm</a></li>
                             </ul>
                         </li>
                         <li class="submenu">

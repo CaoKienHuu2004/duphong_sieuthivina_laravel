@@ -35,5 +35,5 @@ Xem chi tiết đơn hàng
 </x-mail::button>
 
 Cảm ơn bạn,<br>
-**{{ config('app.name') }}**
+**Siêu Thị Vina**
 </x-mail::message>

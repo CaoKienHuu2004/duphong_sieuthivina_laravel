@@ -76,6 +76,19 @@
           </div>
         </div>
 
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+
         <div class="card">
           <div class="card-body">
             <div class="table-top">
@@ -108,19 +121,6 @@
                 </ul>
               </div> --}}
             </div>
-
-            @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
-            @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
 
             <div class="card mb-0" id="filter_inputs">
               <div class="card-body pb-0">
@@ -182,7 +182,7 @@
                       </a>
                       <div>
                         <span style="font-size: 12px;">{{ $sp->thuonghieu->ten ?? 'Không có' }}</span>
-                        <p style="width: 290px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <p style="width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                           <a class="text-black" href="{{ route('quan-tri-vien.chi-tiet-san-pham', ['id' => $sp->id, 'slug' => Str::slug($sp->ten)]) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $sp->ten }}">{{ $sp->ten }}</a>
                         </p>
                       </div>

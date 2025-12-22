@@ -11,7 +11,7 @@ class DanhmucController extends Controller
 {
     public function index()
     {
-        $danhmuc = DanhmucModel::withCount('sanpham')->get();
+        $danhmuc = DanhmucModel::withCount('sanpham')->orderBy('sapxep', 'asc')->get();
         return view('admin.danhmuc', compact('danhmuc'));
     }
 

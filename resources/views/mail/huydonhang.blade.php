@@ -32,5 +32,5 @@ Quay lại cửa hàng
 Nếu bạn có thắc mắc, vui lòng trả lời email này hoặc liên hệ hotline hỗ trợ.
 
 Trân trọng,<br>
-**{{ config('app.name') }}**
+**Siêu Thị Vina**
 </x-mail::message>

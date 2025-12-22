@@ -21,9 +21,9 @@
 {{-- Footer --}}
 <x-slot:footer>
 <x-mail::footer>
-© {{ date('Y') }} Siêu Thị Vina - {{ __('Công ty TNHH Siêu Thị Vina') }}<br>
+© {{ date('Y') }} Siêu Thị Vina - {{ __('Công ty TNHH thương mại Siêu Thị Vina') }}<br>
 {{ __('Địa chỉ: 801/2A Phạm Thế Hiển, Phường 4, Quận 8, Thành phố Hồ Chí Minh') }}<br>
-{{ __('MST: ... - Đại diện: Trần Bá Hộ') }}<br>
+{{ __('MST: 0918326706 - Đại diện: Trần Bá Hộ') }}<br>
 {{ __('Hotline: 0918326706 - Email: support@sieuthivina.com') }}
 
 </x-mail::footer>

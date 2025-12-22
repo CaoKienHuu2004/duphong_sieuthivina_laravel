@@ -22,6 +22,6 @@ Hệ thống vừa nhận được thông tin liên hệ từ khách hàng **{{ 
 Trả lời khách ngay
 @endcomponent
 
-Cảm ơn,  
-**{{ config('app.name') }}**
+Xin cảm ơn,  
+**Siêu Thị Vina**
 @endcomponent

@@ -1,413 +1,484 @@
 @extends('admin.layouts.app')
 
-@section('title')
-    Sửa "{{ $sanpham->ten }}" | Sản phẩm | Quản trị hệ thống Siêu Thị Vina
-@endsection
+@section('title', 'Cập nhật sản phẩm | Quản trị hệ thống Siêu Thị Vina')
 
 @section('content')
-<div class="page-wrapper">
-    <div class="content">
-        <div class="page-header">
-            <div class="page-title">
-                <h4>Sửa "{{ $sanpham->ten }}"</h4>
-                <h6>Chỉnh sửa sản phẩm của bạn.</h6>
-            </div>
+  <div class="page-wrapper">
+    {{-- FORM ACTION TRỎ VỀ ROUTE UPDATE --}}
+    <form class="content" action="{{ route('quan-tri-vien.cap-nhat-san-pham', $sanpham->id) }}" method="post" enctype="multipart/form-data">
+      @csrf 
+      @method('PUT') {{-- QUAN TRỌNG: Method PUT cho update --}}
+      
+      @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
+      @endif
 
-        <div class="card">
+      <div class="page-header">
+        <div class="page-title">
+          <h4>Cập nhật sản phẩm</h4>
+          <h6>Chỉnh sửa thông tin sản phẩm</h6>
+        </div>
+        <div class="page-btn">
+          {{-- Nút Lưu thay đổi --}}
+          <button type="submit" class="btn btn-added"><img src="{{asset('assets/admin')}}/img/icons/plus.svg" alt="img"
+              class="me-1">Lưu thay đổi</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card">
             <div class="card-body">
-                <form class="row" action="{{ route('cap-nhat-san-pham',$sanpham->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+              <div class="row">
+                <div class="col-lg-12 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Tên sản phẩm <span class="text-danger">*</span></label>
+                    {{-- VALUE CŨ --}}
+                    <input class="text-black form-control" type="text" name="tensp" value="{{ old('tensp', $sanpham->ten) }}" placeholder="Nhập tên sản phẩm..."
+                      id="slug-source" onkeyup="ChangeToSlug();" />
+                    <label>Đường dẫn: <span class="fst-italic form-text text-muted" id="slug-text">{{ $sanpham->slug }}</span></label>
+                    @error('tensp') <span class="form-text text-muted text-danger">{{ $message }}</span> @enderror
+                  </div>
+                </div>
+                <div class="col-lg-6 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Xuất xứ <span class="text-danger">*</span></label>
+                     {{-- VALUE CŨ --}}
+                    <input class="text-black form-control" type="text" name="xuatxu" value="{{ old('xuatxu', $sanpham->xuatxu) }}" placeholder="Nhập xuất xứ..." />
+                    @error('xuatxu') <span class="form-text text-muted text-danger">{{ $message }}</span> @enderror
+                  </div>
+                </div>
+                <div class="col-lg-6 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Nơi sản xuất</label>
+                     {{-- VALUE CŨ --}}
+                    <input class="text-black form-control" type="text" name="sanxuat" value="{{ old('sanxuat', $sanpham->sanxuat) }}" placeholder="Nhập nơi sản xuất..." />
+                    @error('sanxuat') <span class="form-text text-muted text-danger">{{ $message }}</span> @enderror
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>Mô tả sản phẩm <span class="text-danger">*</span></label>
+                    {{-- VALUE CŨ TRONG TEXTAREA --}}
+                    <textarea class="form-control" name="mo_ta" id="mo_ta">{{ old('mo_ta', $sanpham->mota) }}</textarea>
+                    @error('mo_ta') <span class="form-text text-muted text-danger">{{ $message }}</span> @enderror
+                  </div>
+                </div>
+                
+                {{-- KHU VỰC BIẾN THỂ --}}
+                <div class="col-lg-12 mb-3">
+                  <div class="flex-align">
+                    <button type="button" class="btn btn-primary my-2 btn-add-variant"
+                      style="font-size: 12px; display: flex; align-items: center;"><i class="me-1"
+                        data-feather="plus-circle" style="width: 15px; margin: 0px; padding: 0px;"></i> <span
+                        class="m-0">Thêm biến thể sản phẩm</span></button>
+                  </div>
+                  
+                  <table class="table rounded-2">
+                    <tbody>
+                      {{-- LOOP QUA BIẾN THỂ CŨ --}}
+                      @foreach($sanpham->bienthe as $index => $bt)
+                      <tr>
+                        {{-- INPUT HIDDEN ID ĐỂ BIẾT LÀ UPDATE --}}
+                        <input type="hidden" name="bienthe[{{ $index }}][id_bienthe_cu]" value="{{ $bt->id }}">
 
-                    <div class="col-lg-4 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label>Tên sản phẩm <span class="text-danger" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Bắt buộc">*</span></label>
-                            <input class="form-control" type="text" name="ten" id="ten"
-                                value="{{ old('ten', $sanpham->ten) }}" placeholder="tên sản phẩm..." />
-                            @error('ten')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label>Danh mục <span class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Bắt buộc">*</span></label>
-                            <select class="form-control select" name="id_danhmuc[]" id="id_danhmuc" multiple>
-                                @foreach($danhmucs as $dm)
-                                <option value="{{ $dm->id }}"
-                                    {{ in_array($dm->id, $sanpham->danhmuc->pluck('id')->toArray()) ? 'selected' : '' }}>
-                                    {{ $dm->ten }}
+                        <td style="width: 30%;">
+                          <div class="form-group">
+                            <label>Loại biến thể <span class="text-danger">*</span></label>
+                            <select class="form-control loai_bienthe" name="bienthe[{{ $index }}][id_tenloai]">
+                              <option disabled>-- Chọn loại --</option>
+                              @foreach ($loaibienthes as $loaibienthe)
+                                {{-- SELECTED CŨ --}}
+                                <option value="{{ $loaibienthe->id }}" {{ $bt->id_loaibienthe == $loaibienthe->id ? 'selected' : '' }}>
+                                    {{ $loaibienthe->ten }}
                                 </option>
-                                @endforeach
-                                @error('id_danhmuc')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                              @endforeach
                             </select>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label>Thương hiệu <span class="text-danger" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Bắt buộc">*</span></label>
-                            <select class="form-select" name="id_thuonghieu" id="id_thuonghieu">
-                                @foreach ($thuonghieus as $th)
-                                <option value="{{ $th->id }}"
-                                    {{ $sanpham->thuong_hieu_id == $th->id ? 'selected' : '' }}>
-                                    {{ $th->ten }}
-                                </option>
-                                @endforeach
-                                @error('id_thuonghieu')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label>Nơi xuất xứ <span class="text-danger" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Bắt buộc">*</span></label>
-                            <input type="text" name="xuatxu" value="{{ old('xuatxu', $sanpham->xuatxu) }}"
-                                class="form-control" placeholder="xuất xứ ở..." />
-                            @error('xuatxu')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label>Nơi sản xuất <span class="text-danger" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Bắt buộc">*</span></label>
-                            <input type="text" name="sanxuat" value="{{ old('sanxuat', $sanpham->sanxuat) }}"
-                                class="form-control" placeholder="sản xuất tại..." />
-                            @error('sanxuat')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label>Video giới thiệu sản phẩm</label>
-                            <input type="text" name="mediaurl" value="{{ old('mediaurl', $sanpham->mediaurl) }}"
-                                placeholder="Url Youtube..." />
-                            @error('mediaurl')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label>Trạng thái</label>
-                            <select class="form-select" name="trangthai">
-                                <option value="0" {{ old('trangthai',$sanpham->trangthai)==0?'selected':'' }}>Còn hàng
-                                </option>
-                                <option value="1" {{ old('trangthai',$sanpham->trangthai)==1?'selected':'' }}>Hết hàng
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label>Mô tả sản phẩm <span class="text-danger" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Bắt buộc">*</span></label>
-                            <textarea name="mo_ta" id="mo_ta_suasp"
-                                class="form-control">{{ old('mo_ta',$sanpham->mota) }}</textarea>
-                            @error('mo_ta')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-
-
-                    <div id="bienthe-wap">
-                        <label>Biến thể sản phẩm <span class="text-danger">*</span></label>
-
-                        @foreach($sanpham->bienthe as $i => $bienthe)
-                        <div class="bienthe-item row mb-2" data-old-id="{{ $bienthe->id }}">
-                            <input type="hidden" name="bienthe[{{ $i }}][id]" value="{{ $bienthe->id }}">
-                            <div class="col-lg-3 col-sm-6 col-12">
+                          </div>
+                        </td>
+                        <td style="width: 25%;">
+                          <div class="form-group">
+                            <label>Giá bán <span class="text-danger">*</span></label>
+                            {{-- FORMAT TIỀN --}}
+                            <input type="text" class="form-control currency-input" name="bienthe[{{ $index }}][gia]" 
+                                   value="{{ number_format($bt->giagoc, 0, ',', '.') }}" placeholder="0"/>
+                          </div>
+                        </td>
+                        <td style="width: 20%;">
+                          <div class="form-group">
+                            <label>Số lượng <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="bienthe[{{ $index }}][soluong]" value="{{ $bt->soluong }}" min="0" />
+                          </div>
+                        </td>
+                         <td style="width: 15%;">
+                          <div class="form-group">
+                            <label>SL Tặng</label>
+                             <input type="number" class="form-control" name="bienthe[{{ $index }}][luottang]" value="{{ $bt->luottang }}" min="0" />
+                          </div>
+                        </td>
+                        <td style="width: 10%;">
+                          <button type="button" class="btn btn-primary m-0 btn-delete-variant" style="font-size: 12px;"><i
+                              data-feather="trash" style="width: 15px; margin: 0px; padding: 0px;"></i></button>
+                        </td>
+                      </tr>
+                      @endforeach
+                      {{-- NẾU SẢN PHẨM CŨ BỊ LỖI KHÔNG CÓ BIẾN THỂ NÀO THÌ HIỆN 1 DÒNG TRỐNG (ĐỂ CLONE) --}}
+                      @if($sanpham->bienthe->count() == 0)
+                        <tr>
+                            {{-- Dòng trống y hệt file create --}}
+                            <td style="width: 30%;">
                                 <div class="form-group">
-                                    <select class="form-select sua_bienthe" name="bienthe[{{ $i }}][id_tenloai]">
-                                        @foreach($loaibienthes as $loai)
-                                        <option value="{{ $loai->id }}"
-                                            {{ $bienthe->id_tenloai == $loai->id ? 'selected' : '' }}>{{ $loai->ten }}
-                                        </option>
+                                    <label>Loại biến thể <span class="text-danger">*</span></label>
+                                    <select class="form-control loai_bienthe" name="bienthe[0][id_tenloai]">
+                                        <option disabled selected>-- Chọn loại --</option>
+                                        @foreach ($loaibienthes as $loaibienthe)
+                                            <option value="{{ $loaibienthe->id }}">{{ $loaibienthe->ten }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 col-12">
+                            </td>
+                            <td style="width: 25%;">
                                 <div class="form-group">
-                                    <input type="text" name="bienthe[{{ $i }}][gia]" value="{{ $bienthe->gia }}"
-                                        class="form-control" />
+                                    <label>Giá bán <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control currency-input" name="bienthe[0][gia]" value="" placeholder="0"/>
                                 </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 col-12">
+                            </td>
+                            <td style="width: 20%;">
                                 <div class="form-group">
-                                    <input type="text" name="bienthe[{{ $i }}][soluong]" value="{{ $bienthe->soluong }}"
-                                        class="form-control" />
+                                    <label>Số lượng <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" name="bienthe[0][soluong]" value="1" min="0" />
                                 </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 col-12">
-                                <button type="button" class="btn btn-outline-danger remove-btn">X</button>
-                            </div>
-                        </div>
-                        @endforeach
-
-
-                        <button type="button" class="btn btn-primary mb-4" id="add-bienthe">+ Thêm biến thể</button>
-                    </div>
-
-
-
-
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label>Ảnh sản phẩm<span class="text-danger" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Bắt buộc"> *</span></label>
-                            <div class="image-upload">
-                                <input type="file" name="anhsanpham[]" multiple class="form-control" id="anhsanpham" />
-                                <div class="image-uploads">
-                                    <img src="{{ asset('img/icons/upload.svg') }}" alt="img" />
-                                    <h4>Tải lên file ảnh tại đây.</h4>
+                            </td>
+                             <td style="width: 15%;">
+                                <div class="form-group">
+                                    <label>SL Tặng</label>
+                                    <input type="number" class="form-control" name="bienthe[0][luottang]" value="0" min="0" />
                                 </div>
-                                <!-- <div id="preview-anh" class="mt-2 d-flex flex-wrap"></div> -->
-                                @error('anhsanpham.*')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                  <div class="product-list">
-                    <ul class="row" id="preview-anh">
-                      <!-- <li>
-                        <div class="productviews">
-                          <div class="productviewsimg">
-                            <img src="assets/img/icons/macbook.svg" alt="img" />
-                          </div>
-                          <div class="productviewscontent">
-                            <div class="productviewsname">
-                              <h2>macbookpro.jpg</h2>
-                              <h3>581kb</h3>
-                            </div>
-                            <a href="javascript:void(0);" class="hideset">x</a>
-                          </div>
-                        </div>
-                      </li> -->
-                    </ul>
-                  </div>
+                            </td>
+                            <td style="width: 10%;">
+                                <button type="button" class="btn btn-primary m-0 btn-delete-variant" style="font-size: 12px;"><i
+                                    data-feather="trash" style="width: 15px; margin: 0px; padding: 0px;"></i></button>
+                            </td>
+                        </tr>
+                      @endif
+                    </tbody>
+                  </table>
                 </div>
 
-                    <div class="col-lg-12">
-                        <button type="submit" class="btn btn-submit me-2" title="Cập nhật">Cập nhật</button>
-                    </div>
-                </form>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</div>
-</div>
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12 col-sm-6 col-12">
+                    <div class="form-group mb-3">
+                        <label>Chọn danh mục <span class="text-danger">*</span></label>
+                        {{-- LẤY MẢNG ID DANH MỤC ĐANG CÓ CỦA SP --}}
+                        @php 
+                            $selectedDanhmuc = $sanpham->danhmuc->pluck('id')->toArray(); 
+                        @endphp
+
+                        <div class="border rounded p-2 bg-white" style="max-height: 200px; overflow-y: auto;">
+                            <ul class="list-unstyled m-0">
+                                @foreach($danhmucs as $cha)
+                                    @if(empty($cha->parent)) 
+                                        <li>
+                                            <div class="form-check">
+                                                {{-- CHECKED CŨ --}}
+                                                <input class="form-check-input" type="checkbox" name="id_danhmuc[]" 
+                                                      value="{{ $cha->id }}" id="cat{{ $cha->id }}"
+                                                      {{ in_array($cha->id, $selectedDanhmuc) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="cat{{ $cha->id }}">
+                                                    {{ $cha->ten }}
+                                                </label>
+                                            </div>
+
+                                            <ul class="list-unstyled ps-4">
+                                                @foreach($danhmucs as $con)
+                                                    @if($con->parent == $cha->id)
+                                                        <li>
+                                                            <div class="form-check">
+                                                                {{-- CHECKED CŨ --}}
+                                                                <input class="form-check-input" type="checkbox" name="id_danhmuc[]" 
+                                                                          value="{{ $con->id }}" id="cat{{ $con->id }}"
+                                                                          {{ in_array($con->id, $selectedDanhmuc) ? 'checked' : '' }}>
+                                                                <label class="form-check-label" for="cat{{ $con->id }}">
+                                                                    {{ $con->ten }}
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                        </div>
+                        @error('id_danhmuc') <div class="text-danger mt-1 small">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+                <div class="col-lg-12 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Thương hiệu <span class="text-danger">*</span></label>
+                    <select class="select thuonghieu" name="id_thuonghieu">
+                      <option disabled>--Chọn thương hiệu--</option>
+                      @foreach ($thuonghieus as $thuonghieu)
+                        {{-- SELECTED CŨ --}}
+                        <option value="{{ $thuonghieu->id }}" {{ $sanpham->id_thuonghieu == $thuonghieu->id ? 'selected' : '' }}>
+                            {{ $thuonghieu->ten }}
+                        </option>
+                      @endforeach
+                    </select>
+                    @error('id_thuonghieu') <span class="form-text text-muted text-danger">{{ $message }}</span> @enderror
+                  </div>
+                </div>
+                <div class="col-lg-12 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Trạng thái sản phẩm <span class="text-danger">*</span></label>
+                    <select class="select text-black" name="trangthai">
+                      <option value="Công khai" {{ $sanpham->trangthai == 'Công khai' ? 'selected' : '' }}>Công khai</option>
+                      <option value="Tạm ẩn" {{ $sanpham->trangthai == 'Tạm ẩn' ? 'selected' : '' }}>Tạm ẩn</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label> Hình ảnh sản phẩm (Thêm mới nếu cần)</label>
+                    <div class="image-upload" id="drop-zone">
+                      <input type="file" id="imageInput" name="anhsanpham[]" multiple accept="image/*" />
+                      <div class="image-uploads">
+                        <img src="{{asset('assets/admin')}}/img/icons/upload.svg" alt="img" />
+                        <h4>Kéo và thả file tại đây để thêm</h4>
+                      </div>
+                    </div>
+                    @error('anhsanpham') <span class="form-text text-muted text-danger">{{ $message }}</span> @enderror
+                    
+                    {{-- HIỂN THỊ ẢNH CŨ VÀ ẢNH PREVIEW MỚI --}}
+                    <div class="row mt-3" id="image-preview-container">
+                        {{-- LOOP ẢNH CŨ TỪ DB --}}
+                        @foreach($sanpham->hinhanhsanpham as $img)
+                            <div class="preview-image-item existing-image" data-id="{{ $img->id }}">
+                                <img src="{{ asset('assets/client/images/thumbs/' . $img->hinhanh) }}" alt="Image">
+                                {{-- Nút xóa ảnh cũ --}}
+                                <button type="button" class="btn-remove-image btn-remove-existing" data-id="{{ $img->id }}">&times;</button>
+                            </div>
+                        @endforeach
+                        {{-- Ảnh preview upload mới sẽ chui vào đây nhờ JS --}}
+                    </div>
+                    
+                    {{-- Input hidden để chứa ID ảnh cần xóa --}}
+                    <div id="deleted-images-container"></div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 @endsection
 
 @section('scripts')
-<script>
-    /**
-     * This configuration was generated using the CKEditor 5 Builder. You can modify it anytime using this link:
-     * https://ckeditor.com/ckeditor-5/builder/?redirect=portal#installation/NoNgNARATAdA7DKFIhATgIwBY0gKwZxwAccaZW6xIWeeUAzFgAzEFZT4jIQBuAlsmZhgGMMOFjJAXUhYAZgEM089BGlA
-     */
+  {{-- GIỮ NGUYÊN STYLE VÀ CÁC SCRIPT CKEDITOR, SELECT2 CŨ --}}
+  <style>
+    /* Style cũ giữ nguyên */
+    #image-preview-container { display: flex; flex-wrap: wrap; gap: 10px; }
+    .preview-image-item { position: relative; width: 120px; height: 120px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; cursor: grab; background: #fff; transition: transform 0.2s; }
+    .preview-image-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+    .btn-remove-image { position: absolute; top: 5px; right: 5px; background: rgba(255, 0, 0, 0.7); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; z-index: 10; }
+  </style>
 
-    ClassicEditor.create(document.querySelector('#mo_ta_suasp'), editorConfig);
-</script>
-
-<script>
-    $('.sua_bienthe').select2({
-    tags: true,   // Cho phép nhập thêm
-    placeholder: "Chọn hoặc nhập tên loại biến thể",
-});
-</script>
-
-<script>
-    let index = {{ count($sanpham->bienthe) }};
- // index bắt đầu từ số biến thể hiện tại
-    const loaibienthe = @json($loaibienthes);
-
-    // Hàm cập nhật hiển thị nút xóa
-    function updateRemoveButtons() {
-        const items = document.querySelectorAll('#bienthe-wap .bienthe-item');
-        items.forEach(item => {
-            const btn = item.querySelector('.remove-btn');
-            btn.style.display = items.length === 1 ? 'none' : 'inline-block';
-        });
+  <script>
+    if(document.querySelector('#mo_ta')) {
+         ClassicEditor.create(document.querySelector('#mo_ta'), editorConfig);
     }
+  </script>
 
-    // Thêm biến thể mới
-    document.getElementById('add-bienthe').addEventListener('click', function() {
-        let options = '<option value="">--Loại biến thể--</option>';
-        loaibienthe.forEach(loai => options += `<option value="${loai.id}">${loai.ten}</option>`);
+  <script>
+    $(document).ready(function () {
+      
+      const select2Config = { tags: true, placeholder: "Chọn loại", width: '100%' };
+      $('.loai_bienthe').select2(select2Config);
+      $('.thuonghieu').select2();
 
-        let html = `
-    <div class="bienthe-item row mb-2">
-        <div class="col-lg-3 col-sm-6 col-12">
-            <div class="form-group">
-                <select class="form-select sua_bienthe select2" name="bienthe[${index}][id_tenloai]">${options}</select>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6 col-12">
-            <div class="form-group">
-                <input type="text" name="bienthe[${index}][gia]" placeholder="Giá" class="form-control"/>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6 col-12">
-            <div class="form-group">
-                <input type="text" name="bienthe[${index}][soluong]" placeholder="Số lượng" class="form-control"/>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6 col-12">
-            <button type="button" class="btn btn-outline-danger remove-btn">X</button>
-        </div>
-    </div>`;
+      const tableBody = $('.table tbody');
 
-        document.getElementById('add-bienthe').insertAdjacentHTML('beforebegin', html);
-        $(`.sua_bienthe`).select2({
-            tags: true,
-            placeholder: "--Loại biến thể--",
-            allowClear: true
-        });
-        index++;
-        updateRemoveButtons();
-    });
-
-    // Xóa biến thể
-    document.getElementById('bienthe-wap').addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-btn')) {
-            let item = e.target.closest('.bienthe-item');
-
-            // Nếu là biến thể cũ
-            let oldId = item.dataset.oldId;
-            if (oldId) {
-                let input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'deleted_bienthe_ids[]';
-                input.value = oldId;
-                document.querySelector('form').appendChild(input);
-            }
-
-            item.remove();
-            updateRemoveButtons();
+      function updateVariantState() {
+        const rows = tableBody.find('tr');
+        if (rows.length === 1) {
+          rows.find('.btn-delete-variant').prop('disabled', true).css('opacity', '0.5');
+        } else {
+          rows.find('.btn-delete-variant').prop('disabled', false).css('opacity', '1');
         }
-    });
 
-    // Chạy lần đầu
-    updateRemoveButtons();
-</script>
-<style>
-    #preview-anh li .productviewsname h2 {
-    white-space: nowrap;      /* không xuống dòng */
-    overflow: hidden;         /* ẩn phần vượt quá */
-    text-overflow: ellipsis;  /* hiển thị dấu ... */
-    max-width: 200px;         /* điều chỉnh theo width thumbnail */
-}
-</style>
-<script>
-let existingImages = @json($sanpham->anhsanpham); // ảnh cũ
-let selectedFiles = []; // ảnh mới
-
-const previewContainer = document.getElementById('preview-anh');
-const fileInput = document.getElementById('anhsanpham');
-
-function renderPreview() {
-    previewContainer.innerHTML = '';
-
-    // 1. Render ảnh cũ
-    existingImages.forEach(img => {
-        const li = document.createElement('li');
-
-        li.innerHTML = `
-            <div class="productviews">
-                <div class="productviewsimg">
-                    <img src="/img/product/${img.media}" alt="img" />
-                </div>
-                <div class="productviewscontent">
-                    <div class="productviewsname">
-                        <h2>${img.media}</h2>
-                        <h3>Ảnh cũ</h3>
-                    </div>
-                    <a href="javascript:void(0);" class="hideset">x</a>
-                </div>
-            </div>
-        `;
-
-        li.querySelector('.hideset').addEventListener('click', function() {
-            // thêm input hidden để backend biết xóa
-            document.querySelector('form').insertAdjacentHTML('beforeend',
-                `<input type="hidden" name="deleted_image_ids[]" value="${img.id}">`
-            );
-            existingImages = existingImages.filter(i => i.id !== img.id);
-            renderPreview();
+        // Cập nhật lại name cho input: bienthe[0], bienthe[1]...
+        rows.each(function (index) {
+          const row = $(this);
+          
+          // SỬA NAME CHUẨN: bienthe[index][key]
+          row.find('[name^="bienthe"]').each(function () {
+            const oldName = $(this).attr('name');
+            // Regex thay thế index số cũ bằng index mới
+            const newName = oldName.replace(/bienthe\[\d+\]/, `bienthe[${index}]`);
+            $(this).attr('name', newName);
+          });
         });
+      }
 
-        previewContainer.appendChild(li);
+      // Không gọi updateVariantState() ngay lúc load vì blade đã render chuẩn index rồi
+      // Chỉ gọi khi thêm/xóa dòng
+      // updateVariantState(); 
+
+      $('.btn-add-variant').click(function () {
+        // Clone dòng đầu tiên (để lấy cấu trúc)
+        // LƯU Ý: Dòng đầu tiên có thể chứa ID cũ, cần xóa đi
+        const firstRow = tableBody.find('tr:first'); 
+        const newRow = firstRow.clone();
+
+        // RESET GIÁ TRỊ INPUT
+        newRow.find('input').not('[type="checkbox"]').val(''); 
+        newRow.find('input[type="number"][name*="soluong"]').val(1); 
+        newRow.find('input[type="number"][name*="luottang"]').val(0);
+        newRow.find('input[name*="gia"]').val(''); 
+
+        // QUAN TRỌNG: XÓA INPUT HIDDEN CHỨA ID CŨ (Để controller hiểu là tạo mới)
+        newRow.find('input[name*="id_bienthe_cu"]').remove();
+
+        // Xử lý Select2 khi clone
+        const select = newRow.find('select.loai_bienthe');
+        newRow.find('.select2-container').remove(); // Xóa khung select2 cũ đi kèm
+        select.removeClass('select2-hidden-accessible').removeAttr('data-select2-id').removeAttr('tabindex').removeAttr('aria-hidden');
+        select.val(select.find('option:first').val()); // Reset option
+
+        tableBody.append(newRow);
+        
+        // Khởi tạo lại select2 cho dòng mới
+        select.select2(select2Config);
+        feather.replace();
+        updateVariantState(); // Cập nhật lại index
+      });
+
+      tableBody.on('click', '.btn-delete-variant', function () {
+        const rows = tableBody.find('tr');
+        if (rows.length > 1) {
+          $(this).closest('tr').find('.loai_bienthe').select2('destroy');
+          $(this).closest('tr').remove();
+          updateVariantState();
+        }
+      });
+
+      // Format tiền tệ
+      $(document).on('input', '.currency-input', function (e) {
+        let value = e.target.value;
+        value = value.replace(/\D/g, "");
+        if (value === "") { e.target.value = ""; return; }
+        e.target.value = Number(value).toLocaleString('vi-VN');
+      });
+
+      // --- LOGIC XÓA ẢNH CŨ ---
+      $(document).on('click', '.btn-remove-existing', function() {
+          const imgId = $(this).data('id');
+          // Thêm input hidden vào form để báo Controller biết cần xóa ảnh này
+          $('#deleted-images-container').append(`<input type="hidden" name="delete_images[]" value="${imgId}">`);
+          // Xóa khỏi giao diện
+          $(this).closest('.existing-image').remove();
+      });
+
     });
+  </script>
 
-    // 2. Render ảnh mới
-    selectedFiles.forEach((file, idx) => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const li = document.createElement('li');
+  {{-- SCRIPT CHANGE SLUG --}}
+   <script>
+    function ChangeToSlug() {
+      // ... (Giữ nguyên script cũ của bạn) ...
+      let title, slug;
+      title = document.getElementById("slug-source").value;
+      slug = title.toLowerCase();
+      // ... (Phần replace dấu tiếng Việt giữ nguyên) ...
+      slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
+      slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');
+      slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i');
+      slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o');
+      slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
+      slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
+      slug = slug.replace(/đ/gi, 'd');
+      slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
+      slug = slug.replace(/ /gi, "-");
+      slug = slug.replace(/\-\-\-\-\-/gi, '-');
+      slug = slug.replace(/\-\-\-\-/gi, '-');
+      slug = slug.replace(/\-\-\-/gi, '-');
+      slug = slug.replace(/\-\-/gi, '-');
+      slug = '@' + slug + '@';
+      slug = slug.replace(/\@\-|\-\@|\@/gi, '');
+      if (slug === "") {
+        document.getElementById('slug-text').innerText = "...";
+      } else {
+        document.getElementById('slug-text').innerText = slug;
+      }
+    }
+  </script>
 
-            li.innerHTML = `
-                <div class="productviews">
-                    <div class="productviewsimg">
-                        <img src="${e.target.result}" alt="img" />
+  {{-- SCRIPT UPLOAD MỚI (CHỈ XỬ LÝ ẢNH MỚI, KHÔNG ĐỤNG ẢNH CŨ) --}}
+  <script>
+    $(document).ready(function () {
+      let dt = new DataTransfer();
+      const imageInput = document.getElementById('imageInput');
+      const previewContainer = document.getElementById('image-preview-container');
+
+      $('#imageInput').on('change', function (e) {
+        for (let i = 0; i < this.files.length; i++) {
+          let file = this.files[i];
+          dt.items.add(file);
+        }
+        updateInputFiles();
+        renderPreview();
+      });
+
+      function renderPreview() {
+        // CHỈ XÓA CÁC ẢNH PREVIEW CŨ (CLASS preview-new-item), KHÔNG XÓA ẢNH CÓ SẴN (CLASS existing-image)
+        $('.preview-new-item').remove();
+
+        Array.from(dt.files).forEach((file, index) => {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const html = `
+                    <div class="preview-image-item preview-new-item" draggable="true" data-index="${index}">
+                        <img src="${e.target.result}" alt="Image">
+                        <button type="button" class="btn-remove-image" onclick="removeImage(${index})">&times;</button>
                     </div>
-                    <div class="productviewscontent">
-                        <div class="productviewsname">
-                            <h2>${file.name}</h2>
-                            <h3>${(file.size / 1024).toFixed(1)}kb</h3>
-                        </div>
-                        <a href="javascript:void(0);" class="hideset">x</a>
-                    </div>
-                </div>
-            `;
+                        `;
+            $(previewContainer).append(html); // Append vào cuối (sau các ảnh cũ)
+          }
+          reader.readAsDataURL(file);
+        });
+        // addDragDropEvents(); // Có thể bỏ qua drag drop cho đơn giản logic edit
+      }
 
-            li.querySelector('.hideset').addEventListener('click', function() {
-                selectedFiles.splice(idx, 1);
-                renderPreview();
-            });
+      window.updateInputFiles = function () {
+        imageInput.files = dt.files;
+      }
 
-            previewContainer.appendChild(li);
-        };
-        reader.readAsDataURL(file);
+      window.removeImage = function (index) {
+        const newDt = new DataTransfer();
+        Array.from(dt.files).forEach((file, i) => {
+          if (i !== index) newDt.items.add(file);
+        });
+        dt = newDt;
+        updateInputFiles();
+        renderPreview();
+      }
     });
-
-    // 3. Cập nhật lại input file
-    const dt = new DataTransfer();
-    selectedFiles.forEach(f => dt.items.add(f));
-    fileInput.files = dt.files;
-}
-
-// chọn file mới
-fileInput.addEventListener('change', function(e) {
-    selectedFiles = [...selectedFiles, ...e.target.files];
-    renderPreview();
-});
-
-// render lần đầu ảnh cũ
-renderPreview();
-
-
-</script>
-
-
-
+  </script>
 @endsection

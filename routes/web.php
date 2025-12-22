@@ -126,6 +126,8 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
 
         Route::get('/', [admin\HomeController::class, 'index'])->name('trang-chu');
         Route::get('/trang-chu', [admin\HomeController::class, 'index']);
+        Route::get('/thong-ke-doanh-thu', [admin\HomeController::class, 'getThongKeDoanhThu'])->name('thong-ke-doanh-thu');
+
 
         /* ===================== SẢN PHẨM ===================== */
         Route::prefix('san-pham')->group(function () {
@@ -140,7 +142,7 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
                 ->name('chi-tiet-san-pham');
 
             Route::get('/{id}/chinh-sua', [admin\SanphamController::class, 'edit'])->name('chinh-sua-san-pham');
-            Route::post('/{id}/cap-nhat', [admin\SanphamController::class, 'update'])->name('cap-nhat-san-pham'); // giữ POST theo dự án
+            Route::put('/{id}/cap-nhat', [admin\SanphamController::class, 'update'])->name('cap-nhat-san-pham'); // giữ POST theo dự án
             Route::get('/{id}/xoa', [admin\SanphamController::class, 'destroy'])->name('xoa-san-pham');           // giữ GET theo dự án
         });
 
@@ -156,6 +158,19 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::post('/{slug}/cap-nhat', [admin\DanhmucController::class, 'update'])->name('cap-nhat-danh-muc');
 
             Route::delete('/{slug}/xoa', [admin\DanhmucController::class, 'destroy'])->name('xoa-danh-muc');
+        });
+
+        Route::prefix('thuong-hieu')->group(function () {
+            Route::get('/danh-sach', [admin\ThuonghieuController::class, 'index']);
+            Route::get('/', [admin\ThuonghieuController::class, 'index'])->name('danh-sach-thuong-hieu');
+
+            Route::get('/tao-thuong-hieu', [admin\ThuonghieuController::class, 'create'])->name('tao-thuong-hieu');
+            Route::post('/luu', [admin\ThuonghieuController::class, 'store'])->name('luu-thuong-hieu');
+
+            Route::get('/{slug}/chinh-sua', [admin\ThuonghieuController::class, 'edit'])->name('chinh-sua-thuong-hieu');
+            Route::post('/{slug}/cap-nhat', [admin\ThuonghieuController::class, 'update'])->name('cap-nhat-thuong-hieu');
+
+            Route::delete('/{slug}/xoa', [admin\ThuonghieuController::class, 'destroy'])->name('xoa-thuong-hieu');
         });
 
         Route::prefix('qua-tang')->group(function () {
