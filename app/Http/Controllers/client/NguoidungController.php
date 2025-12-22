@@ -249,7 +249,6 @@ class NguoidungController extends Controller
 
             // Chỉ định đường dẫn thư mục trong public: assets/client/images/thumb
             $publicPath = 'assets/client/images/thumbs';
-            $destinationPath = public_path($publicPath); // Đường dẫn vật lý đầy đủ
 
             // --- TỐI ƯU HÓA TÊN FILE ---
             $file = $request->file('avatar');
@@ -261,10 +260,6 @@ class NguoidungController extends Controller
             // 2a. LƯU FILE MỚI VÀO PUBLIC
             $file->move($publicPath, $fileName);
 
-            // Đường dẫn tương đối để lưu vào DB
-            $user->avatar = $fileName;
-            $user->save();
-
             // 2b. XÓA FILE CŨ (NẾU CÓ)
             if ($user->avatar) {
                 $oldAvatarPath = $publicPath . '/' . $user->avatar;
@@ -274,6 +269,12 @@ class NguoidungController extends Controller
                     File::delete($oldAvatarPath);
                 }
             }
+
+            // Đường dẫn tương đối để lưu vào DB
+            $user->avatar = $fileName;
+            $user->save();
+
+            
         }
 
         NguoidungModel::where('id', $user->id)->update([
