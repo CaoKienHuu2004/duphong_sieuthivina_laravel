@@ -35,6 +35,18 @@ class SanphamResource extends JsonResource
                 ];
             }),
 
+            'bienthe' => $this->bienthe->map(function($variant) {
+                return [
+                    'id' => $variant->id,
+                    'id_loaibienthe' => $variant->id_loaibienthe,
+                    'giagoc' => (int)$variant->giagoc,
+                    'soluong' => (int)$variant->soluong,
+                    'luottang' => (int)$variant->luottang,
+                    'luotban' => (int)$variant->luotban,
+                    'trangthai' => $variant->trangthai
+                ];
+            }),
+
             // 4. Thương hiệu (Bảng 'thuonghieu')
             // SQL: id, tenthuonghieu, hinhanh, trangthai
             'thuonghieu' => [

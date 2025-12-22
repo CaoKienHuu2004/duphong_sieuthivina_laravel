@@ -11,7 +11,7 @@
             <h6>Quản lý danh mục sản phẩm của bạn</h6>
           </div>
           <div class="page-btn">
-            <a href="addcategory.html" class="btn btn-added"><img src="{{asset('assets/admin')}}/img/icons/plus.svg" alt="img"
+            <a href="{{route('quan-tri-vien.tao-danh-muc')}}" class="btn btn-added"><img src="{{asset('assets/admin')}}/img/icons/plus.svg" alt="img"
                 class="me-1" />Thêm danh mục</a>
           </div>
         </div>

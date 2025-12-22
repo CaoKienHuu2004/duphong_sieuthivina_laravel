@@ -131,7 +131,7 @@ class SanphamController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => new SanphamResource($sanpham),
+            'data' => $sanpham,
             'related' => SanphamResource::collection($relatedProducts)
         ]);
     }
