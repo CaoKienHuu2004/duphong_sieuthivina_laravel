@@ -137,7 +137,7 @@ img {
     -premailer-width: 570px;
     background-color: #ffffff;
     border-color: #e8e5ef;
-    border-radius: 2px;
+    border-radius: 4px;
     border-width: 1px;
     box-shadow: 0 2px 0 rgba(0, 0, 150, 0.025), 2px 4px 0 rgba(0, 0, 150, 0.015);
     margin: 0 auto;
@@ -174,7 +174,7 @@ img {
 }
 
 .footer p {
-    color: #b0adc5;
+    color: #8f8d9f;
     font-size: 12px;
     text-align: center;
 }
@@ -237,11 +237,11 @@ img {
 
 .button-blue,
 .button-primary {
-    background-color: #2d3748;
-    border-bottom: 8px solid #2d3748;
-    border-left: 18px solid #2d3748;
-    border-right: 18px solid #2d3748;
-    border-top: 8px solid #2d3748;
+    background-color: #FF6B00;
+    border-bottom: 8px solid #FF6B00;
+    border-left: 18px solid #FF6B00;
+    border-right: 18px solid #FF6B00;
+    border-top: 8px solid #FF6B00;
 }
 
 .button-green,
@@ -265,7 +265,7 @@ img {
 /* Panels */
 
 .panel {
-    border-left: #2d3748 solid 4px;
+    border-left: #008080 solid 4px;
     margin: 21px 0;
 }
 

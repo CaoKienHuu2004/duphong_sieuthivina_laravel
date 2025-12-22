@@ -122,7 +122,7 @@ class GlobalController extends Controller
 
             // 3. Gửi Mail sử dụng Class Mailable (ContactEmail)
             // Gửi đến email quản trị viên (ví dụ: admin@sieuthivina.com)
-            Mail::to('hotb@fpt.edu.vn')->send(new LienheMail($dataInfo));
+            Mail::to('lyhuu5570@gmail.com')->send(new LienheMail($dataInfo));
 
             return response()->json([
                 'status' => 200,
