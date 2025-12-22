@@ -15,10 +15,10 @@ Cảm ơn bạn đã mua sắm tại Siêu Thị Vina. Đơn hàng của bạn �
 ## Chi tiết đơn hàng
 
 <x-mail::table>
-| Sản phẩm | SL | Đơn giá | Thành tiền |
-| :--- | :---: | :---: | ---: |
+| Sản phẩm | SL | Thành tiền |
+| :--- | :---: | :---: |
 @foreach($order->chitietdonhang as $item)
-| {{ $item->tensanpham }} <br> <small>({{ $item->tenbienthe }})</small> | {{ $item->soluong }} | {{ number_format($item->dongia, 0, ',', '.') }}đ | {{ number_format($item->dongia * $item->soluong, 0, ',', '.') }}đ |
+| {{ $item->tensanpham }} <br> <small>({{ $item->tenbienthe }})</small> | {{ $item->soluong }} | {{ number_format($item->dongia, 0, ',', '.') }}đ |
 @endforeach
 </x-mail::table>
 
