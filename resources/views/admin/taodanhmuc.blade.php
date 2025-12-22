@@ -33,7 +33,7 @@
                     <div class="form-group">
                       <label>Mô tả danh mục <span data-bs-toggle="tooltip" data-bs-placement="top" class="text-danger"
                           title="Bắt buộc">*</span></label>
-                      <textarea class="form-control" name="mota" id="mo_ta" value="" style="height: 200px;"></textarea>
+                      <textarea class="form-control" name="mota" id="mo_ta" value="" style="height: 200px;">Ơ là hò ơ</textarea>
                     </div>
                   </div>
 
@@ -48,7 +48,7 @@
                 <div class="col-lg-12 col-sm-6 col-12">
                     <label>Sắp xếp danh mục <span data-bs-toggle="tooltip" data-bs-placement="top" class="text-danger"
                           title="Bắt buộc">*</span></label>
-                      <input class="text-black" type="number" name="sapxep" value="" placeholder="sắp xếp số thứ tự" />
+                      <input class="text-black form-control" type="number" name="sapxep" value="" placeholder="sắp xếp số thứ tự" />
                 </div>
                   <div class="col-lg-12 col-sm-6 col-12">
                     <div class="form-group">

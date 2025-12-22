@@ -22,6 +22,8 @@ class SanphamResource extends JsonResource
             'tensanpham' => $this->ten, // Cột 'tensanpham'
             'slug' => $this->slug,           // Cột 'slug'
             'giamgia' => $phanTramGiam,       // Cột 'giamgia'
+            'sanxuat' => $this->sanxuat,       // Cột 'sanxuat'
+            'xuatxu' => $this->xuatxu,       // Cột 'xuatxu'
             'mota' => $this->mota,           // Cột 'mota'
             'luotxem' => $this->luotxem,     // Cột 'luotxem'
             'trangthai' => $this->trangthai, // Cột 'trangthai'
