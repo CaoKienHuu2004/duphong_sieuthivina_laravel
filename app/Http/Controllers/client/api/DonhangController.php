@@ -193,16 +193,15 @@ class DonhangController extends Controller
 
             DB::commit();
 
+            $nguoidung = Auth::user();
             // GỬI MAIL
             try {
-                // Lý do hủy lấy từ request (nếu admin nhập) hoặc set cứng
-                $lydo = $request->input('lydo', 'Khách hàng yêu cầu hủy'); 
                 
                 // Nạp chi tiết để hiển thị trong mail
                 $donhang->load('chitietdonhang'); 
                 
                 // Lấy email người đặt (hoặc người nhận tùy logic)
-                $emailNhan = $donhang->nguoidung->email; // Đảm bảo lấy đúng email
+                $emailNhan = $nguoidung->email; // Đảm bảo lấy đúng email
 
                 Mail::to($emailNhan)->send(new HuydonhangMail($donhang));
                 

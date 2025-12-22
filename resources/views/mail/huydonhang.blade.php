@@ -6,7 +6,6 @@ Xin chào **{{ $order->nguoinhan }}**,
 Rất tiếc phải thông báo rằng đơn hàng **#{{ $order->madon }}** của bạn tại Siêu Thị Vina đã bị hủy.
 
 <x-mail::panel>
-**Lý do hủy:** <span style="color: #ed3237; font-weight: bold;">{{ $lydo }}</span><br>
 **Thời gian hủy:** {{ date('d/m/Y H:i') }}
 </x-mail::panel>
 

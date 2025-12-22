@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\HuydonhangMail;
 use App\Models\DonhangModel;
 use App\Models\ThongbaoModel;
+use App\Models\BientheModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -35,6 +36,22 @@ class DonhangController extends Controller
             $donhang->trangthai = 'Đã hủy đơn';
             $donhang->save();
 
+            // 2. HOÀN TRẢ TỒN KHO (Quan trọng)
+            foreach ($donhang->chitietdonhang as $chitiet) {
+                $bienthe = BientheModel::find($chitiet->id_bienthe);
+                if ($bienthe) {
+                    $bienthe->soluong += $chitiet->soluong; // Cộng lại kho
+                    $bienthe->luotban -= $chitiet->soluong; // Trừ đi lượt bán ảo
+                    
+                    // Nếu là hàng tặng (giá = 0), trả lại quỹ lượt tặng
+                    if ($chitiet->dongia == 0) {
+                         $bienthe->luottang += $chitiet->soluong;
+                    }
+                    
+                    $bienthe->save();
+                }
+            }
+
             ThongbaoModel::khoitaothongbao(
                 $donhang->id_nguoidung,
                 "Đơn hàng của bạn đã bị hủy !",
@@ -43,6 +60,7 @@ class DonhangController extends Controller
                 'Đơn hàng'
             );
 
+            $nguoidung = Auth::user();
             // GỬI MAIL
             try {
                 
@@ -50,7 +68,7 @@ class DonhangController extends Controller
                 $donhang->load('chitietdonhang'); 
                 
                 // Lấy email người đặt (hoặc người nhận tùy logic)
-                $emailNhan = $donhang->nguoidung->email; // Đảm bảo lấy đúng email
+                $emailNhan = $nguoidung->email; // Đảm bảo lấy đúng email
 
                 Mail::to($emailNhan)->send(new HuydonhangMail($donhang));
                 

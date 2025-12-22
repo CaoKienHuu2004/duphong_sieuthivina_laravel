@@ -6,6 +6,7 @@ use App\Mail\HuydonhangMail;
 use Livewire\Component;
 use App\Models\DonhangModel;
 use App\Models\ThongbaoModel;
+use App\Models\BientheModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -149,6 +150,22 @@ class DonhangcuatoiComponent extends Component
             $donHang->trangthaithanhtoan = 'Hủy thanh toán'; 
             $donHang->save();
 
+            // 2. HOÀN TRẢ TỒN KHO (Quan trọng)
+            foreach ($donHang->chitietdonhang as $chitiet) {
+                $bienthe = BientheModel::find($chitiet->id_bienthe);
+                if ($bienthe) {
+                    $bienthe->soluong += $chitiet->soluong; // Cộng lại kho
+                    $bienthe->luotban -= $chitiet->soluong; // Trừ đi lượt bán ảo
+                    
+                    // Nếu là hàng tặng (giá = 0), trả lại quỹ lượt tặng
+                    if ($chitiet->dongia == 0) {
+                         $bienthe->luottang += $chitiet->soluong;
+                    }
+                    
+                    $bienthe->save();
+                }
+            }
+
             ThongbaoModel::khoitaothongbao(
                 $donHang->id_nguoidung,
                 "Đơn hàng của bạn đã bị hủy !",
@@ -157,6 +174,8 @@ class DonhangcuatoiComponent extends Component
                 'Đơn hàng'
             );
 
+
+            $nguoidung = Auth::user();
             // GỬI MAIL
             try {
                 
@@ -164,7 +183,7 @@ class DonhangcuatoiComponent extends Component
                 $donHang->load('chitietdonhang'); 
                 
                 // Lấy email người đặt (hoặc người nhận tùy logic)
-                $emailNhan = $donHang->nguoidung->email; // Đảm bảo lấy đúng email
+                $emailNhan = $nguoidung->email; // Đảm bảo lấy đúng email
 
                 Mail::to($emailNhan)->send(new HuydonhangMail($donHang));
                 
