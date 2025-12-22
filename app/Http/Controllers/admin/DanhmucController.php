@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use App\Models\DanhmucModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class DanhmucController extends Controller
 {
@@ -16,14 +17,68 @@ class DanhmucController extends Controller
     }
 
     public function create()
-    {
-        return view('admin.taodanhmuc');
+    {   
+        $danhmuc = DanhmucModel::withCount('sanpham')->orderBy('sapxep', 'asc')->get();
+        return view('admin.taodanhmuc', compact('danhmuc'));
     }
 
+    // Xử lý lưu danh mục
     public function store(Request $request)
     {
-        DanhmucModel::create($request->only(['ten', 'trangthai']));
-        return redirect()->route('quan-tri-vien.danh-sach-danh-muc')->with('success', 'Tạo danh mục thành công!');
+        // 1. Validate dữ liệu
+        $request->validate([
+            'tendm'     => 'required|string|max:255|unique:danhmuc,ten',
+            'parent'    => 'nullable', // Có thể là chuỗi "Không có" hoặc ID
+            'trangthai' => 'required|in:Hiển thị,Tạm ẩn',
+            'images'    => 'nullable|image', // Validate ảnh
+        ], [
+            'tendm.required' => 'Vui lòng nhập tên danh mục.',
+            'tendm.unique'   => 'Tên danh mục đã tồn tại.',
+            'images.image'   => 'File tải lên phải là hình ảnh.',
+        ]);
+
+        try {
+            // 2. Xử lý logic dữ liệu
+            
+            // Xử lý Slug (Đường dẫn) từ Tên danh mục
+            $slug = Str::slug($request->tendm);
+
+            // Xử lý Parent ID
+            // Trong view value="Không có" hoặc ID. Cần chuyển "Không có" thành NULL
+            $parentId = ($request->parent == 'Không có') ? null : $request->parent;
+
+            // Xử lý upload hình ảnh (logo)
+            $logoName = 'danhmuc.jpg'; // Giá trị mặc định trong DB của bạn
+            
+            if ($request->hasFile('images')) {
+                $file = $request->file('images');
+                // Đặt tên file theo slug để chuẩn SEO và tránh trùng
+                $filename = $slug . '-' . time() . '.' . $file->getClientOriginalExtension();
+                
+                // Lưu vào thư mục public/uploads/danhmuc (Bạn có thể đổi đường dẫn tùy ý)
+                $file->move(public_path('uploads/danhmuc'), $filename);
+                
+                $logoName = $filename;
+            }
+
+            // 3. Tạo mới record trong Database
+            DanhmucModel::create([
+                'ten'       => $request->tendm,      // Map 'tendm' (view) -> 'ten' (db)
+                'slug'      => $slug,
+                'logo'      => $logoName,            // Map 'images' (view) -> 'logo' (db)
+                'parent'    => $parentId,
+                'trangthai' => $request->trangthai,
+                'sapxep'    => 0,                    // Giá trị mặc định hoặc thêm input ở view
+                // 'mota'   => $request->mota,       // BỎ QUA vì bảng 'danhmuc' không có cột này
+            ]);
+
+            // 4. Trả về thông báo thành công
+            return redirect()->route('admin.danhmuc')->with('success', 'Thêm danh mục thành công!');
+
+        } catch (\Exception $e) {
+            // Log lỗi nếu cần thiết
+            return redirect()->back()->withInput()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+        }
     }
 
     public function edit($slug)

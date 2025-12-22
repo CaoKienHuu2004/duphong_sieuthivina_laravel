@@ -365,8 +365,8 @@ class SanphamController extends Controller
                 
                 foreach ($imagesToDelete as $img) {
                     // Xóa file vật lý
-                    if (File::exists(public_path('assets/client/images/thumbs/' . $img->hinhanh))) {
-                        File::delete(public_path('assets/client/images/thumbs/' . $img->hinhanh));
+                    if (File::exists('assets/client/images/thumbs/' . $img->hinhanh)) {
+                        File::delete('assets/client/images/thumbs/' . $img->hinhanh);
                     }
                     $img->delete(); // Xóa trong DB
                 }

@@ -39,6 +39,7 @@ class SanphamResource extends JsonResource
                 return [
                     'id' => $variant->id,
                     'id_loaibienthe' => $variant->id_loaibienthe,
+                    'tenbienthe' => $variant->loaibienthe->ten,
                     'giagoc' => (int)$variant->giagoc,
                     'soluong' => (int)$variant->soluong,
                     'luottang' => (int)$variant->luottang,
