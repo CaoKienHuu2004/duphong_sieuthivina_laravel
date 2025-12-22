@@ -259,7 +259,6 @@ class NguoidungController extends Controller
         // 2. XỬ LÝ ẢNH AVATAR (Giữ nguyên 100% logic xử lý file của bạn)
         if ($request->hasFile('avatar')) {
             $publicPath = 'assets/client/images/thumbs';
-            $destinationPath = public_path($publicPath);
 
             $file = $request->file('avatar');
             $extension = $file->getClientOriginalExtension();
@@ -267,11 +266,11 @@ class NguoidungController extends Controller
             $fileName = uniqid() . '_' . time() . '_' . $user->id . '.' . $extension;
 
             // 2a. LƯU FILE MỚI VÀO PUBLIC
-            $file->move(public_path($publicPath), $fileName);
+            $file->move($publicPath, $fileName);
 
             // 2b. XÓA FILE CŨ (NẾU CÓ)
             if ($user->avatar) {
-                $oldAvatarPath = public_path($publicPath . '/' . $user->avatar);
+                $oldAvatarPath = $publicPath . '/' . $user->avatar;
                 if (File::exists($oldAvatarPath)) {
                     File::delete($oldAvatarPath);
                 }
