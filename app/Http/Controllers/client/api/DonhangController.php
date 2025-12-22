@@ -14,6 +14,9 @@ use App\Models\GiohangModel;
 use App\Models\ThongbaoModel;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\SanphamResource;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\HuydonhangMail;
+use Illuminate\Support\Facades\Log;
 
 
 class DonhangController extends Controller
@@ -137,7 +140,7 @@ class DonhangController extends Controller
         ]);
 
         $user = Auth::user();
-        $donhang = DonhangModel::where('madon', $request->madon)
+        $donhang = DonhangModel::with('nguoidung')->where('madon', $request->madon)
                                 ->where('id_nguoidung', $user->id)
                                 ->first();
 
@@ -189,6 +192,23 @@ class DonhangController extends Controller
             );
 
             DB::commit();
+
+            // GỬI MAIL
+            try {
+                // Lý do hủy lấy từ request (nếu admin nhập) hoặc set cứng
+                $lydo = $request->input('lydo', 'Khách hàng yêu cầu hủy'); 
+                
+                // Nạp chi tiết để hiển thị trong mail
+                $donhang->load('chitietdonhang'); 
+                
+                // Lấy email người đặt (hoặc người nhận tùy logic)
+                $emailNhan = $donhang->nguoidung->email; // Đảm bảo lấy đúng email
+
+                Mail::to($emailNhan)->send(new HuydonhangMail($donhang));
+                
+            } catch (\Exception $e) {
+                Log::error("Gửi mail hủy đơn thất bại: " . $e->getMessage());
+            }
 
             return response()->json([
                 'status' => 200, 

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\HuydonhangMail;
 use App\Models\DonhangModel;
 use App\Models\ThongbaoModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class DonhangController extends Controller
 {
@@ -39,6 +42,21 @@ class DonhangController extends Controller
                 route('chi-tiet-don-hang', $donhang->madon),
                 'Đơn hàng'
             );
+
+            // GỬI MAIL
+            try {
+                
+                // Nạp chi tiết để hiển thị trong mail
+                $donhang->load('chitietdonhang'); 
+                
+                // Lấy email người đặt (hoặc người nhận tùy logic)
+                $emailNhan = $donhang->nguoidung->email; // Đảm bảo lấy đúng email
+
+                Mail::to($emailNhan)->send(new HuydonhangMail($donhang));
+                
+            } catch (\Exception $e) {
+                Log::error("Gửi mail hủy đơn thất bại: " . $e->getMessage());
+            }
 
             return redirect()->back()->with('success', 'Đơn hàng đã được hủy thành công.');
         }
