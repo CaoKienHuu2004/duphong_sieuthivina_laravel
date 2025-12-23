@@ -250,4 +250,63 @@ class GiohangController extends Controller
     {
         return MagiamgiaModel::where('trangthai', 'Hoạt động')->where('dieukien', '<=', $tamtinh)->get();
     }
+
+    /**
+     * 5. CẬP NHẬT SỐ LƯỢNG GIỎ HÀNG (Dùng cho nút tăng/giảm số lượng)
+     */
+    public function capnhatgiohang(Request $request)
+    {
+        // 1. Validate
+        $validator = Validator::make($request->all(), [
+            'id_bienthe' => 'required|exists:bienthe,id',
+            'soluong'    => 'required|integer|min:1', // Số lượng mới muốn set (VD: đang 2 sửa thành 5)
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 422, 'errors' => $validator->errors()], 422);
+        }
+
+        // 2. Lấy thông tin biến thể để check kho & giá
+        $bienthe = BientheModel::with(['sanpham.hinhanhsanpham', 'loaibienthe'])->find($request->id_bienthe);
+
+        // 3. Check tồn kho
+        // Lưu ý: Ở đây ta so sánh trực tiếp số lượng khách muốn mua với tồn kho
+        if ($request->soluong > $bienthe->soluong) {
+            return response()->json([
+                'status' => 400, 
+                'message' => "Kho chỉ còn {$bienthe->soluong} sản phẩm.",
+                'max_quantity' => $bienthe->soluong // Trả về số max để FE tự điền
+            ], 400);
+        }
+
+        // 4. Xử lý cho User đăng nhập
+        if (Auth::guard('sanctum')->check()) {
+            $cartItem = GiohangModel::where('id_nguoidung', Auth::guard('sanctum')->id())
+                ->where('id_bienthe', $request->id_bienthe)
+                ->where('thanhtien', '>', 0)
+                ->first();
+
+            if ($cartItem) {
+                $cartItem->soluong = $request->soluong;
+                $cartItem->thanhtien = $request->soluong * $bienthe->giadagiam;
+                $cartItem->save();
+                return response()->json(['status' => 200, 'message' => 'Cập nhật thành công.']);
+            } else {
+                return response()->json(['status' => 404, 'message' => 'Sản phẩm không tìm thấy trong giỏ.'], 404);
+            }
+        }
+
+        // 5. Xử lý cho Guest (Trả về data để FE update LocalStorage)
+        // FE sẽ nhận cục này, tìm item trong localStorage và replace số lượng
+        return response()->json([
+            'status' => 200,
+            'message' => 'Cập nhật thành công (Guest).',
+            'item' => [
+                'id_bienthe' => $bienthe->id,
+                'soluong'    => $request->soluong,
+                'giaban'     => $bienthe->giadagiam,
+                'thanhtien'  => $request->soluong * $bienthe->giadagiam,
+            ]
+        ]);
+    }
 }

@@ -191,7 +191,8 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::get('/', [admin\DonhangController::class, 'index'])->name('danh-sach-don-hang');
             Route::get('/{madon}', [admin\DonhangController::class, 'show'])
                 ->name('chi-tiet-don-hang');
-            Route::put('/{madon}/cap-nhat', [admin\DonhangController::class, 'updated'])->name('cap-nhat-don-hang');
-            Route::delete('/{madon}/xoa', [admin\DonhangController::class, 'destroy'])->name('xoa-don-hang');
+            Route::put('/cap-nhat-trang-thai/{id}', [admin\DonhangController::class, 'actionCapNhatTrangThai'])->name('cap-nhat-trang-thai');
+            Route::put('/da-thanh-toan/{id}', [admin\DonhangController::class, 'actionDaThanhToan'])->name('da-thanh-toan');
+
         });
     });

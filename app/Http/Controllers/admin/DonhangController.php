@@ -11,6 +11,7 @@ use App\Models\NguoidungModel as Nguoidung;
 use App\Models\SanphamModel as Sanpham;
 use Illuminate\Http\Request;
 use App\Models\BientheModel as Bienthe;
+use App\Models\BientheModel;
 use App\Models\ThongbaoModel;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -95,7 +96,22 @@ class DonhangController extends Controller
 
         // Xử lý logic phụ (Hoàn kho nếu hủy...)
         if ($trangThaiMoi == 'Đã hủy đơn') {
-            // Logic hoàn kho...
+            $donhang->trangthaithanhtoan = 'Hủy thanh toán';
+            // 2. HOÀN TRẢ TỒN KHO (Quan trọng)
+            foreach ($donhang->chitietdonhang as $chitiet) {
+                $bienthe = BientheModel::find($chitiet->id_bienthe);
+                if ($bienthe) {
+                    $bienthe->soluong += $chitiet->soluong; // Cộng lại kho
+                    $bienthe->luotban -= $chitiet->soluong; // Trừ đi lượt bán ảo
+                    
+                    // Nếu là hàng tặng (giá = 0), trả lại quỹ lượt tặng
+                    if ($chitiet->dongia == 0) {
+                         $bienthe->luottang += $chitiet->soluong;
+                    }
+                    
+                    $bienthe->save();
+                }
+            }
         }
 
         $donhang->save();
@@ -165,5 +181,13 @@ class DonhangController extends Controller
         // --- BƯỚC 6: Redirect ---
         return redirect()->back()
             ->with('success', "Đã cập nhật trạng thái thành: $trangThaiMoi");
+    }
+
+    public function actionDaThanhToan($id)
+    {
+        $donhang = Donhang::findOrFail($id);
+        $donhang->trangthaithanhtoan = 'Đã thanh toán';
+        $donhang->save();
+        return redirect()->back();
     }
 }

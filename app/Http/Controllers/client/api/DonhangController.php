@@ -136,7 +136,7 @@ class DonhangController extends Controller
     {
         $request->validate([
             'madon' => 'required|exists:donhang,madon',
-            'ly_do' => 'nullable|string|max:255'
+            // 'ly_do' => 'nullable|string|max:255'
         ]);
 
         $user = Auth::user();

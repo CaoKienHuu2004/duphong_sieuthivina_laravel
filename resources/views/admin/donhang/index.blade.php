@@ -16,7 +16,18 @@
             <h6>Những đơn hàng có ở trên hệ thống của bạn</h6>
           </div>
         </div>
-
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
         <div class="card comp-section">
           <div class="card-body">
             <ul class="nav nav-tabs">
@@ -30,7 +41,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#solid-tab2" data-bs-toggle="tab">Đang xử lý ({{ $donhangs->where('trangthai','Đang đóng gói')->count() }})</a>
+                <a class="nav-link" href="#solid-tab2" data-bs-toggle="tab">Đang đóng gói ({{ $donhangs->where('trangthai','Đang đóng gói')->count() }})</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#solid-tab3" data-bs-toggle="tab">Đang giao hàng ({{ $donhangs->where('trangthai','Đang giao hàng')->count() }})</a>
@@ -71,7 +82,7 @@
                         <th class="text-start">Ngày đặt hàng</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
-                        <th class="text-center">Action</th>
+                        <th class="text-center" colspan="3">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -102,29 +113,44 @@
                               <span class="badges bg-lightred">{{ $donhang->trangthaithanhtoan }}</span>
                             @endif
                           </td>
-                          <td class="text-center">
-                            <form action="{{ route('quan-tri-vien.cap-nhat-don-hang', $donhang->madon) }}" method="POST">
+                          <td class="text-center px-1">
+                            <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
                               @csrf
                               @method('PUT')
-                              <button type="submit" class="me-3 bg-none border-0 p-0">
-                                <input type="hidden" name="madon" value="{{ $donhang->madon }}">
-                                <input type="hidden" name="trangthai" value="{{ $donhang->trangthai }}">
-                                <i data-feather="check-circle" class="text-success" data-bs-toggle="tooltip"
-                                  data-bs-placement="top" title="Xác nhận đơn hàng"></i>
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-success" data-bs-toggle="tooltip"
+                                  data-bs-placement="top" title="Xác nhận đơn hàng">
+                                <input type="hidden" name="trang_thai_moi" value="Đang đóng gói">
+                                <i data-feather="check-circle" class="text-white"></i>
                               </button>
-                              @if ($donhang->trangthaithanhtoan == 'Thanh toán khi nhận hàng' || $donhang->trangthaithanhtoan == 'Chờ thanh toán')
-                              <a class="me-3" href="editproduct.html">
-                                <i data-feather="dollar-sign" class="text-warning" data-bs-toggle="tooltip"
-                                  data-bs-placement="top" title="Tiến hành thanh toán"></i>
-                              </a>
-                            @endif
-                            <a class="confirm-text" href="javascript:void(0);">
-                              <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Từ chối và hủy đơn"></i>
-                            </a>
                             </form>
-                            
                           </td>
+                          @if ($donhang->trangthaithanhtoan == 'Thanh toán khi nhận hàng' || $donhang->trangthaithanhtoan == 'Chờ thanh toán')
+                          <td class="text-center px-1">
+                            <form action="{{ route('quan-tri-vien.da-thanh-toan', $donhang->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-warning" data-bs-toggle="tooltip"
+                                  data-bs-placement="top" title="Xác nhận thanh toán">
+                                {{-- <input type="hidden" name="trang_thai_moi" value="Hủy đơn hàng"> --}}
+                                <i data-feather="dollar-sign" class="text-white"></i>
+                              </button>
+                            </form>
+                          </td>
+                          @else
+                          <td></td>
+                          @endif
+                          <td class="text-center px-1">
+                            <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="border-0 p-1 rounded-circle bg-danger" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Từ chối và hủy đơn" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
+                                  <input type="hidden" name="trang_thai_moi" value="Đã hủy đơn">
+                                  <i data-feather="x-circle" class="text-white"></i>
+                                </button>
+                              </form>
+                          </td>
+                          
                         </tr>
                       @endforeach
                       
@@ -157,7 +183,7 @@
                         <th class="text-start">Ngày đặt hàng</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
-                        <th class="text-center">Action</th>
+                        <th class="text-center" colspan="3">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -189,21 +215,42 @@
                             @endif
                           </td>
                           
-                          <td class="text-center">
-                            <a class="me-3" href="editproduct.html">
-                              <i data-feather="truck" class="text-success" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Tiến hành giao hàng"></i>
-                            </a>
-                            @if ($donhang->trangthaithanhtoan == 'Thanh toán khi nhận hàng' || $donhang->trangthaithanhtoan == 'Chờ thanh toán')
-                              <a class="me-3" href="editproduct.html">
-                                <i data-feather="dollar-sign" class="text-warning" data-bs-toggle="tooltip"
-                                  data-bs-placement="top" title="Tiến hành thanh toán"></i>
-                              </a>
-                            @endif
-                            <a class="confirm-text" href="javascript:void(0);">
-                              <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Từ chối và hủy đơn"></i>
-                            </a>
+                          <td class="text-center px-1">
+                            <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-success" data-bs-toggle="tooltip"
+                                  data-bs-placement="top" title="Tiến hành giao hàng">
+                                <input type="hidden" name="trang_thai_moi" value="Đang giao hàng">
+                                <i data-feather="truck" class="text-white"></i>
+                              </button>
+                            </form>
+                          </td>
+                          @if ($donhang->trangthaithanhtoan == 'Thanh toán khi nhận hàng' || $donhang->trangthaithanhtoan == 'Chờ thanh toán')
+                          <td class="text-center px-1">
+                            <form action="{{ route('quan-tri-vien.da-thanh-toan', $donhang->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-warning" data-bs-toggle="tooltip"
+                                  data-bs-placement="top" title="Xác nhận thanh toán" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
+                                {{-- <input type="hidden" name="trang_thai_moi" value="Hủy đơn hàng"> --}}
+                                <i data-feather="dollar-sign" class="text-white"></i>
+                              </button>
+                            </form>
+                          </td>
+                          @else
+                          <td></td>
+                          @endif
+                          <td class="text-center px-1">
+                            <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="border-0 p-1 rounded-circle bg-danger" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Từ chối và hủy đơn" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
+                                  <input type="hidden" name="trang_thai_moi" value="Đã hủy đơn">
+                                  <i data-feather="x-circle" class="text-white"></i>
+                                </button>
+                              </form>
                           </td>
                         </tr>
                       @endforeach
@@ -267,21 +314,42 @@
                               <span class="badges bg-lightred">{{ $donhang->trangthaithanhtoan }}</span>
                             @endif
                           </td>
-                          <td class="text-center">
-                            <a class="me-3" href="editproduct.html">
-                              <i data-feather="user-check" class="text-success" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Giao hàng thành công"></i>
-                            </a>
-                            @if ($donhang->trangthaithanhtoan == 'Thanh toán khi nhận hàng' || $donhang->trangthaithanhtoan == 'Chờ thanh toán')
-                              <a class="me-3" href="editproduct.html">
-                                <i data-feather="dollar-sign" class="text-warning" data-bs-toggle="tooltip"
-                                  data-bs-placement="top" title="Tiến hành thanh toán"></i>
-                              </a>
-                            @endif
-                            <a class="confirm-text" href="javascript:void(0);">
-                              <i data-feather="x-circle" class="text-danger" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Từ chối và hủy đơn"></i>
-                            </a>
+                          <td class="text-center px-1">
+                            <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-success" data-bs-toggle="tooltip"
+                                  data-bs-placement="top" title="Xác nhận đơn hàng">
+                                <input type="hidden" name="trang_thai_moi" value="Đang giao hàng">
+                                <i data-feather="check-circle" class="text-white"></i>
+                              </button>
+                            </form>
+                          </td>
+                          @if ($donhang->trangthaithanhtoan == 'Thanh toán khi nhận hàng' || $donhang->trangthaithanhtoan == 'Chờ thanh toán')
+                          <td class="text-center px-1">
+                            <form action="{{ route('quan-tri-vien.da-thanh-toan', $donhang->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-warning" data-bs-toggle="tooltip"
+                                  data-bs-placement="top" title="Xác nhận thanh toán" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
+                                {{-- <input type="hidden" name="trang_thai_moi" value="Hủy đơn hàng"> --}}
+                                <i data-feather="dollar-sign" class="text-white"></i>
+                              </button>
+                            </form>
+                          </td>
+                          @else
+                          <td></td>
+                          @endif
+                          <td class="text-center px-1">
+                            <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="border-0 p-1 rounded-circle bg-danger" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Từ chối và hủy đơn" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
+                                  <input type="hidden" name="trang_thai_moi" value="Đã hủy đơn">
+                                  <i data-feather="x-circle" class="text-white"></i>
+                                </button>
+                              </form>
                           </td>
                         </tr>
                       @endforeach
@@ -332,7 +400,7 @@
                             {{ $donhang->created_at->format('d/m/Y - H:i') }}
                           </td>
                           <td class="text-center">
-                            <span class="badges bg-lightblue">{{ $donhang->trangthai }}</span>
+                            <span class="badges bg-lightgreen">{{ $donhang->trangthai }}</span>
                             </td>
                           <td class="text-center">
                             @if($donhang->trangthaithanhtoan == 'Đã thanh toán')
@@ -406,7 +474,7 @@
                             {{ $donhang->created_at->format('d/m/Y - H:i') }}
                           </td>
                           <td class="text-center">
-                            <span class="badges bg-lightblue">{{ $donhang->trangthai }}</span>
+                            <span class="badges bg-lightgreen">{{ $donhang->trangthai }}</span>
                             </td>
                           <td class="text-center">
                             @if($donhang->trangthaithanhtoan == 'Đã thanh toán')
@@ -474,7 +542,7 @@
                             {{ $donhang->created_at->format('d/m/Y - H:i') }}
                           </td>
                           <td class="text-center">
-                            <span class="badges bg-lightblue">{{ $donhang->trangthai }}</span>
+                            <span class="badges bg-lightred">{{ $donhang->trangthai }}</span>
                             </td>
                           <td class="text-center">
                             @if($donhang->trangthaithanhtoan == 'Đã thanh toán')

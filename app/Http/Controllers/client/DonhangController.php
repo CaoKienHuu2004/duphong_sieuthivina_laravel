@@ -34,6 +34,7 @@ class DonhangController extends Controller
 
         if ($donhang && ($donhang->trangthai == 'Chờ xác nhận' || $donhang->trangthai == 'Chờ thanh toán')) {
             $donhang->trangthai = 'Đã hủy đơn';
+            $donhang->trangthaithanhtoan = 'Hủy thanh toán';
             $donhang->save();
 
             // 2. HOÀN TRẢ TỒN KHO (Quan trọng)

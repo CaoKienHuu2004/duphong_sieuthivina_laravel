@@ -55,6 +55,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/gio-hang', [GiohangController::class, 'getCartDetails']);
     Route::delete('/gio-hang/xoa/{id_bienthe}', [GiohangController::class, 'xoagiohang']);
     Route::middleware('auth:sanctum')->post('/gio-hang/sync', [GiohangController::class, 'syncCart']);
+    // Cập nhật số lượng (Dùng chung cho cả Guest và Auth vì logic Auth check trong controller)
+    Route::put('/gio-hang/cap-nhat', [GiohangController::class, 'capnhatgiohang']);
 
     Route::prefix('bai-viet')->group(function () {
         Route::get('/', [BaivietController::class, 'index']); // Lấy danh sách
