@@ -205,22 +205,12 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="javascript:void(0);"><i data-feather="credit-card"></i><span>
-                                    Thanh toán</span>
-                                <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="#">Phương thức thanh toán</a></li>
-                                <li><a href="#">Lịch sử thanh toán</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
                             <a href="javascript:void(0);"><i data-feather="award"></i><span>
                                     Ưu đãi & quà tặng</span>
                                 <span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="quotationList.html">Mã giảm giá</a></li>
-                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-qua-tang') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-qua-tang') }}">Quà tặng ưu đãi</a></li>
-                                <li><a href="addquotation.html">Chương trình sự kiện</a></li>
+                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-ma-giam-gia') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-ma-giam-gia') }}">Mã giảm giá</a></li>
+                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-qua-tang') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-qua-tang') }}">Chương trình quà tặng ưu đãi</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
