@@ -15,7 +15,18 @@
                 class="me-1" />Thêm danh mục</a>
           </div>
         </div>
-
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
         <div class="card">
           <div class="card-body">
             <div class="table-top">
@@ -33,7 +44,7 @@
               <div class="wordset">
               </div>
             </div>
-
+            
             <div class="card mb-0" id="filter_inputs">
               <div class="card-body pb-0">
                 <div class="row">
@@ -103,7 +114,7 @@
                     <td class="text-center"><span class="badges bg-lightgreen">Công khai</span></td>
                     <!-- <td class="text-center"><span class="badges bg-lightred">Tạm ẩn</span></td> -->
                     <td>
-                      <a class="me-3" href="editcategory.html">
+                      <a class="me-3" href="{{ route('quan-tri-vien.chinh-sua-danh-muc',$dm->slug) }}">
                         <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
                       </a>
                       <a href="{{ route('quan-tri-vien.xoa-danh-muc',$dm->id) }}">

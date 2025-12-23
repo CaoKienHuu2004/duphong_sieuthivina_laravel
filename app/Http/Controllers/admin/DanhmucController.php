@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use App\Models\DanhmucModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class DanhmucController extends Controller
@@ -60,7 +61,7 @@ class DanhmucController extends Controller
                 $filename = $slug . '-' . time() . '.' . $file->getClientOriginalExtension();
                 
                 // Lưu vào thư mục public/uploads/danhmuc (Bạn có thể đổi đường dẫn tùy ý)
-                $file->move(public_path('assets/client/images/categories'), $filename);
+                $file->move('assets/client/images/categories', $filename);
                 
                 $logoName = $filename;
             }
@@ -101,14 +102,12 @@ class DanhmucController extends Controller
         $request->validate([
             // Lưu ý: unique:danhmuc,ten,$id -> Bỏ qua check trùng tên với chính nó
             'tendm'     => 'required|string|max:255|unique:danhmuc,ten,' . $id,
-            'mota'      => 'required|string',
             'parent'    => 'nullable',
             'trangthai' => 'required',
             'images'    => 'nullable|image',
         ], [
             'tendm.required'   => 'Vui lòng nhập tên danh mục.',
             'tendm.unique'     => 'Tên danh mục đã tồn tại.',
-            'mota.required'    => 'Vui lòng nhập mô tả.',
             'trangthai.required' => 'Vui lòng chọn trạng thái.',
             'images.image'     => 'File tải lên phải là hình ảnh.',
         ]);
@@ -133,7 +132,7 @@ class DanhmucController extends Controller
             if ($request->hasFile('images')) {
                 $file = $request->file('images');
                 $filename = $slug . '-' . time() . '.' . $file->getClientOriginalExtension();
-                $path = public_path('assets/client/images/categories');
+                $path = 'assets/client/images/categories';
 
                 // XÓA ẢNH CŨ (Nếu không phải là ảnh mặc định và file tồn tại)
                 $oldImagePath = $path . '/' . $danhmuc->logo;

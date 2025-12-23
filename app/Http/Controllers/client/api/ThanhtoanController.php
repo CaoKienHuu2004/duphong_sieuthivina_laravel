@@ -418,7 +418,7 @@ class ThanhtoanController extends Controller
     private function calculateShippingFee($tinhThanh)
     {
         $tinhThanhLower = Str::lower(trim($tinhThanh));
-        $isHoChiMinh = Str::contains($tinhThanhLower, 'hồ chí minh');
+        $isHoChiMinh = Str::contains($tinhThanhLower, 'Hồ Chí Minh');
 
         $tenPhiCanTim = $isHoChiMinh ? 'Nội tỉnh (TP.HCM)' : 'Ngoại tỉnh (các vùng lân cận)';
 
@@ -430,5 +430,37 @@ class ThanhtoanController extends Controller
             'model' => $phivanchuyen,
             'phi' => $phivanchuyen->phi ?? 0,
         ];
+    }
+
+    /**
+     * 4. API TÍNH PHÍ SHIP (Public Wrapper)
+     * Frontend gọi vào đây khi khách chọn Tỉnh/Thành phố
+     */
+    public function getShippingFee(Request $request)
+    {
+        // Validate dữ liệu đầu vào
+        $request->validate([
+            'tinh_thanh' => 'required|string'
+        ], [
+            'tinh_thanh.required' => 'Vui lòng chọn Tỉnh/Thành phố.'
+        ]);
+
+        try {
+            // Gọi hàm private tính toán logic
+            $result = $this->calculateShippingFee($request->tinh_thanh);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Lấy phí vận chuyển thành công',
+                'data' => [
+                    'tinh_thanh' => $request->tinh_thanh,
+                    'phi_van_chuyen' => $result['phi'],
+                    'ten_loai_phi' => $result['model']->ten ?? 'Mặc định',
+                    'mota' => $result['model']->mota ?? ''
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 500, 'message' => $e->getMessage()], 500);
+        }
     }
 }

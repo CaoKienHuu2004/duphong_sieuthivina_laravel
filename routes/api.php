@@ -68,6 +68,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->prefix('/thanh-toan')->group(function () {
         // 1. API Đặt hàng (POST)
         Route::post('/dat-hang', [ThanhtoanController::class, 'placeOrder']);
+        Route::post('/tinh-phi-ship', [ThanhtoanController::class, 'getShippingFee']);
 
         // 2. API Check kết quả VNPay (GET)
         // FE sẽ gọi API này sau khi VNPay redirect về
