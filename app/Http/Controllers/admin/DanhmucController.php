@@ -92,32 +92,81 @@ class DanhmucController extends Controller
         return view('admin.suadanhmuc', compact('danhmuc'));
     }
 
-    public function update(Request $request, $slug)
+    public function update(Request $request, $id)
     {
-        $danhmuc = DanhmucModel::where('slug', $slug)->firstOrFail();
+        // Tìm danh mục cần sửa, nếu không thấy báo lỗi 404
+        $danhmuc = DanhmucModel::findOrFail($id);
 
         // 1. Validate dữ liệu
-        $validated = $request->validate([
-            'ten' => 'required|string|max:255',
-            'slug' => [
-                'required',
-                // Kiểm tra unique trong bảng 'danhmuc' (thay bằng tên bảng thật của bạn)
-                // ignore($danhmuc->id) nghĩa là: trùng ai thì trùng, đừng trùng chính tôi
-                Rule::unique('danhmuc', 'slug')->ignore($danhmuc->id),
-            ],
-            'trangthai' => 'sometimes',
+        $request->validate([
+            // Lưu ý: unique:danhmuc,ten,$id -> Bỏ qua check trùng tên với chính nó
+            'tendm'     => 'required|string|max:255|unique:danhmuc,ten,' . $id,
+            'mota'      => 'required|string',
+            'parent'    => 'nullable',
+            'trangthai' => 'required',
+            'images'    => 'nullable|image',
         ], [
-            // Custom thông báo lỗi tiếng Việt
-            'slug.unique' => 'Đường dẫn (slug) này đã tồn tại, vui lòng chọn tên khác.',
-            'slug.required' => 'Vui lòng nhập slug.',
+            'tendm.required'   => 'Vui lòng nhập tên danh mục.',
+            'tendm.unique'     => 'Tên danh mục đã tồn tại.',
+            'mota.required'    => 'Vui lòng nhập mô tả.',
+            'trangthai.required' => 'Vui lòng chọn trạng thái.',
+            'images.image'     => 'File tải lên phải là hình ảnh.',
         ]);
 
-        // 2. Cập nhật dữ liệu (chỉ lấy những field đã validate cho an toàn)
-        $danhmuc->update($request->only(['ten', 'slug', 'trangthai']));
+        try {
+            // 2. Xử lý logic dữ liệu
+            
+            // Xử lý Slug mới
+            $slug = Str::slug($request->tendm);
 
-        return redirect()
-            ->route('quan-tri-vien.danh-sach-danh-muc')
-            ->with('success', 'Đã cập nhật thành công!');
+            // Xử lý Parent ID
+            $parentId = ($request->parent == 'Không có') ? null : $request->parent;
+
+            // [QUAN TRỌNG] Kiểm tra: Danh mục cha không thể là chính nó
+            if ($parentId == $id) {
+                return redirect()->back()->withInput()->with('error', 'Danh mục cha không thể là chính danh mục này.');
+            }
+
+            // Xử lý hình ảnh
+            $logoName = $danhmuc->logo; // Mặc định giữ lại tên ảnh cũ
+
+            if ($request->hasFile('images')) {
+                $file = $request->file('images');
+                $filename = $slug . '-' . time() . '.' . $file->getClientOriginalExtension();
+                $path = public_path('assets/client/images/categories');
+
+                // XÓA ẢNH CŨ (Nếu không phải là ảnh mặc định và file tồn tại)
+                $oldImagePath = $path . '/' . $danhmuc->logo;
+                if ($danhmuc->logo != 'danhmuc.jpg' && file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+
+                // Lưu ảnh mới
+                $file->move($path, $filename);
+                $logoName = $filename;
+            } 
+            // Nếu đổi tên danh mục (slug đổi) nhưng KHÔNG đổi ảnh, 
+            // bạn có thể cân nhắc đổi tên file ảnh cũ theo slug mới hoặc giữ nguyên.
+            // Ở đây mình giữ nguyên logic đơn giản là giữ tên ảnh cũ.
+
+            // 3. Cập nhật record trong Database
+            $danhmuc->update([
+                'ten'       => $request->tendm,
+                'slug'      => $slug,
+                'logo'      => $logoName,
+                'parent'    => $parentId,
+                'trangthai' => $request->trangthai,
+                // 'sapxep' => $request->sapxep, // Nếu form edit có field này thì bỏ comment
+                // 'mota'   => $request->mota, // BỎ QUA theo ghi chú của bạn (DB không có cột này)
+            ]);
+
+            // 4. Trả về thông báo thành công
+            return redirect()->route('quan-tri-vien.danh-sach-danh-muc')->with('success', 'Cập nhật danh mục thành công!');
+
+        } catch (\Exception $e) {
+            \Log::error("Lỗi Controller Update: " . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
