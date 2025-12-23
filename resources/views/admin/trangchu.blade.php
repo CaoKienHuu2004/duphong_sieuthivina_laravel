@@ -168,9 +168,18 @@
                                             <tr>
                                                 <td class="productimgname text-start">
                                                     <a class="product-img" href="productlist.html">
+                                                        @php
+                                                            // Kiểm tra xem có sản phẩm cha không
+                                                            $sanpham = $bt->sanpham; 
+                                                            // Kiểm tra xem có ảnh không
+                                                            $hinhAnh = ($sanpham && $sanpham->hinhanhsanpham && $sanpham->hinhanhsanpham->first()) 
+                                                                ? $sanpham->hinhanhsanpham->first()->hinhanh 
+                                                                : 'product-placeholder.png'; // Tên ảnh mặc định nếu không có ảnh
+                                                        @endphp
+
                                                         <img style="object-fit: cover;"
-                                                            src="{{asset('assets/client')}}/images/thumbs/{{ $bt->sanpham->hinhanhsanpham->first()->hinhanh }}"
-                                                            alt="{{ $bt->sanpham->ten }}" />
+                                                            src="{{ asset('assets/client/images/thumbs/' . $hinhAnh) }}"
+                                                            alt="{{ $sanpham->ten ?? 'Sản phẩm lỗi' }}" />
                                                     </a>
                                                     <div>
                                                         <p style="width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
@@ -217,9 +226,18 @@
                                             <tr>
                                                 <td class="productimgname text-start">
                                                     <a class="product-img" href="productlist.html">
+                                                        @php
+                                                            // Kiểm tra xem có sản phẩm cha không
+                                                            $sanpham = $bt->sanpham; 
+                                                            // Kiểm tra xem có ảnh không
+                                                            $hinhAnh = ($sanpham && $sanpham->hinhanhsanpham && $sanpham->hinhanhsanpham->first()) 
+                                                                ? $sanpham->hinhanhsanpham->first()->hinhanh 
+                                                                : 'product-placeholder.png'; // Tên ảnh mặc định nếu không có ảnh
+                                                        @endphp
+
                                                         <img style="object-fit: cover;"
-                                                            src="{{asset('assets/client')}}/images/thumbs/{{ $bt->sanpham->hinhanhsanpham->first()->hinhanh }}"
-                                                            alt="{{ $bt->sanpham->ten }}" />
+                                                            src="{{ asset('assets/client/images/thumbs/' . $hinhAnh) }}"
+                                                            alt="{{ $sanpham->ten ?? 'Sản phẩm lỗi' }}" />
                                                     </a>
                                                     <div>
                                                         <p style="width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
