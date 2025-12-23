@@ -37,7 +37,7 @@ class CapNhatTrangThaiMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.donhang.capnhatdonhang', // Sử dụng markdown view
+            markdown: 'mail.capnhatdonhang', // Sử dụng markdown view
         );
     }
 }

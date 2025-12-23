@@ -117,10 +117,10 @@
                             <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
                               @csrf
                               @method('PUT')
-                              <button type="submit" class="border-0 p-1 rounded-circle bg-success" data-bs-toggle="tooltip"
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Xác nhận đơn hàng">
                                 <input type="hidden" name="trang_thai_moi" value="Đang đóng gói">
-                                <i data-feather="check-circle" class="text-white"></i>
+                                <i data-feather="check-circle" class="text-success"></i>
                               </button>
                             </form>
                           </td>
@@ -129,10 +129,10 @@
                             <form action="{{ route('quan-tri-vien.da-thanh-toan', $donhang->id) }}" method="POST">
                               @csrf
                               @method('PUT')
-                              <button type="submit" class="border-0 p-1 rounded-circle bg-warning" data-bs-toggle="tooltip"
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Xác nhận thanh toán">
                                 {{-- <input type="hidden" name="trang_thai_moi" value="Hủy đơn hàng"> --}}
-                                <i data-feather="dollar-sign" class="text-white"></i>
+                                <i data-feather="dollar-sign" class="text-warning"></i>
                               </button>
                             </form>
                           </td>
@@ -143,10 +143,10 @@
                             <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit" class="border-0 p-1 rounded-circle bg-danger" data-bs-toggle="tooltip"
+                                <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Từ chối và hủy đơn" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
                                   <input type="hidden" name="trang_thai_moi" value="Đã hủy đơn">
-                                  <i data-feather="x-circle" class="text-white"></i>
+                                  <i data-feather="x-circle" class="text-danger"></i>
                                 </button>
                               </form>
                           </td>
@@ -219,10 +219,10 @@
                             <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
                               @csrf
                               @method('PUT')
-                              <button type="submit" class="border-0 p-1 rounded-circle bg-success" data-bs-toggle="tooltip"
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Tiến hành giao hàng">
                                 <input type="hidden" name="trang_thai_moi" value="Đang giao hàng">
-                                <i data-feather="truck" class="text-white"></i>
+                                <i data-feather="truck" class="text-success"></i>
                               </button>
                             </form>
                           </td>
@@ -231,10 +231,10 @@
                             <form action="{{ route('quan-tri-vien.da-thanh-toan', $donhang->id) }}" method="POST">
                               @csrf
                               @method('PUT')
-                              <button type="submit" class="border-0 p-1 rounded-circle bg-warning" data-bs-toggle="tooltip"
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Xác nhận thanh toán" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
                                 {{-- <input type="hidden" name="trang_thai_moi" value="Hủy đơn hàng"> --}}
-                                <i data-feather="dollar-sign" class="text-white"></i>
+                                <i data-feather="dollar-sign" class="text-warning"></i>
                               </button>
                             </form>
                           </td>
@@ -245,10 +245,10 @@
                             <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit" class="border-0 p-1 rounded-circle bg-danger" data-bs-toggle="tooltip"
+                                <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Từ chối và hủy đơn" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
                                   <input type="hidden" name="trang_thai_moi" value="Đã hủy đơn">
-                                  <i data-feather="x-circle" class="text-white"></i>
+                                  <i data-feather="x-circle" class="text-danger"></i>
                                 </button>
                               </form>
                           </td>
@@ -283,7 +283,7 @@
                         <th class="text-start">Ngày đặt hàng</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
-                        <th class="text-center">Action</th>
+                        <th class="text-center" colspan="3">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -318,10 +318,10 @@
                             <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
                               @csrf
                               @method('PUT')
-                              <button type="submit" class="border-0 p-1 rounded-circle bg-success" data-bs-toggle="tooltip"
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Xác nhận đơn hàng">
-                                <input type="hidden" name="trang_thai_moi" value="Đang giao hàng">
-                                <i data-feather="check-circle" class="text-white"></i>
+                                <input type="hidden" name="trang_thai_moi" value="Đã giao hàng">
+                                <i data-feather="user-check" class="text-success"></i>
                               </button>
                             </form>
                           </td>
@@ -330,10 +330,10 @@
                             <form action="{{ route('quan-tri-vien.da-thanh-toan', $donhang->id) }}" method="POST">
                               @csrf
                               @method('PUT')
-                              <button type="submit" class="border-0 p-1 rounded-circle bg-warning" data-bs-toggle="tooltip"
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
                                   data-bs-placement="top" title="Xác nhận thanh toán" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
                                 {{-- <input type="hidden" name="trang_thai_moi" value="Hủy đơn hàng"> --}}
-                                <i data-feather="dollar-sign" class="text-white"></i>
+                                <i data-feather="dollar-sign" class="text-warning"></i>
                               </button>
                             </form>
                           </td>
@@ -344,10 +344,10 @@
                             <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit" class="border-0 p-1 rounded-circle bg-danger" data-bs-toggle="tooltip"
+                                <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Từ chối và hủy đơn" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
                                   <input type="hidden" name="trang_thai_moi" value="Đã hủy đơn">
-                                  <i data-feather="x-circle" class="text-white"></i>
+                                  <i data-feather="x-circle" class="text-danger"></i>
                                 </button>
                               </form>
                           </td>
@@ -382,7 +382,7 @@
                         <th class="text-start">Ngày đặt hàng</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
-                        <th class="text-center">Action</th>
+                        <th class="text-center" colspan="3">Action</th>
                       </tr>
                     </thead>
                     <tbody>
