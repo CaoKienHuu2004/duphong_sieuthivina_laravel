@@ -17,7 +17,7 @@ Chúng tôi thành thật xin lỗi về sự bất tiện này. Nếu bạn đ�
 | Sản phẩm | SL | Giá |
 | :--- | :---: | ---: |
 @foreach($order->chitietdonhang as $item)
-| {{ $item->tensanpham }} <br> <small>({{ $item->tenbienthe }})</small> | {{ $item->soluong }} | {{ number_format($item->dongia * $item->soluong, 0, ',', '.') }}đ |
+| {{ $item->tensanpham }} <br> <small>({{ $item->tenbienthe }})</small> | {{ $item->soluong }} | {{ number_format($item->dongia, 0, ',', '.') }}đ |
 @endforeach
 </x-mail::table>
 

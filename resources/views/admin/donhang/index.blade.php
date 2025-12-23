@@ -86,7 +86,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($donhangs->where('trangthai','Chờ xác nhận') as $donhang)
+                      @forelse ($donhangs->where('trangthai','Chờ xác nhận') as $donhang)
                         <tr>
                           <td class="text-start">
                             <a class="fw-bold" href="{{ route('quan-tri-vien.chi-tiet-don-hang',$donhang->madon) }}">#{{ $donhang->madon }}</a>
@@ -152,7 +152,18 @@
                           </td>
                           
                         </tr>
-                      @endforeach
+                        @empty
+                      <tr class="text-center">
+                        
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Không có đơn hàng nào!</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                      </tr>
+                      @endforelse
                       
                     </tbody>
                   </table>
@@ -187,7 +198,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($donhangs->where('trangthai','Đang đóng gói') as $donhang)
+                      @forelse ($donhangs->where('trangthai','Đang đóng gói') as $donhang)
                         <tr>
                           <td class="text-start">
                             <a class="fw-bold" href="{{ route('quan-tri-vien.chi-tiet-don-hang',$donhang->madon) }}">#{{ $donhang->madon }}</a>
@@ -253,7 +264,18 @@
                               </form>
                           </td>
                         </tr>
-                      @endforeach
+                      @empty
+                      <tr class="text-center">
+                        
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Không có đơn hàng nào!</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                      </tr>
+                      @endforelse
                     </tbody>
                   </table>
                 </div>
@@ -287,7 +309,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($donhangs->where('trangthai','Đang giao hàng') as $donhang)
+                      @forelse ($donhangs->where('trangthai','Đang giao hàng') as $donhang)
                         <tr>
                           <td class="text-start">
                             <a class="fw-bold" href="{{ route('quan-tri-vien.chi-tiet-don-hang',$donhang->madon) }}">#{{ $donhang->madon }}</a>
@@ -352,7 +374,19 @@
                               </form>
                           </td>
                         </tr>
-                      @endforeach
+                      @empty
+                      <tr class="text-center">
+                        
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Không có đơn hàng nào!</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                      </tr>
+
+                      @endforelse
                     </tbody>
                   </table>
                 </div>
@@ -382,11 +416,11 @@
                         <th class="text-start">Ngày đặt hàng</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
-                        <th class="text-center" colspan="3">Action</th>
+                        <th class="text-center" colspan="2">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($donhangs->where('trangthai','Đã giao hàng') as $donhang)
+                      @forelse ($donhangs->where('trangthai','Đã giao hàng') as $donhang)
                         <tr>
                           <td class="text-start">
                             <a class="fw-bold" href="{{ route('quan-tri-vien.chi-tiet-don-hang',$donhang->madon) }}">#{{ $donhang->madon }}</a>
@@ -413,20 +447,40 @@
                               <span class="badges bg-lightred">{{ $donhang->trangthaithanhtoan }}</span>
                             @endif
                           </td>
-                          <td class="text-center">
-                            @if ($donhang->trangthaithanhtoan == 'Thanh toán khi nhận hàng' || $donhang->trangthaithanhtoan == 'Chờ thanh toán')
-                              <a class="me-3" href="editproduct.html">
-                                <i data-feather="dollar-sign" class="text-warning" data-bs-toggle="tooltip"
-                                  data-bs-placement="top" title="Tiến hành thanh toán"></i>
-                              </a>
-                            @endif
-                            <a class="me-3" href="editproduct.html">
-                            <i data-feather="eye" class="text-black" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Xem chi tiết đơn hàng"></i>
-                          </a>
+                          @if ($donhang->trangthaithanhtoan == 'Thanh toán khi nhận hàng' || $donhang->trangthaithanhtoan == 'Chờ thanh toán')
+                          <td class="text-center px-1">
+                            <form action="{{ route('quan-tri-vien.da-thanh-toan', $donhang->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
+                                  data-bs-placement="top" title="Xác nhận thanh toán" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
+                                {{-- <input type="hidden" name="trang_thai_moi" value="Hủy đơn hàng"> --}}
+                                <i data-feather="dollar-sign" class="text-warning"></i>
+                              </button>
+                            </form>
+                          </td>
+                          @else
+                          <td></td>
+                          @endif
+                          <td class="text-center px-1">
+                            <a class="me-3" href="{{ route('quan-tri-vien.chi-tiet-don-hang',$donhang->madon) }}">
+                              <i data-feather="eye" class="text-black" data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Xem chi tiết đơn hàng"></i>
+                            </a>
                           </td>
                         </tr>
-                      @endforeach
+                      @empty
+                      <tr class="text-center">
+                        
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Không có đơn hàng nào!</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                      </tr>
+                      @endforelse
                     </tbody>
                   </table>
                 </div>
@@ -487,11 +541,11 @@
                               <span class="badges bg-lightred">{{ $donhang->trangthaithanhtoan }}</span>
                             @endif
                           </td>
-                          <td class="text-center">
-                            <a class="me-3" href="editproduct.html">
-                            <i data-feather="eye" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Xem chi tiết đơn hàng"></i>
-                          </a>
+                          <td class="text-center px-1">
+                            <a class="me-3" href="{{ route('quan-tri-vien.chi-tiet-don-hang',$donhang->madon) }}">
+                              <i data-feather="eye" class="text-black" data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Xem chi tiết đơn hàng"></i>
+                            </a>
                           </td>
                         </tr>
                       @endforeach

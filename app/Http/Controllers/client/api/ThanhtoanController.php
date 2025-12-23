@@ -346,6 +346,71 @@ class ThanhtoanController extends Controller
     }
 
     /**
+     * 3. THANH TOÁN LẠI (RE-PAYMENT)
+     * Dành cho đơn hàng đã đặt nhưng chưa thanh toán hoặc thanh toán thất bại
+     */
+    public function retryPayment(Request $request)
+    {
+        // Validate đầu vào
+        $request->validate([
+            'madon' => 'required|string'
+        ]);
+
+        $user = Auth::user();
+
+        try {
+            // 1. Tìm đơn hàng (Phải đúng mã đơn và thuộc về user đang đăng nhập)
+            $order = DonhangModel::where('madon', $request->madon)
+                ->where('id_nguoidung', $user->id)
+                ->first();
+
+            if (!$order) {
+                return response()->json(['status' => 404, 'message' => 'Đơn hàng không tồn tại.']);
+            }
+
+            // 2. Kiểm tra trạng thái đơn hàng
+            if ($order->trangthaithanhtoan == 'Đã thanh toán') {
+                return response()->json(['status' => 400, 'message' => 'Đơn hàng này đã hoàn tất thanh toán.']);
+            }
+
+            if ($order->trangthai == 'Đã hủy') {
+                return response()->json(['status' => 400, 'message' => 'Đơn hàng đã bị hủy, không thể thanh toán lại.']);
+            }
+
+            // 3. Kiểm tra phương thức thanh toán
+            // Lấy thông tin phương thức từ quan hệ hoặc query trực tiếp
+            $phuongthuc = PhuongthucModel::find($order->id_phuongthuc);
+
+            if (!$phuongthuc || $phuongthuc->maphuongthuc != 'QRCODE') {
+                return response()->json([
+                    'status' => 400, 
+                    'message' => 'Chức năng thanh toán lại chỉ áp dụng cho VNPAY/QRCODE.'
+                ]);
+            }
+
+            // 4. Tạo lại Link thanh toán mới
+            // Lưu ý: createVnpayUrl sẽ tự lấy thời gian hiện tại (vnp_CreateDate) nên link mới luôn hợp lệ
+            $paymentUrl = $this->createVnpayUrl($order);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Tạo link thanh toán lại thành công!',
+                'data' => [
+                    'madon' => $order->madon,
+                    'payment_url' => $paymentUrl
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error("Retry Payment Error: " . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'Lỗi hệ thống: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Tính phí vận chuyển dựa trên Tỉnh/Thành
      */
     private function calculateShippingFee($tinhThanh)

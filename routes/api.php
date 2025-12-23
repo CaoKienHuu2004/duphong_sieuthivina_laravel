@@ -71,6 +71,8 @@ Route::prefix('v1')->group(function () {
         // 2. API Check kết quả VNPay (GET)
         // FE sẽ gọi API này sau khi VNPay redirect về
         Route::get('/vnpay-return', [ThanhtoanController::class, 'vnpayReturn']);
+        // 3. API Thanh toán lại (POST) <--- THÊM DÒNG NÀY
+        Route::post('/thanh-toan-lai', [ThanhtoanController::class, 'retryPayment']);
     });
 
     Route::middleware('auth:sanctum')->prefix('/don-hang')->group(function () {

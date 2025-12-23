@@ -30,7 +30,7 @@ class CapNhatTrangThaiMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '[Siêu Thị Vina] ' . $this->tieude . ' #' . $this->donhang->madon,
+            subject: $this->tieude . ' #' . $this->donhang->madon,
         );
     }
 

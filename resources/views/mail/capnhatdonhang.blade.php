@@ -1,24 +1,27 @@
 <x-mail::message>
 # Xin chào {{ $donhang->nguoinhan }},
 
-{{ $tieuDe }}
+{{ $tieude }}
 
 **Trạng thái đơn hàng:** {{ $donhang->trangthai }}
 
-{{ $noiDung }}
+{{ $noidung }}
 
 ---
 
 ### Thông tin đơn hàng #{{ $donhang->madon }}
 
-| Sản phẩm | Tổng tiền |
-|:--- |:--- |
-| Đơn hàng gồm {{ $donhang->chitietdonhang->count() ?? 'nhiều' }} sản phẩm | **{{ number_format($donhang->thanhtien) }} đ** |
+<x-mail::table>
+| :--- | :---: | :---: |
+@foreach($donhang->chitietdonhang as $item)
+| {{ $item->tensanpham }} <br> <small>({{ $item->tenbienthe }})</small> | {{ $item->soluong }} | {{ number_format($item->dongia, 0, ',', '.') }}đ |
+@endforeach
+</x-mail::table>
 
-<x-mail::button :url="$urlChiTiet" color="success">
+<x-mail::button :url="$urlchitiet" color="success">
 Xem chi tiết đơn hàng
 </x-mail::button>
 
 Cảm ơn bạn đã mua sắm,<br>
-{{ config('app.name') }}
+Siêu Thị Vina
 </x-mail::message>
