@@ -270,6 +270,7 @@ class ThanhtoanController extends Controller
                     'message' => 'Giao dịch thành công',
                     'data' => [
                         'madon' => $order->madon,
+                        'donhang'=>$order,
                         'amount' => $inputData['vnp_Amount'] / 100
                     ]
                 ]);
