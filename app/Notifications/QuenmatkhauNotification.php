@@ -29,7 +29,7 @@ class QuenmatkhauNotification extends Notification
     public function toMail($notifiable)
     {
         // Link trỏ về Frontend (Next.js)
-        $frontendUrl = env('FRONTEND_URL', 'http://localhost:3000');
+        $frontendUrl = env('FRONTEND_URL', 'https://sieuthivina.shop');
         $url = "{$frontendUrl}/doi-mat-khau?token={$this->token}&email={$this->email}";
 
         return (new MailMessage)
