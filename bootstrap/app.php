@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->statefulApi();
         $middleware->validateCsrfTokens(except: [
-            'api/v1/dang-ky', 'api/v1/dang-nhap', 'api/v1/thong-tin-ca-nhan/cap-nhat','api/v1/dang-xuat','api/v1/gio-hang/them','api/v1/gio-hang','api/v1/gio-hang/sync','api/v1/gio-hang/xoa/{id_bienthe}','api/v1/thanh-toan/dat-hang','api/v1/thanh-toan/vnpay-return','api/v1/login-google','api/v1/don-hang/tra-cuu','api/v1/don-hang/huy-don-hang',''
+            'api/v1/*'
         ]);
         //
         $middleware->alias([
