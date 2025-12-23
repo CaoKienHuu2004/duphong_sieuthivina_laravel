@@ -46,15 +46,22 @@ class HomeController extends Controller
             ->limit(5)
             ->get();
 
-        // ===== SẢN PHẨM =====
+        // ===== SẢN PHẨM HẾT HÀNG =====
         $sanPhamHetHang = BientheModel::with('sanpham.hinhanhsanpham')
+            ->whereHas('sanpham', function($q) {
+                $q->whereNull('deleted_at'); // Đảm bảo sản phẩm cha chưa bị xóa
+            })
             ->whereNull('deleted_at')
             ->where('soluong', '<', 10)
             ->orderBy('soluong', 'asc')
             ->take(5)
             ->get();
 
+        // ===== SẢN PHẨM TỒN KHO =====
         $sanPhamTonKho = BientheModel::with(['sanpham'])
+            ->whereHas('sanpham', function($q) {
+                $q->whereNull('deleted_at'); // Đảm bảo sản phẩm cha chưa bị xóa
+            })
             ->whereNull('deleted_at')
             ->where('soluong', '>', 100)
             ->orderBy('soluong', 'desc')
