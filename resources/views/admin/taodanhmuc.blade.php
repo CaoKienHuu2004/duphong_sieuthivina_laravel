@@ -39,7 +39,7 @@
                                     <div class="form-group">
                                         <label>Tên danh mục <span data-bs-toggle="tooltip" data-bs-placement="top"
                                                 class="text-danger" title="Bắt buộc">*</span></label>
-                                        <input class="text-black" type="text" name="tendm" value=""
+                                        <input class="text-black" type="text" name="tendm"
                                             placeholder="Nhập tên danh mục sản phẩm..." id="slug-source"
                                             onkeyup="ChangeToSlug();" />
                                         <label>Đường dẫn: <span class="fst-italic form-text text-muted"

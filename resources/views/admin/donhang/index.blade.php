@@ -610,7 +610,7 @@
                             @endif
                           </td>
                           <td class="text-center">
-                            <a class="me-3" href="editproduct.html">
+                            <a class="me-3" href="{{ route('quan-tri-vien.chi-tiet-don-hang',$donhang->madon) }}">
                             <i data-feather="eye" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
                               title="Xem chi tiết đơn hàng"></i>
                           </a>

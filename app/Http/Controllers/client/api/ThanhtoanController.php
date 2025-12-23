@@ -181,6 +181,7 @@ class ThanhtoanController extends Controller
                 'message' => 'Đặt hàng thành công!',
                 'data' => [
                     'madon' => $order->madon,
+                    'id' => $order->id,
                     'tong_tien' => $order->thanhtien,
                     'payment_method' => $phuongthuc->maphuongthuc,
                     'payment_url' => $paymentUrl // Nếu COD thì null, nếu VNPAY thì là link

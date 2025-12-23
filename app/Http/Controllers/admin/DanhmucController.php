@@ -28,12 +28,16 @@ class DanhmucController extends Controller
         // 1. Validate dữ liệu
         $request->validate([
             'tendm'     => 'required|string|max:255|unique:danhmuc,ten',
+            'mota'     => 'required|string',
             'parent'    => 'nullable', // Có thể là chuỗi "Không có" hoặc ID
             'trangthai' => 'required|in:Hiển thị,Tạm ẩn',
             'images'    => 'nullable|image', // Validate ảnh
         ], [
             'tendm.required' => 'Vui lòng nhập tên danh mục.',
             'tendm.unique'   => 'Tên danh mục đã tồn tại.',
+            'mota.required' => 'Vui lòng nhập mô tả.',
+            'trangthai.required' => 'Vui lòng chọn trạng thái.',
+            'trangthai.in' => 'Trạng thái không hợp lệ.',
             'images.image'   => 'File tải lên phải là hình ảnh.',
         ]);
 
@@ -73,7 +77,7 @@ class DanhmucController extends Controller
             ]);
 
             // 4. Trả về thông báo thành công
-            return redirect()->route('admin.danhmuc')->with('success', 'Thêm danh mục thành công!');
+            return redirect()->route('danh-sach-danh-muc')->with('success', 'Thêm danh mục thành công!');
 
         } catch (\Exception $e) {
             // Log lỗi nếu cần thiết

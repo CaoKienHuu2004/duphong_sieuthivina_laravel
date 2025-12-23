@@ -34,26 +34,41 @@
                                     @if ($donhang->trangthai == 'Đã giao hàng')
                                         
                                     @elseif ($donhang->trangthai == 'Đang giao hàng')
-                                        <a class="badge bg-success rounded-circle p-2" href="#" data-bs-toggle="tooltip"
+                                    <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="trang_thai_moi" value="Đã giao hàng">
+                                        <button class="badge bg-success border-0 rounded-circle p-2" href="#" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Giao hàng thành công">
                                             <i data-feather="user-check" class="text-white"></i>
-                                        </a>
+                                        </button>
+                                        </form>
                                     @elseif ($donhang->trangthai == 'Đang đóng gói')
-                                        <a href="editproduct.html" class="badge bg-success rounded-circle p-2">
-                                            <i data-feather="truck" class="text-white" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Tiến hành giao hàng"></i>
-                                        </a>
+                                        <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="trang_thai_moi" value="Đang giao hàng">
+                                        <button class="badge bg-success border-0 rounded-circle p-2" href="#" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" title="Tiến hành giao hàng">
+                                            <i data-feather="truck" class="text-white"></i>
+                                        </button>
+                                        </form>
                                     @elseif ($donhang->trangthai == 'Chờ xác nhận')
-                                        <a href="#" class="badge bg-success rounded-circle p-2" data-bs-toggle="tooltip"
+                                        <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="trang_thai_moi" value="Đang đóng gói">
+                                        <button class="badge bg-success border-0 rounded-circle p-2" href="#" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Xác nhận đơn hàng">
                                             <i data-feather="check-circle" class="text-white"></i>
-                                        </a>
+                                        </button>
+                                        </form>
                                     @elseif ($donhang->trangthai == 'Đã hủy')
                                         
                                     @endif
                                     
                                 </li>
-                                @if ($donhang->trangthaithanhtoan != 'Đã thanh toán')
+                                @if ($donhang->trangthaithanhtoan != 'Đã thanh toán' && $donhang->trangthai != 'Đã giao hàng' && $donhang->trangthai != 'Đã hủy đơn')
                                     <li class="mx-1">
                                         <a href="editproduct.html" class="badge bg-warning rounded-circle p-2" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Đã thanh toán">
@@ -63,10 +78,15 @@
                                 @endif
                                 @if ($donhang->trangthai != 'Đã hủy đơn' && $donhang->trangthai != 'Đã giao hàng')
                                     <li class="mx-1">
-                                        <a href="editproduct.html" class="badge bg-danger rounded-circle p-2" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Từ chối (hủy đơn)">
+                                        <form action="{{ route('quan-tri-vien.cap-nhat-trang-thai', $donhang->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="trang_thai_moi" value="Hủy đơn hàng">
+                                        <button class="badge bg-danger border-0 rounded-circle p-2" href="#" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" title="Từ chối và hủy đơn">
                                             <i data-feather="x-circle" class="text-white"></i>
-                                        </a>
+                                        </button>
+                                        </form>
                                     </li>
                                 @endif
                                 
