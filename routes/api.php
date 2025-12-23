@@ -15,6 +15,7 @@ use App\Http\Controllers\client\api\DiachiController;
 use App\Http\Controllers\client\api\DanhgiaController;
 use App\Http\Controllers\client\api\GlobalController;
 use App\Http\Controllers\client\api\ThongbaoController;
+use App\Http\Controllers\client\api\YeuthichController;
 
 
 /*
@@ -70,10 +71,11 @@ Route::prefix('v1')->group(function () {
 
         // 2. API Check kết quả VNPay (GET)
         // FE sẽ gọi API này sau khi VNPay redirect về
-        Route::get('/vnpay-return', [ThanhtoanController::class, 'vnpayReturn']);
+        
         // 3. API Thanh toán lại (POST) <--- THÊM DÒNG NÀY
         Route::post('/thanh-toan-lai', [ThanhtoanController::class, 'retryPayment']);
     });
+    Route::get('/thanh-toan/vnpay-return', [ThanhtoanController::class, 'vnpayReturn']);
 
     Route::middleware('auth:sanctum')->prefix('/don-hang')->group(function () {
         // Chi tiết đơn hàng (GET)
@@ -160,4 +162,16 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::post('/lien-he', [GlobalController::class, 'submitContact']);
+
+    Route::middleware('auth:sanctum')->prefix('yeu-thich')->group(function () {
+    // Lấy danh sách: GET /api/v1/yeu-thich
+    Route::get('/', [YeuthichController::class, 'index']);
+
+    // Thêm mới: POST /api/v1/yeu-thich
+    // Body: { "id_sanpham": 1 }
+    Route::post('/', [YeuthichController::class, 'store']);
+
+    // Xóa: DELETE /api/v1/yeu-thich/{id_sanpham}
+    Route::delete('/{id_sanpham}', [YeuthichController::class, 'destroy']);
+});
 });

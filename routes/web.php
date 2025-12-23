@@ -157,7 +157,7 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::get('/{slug}/chinh-sua', [admin\DanhmucController::class, 'edit'])->name('chinh-sua-danh-muc');
             Route::post('/{slug}/cap-nhat', [admin\DanhmucController::class, 'update'])->name('cap-nhat-danh-muc');
 
-            Route::delete('/{slug}/xoa', [admin\DanhmucController::class, 'destroy'])->name('xoa-danh-muc');
+            Route::get('/{id}/xoa', [admin\DanhmucController::class, 'destroy'])->name('xoa-danh-muc');
         });
 
         Route::prefix('thuong-hieu')->group(function () {

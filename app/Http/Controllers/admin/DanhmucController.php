@@ -30,7 +30,7 @@ class DanhmucController extends Controller
             'tendm'     => 'required|string|max:255|unique:danhmuc,ten',
             'mota'     => 'required|string',
             'parent'    => 'nullable', // Có thể là chuỗi "Không có" hoặc ID
-            'trangthai' => 'required|in:Hiển thị,Tạm ẩn',
+            'trangthai' => 'required',
             'images'    => 'nullable|image', // Validate ảnh
         ], [
             'tendm.required' => 'Vui lòng nhập tên danh mục.',
@@ -60,7 +60,7 @@ class DanhmucController extends Controller
                 $filename = $slug . '-' . time() . '.' . $file->getClientOriginalExtension();
                 
                 // Lưu vào thư mục public/uploads/danhmuc (Bạn có thể đổi đường dẫn tùy ý)
-                $file->move(public_path('uploads/danhmuc'), $filename);
+                $file->move(public_path('assets/client/images/categories'), $filename);
                 
                 $logoName = $filename;
             }
@@ -73,13 +73,14 @@ class DanhmucController extends Controller
                 'parent'    => $parentId,
                 'trangthai' => $request->trangthai,
                 'sapxep'    => 0,                    // Giá trị mặc định hoặc thêm input ở view
-                // 'mota'   => $request->mota,       // BỎ QUA vì bảng 'danhmuc' không có cột này
+                'mota'   => $request->mota,       // BỎ QUA vì bảng 'danhmuc' không có cột này
             ]);
 
             // 4. Trả về thông báo thành công
-            return redirect()->route('danh-sach-danh-muc')->with('success', 'Thêm danh mục thành công!');
+            return redirect()->route('quan-tri-vien.danh-sach-danh-muc')->with('success', 'Thêm danh mục thành công!');
 
         } catch (\Exception $e) {
+            \Log::error("Lỗi Controller: " . $e->getMessage());
             // Log lỗi nếu cần thiết
             return redirect()->back()->withInput()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
@@ -119,9 +120,9 @@ class DanhmucController extends Controller
             ->with('success', 'Đã cập nhật thành công!');
     }
 
-    public function destroy($slug)
+    public function destroy($id)
     {
-        $danhmuc = DanhmucModel::where('slug', $slug)->firstOrFail();
+        $danhmuc = DanhmucModel::where('id', $id)->firstOrFail();
 
         // Check nếu có sản phẩm thì không cho xóa
         if ($danhmuc->sanpham()->count() > 0) {

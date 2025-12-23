@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="page-wrapper">
-        <form class="content" action="{{ route('quan-tri-vien.luu-danh-muc') }}" method="post">
+        <form class="content" action="{{ route('quan-tri-vien.luu-danh-muc') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="page-header">
                 <div class="page-title">
@@ -30,6 +30,17 @@
             </div>
             @endif
 
+            @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul class="mb-0 ps-3">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+
             <div class="row">
                 <div class="col-lg-8">
                     <div class="card">
@@ -41,7 +52,7 @@
                                                 class="text-danger" title="Bắt buộc">*</span></label>
                                         <input class="text-black" type="text" name="tendm"
                                             placeholder="Nhập tên danh mục sản phẩm..." id="slug-source"
-                                            onkeyup="ChangeToSlug();" />
+                                            onkeyup="ChangeToSlug();" value="{{ old('tendm') }}"/>
                                         <label>Đường dẫn: <span class="fst-italic form-text text-muted"
                                                 id="slug-text">...</span></label>
                                     </div>
@@ -66,7 +77,7 @@
                                 <div class="col-lg-12 col-sm-6 col-12">
                                     <label>Sắp xếp danh mục <span data-bs-toggle="tooltip" data-bs-placement="top"
                                             class="text-danger" title="Bắt buộc">*</span></label>
-                                    <input class="text-black form-control" type="number" name="sapxep" value=""
+                                    <input class="text-black form-control" type="number" name="sapxep" value="{{ old('sapxep') }}"
                                         placeholder="sắp xếp số thứ tự" />
                                 </div>
                                 <div class="col-lg-12 col-sm-6 col-12">
@@ -87,7 +98,7 @@
                                         <label>Trạng thái danh mục <span data-bs-toggle="tooltip" data-bs-placement="top"
                                                 class="text-danger" title="Bắt buộc">*</span></label>
                                         <select class="select text-black" name="trangthai">
-                                            <option value="Hiển thị">Công khai</option>
+                                            <option value="Hiển thị" selected>Hiển thị</option>
                                             <option value="Tạm ẩn">Tạm ẩn</option>
                                         </select>
                                     </div>

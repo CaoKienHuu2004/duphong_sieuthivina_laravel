@@ -106,7 +106,7 @@
                       <a class="me-3" href="editcategory.html">
                         <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
                       </a>
-                      <a class="confirm-text" href="javascript:void(0);">
+                      <a href="{{ route('quan-tri-vien.xoa-danh-muc',$dm->id) }}">
                         <img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" />
                       </a>
                     </td>
