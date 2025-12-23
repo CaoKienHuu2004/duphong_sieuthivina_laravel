@@ -59,40 +59,72 @@ class GiohangController extends Controller
      */
     public function themgiohang(Request $request)
     {
+        // 1. Validate
         $validator = Validator::make($request->all(), [
             'id_bienthe' => 'required|exists:bienthe,id',
             'soluong' => 'required|integer|min:1',
-            'cart_local' => 'nullable|array' 
+            'cart_local' => 'nullable|array'
         ]);
 
         if ($validator->fails()) return response()->json(['status' => 422, 'errors' => $validator->errors()], 422);
 
+        // 2. Lấy thông tin biến thể
         $bienthe = BientheModel::with(['sanpham.hinhanhsanpham', 'loaibienthe'])->find($request->id_bienthe);
+
+        // 3. Tính số lượng đã có (User hoặc Guest)
         $soluong_daco = 0;
+        $item_db = null; // Khởi tạo biến để dùng lại phía dưới
 
         if (Auth::guard('sanctum')->check()) {
+            // Tìm sản phẩm trong DB của user này
+            // Lưu ý: Logic của bạn là phân biệt hàng mua (thanhtien > 0). 
+            // Nếu bạn có logic hàng tặng (thanhtien = 0) thì query này đúng.
             $item_db = GiohangModel::where('id_nguoidung', Auth::guard('sanctum')->id())
-                ->where('id_bienthe', $request->id_bienthe)->where('thanhtien', '>', 0)->first();
+                ->where('id_bienthe', $request->id_bienthe)
+                ->where('thanhtien', '>', 0)
+                ->first();
+
             $soluong_daco = $item_db ? $item_db->soluong : 0;
         } else {
+            // Guest: Lấy từ mảng gửi lên
             foreach ($request->cart_local ?? [] as $item) {
-                if (($item['id_bienthe'] ?? 0) == $request->id_bienthe) { $soluong_daco = $item['soluong']; break; }
+                if (($item['id_bienthe'] ?? 0) == $request->id_bienthe) {
+                    $soluong_daco = $item['soluong'];
+                    break;
+                }
             }
         }
 
+        // 4. Check tồn kho
         if (($soluong_daco + $request->soluong) > $bienthe->soluong) {
-            return response()->json(['status' => 400, 'message' => "Tồn kho không đủ."], 400);
+            return response()->json(['status' => 400, 'message' => "Tồn kho không đủ (Hiện có: {$bienthe->soluong})."], 400);
         }
 
+        // 5. Xử lý lưu vào DB (Nếu là User)
         if (Auth::guard('sanctum')->check()) {
             $newQty = $soluong_daco + $request->soluong;
-            GiohangModel::updateOrCreate(
-                ['id_nguoidung' => Auth::guard('sanctum')->id(), 'id_bienthe' => $request->id_bienthe, 'thanhtien' => ['>', 0]],
-                ['soluong' => $newQty, 'thanhtien' => $newQty * $bienthe->giadagiam, 'trangthai' => 'Hiển thị']
-            );
+            $newThanhTien = $newQty * $bienthe->giadagiam;
+
+            if ($item_db) {
+                // [SỬA LỖI]: Nếu đã tồn tại thì Update dòng cũ
+                $item_db->soluong = $newQty;
+                $item_db->thanhtien = $newThanhTien;
+                $item_db->save();
+            } else {
+                // [SỬA LỖI]: Chưa có thì Tạo mới
+                GiohangModel::create([
+                    'id_nguoidung' => Auth::guard('sanctum')->id(),
+                    'id_bienthe' => $request->id_bienthe,
+                    'soluong' => $newQty,
+                    'thanhtien' => $newThanhTien,
+                    'trangthai' => 'Hiển thị'
+                ]);
+            }
+
             return response()->json(['status' => 200, 'message' => 'Đã cập nhật giỏ hàng hệ thống.']);
         }
 
+        // 6. Trả về cho Guest (FE tự lưu localStorage)
         return response()->json([
             'status' => 201,
             'item' => [
@@ -143,7 +175,8 @@ class GiohangController extends Controller
 
     // --- CÁC HÀM TRỢ GIÚP LOGIC ---
 
-    private function getRawCartItems(Request $request) {
+    private function getRawCartItems(Request $request)
+    {
         if (Auth::guard('sanctum')->check()) {
             return GiohangModel::with(['bienthe.sanpham.thuonghieu', 'bienthe.sanpham.hinhanhsanpham', 'bienthe.loaibienthe'])
                 ->where('id_nguoidung', Auth::guard('sanctum')->id())->where('thanhtien', '>', 0)->get()
@@ -158,7 +191,8 @@ class GiohangController extends Controller
         return $items;
     }
 
-    private function calculateGifts($rawItems) {
+    private function calculateGifts($rawItems)
+    {
         $gifts = [];
         $cartTotalValue = collect($rawItems)->sum('thanhtien');
         $rules = QuatangsukienModel::where('trangthai', 'Hiển thị')->where('ngaybatdau', '<=', now())->where('ngayketthuc', '>=', now())->get();
@@ -168,9 +202,13 @@ class GiohangController extends Controller
             $reqIds = SanphamthamgiaquatangModel::where('id_quatang', $rule->id)->pluck('id_bienthe')->toArray();
             $matchQty = 0;
             if (count($reqIds) > 0) {
-                foreach ($rawItems as $i) { if (in_array($i['id_bienthe'], $reqIds)) $matchQty += $i['soluong']; }
+                foreach ($rawItems as $i) {
+                    if (in_array($i['id_bienthe'], $reqIds)) $matchQty += $i['soluong'];
+                }
                 $suat = floor($matchQty / $rule->dieukiensoluong);
-            } else { $suat = 1; }
+            } else {
+                $suat = 1;
+            }
 
             if ($suat > 0) {
                 foreach (SanphamduoctangquatangModel::where('id_quatang', $rule->id)->get() as $q) {
@@ -184,26 +222,32 @@ class GiohangController extends Controller
         return $gifts;
     }
 
-    private function processVoucher($code, $tamtinh) {
+    private function processVoucher($code, $tamtinh)
+    {
         if (!$code) return ['giam_gia' => 0, 'voucher' => null];
         $v = MagiamgiaModel::where('magiamgia', strtoupper($code))->where('trangthai', 'Hoạt động')->where('dieukien', '<=', $tamtinh)->first();
         return $v ? ['giam_gia' => min($v->giatri, $tamtinh), 'voucher' => $v] : ['giam_gia' => 0, 'voucher' => null];
     }
 
-    private function calculateTotalSavings($items) {
+    private function calculateTotalSavings($items)
+    {
         return collect($items)->sum(fn($i) => ($i['thanhtien'] == 0) ? $i['bienthe']['giagoc'] * $i['soluong'] : ($i['bienthe']['giagoc'] - $i['bienthe']['giadagiam']) * $i['soluong']);
     }
 
-    private function formatCartResponse($items) {
+    private function formatCartResponse($items)
+    {
         foreach ($items as &$i) {
             if (isset($i['bienthe']['sanpham']['hinhanhsanpham'])) {
-                foreach ($i['bienthe']['sanpham']['hinhanhsanpham'] as &$img) { $img['hinhanh'] = asset('assets/client/images/thumbs/' . $img['hinhanh']); }
+                foreach ($i['bienthe']['sanpham']['hinhanhsanpham'] as &$img) {
+                    $img['hinhanh'] = asset('assets/client/images/thumbs/' . $img['hinhanh']);
+                }
             }
         }
         return $items;
     }
 
-    private function getAvailableVouchers($tamtinh) {
+    private function getAvailableVouchers($tamtinh)
+    {
         return MagiamgiaModel::where('trangthai', 'Hoạt động')->where('dieukien', '<=', $tamtinh)->get();
     }
 }
