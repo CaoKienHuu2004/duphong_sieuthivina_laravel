@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\File;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 // use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Validator;
+use App\Models\ThongbaoModel;
 
 class NguoidungController extends Controller
 {
@@ -276,6 +278,14 @@ class NguoidungController extends Controller
 
             
         }
+
+        ThongbaoModel::khoitaothongbao(
+                            $user->id,
+                            "Thông tin cá nhân của bạn đã được cập nhật.",
+                            "Vui lòng kiểm tra thông tin của bạn.",
+                            'https://sieuthivina.com/thong-tin-ca-nhan',
+                            "Hệ thống"
+                        );
 
         NguoidungModel::where('id', $user->id)->update([
             'hoten' => $request->hoten,

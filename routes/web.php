@@ -228,5 +228,10 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
 
             Route::get('/xoa/{id}', [admin\QuangcaoController::class, 'destroy'])->name('xoa-banner-quang-cao');
         });
+
+        Route::prefix('/thong-bao')->group(function () {
+            Route::get('/', [admin\ThongbaoController::class, 'create'])->name('danh-sach-thong-bao');
+            Route::post('/luu', [admin\ThongbaoController::class, 'store'])->name('luu-thong-bao');
+        });
         
     });

@@ -27,7 +27,7 @@ class QuangcaoController extends Controller
     {
         $request->validate([
             'vitri'     => 'required',
-            'hinhanh'   => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'images'   => 'required|image',
             'lienket'   => 'required',
             'mota'      => 'required',
             'trangthai' => 'required|in:Hiển thị,Tạm ẩn',
@@ -46,11 +46,11 @@ class QuangcaoController extends Controller
 
             // 2. Xử lý upload ảnh
             $imageName = null;
-            if ($request->hasFile('hinhanh')) {
-                $file = $request->file('hinhanh');
+            if ($request->hasFile('images')) {
+                $file = $request->file('images');
                 $imageName = time() . '_' . $file->getClientOriginalName();
                 // Lưu vào thư mục public/assets/client/images/banner
-                $file->move(public_path('assets/client/images/bg'), $imageName);
+                $file->move('assets/client/images/bg', $imageName);
             }
 
             // 3. Tạo mới (Cái mới này sẽ là cái duy nhất Hiển thị ở vị trí đó)
@@ -62,50 +62,60 @@ class QuangcaoController extends Controller
                 'trangthai' => $request->trangthai,
             ]);
 
-            return redirect()->route('quan-tri-vien.danh-sach-quang-cao')->with('success', 'Thêm banner thành công!');
-
+            return redirect()->route('quan-tri-vien.danh-sach-banner-quang-cao')->with('success', 'Thêm banner thành công!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Lỗi: ' . $e->getMessage());
         }
     }
 
     // 4. FORM SỬA (EDIT)
+    // 1. HÀM EDIT (Hiện form sửa)
     public function edit($id)
     {
         $banner = QuangcaoModel::findOrFail($id);
         return view('admin.quangcao.edit', compact('banner'));
     }
 
-    // 5. CẬP NHẬT (UPDATE)
+    // 2. HÀM UPDATE (Xử lý cập nhật)
     public function update(Request $request, $id)
     {
         $banner = QuangcaoModel::findOrFail($id);
 
         $request->validate([
             'vitri'     => 'required',
-            'hinhanh'   => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // Ảnh không bắt buộc khi sửa
+            'images'    => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // Ảnh là nullable khi sửa
             'lienket'   => 'required',
             'mota'      => 'required',
             'trangthai' => 'required|in:Hiển thị,Tạm ẩn',
         ]);
 
         try {
-            $imageName = $banner->hinhanh; // Giữ ảnh cũ mặc định
+            // 1. Xử lý logic Độc quyền vị trí (Exclusive)
+            if ($request->vitri !== 'home_banner_slider' && $request->trangthai === 'Hiển thị') {
+                // Tắt hiển thị các banner khác cùng vị trí (trừ chính nó)
+                QuangcaoModel::where('vitri', $request->vitri)
+                    ->where('id', '!=', $id) // Quan trọng: Không tắt chính nó
+                    ->where('trangthai', 'Hiển thị')
+                    ->update(['trangthai' => 'Tạm ẩn']);
+            }
 
-            // Nếu có upload ảnh mới
-            if ($request->hasFile('hinhanh')) {
-                // 1. Xóa ảnh cũ
-                $oldPath = public_path('assets/client/images/banner/' . $banner->hinhanh);
-                if (File::exists($oldPath)) {
+            // 2. Xử lý ảnh
+            $imageName = $banner->hinhanh; // Mặc định giữ ảnh cũ
+
+            if ($request->hasFile('images')) {
+                // a. Xóa ảnh cũ nếu tồn tại
+                $oldPath = 'assets/client/images/bg/' . $banner->hinhanh;
+                if ($banner->hinhanh && File::exists($oldPath)) {
                     File::delete($oldPath);
                 }
 
-                // 2. Upload ảnh mới
-                $file = $request->file('hinhanh');
+                // b. Upload ảnh mới
+                $file = $request->file('images');
                 $imageName = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('assets/client/images/banner'), $imageName);
+                $file->move('assets/client/images/bg', $imageName);
             }
 
+            // 3. Cập nhật dữ liệu
             $banner->update([
                 'vitri'     => $request->vitri,
                 'hinhanh'   => $imageName,
@@ -114,8 +124,7 @@ class QuangcaoController extends Controller
                 'trangthai' => $request->trangthai,
             ]);
 
-            return redirect()->route('quan-tri-vien.danh-sach-quang-cao')->with('success', 'Cập nhật banner thành công!');
-
+            return redirect()->route('quan-tri-vien.danh-sach-banner-quang-cao')->with('success', 'Cập nhật banner thành công!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Lỗi: ' . $e->getMessage());
         }
@@ -125,19 +134,32 @@ class QuangcaoController extends Controller
     public function destroy($id)
     {
         try {
+            // 1. Tìm banner cần xóa
             $banner = QuangcaoModel::findOrFail($id);
 
-            // Xóa ảnh trong thư mục
+            // --- LOGIC MỚI: KIỂM TRA SỐ LƯỢNG CÒN LẠI ---
+            // Đếm xem tại vị trí này (vitri) đang có bao nhiêu banner
+            $countPosition = QuangcaoModel::where('vitri', $banner->vitri)->count();
+
+            // Nếu chỉ còn 1 (hoặc ít hơn) thì chặn xóa
+            if ($countPosition <= 1) {
+                return redirect()->back()->with('error', 'Không thể xóa! Hệ thống yêu cầu giữ lại ít nhất 1 banner cho vị trí này để hiển thị mặc định.');
+            }
+            // ---------------------------------------------
+
+            // 2. Xóa ảnh trong thư mục
+            // Lưu ý: Kiểm tra lại thư mục là 'banner' hay 'bg' để khớp với hàm store/update của bạn nhé
             $imagePath = public_path('assets/client/images/banner/' . $banner->hinhanh);
+
+            // Nếu file tồn tại thì xóa
             if (File::exists($imagePath)) {
                 File::delete($imagePath);
             }
 
-            // Xóa dữ liệu trong DB
+            // 3. Xóa dữ liệu trong DB
             $banner->delete();
 
             return redirect()->back()->with('success', 'Đã xóa banner thành công!');
-
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Lỗi xóa: ' . $e->getMessage());
         }

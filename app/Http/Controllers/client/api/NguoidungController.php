@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Filter;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\QuenmatkhauNotification;
 use Carbon\Carbon; // <--- Thêm dòng này vào
+use App\Models\ThongbaoModel;
 
 class NguoidungController extends Controller
 {
@@ -280,6 +281,14 @@ class NguoidungController extends Controller
             $user->avatar = $fileName;
             $user->save();
         }
+
+        ThongbaoModel::khoitaothongbao(
+                            $user->id,
+                            "Thông tin cá nhân của bạn đã được cập nhật.",
+                            "Vui lòng kiểm tra thông tin của bạn.",
+                            "#",
+                            "Hệ thống"
+                        );
 
         // Cập nhật thông tin khác (Giữ nguyên logic của bạn)
         NguoidungModel::where('id', $user->id)->update([

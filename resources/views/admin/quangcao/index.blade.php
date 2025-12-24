@@ -17,7 +17,28 @@
                 class="me-1" />Thêm banner quảng cáo</a>
           </div>
         </div>
-
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul class="mb-0 ps-3">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
         <div class="card">
           <div class="card-body">
             <div class="table-top">
@@ -66,10 +87,10 @@
                             @endif
                             <!-- <td class="text-center"><span class="badges bg-lightred">Tạm ẩn</span></td> -->
                             <td>
-                            <a class="me-3" href="editbanner.html">
+                            <a class="me-3" href="{{ route('quan-tri-vien.chinh-sua-banner-quang-cao',$banner->id) }}">
                                 <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
                             </a>
-                            <a class="confirm-text" href="javascript:void(0);">
+                            <a href="{{ route('quan-tri-vien.xoa-banner-quang-cao',$banner->id) }}">
                                 <img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" />
                             </a>
                             </td>
