@@ -52,4 +52,9 @@ class NguoidungModel extends Authenticatable
     {
         return $this->hasMany(BaivietModel::class, 'id_nguoidung');
     }
+
+    public function donhang(): HasMany
+    {
+        return $this->hasMany(DonhangModel::class, 'id_nguoidung','id');
+    }
 }

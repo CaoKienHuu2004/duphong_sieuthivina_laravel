@@ -3,91 +3,82 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\NguoidungModel; // Hoặc App\Models\NguoiDungModel tùy project bạn
 use Illuminate\Http\Request;
-use App\Models\NguoidungModel as Nguoidung;
-use App\Models\DiachinguoidungModel as Diachi;
+use Illuminate\Support\Facades\DB;
 
-class NguoidungController extends Controller
+class NguoiDungController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 1. DANH SÁCH NGƯỜI DÙNG (READ LIST)
+     * Có tích hợp tìm kiếm và phân trang
      */
     public function index(Request $request)
     {
-        $danhsach = Nguoidung::with('diachi')->where('vaitro', 'user')
-            ->get();
-        $diachi = Diachi::all();
+        $query = NguoidungModel::query();
 
-        return view("khachhang.index", compact("danhsach","diachi"));
+        // Tìm kiếm theo Tên, Email hoặc Số điện thoại
+        if ($request->filled('keyword')) {
+            $keyword = $request->keyword;
+            $query->where(function($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%")
+                  ->orWhere('email', 'like', "%{$keyword}%")
+                  ->orWhere('phone', 'like', "%{$keyword}%");
+            });
+        }
+
+        // Lọc theo trạng thái (nếu cần)
+        if ($request->filled('trangthai')) {
+            $query->where('trangthai', $request->trangthai);
+        }
+
+        // Sắp xếp mới nhất trước
+        $users = $query->orderByDesc('id')->paginate(10);
+
+        return view('admin.nguoidung', compact('users'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 2. XEM CHI TIẾT & FORM CẬP NHẬT TRẠNG THÁI (READ DETAIL)
+     * Không cho phép sửa thông tin cá nhân, chỉ hiện để xem
      */
-    public function create()
+    public function edit($id)
     {
-        return view('khachhang.create');
+        $user = NguoidungModel::findOrFail($id);
+        return view('admin.nguoidung.edit', compact('user'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 3. CẬP NHẬT TRẠNG THÁI (UPDATE STATUS ONLY)
      */
-    public function store(Request $request)
+    public function update(Request $request, $id)
     {
-        //
-        // Nguoidung::create($request->only(['ten', 'mota', 'trangthai']));
-        // return redirect()->route('danh-sach-thuong-hieu')->with('success', 'Tạo thương hiệu thành công!');
+        $user = NguoidungModel::findOrFail($id);
+
+        // Validate: Chỉ bắt buộc nhập trạng thái
+        $request->validate([
+            'trangthai' => 'required|in:Hoạt động,Bị khóa', // Hoặc 1,0 tùy database của bạn
+        ], [
+            'trangthai.required' => 'Vui lòng chọn trạng thái.',
+            'trangthai.in' => 'Trạng thái không hợp lệ.',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            // Chỉ cập nhật duy nhất cột trạng thái
+            $user->update([
+                'trangthai' => $request->trangthai
+            ]);
+
+            DB::commit();
+            return redirect()->route('quan-tri-vien.danh-sach-nguoi-dung')
+                             ->with('success', 'Cập nhật trạng thái tài khoản thành công!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-        // $danhmuc = Nguoidung::findOrFail($id);
-        // return view('suadanhmuc', compact('danhmuc'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-        // $danhmuc = Nguoidung::findOrFail($id);
-        // $danhmuc->update($request->only(['ten', 'trangthai']));
-        // return redirect()->route('danh-sach-danh-muc')->with('success', 'Đã cập nhật thành công!');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-        //  $danhmuc = Nguoidung::findOrFail($id);
-        // $danhmuc->update($request->only(['ten', 'trangthai']));
-        // return redirect()->route('danh-sach-danh-muc')->with('success', 'Đã cập nhật thành công!');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-        // $danhmuc = Nguoidung::findOrFail($id);
-
-        // // Check nếu có sản phẩm thì không cho xóa
-        // if ($danhmuc->sanpham()->count() > 0) {
-        //     return redirect()->route('danh-sach-danh-muc')
-        //         ->with('error', 'Không thể xóa! Danh mục này vẫn còn sản phẩm.');
-        // }
-
-        // $danhmuc->delete();
-
-        // return redirect()->route('danh-sach-danh-muc')
-        //     ->with('success', 'Xóa danh mục thành công!');
-    }
+    // KHÔNG CÓ CREATE, KHÔNG CÓ DESTROY
 }

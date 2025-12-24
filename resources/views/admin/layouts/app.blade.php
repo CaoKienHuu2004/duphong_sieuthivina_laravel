@@ -74,36 +74,26 @@
             </a>
 
             <ul class="nav user-menu">
-                <li class="nav-item">
-                    <div class="top-nav-search">
-                        <a href="javascript:void(0);" class="responsive-search">
-                            <i class="fa fa-search"></i>
-                        </a>
-                        <form action="#">
-                            <div class="searchinputs">
-                                <input type="text" placeholder="Tìm kiếm ..." />
-                                <div class="search-addon">
-                                    <span><img src="{{asset('assets/admin')}}/img/icons/closes.svg" alt="img" /></span>
-                                </div>
-                            </div>
-                            <a class="btn" id="searchdiv"><img src="{{asset('assets/admin')}}/img/icons/search.svg" alt="img" /></a>
-                        </form>
-                    </div>
-                </li>
-
+              @php
+                                $donHangCho = $donhangs->where('trangthai', 'Chờ xác nhận');
+                            @endphp
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <img src="{{asset('assets/admin')}}/img/icons/notification-bing.svg" alt="img" />
-                        <span class="badge rounded-pill">4</span>
+                        <span class="badge rounded-pill @if($donHangCho->count() > 0) blinking-flash @endif)">{{ $donHangCho->count() }}</span>
                     </a>
                     <div class="dropdown-menu notifications">
                         <div class="topnav-dropdown-header">
                             <span class="notification-title fw-bold">Thông báo</span>
-                            <a href="javascript:void(0)" class="clear-noti">
+                            <a href="{{ route('quan-tri-vien.danh-sach-don-hang') }}" class="clear-noti">
                                 xem tất cả </a>
                         </div>
                         <div class="noti-content">
                             <ul class="notification-list">
+                              {{-- BƯỚC 1: Tạo biến chứa danh sách đã lọc --}}
+                            
+                            @if($donHangCho->count() > 0)
+                              @foreach ( $donHangCho as $donhang)
                                 <li class="notification-message">
                                     <a href="activities.html">
                                         <div class="media d-flex">
@@ -119,26 +109,32 @@
                                         </div>
                                     </a>
                                 </li>
+                              @endforeach
+                              @else
+                              <li class="notification-message">
+                                  <div class="media d-flex justify-content-center p-3">
+                                      <span>Không có đơn hàng chờ xác nhận</span>
+                                  </div>
+                              </li>
+                              @endif
+                                
                             </ul>
-                        </div>
-                        <div class="topnav-dropdown-footer">
-                            <a href="activities.html">Xem tất cả thông báo</a>
                         </div>
                     </div>
                 </li>
 
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="#" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
-                        <span class="user-img"><img src="{{asset('assets/admin')}}/img/profiles/avator1.jpg" alt />
+                        <span class="user-img"><img src="{{asset('assets/client')}}/images/thumbs/{{ Auth::user()->avatar }}" alt />
                             <span class="status online"></span></span>
                     </a>
                     <div class="dropdown-menu menu-drop-user">
                         <div class="profilename">
                             <div class="profileset">
-                                <span class="user-img"><img src="{{asset('assets/admin')}}/img/profiles/avator1.jpg" alt />
+                                <span class="user-img"><img src="{{asset('assets/client')}}/images/thumbs/{{ Auth::user()->avatar }}" alt />
                                     <span class="status online"></span></span>
                                 <div class="profilesets">
-                                    <h6>Trần Bá Hộ</h6>
+                                    <h6>{{ Auth::user()->hoten }}</h6>
                                     <h5>Quản trị viên</h5>
                                 </div>
                             </div>
@@ -218,8 +214,7 @@
                                     Người dùng</span>
                                 <span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="transferlist.html">Danh sách khách hàng</a></li>
-                                <li><a href="addtransfer.html">Danh sách quản trị viên</a></li>
+                                <li><a href="{{ route('quan-tri-vien.danh-sach-nguoi-dung') }}">Danh sách người dùng</a></li>
                             </ul>
                         </li>
                         <li>

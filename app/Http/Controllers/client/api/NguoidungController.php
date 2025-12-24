@@ -269,12 +269,12 @@ class NguoidungController extends Controller
             $file->move($publicPath, $fileName);
 
             // 2b. XÓA FILE CŨ (NẾU CÓ)
-            if ($user->avatar) {
-                $oldAvatarPath = $publicPath . '/' . $user->avatar;
-                if (File::exists($oldAvatarPath)) {
-                    File::delete($oldAvatarPath);
-                }
-            }
+            // if ($user->avatar) {
+            //     $oldAvatarPath = $publicPath . '/' . $user->avatar;
+            //     if (File::exists($oldAvatarPath)) {
+            //         File::delete($oldAvatarPath);
+            //     }
+            // }
 
             // Cập nhật tên file vào DB
             $user->avatar = $fileName;

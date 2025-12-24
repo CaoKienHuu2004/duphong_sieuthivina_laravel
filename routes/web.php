@@ -186,6 +186,8 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::get('/{id}/xoa', [admin\QuatangsukienController::class, 'destroy'])->name('xoa-qua-tang');
         });
 
+
+
         Route::prefix('don-hang')->group(function () {
             Route::get('/danh-sach', [admin\DonhangController::class, 'index']);
             Route::get('/', [admin\DonhangController::class, 'index'])->name('danh-sach-don-hang');
@@ -207,5 +209,13 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::get('/xoa/{id}', [admin\MagiamgiaController::class, 'destroy'])->name('xoa-ma-giam-gia');
         });
 
+            // Danh sách
+        Route::get('/nguoi-dung', [admin\NguoiDungController::class, 'index'])->name('danh-sach-nguoi-dung');
+        
+        // Form xem chi tiết
+        Route::get('/nguoi-dung/sua/{id}', [admin\NguoiDungController::class, 'edit'])->name('sua-nguoi-dung');
+        
+        // Xử lý cập nhật (Chỉ trạng thái)
+        Route::put('/nguoi-dung/cap-nhat/{id}', [admin\NguoiDungController::class, 'update'])->name('cap-nhat-nguoi-dung');
         
     });
