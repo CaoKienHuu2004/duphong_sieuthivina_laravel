@@ -86,10 +86,12 @@ class QuatangsukienController extends Controller
                 $file->move(public_path('assets/client/images/thumbs'), $imageName);
             }
 
+            $slug = Str::slug($request->ten);
+
             // B. Tạo sự kiện chính
             $quatang = QuatangSukienModel::create([
                 'tieude'           => $request->ten,
-                'slug'           => Str::slug($request->ten),
+                'slug' => $slug,
                 'dieukiensoluong'           => $request->dieukiensoluong,
                 'dieukiengiatri' => $request->dieukiengiatri,
                 'thongtin'          => $request->mota,
@@ -168,8 +170,9 @@ class QuatangsukienController extends Controller
             // B. Cập nhật thông tin chính
             $quatang->update([
                 'tieude'           => $request->ten,
+                'slug'           => Str::slug($request->ten),
                 'thongtin'          => $request->mota,
-                'dieukiensoluong'           => $request->dieukiensoluong,
+                'dieukiensoluong'   => $request->dieukiensoluong,
                 'dieukiengiatri' => $request->dieukiengiatri,
                 'ngaybatdau'    => $request->ngaybatdau,
                 'ngayketthuc'   => $request->ngayketthuc,
