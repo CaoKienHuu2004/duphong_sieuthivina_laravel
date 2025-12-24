@@ -59,7 +59,7 @@ class ChatController extends Controller
                 // Tìm kiếm tương đối (LIKE)
                 $products = SanphamModel::with('bienthe')
                     ->where('ten', 'LIKE', "%{$searchKeyword}%")
-                    ->where('trangthai', 'Hoạt động')
+                    ->where('trangthai', 'Công khai')
                     ->take(5)
                     ->get();
 
