@@ -228,7 +228,7 @@
                                 <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="transferlist.html">Trang nội dung</a></li>
-                                <li><a href="addtransfer.html">Banner quảng cáo</a></li>
+                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-banner-quang-cao') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-banner-quang-cao') }}">Banner quảng cáo</a></li>
                             </ul>
                         </li>
                         <li>

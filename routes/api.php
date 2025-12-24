@@ -1,8 +1,9 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\client\api\ChatController;
 use App\Http\Controllers\client\api\HomeController;
 use App\Http\Controllers\client\api\SanphamController;
 use App\Http\Controllers\client\api\NguoidungController;
@@ -174,5 +175,7 @@ Route::prefix('v1')->group(function () {
 
         // Xóa: DELETE /api/v1/yeu-thich/{id_sanpham}
         Route::delete('/{id_sanpham}', [YeuthichController::class, 'destroy']);
-});
+    });
+
+    Route::post('/chat-gpt-ai', [ChatController::class, 'chat']);
 });

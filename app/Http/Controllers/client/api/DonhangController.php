@@ -54,7 +54,7 @@ class DonhangController extends Controller
                 'phivanchuyen'
             ])
             ->orderBy('created_at', 'desc')
-            ->paginate(10); // API nên phân trang (10 đơn/trang)
+            ->get(); // API nên phân trang (10 đơn/trang)
 
         return response()->json([
             'status' => 200,

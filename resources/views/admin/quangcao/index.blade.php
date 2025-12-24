@@ -40,55 +40,40 @@
                     <th class="text-start">Banner quảng cáo</th>
                     <th class="text-start">Mô tả</th>
                     <th class="text-start">Liên kết</th>
+                    <th class="text-start">Vị trí</th>
                     <th class="text-center">Trạng thái</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="productimgname align-items-center w-100">
-                      <a href="https://sieuthivina.com/qua-tang" class="product-img">
-                        <img src="https://sieuthivina.com/assets/client/images/bg/banner4cai_chatviet.png" alt="product" style="object-fit: cover; width:220px; height: 100%;" />
-                      </a>
-                      
-                    </td>
-                    <td class="text-start">
-                        <div style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">Đây là mô tả banner quảng cáo bao gồm giới thiệu công ty, chuyên mục bán hàng và uy tính từ thương hiệu, cần phải hiển thị ngắn gọn nhưng phải chắc chắn</div>
-                    </td>
-                    <td class="text-start"><a href="https://sieuthivina.com/qua-tang">https://sieuthivina.com/qua-tang</a></td>
-                    <td class="text-center"><span class="badges bg-lightgreen">Công khai</span></td>
-                    <!-- <td class="text-center"><span class="badges bg-lightred">Tạm ẩn</span></td> -->
-                    <td>
-                      <a class="me-3" href="editbanner.html">
-                        <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
-                      </a>
-                      <a class="confirm-text" href="javascript:void(0);">
-                        <img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" />
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="productimgname align-items-center w-100">
-                      <a href="https://sieuthivina.com/qua-tang" class="product-img">
-                        <img src="https://sieuthivina.com/assets/client/images/bg/qua-tang-05.jpg" alt="product" style="object-fit: cover; width:220px; height: 100%;" />
-                      </a>
-                      
-                    </td>
-                    <td class="text-start">
-                        <div style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">Đây là mô tả banner quảng cáo bao gồm giới thiệu công ty, chuyên mục bán hàng và uy tính từ thương hiệu, cần phải hiển thị ngắn gọn nhưng phải chắc chắn</div>
-                    </td>
-                    <td class="text-start"><a href="https://sieuthivina.com/qua-tang">https://sieuthivina.com/qua-tang</a></td>
-                    <td class="text-center"><span class="badges bg-lightgreen">Công khai</span></td>
-                    <!-- <td class="text-center"><span class="badges bg-lightred">Tạm ẩn</span></td> -->
-                    <td>
-                      <a class="me-3" href="editbanner.html">
-                        <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
-                      </a>
-                      <a class="confirm-text" href="javascript:void(0);">
-                        <img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" />
-                      </a>
-                    </td>
-                  </tr>
+                    @forelse ($banners as $banner)
+                        <tr>
+                            <td class="productimgname align-items-center w-100">
+                            <a href="#" class="product-img">
+                                <img src="{{ asset('assets/client') }}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" style="object-fit: cover; width:220px; height: 100%;" />
+                            </a>
+                            
+                            </td>
+                            <td class="text-start">
+                                <div style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">{{ $banner->mota }}</div>
+                            </td>
+                            <td class="text-start"><a href="{{ $banner->lienket }}">{{ $banner->lienket }}</a></td>
+                            <td class="text-start">{{ $banner->vitri }}</td>
+                            <td class="text-center"><span class="badges bg-lightgreen">Công khai</span></td>
+                            <!-- <td class="text-center"><span class="badges bg-lightred">Tạm ẩn</span></td> -->
+                            <td>
+                            <a class="me-3" href="editbanner.html">
+                                <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
+                            </a>
+                            <a class="confirm-text" href="javascript:void(0);">
+                                <img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" />
+                            </a>
+                            </td>
+                        </tr>
+                    @empty
+                        
+                    @endforelse
+                  
                 </tbody>
               </table>
             </div>

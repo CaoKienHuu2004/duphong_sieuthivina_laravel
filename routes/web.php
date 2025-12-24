@@ -217,4 +217,16 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
         Route::get('/nguoi-dung/doi-vai-tro/{id}', [admin\NguoidungController::class, 'actionVaitro'])
     ->name('doi-vai-tro');
         
+        Route::prefix('/banner-quang-cao')->group(function () {
+            Route::get('/', [admin\QuangcaoController::class, 'index'])->name('danh-sach-banner-quang-cao');
+
+            Route::get('/tao-moi', [admin\QuangcaoController::class, 'create'])->name('tao-banner-quang-cao');
+            Route::post('/luu', [admin\QuangcaoController::class, 'store'])->name('luu-banner-quang-cao');
+
+            Route::get('/sua/{id}', [admin\QuangcaoController::class, 'edit'])->name('chinh-sua-banner-quang-cao');
+            Route::put('/cap-nhat/{id}', [admin\QuangcaoController::class, 'update'])->name('cap-nhat-banner-quang-cao');
+
+            Route::get('/xoa/{id}', [admin\QuangcaoController::class, 'destroy'])->name('xoa-banner-quang-cao');
+        });
+        
     });
