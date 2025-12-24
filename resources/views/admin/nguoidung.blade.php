@@ -141,7 +141,7 @@
                                         </a>
                                         <a class="" href="http://127.0.0.1:8000/quan-tri-vien/san-pham/40/xoa"
                                             onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản này ?');">
-                                            <i data-feather="users" data-bs-toggle="tooltip" data-bs-placement="top" title=""></i>
+                                            <i data-feather="lock" data-bs-toggle="tooltip" data-bs-placement="top" title=""></i>
                                         </a>
                                     </td>
                                 </tr>
