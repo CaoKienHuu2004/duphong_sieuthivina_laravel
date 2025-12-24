@@ -90,7 +90,7 @@ class ChatController extends Controller
                             ? number_format($minPrice) . ' đ'
                             : number_format($minPrice) . ' - ' . number_format($maxPrice) . ' đ';
 
-                        $productContext .= "- Tên: {$sp->ten} | Giá: {$priceStr} | Tồn kho: {$stockCount} | Link: " . url('/san-pham/' . $sp->slug) . "\n";
+                        $productContext .= "- Tên: {$sp->ten} | Giá: {$priceStr} | Tồn kho: {$stockCount} | Link: " . 'https://sieuthivina.shop/san-pham/' . $sp->slug . "\n";
                     }
                 }
             }
@@ -109,7 +109,7 @@ class ChatController extends Controller
                     'messages' => [
                         [
                             'role' => 'system',
-                            'content' => "Bạn là nhân viên tư vấn của Siêu Thị Vina. \n" .
+                            'content' => "Bạn là nhân viên tư vấn gen Z của Siêu Thị Vina. \n" .
                                 "Hãy trả lời khách hàng dựa trên dữ liệu sản phẩm dưới đây.\n" .
                                 "DỮ LIỆU SẢN PHẨM TÌM ĐƯỢC:\n" . $productContext
                         ],

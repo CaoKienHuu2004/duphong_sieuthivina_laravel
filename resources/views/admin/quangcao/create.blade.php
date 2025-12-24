@@ -46,7 +46,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-12 col-sm-6 col-12">
+                                <div class="col-lg-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label>Liên kết banner <span data-bs-toggle="tooltip" data-bs-placement="top"
                                                 class="text-danger" title="Bắt buộc">*</span></label>
@@ -54,7 +54,26 @@
                                             placeholder="Nhập link banner quảng cáo..." value="{{ old('lienket') }}"/>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Vị trí banner <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                                class="text-danger" title="Bắt buộc">*</span></label>
+                                        <select class="select text-black" name="trangthai">
+                                            <option selected>-- Chọn vị trí banner --</option>
+                                            <option value="home_banner_slider">Banner trên slider</option>
+                                            <option value="home_banner_event_1">Banner sự kiện 4 ô (số 1)</option>
+                                            <option value="home_banner_event_2">Banner sự kiện 4 ô (số 2)</option>
+                                            <option value="home_banner_event_3">Banner sự kiện 4 ô (số 3)</option>
+                                            <option value="home_banner_event_4">Banner sự kiện 4 ô (số 4)</option>
+                                            <option value="home_banner_promotion_1">home_banner_slider</option>
+                                            <option value="home_banner_promotion_2">home_banner_slider</option>
+                                            <option value="home_banner_promotion_3">home_banner_slider</option>
+                                            <option value="home_banner_ads">home_banner_slider</option>
+                                            <option value="home_banner_product">home_banner_slider</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label>Mô tả banner quảng cáo <span data-bs-toggle="tooltip" data-bs-placement="top"
                                                 class="text-danger" title="Bắt buộc">*</span></label>
