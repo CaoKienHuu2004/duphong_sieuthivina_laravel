@@ -98,7 +98,7 @@ class QuatangsukienController extends Controller
                 'ngaybatdau'    => $request->ngaybatdau,
                 'ngayketthuc'   => $request->ngayketthuc,
                 'trangthai'     => $request->trangthai,
-                'id_thuonghieu' => $request->id_thuonghieu, 
+                'id_thuonghieu' => $request->id_thuonghieu,
                 'hinhanh'       => $imageName,
             ]);
 
@@ -137,7 +137,7 @@ class QuatangsukienController extends Controller
      */
     public function edit($id)
     {
-        $program = QuatangSukienModel::with(['sanpham_thamgia', 'sanpham_duoctang'])->findOrFail($id);
+        $program = QuatangSukienModel::with(['sanphamthamgia', 'sanphamduoctang'])->findOrFail($id);
         $bienthes = BientheModel::with('sanpham')->get();
         $thuonghieus = ThuonghieuModel::all();
 
@@ -150,62 +150,73 @@ class QuatangsukienController extends Controller
     public function update(Request $request, $id)
     {
         $quatang = QuatangSukienModel::findOrFail($id);
+
+        // Validate dữ liệu (Dùng lại hàm validateRequest nếu có, hoặc viết trực tiếp)
+        // Lưu ý: Phần sp_thamgia KHÔNG validate soluong nữa
         $this->validateRequest($request);
 
         DB::beginTransaction();
         try {
             // A. Xử lý ảnh (Nếu có upload mới -> Xóa cũ, Lưu mới)
-            $imageName = $quatang->hinhanh; // Giữ nguyên ảnh cũ mặc định
+            $imageName = $quatang->hinhanh; // Giữ nguyên tên ảnh cũ làm mặc định
+
             if ($request->hasFile('hinhanh')) {
-                // 1. Xóa ảnh cũ nếu tồn tại
-                if ($quatang->hinhanh && File::exists(public_path('assets/client/images/quatang/' . $quatang->hinhanh))) {
-                    File::delete(public_path('assets/client/images/quatang/' . $quatang->hinhanh));
+                // 1. Đường dẫn thư mục ảnh (Phải khớp với hàm store)
+                $path = 'assets/client/images/thumbs';
+
+                // 2. Xóa ảnh cũ nếu tồn tại trong thư mục
+                if ($quatang->hinhanh && File::exists($path . '/' . $quatang->hinhanh)) {
+                    File::delete($path . '/' . $quatang->hinhanh);
                 }
-                // 2. Upload ảnh mới
+
+                // 3. Upload ảnh mới
                 $file = $request->file('hinhanh');
                 $imageName = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('assets/client/images/quatang'), $imageName);
+                $file->move($path, $imageName);
             }
 
             // B. Cập nhật thông tin chính
             $quatang->update([
-                'tieude'           => $request->ten,
-                'slug'           => Str::slug($request->ten),
-                'thongtin'          => $request->mota,
-                'dieukiensoluong'   => $request->dieukiensoluong,
-                'dieukiengiatri' => $request->dieukiengiatri,
-                'ngaybatdau'    => $request->ngaybatdau,
-                'ngayketthuc'   => $request->ngayketthuc,
-                'trangthai'     => $request->trangthai,
-                'id_thuonghieu' => $request->id_thuonghieu,
-                'hinhanh'       => $imageName,
+                'tieude'          => $request->ten,
+                'slug'            => Str::slug($request->ten), // Cập nhật slug theo tên mới
+                'thongtin'        => $request->mota,
+                'dieukiensoluong' => $request->dieukiensoluong,
+                'dieukiengiatri'  => $request->dieukiengiatri,
+                'ngaybatdau'      => $request->ngaybatdau,
+                'ngayketthuc'     => $request->ngayketthuc,
+                'trangthai'       => $request->trangthai,
+                'id_thuonghieu'   => $request->id_thuonghieu,
+                'hinhanh'         => $imageName,
             ]);
 
             // C. Đồng bộ (Sync) Sản phẩm tham gia
-            // Hàm sync() sẽ tự động: Thêm cái mới, Xóa cái cũ không còn trong list, Update cái đã có
-            $syncThamGia = [];
+            // Logic: Chỉ lấy danh sách ID biến thể, KHÔNG lấy số lượng (giống hàm store)
+            $idsThamGia = [];
             if ($request->has('sp_thamgia')) {
                 foreach ($request->sp_thamgia as $item) {
-                    $syncThamGia[$item['id_bienthe']] = ['soluong_can_mua' => $item['soluong']];
+                    // Chỉ lấy id_bienthe
+                    $idsThamGia[] = $item['id_bienthe'];
                 }
             }
-            $quatang->sanphamthamgia()->sync($syncThamGia);
+            // Dùng sync() để tự động thêm mới / xóa cũ
+            $quatang->sanphamthamgia()->sync($idsThamGia);
 
             // D. Đồng bộ (Sync) Sản phẩm được tặng
+            // Logic: Lấy cả ID và Số lượng tặng (soluongtang)
             $syncDuocTang = [];
             if ($request->has('sp_duoctang')) {
                 foreach ($request->sp_duoctang as $item) {
-                    $syncDuocTang[$item['id_bienthe']] = ['soluong_tang' => $item['soluong']];
+                    // Key là id_bienthe, Value là mảng các cột phụ trong bảng pivot
+                    $syncDuocTang[$item['id_bienthe']] = ['soluongtang' => $item['soluong']];
                 }
             }
             $quatang->sanphamduoctang()->sync($syncDuocTang);
 
             DB::commit();
-            return redirect()->route('quan-tri-vien.danh-sach-qua-tang')->with('success', 'Cập nhật thành công!');
+            return redirect()->route('quan-tri-vien.danh-sach-qua-tang')->with('success', 'Cập nhật chương trình thành công!');
         } catch (\Exception $e) {
-
             DB::rollBack();
-            \Log::error("Lỗi Controller: " . $e->getMessage());
+            \Log::error("Lỗi cập nhật quà tặng: " . $e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Lỗi: ' . $e->getMessage());
         }
     }
@@ -220,12 +231,12 @@ class QuatangsukienController extends Controller
             $quatang = QuatangSukienModel::findOrFail($id);
 
             // 1. Detach bảng phụ (Xóa liên kết n-n)
-            $quatang->sanpham_thamgia()->detach();
-            $quatang->sanpham_duoctang()->detach();
+            $quatang->sanphamthamgia()->detach();
+            $quatang->sanphamduoctang()->detach();
 
             // 2. Xóa ảnh nếu có
-            if ($quatang->hinhanh && File::exists(public_path('assets/client/images/quatang/' . $quatang->hinhanh))) {
-                File::delete(public_path('assets/client/images/quatang/' . $quatang->hinhanh));
+            if ($quatang->hinhanh && File::exists('assets/client/images/quatang/' . $quatang->hinhanh)) {
+                File::delete('assets/client/images/quatang/' . $quatang->hinhanh);
             }
 
             // 3. Xóa record chính

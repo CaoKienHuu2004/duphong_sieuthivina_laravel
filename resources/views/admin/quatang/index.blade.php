@@ -221,10 +221,10 @@
                         
                       </td>
                       <td>
-                        <a class="me-3" href="#">
+                        <a class="me-3" href="{{ route('quan-tri-vien.chinh-sua-qua-tang',$quatang->id) }}">
                           <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
                         </a>
-                        <a class="confirm-text" href="#">
+                        <a href="{{ route('quan-tri-vien.xoa-qua-tang',$quatang->id) }}">
                           <img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" />
                         </a>
                       </td>

@@ -180,10 +180,10 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::get('/tao-qua-tang', [admin\QuatangsukienController::class, 'create'])->name('tao-qua-tang');
             Route::post('/luu', [admin\QuatangsukienController::class, 'store'])->name('luu-qua-tang');
 
-            Route::get('/{slug}/chinh-sua', [admin\QuatangsukienController::class, 'edit'])->name('chinh-sua-qua-tang');
-            Route::post('/{slug}/cap-nhat', [admin\QuatangsukienController::class, 'update'])->name('cap-nhat-qua-tang');
+            Route::get('/{id}/chinh-sua', [admin\QuatangsukienController::class, 'edit'])->name('chinh-sua-qua-tang');
+            Route::put('/{id}/cap-nhat', [admin\QuatangsukienController::class, 'update'])->name('cap-nhat-qua-tang');
 
-            Route::delete('/{slug}/xoa', [admin\QuatangsukienController::class, 'destroy'])->name('xoa-qua-tang');
+            Route::get('/{id}/xoa', [admin\QuatangsukienController::class, 'destroy'])->name('xoa-qua-tang');
         });
 
         Route::prefix('don-hang')->group(function () {

@@ -269,7 +269,7 @@ class SanphamController extends Controller
             // Nếu DB lỗi nhưng ảnh đã kịp upload, ta cần xóa ảnh đi để sạch server
             if (isset($slug)) {
                 // Tìm tất cả file bắt đầu bằng slug này trong thư mục
-                $files = File::glob(public_path('assets/client/images/thumbs/') . $slug . '-*');
+                $files = File::glob('assets/client/images/thumbs/' . $slug . '-*');
                 foreach ($files as $file) {
                     File::delete($file);
                 }

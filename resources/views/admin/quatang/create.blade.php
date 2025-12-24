@@ -57,7 +57,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Tên chương trình quà tặng <span class="text-danger">*</span></label>
-                                    <input type="text" name="ten" class="form-control" placeholder="Ví dụ: Mua iPhone tặng ốp lưng..." value="{{ old('ten') }}" required>
+                                    <input type="text" name="ten" class="form-control" placeholder="Ví dụ: Mua 2 Yến sào Nest100 tặng 1..." value="{{ old('ten') }}" required>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12">

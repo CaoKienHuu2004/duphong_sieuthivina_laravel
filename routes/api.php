@@ -165,14 +165,14 @@ Route::prefix('v1')->group(function () {
     Route::post('/lien-he', [GlobalController::class, 'submitContact']);
 
     Route::middleware('auth:sanctum')->prefix('yeu-thich')->group(function () {
-    // Lấy danh sách: GET /api/v1/yeu-thich
-    Route::get('/', [YeuthichController::class, 'index']);
+        // Lấy danh sách: GET /api/v1/yeu-thich
+        Route::get('/', [YeuthichController::class, 'index']);
 
-    // Thêm mới: POST /api/v1/yeu-thich
-    // Body: { "id_sanpham": 1 }
-    Route::post('/', [YeuthichController::class, 'store']);
+        // Thêm mới: POST /api/v1/yeu-thich
+        // Body: { "id_sanpham": 1 }
+        Route::post('/', [YeuthichController::class, 'store']);
 
-    // Xóa: DELETE /api/v1/yeu-thich/{id_sanpham}
-    Route::delete('/{id_sanpham}', [YeuthichController::class, 'destroy']);
+        // Xóa: DELETE /api/v1/yeu-thich/{id_sanpham}
+        Route::delete('/{id_sanpham}', [YeuthichController::class, 'destroy']);
 });
 });
