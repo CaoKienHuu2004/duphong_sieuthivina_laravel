@@ -173,7 +173,7 @@
                         <div class="row mt-3">
                             <div class="row">
                                 <div class="col-lg-6 text-center">
-                                    @if ($donhang->trangthaithanhtoan != 'Đã thanh toán')
+                                    @if ($donhang->trangthaithanhtoan != 'Đã thanh toán' && $donhang->trangthai != 'Đã giao hàng' && $donhang->trangthai != 'Đã hủy đơn' && $donhang->trangthaithanhtoan != 'Thanh toán khi nhận hàng (COD)')
                                         <img src="{{ $qrCodeUrl }}" alt="" style="width: 200px;">
                                     @endif
                                 </div>

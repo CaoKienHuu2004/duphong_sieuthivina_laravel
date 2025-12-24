@@ -34,15 +34,26 @@ class QuangcaoController extends Controller
         ]);
 
         try {
-            // Xử lý upload ảnh
+            // 1. Xử lý logic Độc quyền vị trí (Exclusive)
+            // Nếu vị trí KHÔNG PHẢI là slider (cho phép nhiều ảnh) 
+            // VÀ trạng thái mới là "Hiển thị"
+            if ($request->vitri !== 'home_banner_slider' && $request->trangthai === 'Hiển thị') {
+                // Tìm tất cả banner cũ ở vị trí này đang hiển thị -> Chuyển về Tạm ẩn
+                QuangcaoModel::where('vitri', $request->vitri)
+                    ->where('trangthai', 'Hiển thị')
+                    ->update(['trangthai' => 'Tạm ẩn']);
+            }
+
+            // 2. Xử lý upload ảnh
             $imageName = null;
             if ($request->hasFile('hinhanh')) {
                 $file = $request->file('hinhanh');
                 $imageName = time() . '_' . $file->getClientOriginalName();
                 // Lưu vào thư mục public/assets/client/images/banner
-                $file->move(public_path('assets/client/images/banner'), $imageName);
+                $file->move(public_path('assets/client/images/bg'), $imageName);
             }
 
+            // 3. Tạo mới (Cái mới này sẽ là cái duy nhất Hiển thị ở vị trí đó)
             QuangcaoModel::create([
                 'vitri'     => $request->vitri,
                 'hinhanh'   => $imageName,

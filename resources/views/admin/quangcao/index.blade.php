@@ -47,19 +47,23 @@
                 </thead>
                 <tbody>
                     @forelse ($banners as $banner)
-                        <tr>
-                            <td class="productimgname align-items-center w-100 me-2">
+                        <tr class="text-start">
+                            <td class="productimgname align-items-center w-100">
                             <a href="#" class="product-img">
-                                <img src="{{ asset('assets/client') }}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" style="object-fit: cover; width:200px; height: 100%;" />
+                                <img src="{{ asset('assets/client') }}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" style="object-fit: cover; width: 170px; max-width: 300px; height: 100%;" />
                             </a>
                             
                             </td>
                             <td class="text-start">
-                                <div style="font-size: 14px; width: 340px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">{{ $banner->mota }}</div>
+                                <div style="font-size: 14px; width: 280px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">{{ $banner->mota }}</div>
                             </td>
-                            <td class="text-start"><a href="{{ $banner->lienket }}">{{ $banner->lienket }}</a></td>
+                            <td class="text-start"><a href="{{ $banner->lienket }}" style="font-size: 14px; width: 280px; white-space: break-spaces; overflow: hidden; text-overflow: ellipsis;">{{ $banner->lienket }}</a></td>
                             <td class="text-start">{{ $banner->vitri }}</td>
-                            <td class="text-center"><span class="badges bg-lightgreen">Công khai</span></td>
+                            @if ($banner->trangthai == 'Hiển thị')
+                            <td class="text-center"><span class="badges bg-lightgreen">{{ $banner->trangthai }}</span></td>
+                            @else
+                            <td class="text-center"><span class="badges bg-lightred">{{ $banner->trangthai }}</span></td>
+                            @endif
                             <!-- <td class="text-center"><span class="badges bg-lightred">Tạm ẩn</span></td> -->
                             <td>
                             <a class="me-3" href="editbanner.html">
