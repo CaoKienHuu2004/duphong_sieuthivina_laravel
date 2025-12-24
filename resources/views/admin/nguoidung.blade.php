@@ -7,12 +7,11 @@
         <div class="content">
             <div class="page-header">
                 <div class="page-title">
-                    <h4>Danh sách sản phẩm</h4>
-                    <h6>Quản lý sản phẩm của bạn</h6>
+                    <h4>Danh sách người dùng</h4>
+                    <h6>Xem thông tin & cập nhật tài khoản người dùng hệ thống</h6>
                 </div>
                 <div class="page-btn">
-                    <a href="http://127.0.0.1:8000/quan-tri-vien/san-pham/tao-san-pham" class="btn btn-added"><img
-                            src="{{asset('assets/admin')}}/img/icons/plus.svg" alt="img" class="me-1" />Thêm sản phẩm</a>
+                    
                 </div>
             </div>
 
