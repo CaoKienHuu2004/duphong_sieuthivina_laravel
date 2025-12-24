@@ -44,9 +44,10 @@ class ThongbaoController extends Controller
                 $dataInsert[] = [
                     'id_nguoidung' => $user->id,
                     'tieude'       => $request->tieude,
+                    'lienket'      => $request->lienket,
                     'noidung'      => $request->noidung,
-                    'loai'         => $request->loai,     // VD: 'KhuyenMai', 'HeThong', 'QuaTang'
-                    'trangthai'    => 0,                  // 0: Chưa xem
+                    'loaithongbao' => $request->loai,     // VD: 'KhuyenMai', 'HeThong', 'QuaTang'
+                    'trangthai'    => 'Chưa đọc',                  // 0: Chưa xem
                     'created_at'   => $now,
                     'updated_at'   => $now,
                 ];

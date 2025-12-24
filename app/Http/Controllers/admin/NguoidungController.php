@@ -19,23 +19,8 @@ class NguoiDungController extends Controller
     {
         $query = NguoidungModel::query();
 
-        // Tìm kiếm theo Tên, Email hoặc Số điện thoại
-        if ($request->filled('keyword')) {
-            $keyword = $request->keyword;
-            $query->where(function($q) use ($keyword) {
-                $q->where('name', 'like', "%{$keyword}%")
-                  ->orWhere('email', 'like', "%{$keyword}%")
-                  ->orWhere('phone', 'like', "%{$keyword}%");
-            });
-        }
-
-        // Lọc theo trạng thái (nếu cần)
-        if ($request->filled('trangthai')) {
-            $query->where('trangthai', $request->trangthai);
-        }
-
         // Sắp xếp mới nhất trước
-        $users = $query->orderByDesc('id')->paginate(10);
+        $users = $query->orderByDesc('id')->get();
 
         return view('admin.nguoidung', compact('users'));
     }
