@@ -90,7 +90,7 @@ class ChatController extends Controller
                             ? number_format($minPrice) . ' đ'
                             : number_format($minPrice) . ' - ' . number_format($maxPrice) . ' đ';
 
-                        $productContext .= "- Tên: {$sp->ten} | Giá: {$priceStr} | Tồn kho: {$stockCount} | Link: " . 'https://sieuthivina.shop/san-pham/' . $sp->slug . "\n";
+                        $productContext .= "- Tên: {$sp->ten} | Link: " . 'https://sieuthivina.shop/san-pham/' . $sp->slug . "\n";
                     }
                 }
             }
