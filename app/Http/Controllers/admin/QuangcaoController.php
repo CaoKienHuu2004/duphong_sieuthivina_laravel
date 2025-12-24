@@ -149,7 +149,7 @@ class QuangcaoController extends Controller
 
             // 2. Xóa ảnh trong thư mục
             // Lưu ý: Kiểm tra lại thư mục là 'banner' hay 'bg' để khớp với hàm store/update của bạn nhé
-            $imagePath = public_path('assets/client/images/banner/' . $banner->hinhanh);
+            $imagePath = 'assets/client/images/banner/' . $banner->hinhanh;
 
             // Nếu file tồn tại thì xóa
             if (File::exists($imagePath)) {
