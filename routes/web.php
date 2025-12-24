@@ -210,12 +210,12 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
         });
 
             // Danh sách
-        Route::get('/nguoi-dung', [admin\NguoiDungController::class, 'index'])->name('danh-sach-nguoi-dung');
+        Route::get('/nguoi-dung', [admin\NguoidungController::class, 'index'])->name('danh-sach-nguoi-dung');
         
         // Form xem chi tiết
-        Route::get('/nguoi-dung/sua/{id}', [admin\NguoiDungController::class, 'edit'])->name('sua-nguoi-dung');
+        Route::get('/nguoi-dung/sua/{id}', [admin\NguoidungController::class, 'edit'])->name('sua-nguoi-dung');
         
         // Xử lý cập nhật (Chỉ trạng thái)
-        Route::put('/nguoi-dung/cap-nhat/{id}', [admin\NguoiDungController::class, 'update'])->name('cap-nhat-nguoi-dung');
+        Route::put('/nguoi-dung/cap-nhat/{id}', [admin\NguoidungController::class, 'update'])->name('cap-nhat-nguoi-dung');
         
     });
