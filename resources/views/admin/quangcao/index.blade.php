@@ -48,9 +48,9 @@
                 <tbody>
                     @forelse ($banners as $banner)
                         <tr>
-                            <td class="productimgname align-items-center w-100">
+                            <td class="productimgname align-items-center w-100 me-2">
                             <a href="#" class="product-img">
-                                <img src="{{ asset('assets/client') }}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" style="object-fit: cover; width:220px; height: 100%;" />
+                                <img src="{{ asset('assets/client') }}/images/bg/{{ $banner->hinhanh }}" alt="{{ $banner->hinhanh }}" style="object-fit: cover; width:200px; height: 100%;" />
                             </a>
                             
                             </td>
