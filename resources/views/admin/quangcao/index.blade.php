@@ -13,7 +13,7 @@
             <h6>Quản lý banner quảng cáo của bạn</h6>
           </div>
           <div class="page-btn">
-            <a href="addbanner.html" class="btn btn-added"><img src="{{asset('assets/admin')}}/img/icons/plus.svg" alt="img"
+            <a href="{{ route('quan-tri-vien.tao-banner-quang-cao') }}" class="btn btn-added"><img src="{{asset('assets/admin')}}/img/icons/plus.svg" alt="img"
                 class="me-1" />Thêm banner quảng cáo</a>
           </div>
         </div>
