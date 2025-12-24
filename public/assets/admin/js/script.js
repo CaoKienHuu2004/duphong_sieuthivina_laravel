@@ -84,7 +84,7 @@ $(document).ready(function () {
             // 2. Khởi tạo DataTables cho bảng này
             var table = $currentTable.DataTable({
                 bFilter: true,
-                sDom: "fBtlpi", // Đã tắt 'f' (thanh search mặc định)
+                sDom: "Btlpi", // Đã tắt 'f' (thanh search mặc định)
                 pagingType: "numbers",
                 ordering: false,
                 language: {

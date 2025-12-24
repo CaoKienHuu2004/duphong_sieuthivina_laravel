@@ -56,10 +56,10 @@
     <div class="main-wrapper">
       <div class="header">
             <div class="header-left active">
-                <a href="index.html" class="logo">
+                <a href="https://sieuthivina.shop" class="logo">
                     <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt style="width: 65%" />
                 </a>
-                <a href="index.html" class="logo-small">
+                <a href="https://sieuthivina.shop" class="logo-small">
                     <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt style="width: 60%" />
                 </a>
                 <a id="toggle_btn" href="javascript:void(0);"> </a>
@@ -99,7 +99,7 @@
                                         <div class="media d-flex">
                                             <div class="media-body flex-grow-1">
                                                 <p class="noti-details">
-                                                    <span class="noti-title">John Doe</span> added new task
+                                                    <span class="noti-title">{{ $donhang->nguoinhan }}</span> added new task
                                                     <span class="noti-title">Patient appointment booking</span>
                                                 </p>
                                                 <p class="noti-time">

@@ -70,10 +70,15 @@
                                 </li>
                                 @if ($donhang->trangthaithanhtoan != 'Đã thanh toán' && $donhang->trangthai != 'Đã giao hàng' && $donhang->trangthai != 'Đã hủy đơn')
                                     <li class="mx-1">
-                                        <a href="editproduct.html" class="badge bg-warning rounded-circle p-2" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Đã thanh toán">
-                                            <i data-feather="dollar-sign" class="text-white"></i>
-                                        </a>
+                                        <form action="{{ route('quan-tri-vien.da-thanh-toan', $donhang->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="border-0 p-1 rounded-circle bg-white" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" title="Xác nhận thanh toán">
+                                                {{-- <input type="hidden" name="trang_thai_moi" value="Hủy đơn hàng"> --}}
+                                                <i data-feather="dollar-sign" class="text-warning"></i>
+                                            </button>
+                                            </form>
                                     </li>
                                 @endif
                                 @if ($donhang->trangthai != 'Đã hủy đơn' && $donhang->trangthai != 'Đã giao hàng')
