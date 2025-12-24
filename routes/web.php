@@ -201,9 +201,11 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::get('/tao-moi', [admin\MagiamgiaController::class, 'create'])->name('tao-ma-giam-gia');
             Route::post('/luu', [admin\MagiamgiaController::class, 'store'])->name('luu-ma-giam-gia');
 
-            Route::get('/sua/{id}', [admin\MagiamgiaController::class, 'edit'])->name('sua-ma-giam-gia');
+            Route::get('/sua/{id}', [admin\MagiamgiaController::class, 'edit'])->name('chinh-sua-ma-giam-gia');
             Route::put('/cap-nhat/{id}', [admin\MagiamgiaController::class, 'update'])->name('cap-nhat-ma-giam-gia');
 
             Route::get('/xoa/{id}', [admin\MagiamgiaController::class, 'destroy'])->name('xoa-ma-giam-gia');
         });
+
+        
     });

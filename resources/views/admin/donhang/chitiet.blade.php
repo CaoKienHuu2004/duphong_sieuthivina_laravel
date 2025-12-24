@@ -83,7 +83,7 @@
                                         @method('PUT')
                                         <input type="hidden" name="trang_thai_moi" value="Hủy đơn hàng">
                                         <button class="badge bg-danger border-0 rounded-circle p-2" href="#" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Từ chối và hủy đơn">
+                                                data-bs-placement="top" title="Từ chối và hủy đơn"  onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
                                             <i data-feather="x-circle" class="text-white"></i>
                                         </button>
                                         </form>

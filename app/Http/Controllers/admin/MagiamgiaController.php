@@ -32,7 +32,7 @@ class MagiamgiaController extends Controller
             'dieukien'    => 'required|integer|min:0', // Đơn tối thiểu
             'ngaybatdau'  => 'required|date',
             'ngayketthuc' => 'required|date|after_or_equal:ngaybatdau',
-            'trangthai'   => 'required|in:Hoạt động,Tạm khóa,Dừng hoạt động',
+            'trangthai'   => 'required|in:Hoạt động,Tạm khóa',
             'mota'        => 'nullable|string',
         ], [
             'magiamgia.required' => 'Vui lòng nhập mã giảm giá.',
@@ -77,12 +77,17 @@ class MagiamgiaController extends Controller
 
         $validator = Validator::make($request->all(), [
             // Check trùng trừ chính nó ra
-            'magiamgia'   => 'required|string|max:255|unique:magiamgia,magiamgia,' . $id,
+            'magiamgia'   => 'required|string|max:255',
             'giatri'      => 'required|integer|min:1',
             'dieukien'    => 'required|integer|min:0',
             'ngaybatdau'  => 'required|date',
             'ngayketthuc' => 'required|date|after_or_equal:ngaybatdau',
             'trangthai'   => 'required',
+        ],
+        [
+            'magiamgia.required' => 'Vui lòng nhập mã giảm giá.',
+            'giatri.required'    => 'Vui lòng nhập số tiền giảm.',
+            'ngayketthuc.after_or_equal' => 'Ngày kết thúc phải sau ngày bắt đầu.'
         ]);
 
         if ($validator->fails()) {

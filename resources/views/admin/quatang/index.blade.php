@@ -13,7 +13,7 @@
             <h6>Quản lý quà tặng của bạn</h6>
           </div>
           <div class="page-btn">
-            <a href="addproduct.html" class="btn btn-added"><img src="{{asset('assets/admin')}}/img/icons/plus.svg" alt="img"
+            <a href="{{ route('quan-tri-vien.tao-qua-tang') }}" class="btn btn-added"><img src="{{asset('assets/admin')}}/img/icons/plus.svg" alt="img"
                 class="me-1" />Thêm quà tặng</a>
           </div>
         </div>
@@ -79,7 +79,7 @@
                         }}
                     </span>
                 </h5>
-                <h6>Kết thúc thời gian khuyến mãi</h6>
+                <h6>Ưu đãi hết hạn</h6>
               </div>
             </a>
           </div>
@@ -107,7 +107,18 @@
             </a>
           </div>
         </div>
-
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
         <div class="card">
           <div class="card-body">
             <div class="table-top">
@@ -123,21 +134,6 @@
                 </div>
               </div>
               <div class="wordset">
-                <ul>
-                  <li>
-                    <button id="export-pdf-button" class="bg-white border-0 p-0" data-bs-toggle="tooltip"
-                      data-bs-placement="top" title="pdf"><img src="{{asset('assets/admin')}}/img/icons/pdf.svg" alt="img" /></button>
-                  </li>
-                  <li>
-                    <button id="export-excel-button" class="bg-white border-0 p-0" data-bs-toggle="tooltip"
-                      data-bs-placement="top" title="excel"><img src="{{asset('assets/admin')}}/img/icons/excel.svg" alt="img" /></button>
-                  </li>
-                  <li>
-                    <button id="print-button" class="bg-white border-0 p-0" data-bs-toggle="tooltip"
-                      data-bs-placement="top" title="printer"><img src="{{asset('assets/admin')}}/img/icons/printer.svg"
-                        alt="img" /></button>
-                  </li>
-                </ul>
               </div>
             </div>
 
@@ -179,7 +175,7 @@
             </div>
 
             <div class="table-responsive">
-              <table class="table datanew">
+              <table class="table dataold">
                 <!-- có thể thêm datanew sau class table -->
                 <thead>
                   <tr>
@@ -192,39 +188,50 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="productimgname align-items-center w-100">
-                      <a href="javascript:void(0);" class="product-img">
-                        <img src="{{asset('assets/client')}}/images/thumbs/tang-1-thuc-pham-bao-ve-suc-khoe-byealco-hop-1-vi-x-5-vien.jpg" alt="product" style="width: 80px; height: 80px; object-fit: cover;"/>
-                      </a>
-                      <div>
-                        <span style="font-size: 12px;">CHẤT VIỆT GROUP</span>
-                        <p style="width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                          <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Tặng 1 thực phẩm bảo vệ sức khỏe ByeAlco (Hộp 1 vỉ x 5 viên)">
-                            Tặng 1 thực phẩm bảo vệ sức khỏe ByeAlco (Hộp 1 vỉ x 5 viên)
-                          </a>
-                        </p>
-                      </div>
-                      
-                    </td>
-                    <td class="text-start" style="font-size: 14px; width: 250px; white-space: normal; overflow: hidden; text-overflow: ellipsis;">
-                        Mua 5 Thực phẩm bảo vệ sức khỏe ByeAlco (Hộp 1 vỉ x 5 viên)
-                    </td>
-                    <td class="text-center">
-                        <span class="fw-bold">12/12/2025 - 05:00</span><br>
-                        <span class="fw-bold">12/12/2025 - 23:59</span>
-                    </td>
-                    <td class="text-center">21</td>
-                    <td class="text-center"><span class="badges bg-lightgreen">Công khai</span></td>
-                    <td>
-                      <a class="me-3" href="editproduct.html">
-                        <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
-                      </a>
-                      <a class="confirm-text" href="javascript:void(0);">
-                        <img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" />
-                      </a>
-                    </td>
-                  </tr>
+                  @forelse ($quatangs as $quatang)
+                    <tr>
+                      <td class="productimgname align-items-center w-100">
+                        <a href="javascript:void(0);" class="product-img">
+                          <img src="{{asset('assets/client')}}/images/thumbs/{{ $quatang->hinhanh }}" alt="{{ $quatang->tieude }}" style="width: 80px; height: 80px; object-fit: cover;"/>
+                        </a>
+                        <div>
+                          <span style="font-size: 12px;"> {{ $quatang->thuonghieu->ten }} </span>
+                          <p style="width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $quatang->tieude }}">
+                              {{ $quatang->tieude }}
+                            </a>
+                          </p>
+                        </div>
+                        
+                      </td>
+                      <td class="text-start" style="font-size: 14px; width: 250px; white-space: normal; overflow: hidden; text-overflow: ellipsis;">
+                          {{ $quatang->thongtin }}
+                      </td>
+                      <td class="text-center">
+                          <span class="fw-bold">{{ date('d/m/Y H:i', strtotime($quatang->ngaybatdau)) }}</span><br>
+                          <span class="fw-bold">{{ date('d/m/Y H:i', strtotime($quatang->ngayketthuc)) }}</span>
+                      </td>
+                      <td class="text-center">{{ $quatang->luotxem }}</td>
+                      <td class="text-center">
+                        @if ( $quatang->trangthai  == 'Hiển thị')
+                          <span class="badges bg-lightgreen">{{ $quatang->trangthai }}</span>
+                          @else
+                          <span class="badges bg-lightred">{{ $quatang->trangthai }}</span>
+                        @endif
+                        
+                      </td>
+                      <td>
+                        <a class="me-3" href="#">
+                          <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
+                        </a>
+                        <a class="confirm-text" href="#">
+                          <img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" />
+                        </a>
+                      </td>
+                    </tr>
+                  @empty
+                    
+                  @endforelse
                 </tbody>
               </table>
             </div>

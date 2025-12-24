@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class QuatangsukienModel extends Model
@@ -15,7 +16,7 @@ class QuatangsukienModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'id_bienthe',
-        'id_chuongtrinh',
+        'id_thuonghieu',
         'dieukiensoluong',
         'dieukiengiatri',
         'tieude',
@@ -48,5 +49,9 @@ class QuatangsukienModel extends Model
     public function sanphamduoctang()
     {
         return $this->belongsToMany(BientheModel::class, 'sanphamduoctang_quatang', 'id_quatang', 'id_bienthe')->withPivot('soluongtang');;
+    }
+    public function thuonghieu(): BelongsTo
+    {
+        return $this->belongsTo(ThuonghieuModel::class, 'id_thuonghieu');
     }
 }

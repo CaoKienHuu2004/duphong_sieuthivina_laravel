@@ -82,10 +82,10 @@
                                         </td>
                                         <!-- <td class="text-center"><span class="badges bg-lightred">Tạm ẩn</span></td> -->
                                         <td>
-                                            <a class="me-3" href="{{ route('quan-tri-vien.chinh-sua-thuong-hieu', $cp->id) }}">
+                                            <a class="me-3" href="{{ route('quan-tri-vien.chinh-sua-ma-giam-gia', $cp->id) }}">
                                                 <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
                                             </a>
-                                            <a href="{{ route('quan-tri-vien.xoa-thuong-hieu', $cp->id) }}">
+                                            <a href="{{ route('quan-tri-vien.xoa-ma-giam-gia', $cp->id) }}"  onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
                                                 <img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" />
                                             </a>
                                         </td>

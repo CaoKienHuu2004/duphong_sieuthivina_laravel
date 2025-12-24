@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="page-wrapper">
-        <form class="content" action="{{ route('quan-tri-vien.luu-danh-muc') }}" method="post" enctype="multipart/form-data">
+        <form class="content" action="{{ route('quan-tri-vien.luu-ma-giam-gia') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="page-header">
                 <div class="page-title">

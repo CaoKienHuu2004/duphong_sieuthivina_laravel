@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\admin\QuatangsukienController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,4 +30,8 @@ class ThuonghieuModel extends Model
         return $this->hasMany(SanphamModel::class, 'id_thuonghieu','id');
     }
 
+    public function quatangsukien(): HasMany
+    {
+        return $this->hasMany(QuatangsukienModel::class, 'id_thuonghieu','id');
+    }
 }
