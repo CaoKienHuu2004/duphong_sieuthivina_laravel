@@ -83,7 +83,7 @@ class QuatangsukienController extends Controller
                 $file = $request->file('hinhanh');
                 $imageName = time() . '_' . $file->getClientOriginalName();
                 // Lưu vào public/assets/client/images/quatang
-                $file->move(public_path('assets/client/images/thumbs'), $imageName);
+                $file->move('assets/client/images/thumbs', $imageName);
             }
 
             $slug = Str::slug($request->ten);

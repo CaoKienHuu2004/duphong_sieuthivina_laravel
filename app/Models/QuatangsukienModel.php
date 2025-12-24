@@ -20,6 +20,7 @@ class QuatangsukienModel extends Model
         'dieukiensoluong',
         'dieukiengiatri',
         'tieude',
+        'slug',
         'thongtin',
         'hinhanh',
         'luotxem',
