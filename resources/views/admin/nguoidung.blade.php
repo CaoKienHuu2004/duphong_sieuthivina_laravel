@@ -136,12 +136,12 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a class="me-3" href="http://127.0.0.1:8000/quan-tri-vien/san-pham/40/chinh-sua">
-                                            <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
+                                        <a class="me-3" href="#" onclick="return confirm('Bạn có chắc chắn nâng cấp tài khoản này thành quản trị viên ?');">
+                                            <i data-feather="users" data-bs-toggle="tooltip" data-bs-placement="top" title="nâng cấp quản trị viên"></i>
                                         </a>
                                         <a class="" href="http://127.0.0.1:8000/quan-tri-vien/san-pham/40/xoa"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
-                                            <img src="{{asset('assets/admin')}}/img/icons/delete.svg" alt="img" />
+                                            onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản này ?');">
+                                            <i data-feather="users" data-bs-toggle="tooltip" data-bs-placement="top" title=""></i>
                                         </a>
                                     </td>
                                 </tr>
