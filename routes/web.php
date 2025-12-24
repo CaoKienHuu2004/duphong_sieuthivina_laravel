@@ -213,9 +213,8 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
         Route::get('/nguoi-dung', [admin\NguoidungController::class, 'index'])->name('danh-sach-nguoi-dung');
         
         // Form xem chi tiết
-        Route::get('/nguoi-dung/sua/{id}', [admin\NguoidungController::class, 'edit'])->name('sua-nguoi-dung');
-        
-        // Xử lý cập nhật (Chỉ trạng thái)
-        Route::put('/nguoi-dung/cap-nhat/{id}', [admin\NguoidungController::class, 'update'])->name('cap-nhat-nguoi-dung');
+        Route::get('/nguoi-dung/doi-trang-thai/{id}', [admin\NguoidungController::class, 'actionKhoataikhoan'])->name('khoa-tai-khoan');
+        Route::get('/nguoi-dung/doi-vai-tro/{id}', [admin\NguoidungController::class, 'actionVaitro'])
+    ->name('doi-vai-tro');
         
     });

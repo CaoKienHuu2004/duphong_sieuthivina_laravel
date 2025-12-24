@@ -22,10 +22,6 @@
                     <div class="table-top">
                         <div class="search-set">
                             <div class="search-path">
-                                <a class="btn btn-filter" id="filter_search">
-                                    <img src="{{asset('assets/admin')}}/img/icons/filter.svg" alt="img" />
-                                    <span><img src="{{asset('assets/admin')}}/img/icons/closes.svg" alt="img" /></span>
-                                </a>
                             </div>
                             <div class="search-input">
                                 <a class="btn btn-searchset"><img src="{{asset('assets/admin')}}/img/icons/search-white.svg"
@@ -33,44 +29,6 @@
                             </div>
                         </div>
 
-                    </div>
-
-                    <div class="card mb-0" id="filter_inputs">
-                        <div class="card-body pb-0">
-                            <div class="row">
-                                <div class="col-lg-12 col-sm-12">
-                                    <div class="row">
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <select class="select" name="trangthai">
-                                                    <option disabled selected>-- Trạng thái sản phẩm
-                                                        --</option>
-                                                    <option value="Công khai">Đang bán</option>
-                                                    <option value="Tạm khóa">Tạm ngừng bán</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <select class="select">
-                                                    <option disabled selected>-- Trạng thái tồn kho
-                                                        --</option>
-                                                    <option>Còn hàng</option>
-                                                    <option>Hết hàng</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <a class="btn btn-filters ms-auto"><img
-                                                        src="{{asset('assets/admin')}}/img/icons/search-whites.svg"
-                                                        alt="img" /></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="table-responsive">
@@ -81,10 +39,10 @@
                                     <th class="text-start">Người dùng</th>
                                     <th class="text-start">Số điện thoại</th>
                                     <th class="text-start">Email</th>
-                                    <th class="text-center">Đặt đơn hàng</th>
+                                    <th class="text-center">Tổng đặt đơn</th>
                                     <th class="text-center">Vai trò</th>
                                     <th class="text-center">Trạng thái</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,19 +88,32 @@
                                         @if ($user->trangthai == 'Hoạt động')
                                             <span class="badges  bg-lightgreen ">{{ $user->trangthai }}</span>
                                         @elseif($user->trangthai == 'Tạm khóa')
-                                            <span class="badges  bg-lightyellow ">{{ $user->trangthai }}</span>
+                                            <span class="badges  bg-lightred ">{{ $user->trangthai }}</span>
                                         @else
                                             <span class="badges  bg-lightred ">{{ $user->trangthai }}</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <a class="me-3" href="#" onclick="return confirm('Bạn có chắc chắn nâng cấp tài khoản này thành quản trị viên ?');">
-                                            <i data-feather="users" data-bs-toggle="tooltip" data-bs-placement="top" title="nâng cấp quản trị viên"></i>
-                                        </a>
-                                        <a class="" href="http://127.0.0.1:8000/quan-tri-vien/san-pham/40/xoa"
+                                        @if($user->vaitro == 'client')
+                                            <a class="me-3" href="{{ route('quan-tri-vien.doi-vai-tro',$user->id) }}" onclick="return confirm('Bạn có chắc chắn nâng cấp tài khoản này thành quản trị viên ?');">
+                                                <i class="text-primary" data-feather="users" data-bs-toggle="tooltip" data-bs-placement="top" title="nâng cấp quản trị viên"></i>
+                                            </a>
+                                        @else
+                                            <a class="me-3" href="{{ route('quan-tri-vien.doi-vai-tro',$user->id) }}" onclick="return confirm('Bạn có chắc chắn nâng cấp tài khoản này thành quản trị viên ?');">
+                                                <i class="text-warning" data-feather="user-minus" data-bs-toggle="tooltip" data-bs-placement="top" title="Trở về Khách hàng"></i>
+                                            </a>
+                                        @endif
+                                        @if($user->trangthai == 'Hoạt động')
+                                        <a class="" href="{{ route('quan-tri-vien.khoa-tai-khoan',$user->id) }}"
                                             onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản này ?');">
-                                            <i data-feather="lock" data-bs-toggle="tooltip" data-bs-placement="top" title=""></i>
+                                            <i class="text-danger" data-feather="lock" data-bs-toggle="tooltip" data-bs-placement="top" title="Khóa tài khoản"></i>
                                         </a>
+                                        @else
+                                        <a class="" href="{{ route('quan-tri-vien.khoa-tai-khoan',$user->id) }}"
+                                            onclick="return confirm('Bạn có chắc chắn kích hoạt lại tài khoản này ?');">
+                                            <i class="text-success" data-feather="unlock" data-bs-toggle="tooltip" data-bs-placement="top" title="Kích hoạt tài khoản"></i>
+                                        </a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @empty
