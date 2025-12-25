@@ -750,21 +750,21 @@
           breakpoint: 1399,
           settings: {
             slidesToShow: 3,
-            arrows: false,
+            arrows: true,
           },
         },
         {
           breakpoint: 1199,
           settings: {
             slidesToShow: 2,
-            arrows: false,
+            arrows: true,
           },
         },
         {
           breakpoint: 575,
           settings: {
             slidesToShow: 2,
-            arrows: false,
+            arrows: true,
           },
         },
       ],
