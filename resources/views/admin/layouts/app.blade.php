@@ -223,11 +223,11 @@
                             </a>
                         </li>
                         <li class="submenu">
-                            <a class="{{ request()->routeIs('quan-tri-vien.danh-sach-trang-don') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-trang-don') }}"><i data-feather="layout"></i><span>
+                            <a href="javascript:void(0);"><i data-feather="layout"></i><span>
                                     Tùy chỉnh website</span>
                                 <span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="transferlist.html">Trang nội dung</a></li>
+                                <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-trang-don') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-trang-don') }}">Trang nội dung</a></li>
                                 <li><a class="{{ request()->routeIs('quan-tri-vien.danh-sach-banner-quang-cao') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-banner-quang-cao') }}">Banner quảng cáo</a></li>
                             </ul>
                         </li>
