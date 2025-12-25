@@ -747,24 +747,31 @@
       prevArrow: "#top-selling-prev",
       responsive: [
         {
-          breakpoint: 1399,
+          breakpoint: 1920,
           settings: {
-            slidesToShow: 3,
+            slidesToShow: 5,
             arrows: true,
           },
         },
         {
-          breakpoint: 1199,
+          breakpoint: 1366,
           settings: {
-            slidesToShow: 2,
-            arrows: true,
+            slidesToShow: 4,
+            arrows: false,
           },
         },
         {
-          breakpoint: 575,
+          breakpoint: 1280,
           settings: {
             slidesToShow: 2,
-            arrows: true,
+            arrows: false,
+          },
+        },
+        {
+          breakpoint: 576,
+          settings: {
+            slidesToShow: 2,
+            arrows: false,
           },
         },
       ],
