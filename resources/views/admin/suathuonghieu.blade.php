@@ -5,7 +5,7 @@
 @section('content')
     <div class="page-wrapper">
         {{-- 1. Action trỏ về route update, truyền ID vào --}}
-        <form class="content" action="{{ route('quan-tri-vien.cap-nhat-danh-muc', $thuonghieu->id) }}" method="post" enctype="multipart/form-data">
+        <form class="content" action="{{ route('quan-tri-vien.cap-nhat-thuong-hieu', $thuonghieu->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT') {{-- 2. Bắt buộc có dòng này để Laravel hiểu là cập nhật --}}
 

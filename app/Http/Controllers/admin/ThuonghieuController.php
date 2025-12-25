@@ -25,7 +25,6 @@ class ThuonghieuController extends Controller
         // 1. Validate dữ liệu
         $request->validate([
             'ten'     => 'required|string|max:255|unique:thuonghieu,ten',
-            'parent'    => 'nullable', // Có thể là chuỗi "Không có" hoặc ID
             'trangthai' => 'required',
             'images'    => 'nullable|image', // Validate ảnh
         ], [
@@ -88,7 +87,7 @@ class ThuonghieuController extends Controller
         // 1. Validate dữ liệu
         $request->validate([
             // Lưu ý: unique:danhmuc,ten,$id -> Bỏ qua check trùng tên với chính nó
-            'ten'     => 'required|string|max:255|unique:thhuonghieu,ten,' . $id,
+            'ten'     => 'required|string|max:255|unique:thuonghieu,ten,' . $id,
             'trangthai' => 'required',
             'images'    => 'nullable|image',
         ], [
