@@ -21,7 +21,7 @@ class YeuthichController extends Controller
         // Lấy danh sách yêu thích kèm thông tin sản phẩm và ảnh
         $favorites = YeuthichModel::with(['sanpham.hinhanhsanpham', 'sanpham.thuonghieu'])
             ->where('id_nguoidung', $userId)
-            ->orderByDesc('created_at') // Mới nhất lên đầu
+            ->orderByDesc('id') // Mới nhất lên đầu
             ->get();
 
         // Format lại dữ liệu (xử lý link ảnh)

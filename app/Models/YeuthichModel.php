@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class YeuthichModel extends Model
 {
-    use SoftDeletes;
 
     protected $table = 'yeuthich';
     protected $primaryKey = 'id';
