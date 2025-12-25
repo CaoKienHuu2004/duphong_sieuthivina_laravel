@@ -563,9 +563,9 @@
                   @foreach ($topbrands as $topbrand)
                     <div data-aos="fade-up" data-aos-duration="200">
                       <div
-                        class="product-card hover-card-shadows text-center h-100 p-5 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2 bg-white  justify-content-center">
+                        class="product-card hover-card-shadows h-100 p-5 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2 bg-white  justify-content-center">
                         <a href="{{ $topbrand->slug }}" class="flex-center rounded-8 position-relative"
-                          style="height: 120px;">
+                          style="width: 100%; height: 150px; object-fit: cover;">
                           <img src="{{asset('assets/client')}}/images/brands/{{ $topbrand->logo }}"
                             alt="{{ $topbrand->logo }}" class="object-fit-cover" style="width: 60%;" />
                         </a>
