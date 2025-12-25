@@ -46,8 +46,16 @@
                                         $giagoc = $bienthe['giagoc'] ?? 0;
                                         $giadagiam= $bienthe['giadagiam'];
                                         $phantramgiam = $sanpham['giamgia'] ?? 0;
-                                        $hinhanhsanpham = $sanpham['hinhanhsanpham'];
-                                        $image = $hinhanhsanpham[0]['hinhanh'];
+                                        // 3. XỬ LÝ LỖI HÌNH ẢNH (FIX LỖI DÒNG 50)
+                                        $hinhanhsanpham = $sanpham['hinhanhsanpham'] ?? [];
+                                        
+                                        // Mặc định là ảnh placeholder nếu không tìm thấy ảnh
+                                        $image = 'product-placeholder.png'; 
+                                        
+                                        // Nếu mảng hình ảnh có dữ liệu thì mới lấy phần tử đầu tiên
+                                        if (!empty($hinhanhsanpham) && isset($hinhanhsanpham[0]['hinhanh'])) {
+                                            $image = $hinhanhsanpham[0]['hinhanh'];
+                                        }
                                     @endphp
                                     <tr wire:key="cart-item-{{ $item['id_bienthe'] }}">
                                         <td class="py-20 px-5">
