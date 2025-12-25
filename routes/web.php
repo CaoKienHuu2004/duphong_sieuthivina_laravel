@@ -234,4 +234,13 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::get('/gui-moi', [admin\ThongbaoController::class, 'create'])->name('danh-sach-thong-bao');
             Route::post('/luu', [admin\ThongbaoController::class, 'store'])->name('luu-thong-bao');
         });
+
+        Route::group(['prefix' => 'trang-don'], function () {
+            Route::get('/', [admin\TrangnoidungController::class, 'index'])->name('danh-sach-trang-don');
+            Route::get('/them', [admin\TrangnoidungController::class, 'create'])->name('them-trang-don');
+            Route::post('/luu', [admin\TrangnoidungController::class, 'store'])->name('luu-trang-don');
+            Route::get('/sua/{id}', [admin\TrangnoidungController::class, 'edit'])->name('sua-trang-don');
+            Route::put('/cap-nhat/{id}', [admin\TrangnoidungController::class, 'update'])->name('cap-nhat-trang-don');
+            Route::get('/xoa/{id}', [admin\TrangnoidungController::class, 'destroy'])->name('xoa-trang-don');
+});
     });

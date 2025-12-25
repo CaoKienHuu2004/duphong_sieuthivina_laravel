@@ -223,7 +223,7 @@
                             </a>
                         </li>
                         <li class="submenu">
-                            <a href="javascript:void(0);"><i data-feather="layout"></i><span>
+                            <a class="{{ request()->routeIs('quan-tri-vien.danh-sach-trang-don') ? 'active' : '' }}" href="{{ route('quan-tri-vien.danh-sach-trang-don') }}"><i data-feather="layout"></i><span>
                                     Tùy chỉnh website</span>
                                 <span class="menu-arrow"></span></a>
                             <ul>

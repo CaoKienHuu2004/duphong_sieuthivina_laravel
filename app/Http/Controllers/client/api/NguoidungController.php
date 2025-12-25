@@ -63,7 +63,7 @@ class NguoidungController extends Controller
             $user = Auth::user();
 
             // Kiểm tra trạng thái tài khoản
-            if (!$user->trangthai) {
+            if ($user->trangthai == 'Tạm khóa') {
                 Auth::logout();
                 return response()->json([
                     'status' => 403,
