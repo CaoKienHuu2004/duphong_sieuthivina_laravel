@@ -61,7 +61,7 @@
                                                 
                                                 {{-- Ảnh sản phẩm --}}
                                                 <a href="{{ route('chi-tiet-san-pham',$sanpham['slug']) }}" class="border border-gray-100 rounded-8 flex-center" style="max-width: 120px; max-height: 120px; width: 100%; height: 100%">
-                                                    <img src="{{ asset('assets/client') }}/images/thumbs/{{ $image }}" alt="{{ $sanpham['ten'] ?? 'Sản phẩm' }}" class="w-100 rounded-8">
+                                                    <img src="{{ asset('assets/client') }}/images/thumbs/{{ $image ?? 'product-placeholder.png' }}" alt="{{ $sanpham['ten'] ?? 'Sản phẩm' }}" class="w-100 rounded-8">
                                                 </a>
 
                                                 <div class="table-product__content text-start">
