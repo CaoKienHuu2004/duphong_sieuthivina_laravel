@@ -57,7 +57,7 @@
                                 @forelse ($pages as $page)
                                     <tr>
                                         {{-- Cột Tiêu đề --}}
-                                        <td class="productimgname">
+                                        <td class="">
                                             <a href="javascript:void(0);" class="fw-bold text-dark">{{ $page->tieude }}</a>
                                         </td>
 
@@ -82,7 +82,7 @@
 
                                         {{-- Cột Hành động (Chỉ có Sửa) --}}
                                         <td class="text-center">
-                                            <a class="me-3" href="{{ route('quan-tri-vien.sua-trang-don', $page->id) }}" title="Sửa nội dung & Cập nhật trạng thái">
+                                            <a class="me-3" href="#" title="Sửa nội dung & Cập nhật trạng thái">
                                                 <img src="{{asset('assets/admin')}}/img/icons/edit.svg" alt="img" />
                                             </a>
                                             {{-- ĐÃ BỎ NÚT XÓA THEO YÊU CẦU --}}
