@@ -12,7 +12,7 @@ class TrangnoidungController extends Controller
     public function index()
     {
         $pages = TrangnoidungModel::orderByDesc('id')->get();
-        return view('admin.trangdon.index', compact('pages'));
+        return view('admin.noidung', compact('pages'));
     }
 
     // 2. FORM TẠO MỚI
