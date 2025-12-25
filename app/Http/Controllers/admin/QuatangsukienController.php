@@ -263,7 +263,7 @@ class QuatangsukienController extends Controller
             'ngayketthuc'   => 'required|date|after_or_equal:ngaybatdau',
             'trangthai'     => 'required|in:Hiển thị,Tạm ẩn',
             'id_thuonghieu' => 'nullable|exists:thuonghieu,id',
-            'hinhanh'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'hinhanh'       => 'nullable|image',
 
             // Validate mảng sản phẩm
             'sp_thamgia'    => 'required|array|min:1',
