@@ -250,7 +250,7 @@
   {{-- GIỮ NGUYÊN PHẦN CSS CỦA BẠN --}}
   <style>
     /* ... (Giữ nguyên CSS cũ) ... */
-    #image-preview-container { display: flex; flex-wrap: wrap; gap: 10px; }
+    #image-preview-container { display: flex; flex-wrap: wrap; gap: 5px; }
     .preview-image-item { position: relative; width: 120px; height: 120px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; cursor: grab; background: #fff; transition: transform 0.2s; }
     .preview-image-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
     .btn-remove-image { position: absolute; top: 5px; right: 5px; background: rgba(255, 0, 0, 0.7); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; z-index: 10; }
