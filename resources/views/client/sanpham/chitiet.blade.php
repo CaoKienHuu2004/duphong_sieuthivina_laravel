@@ -13,6 +13,7 @@
             'original_price' => number_format($bienthe->giagoc, 0, ',', '.'),
             'sale_price' => number_format($bienthe->giadagiam, 0, ',', '.'),
             'is_sale' => $bienthe->is_sale,
+            'quantity' => $bienthe->soluong,
         ];
     });
     $initialVariant = $sanpham->bienthe->first();
