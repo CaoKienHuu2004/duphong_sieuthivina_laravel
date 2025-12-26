@@ -114,7 +114,7 @@ class NguoidungController extends Controller
             // --- TRƯỜNG HỢP 2: CHƯA CÓ TÀI KHOẢN -> TẠO MỚI ---
             else {
                 $user = NguoidungModel::create([
-                    'username'  => $googleUser->getNickname() ?? 'Google User',
+                    'username'  => explode('@', $googleUser->getEmail())[0],
                     'hoten'      => $googleUser->getName() ?? $googleUser->getNickname() ?? 'Google User',
                     'email'     => $googleUser->getEmail(),
                     'password'  => Hash::make(Str::random(16)), // Pass ngẫu nhiên
