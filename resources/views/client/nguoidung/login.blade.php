@@ -16,7 +16,7 @@
                                 @csrf
                                 <div class="mb-24">
                                     <label for="phonemail" class="text-neutral-900 text-lg mb-8 fw-medium">Email hoặc Điện
-                                        thoại<span class="text-danger">*</span> </label>
+                                        thoại <span class="text-danger">*</span> </label>
                                     <input type="text" class="text-md common-input @error('phonemail') is-invalid @enderror"
                                         id="phonemail" name="phonemail" placeholder="Nhập email hoặc số điện thoại"
                                         value="{{ old('phonemail') }}" required>
