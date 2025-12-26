@@ -210,7 +210,8 @@
                   <div class="form-group">
                     <label>Trạng thái sản phẩm <span class="text-danger">*</span></label>
                     <select class="select text-black" name="trangthai">
-                      <option value="Công khai" selected>Công khai</option>
+                      <option value="Công khai" selected>Đăng bán</option>
+                      <option value="Quà tặng">Quà tặng</option>
                       <option value="Tạm ẩn">Tạm ẩn</option>
                     </select>
 

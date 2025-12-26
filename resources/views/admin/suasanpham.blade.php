@@ -246,7 +246,8 @@
                   <div class="form-group">
                     <label>Trạng thái sản phẩm <span class="text-danger">*</span></label>
                     <select class="select text-black" name="trangthai">
-                      <option value="Công khai" {{ $sanpham->trangthai == 'Công khai' ? 'selected' : '' }}>Công khai</option>
+                      <option value="Công khai" {{ $sanpham->trangthai == 'Công khai' ? 'selected' : '' }}>Đăng bán</option>
+                      <option value="Quà tặng" {{ $sanpham->trangthai == 'Quà tặng' ? 'selected' : '' }}>Quà tặng</option>
                       <option value="Tạm ẩn" {{ $sanpham->trangthai == 'Tạm ẩn' ? 'selected' : '' }}>Tạm ẩn</option>
                     </select>
                   </div>
