@@ -245,13 +245,12 @@ class ThanhtoanController extends Controller
                 }elseif ($item['thanhtien'] == 0) { 
                     $bienthe = BientheModel::find($bientheId);
                     if ($bienthe) {
-                        $bienthe->soluong -= $soluong;
                         $bienthe->luottang -= $soluong;
-                        if ($bienthe->soluong < 0) {
+                        if ($bienthe->luottang < 0) {
                              DB::rollBack();
                              return redirect()->back()->with('error', 'Lỗi: Sản phẩm **' . ($bienthe->sanpham->ten ?? '') . '** không đủ số lượng tồn kho.');
                         }
-                        $bienthe->luotban += $soluong; 
+                        $bienthe->luotban += $soluong;
                         $bienthe->save();
                     }
                 }
