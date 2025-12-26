@@ -205,7 +205,7 @@ class GiohangComponent extends Component
 
                     // Kiểm tra tồn kho thực tế của quà tặng (BientheModel)
                     $bientheQuatang = BientheModel::find($id_bienthe_gift);
-                    if ($bientheQuatang && $bientheQuatang->soluong >= $tongSoluongGift) {
+                    if ($bientheQuatang && $bientheQuatang->luottang >= $tongSoluongGift) {
                         if (!isset($themquatang[$id_bienthe_gift])) {
                             $themquatang[$id_bienthe_gift] = 0;
                         }
