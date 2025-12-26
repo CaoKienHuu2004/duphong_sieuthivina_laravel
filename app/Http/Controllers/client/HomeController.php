@@ -14,37 +14,11 @@ use App\Models\ThuonghieuModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-/**
- * @OA\Schema(
- * schema="ProductHome",
- * @OA\Property(property="id", type="integer", example=1),
- * @OA\Property(property="tensanpham", type="string", example="Rượu Vang Đỏ"),
- * @OA\Property(property="giamgia", type="integer", example=10),
- * @OA\Property(property="giadagiam", type="number", format="float", example=450000),
- * @OA\Property(property="bienthe_sum_luotban", type="integer", example=150),
- * @OA\Property(property="bienthe", description="Biến thể rẻ nhất", type="object"),
- * @OA\Property(property="thuonghieu", type="object"),
- * @OA\Property(property="hinhanhsanpham", type="array", @OA\Items(type="object"))
- * )
- * * @OA\Schema(
- * schema="CategoryHome",
- * @OA\Property(property="id", type="integer", example=1),
- * @OA\Property(property="tendanhmuc", type="string", example="Đồ uống"),
- * @OA\Property(property="hinhanh", type="string", example="danhmuc.jpg")
- * )
- *  @OA\Schema(
- * schema="BannerHome",
- * @OA\Property(property="id", type="integer", example=1),
- * @OA\Property(property="tendanhmuc", type="string", example="Đồ uống"),
- * @OA\Property(property="hinhanh", type="string", example="danhmuc.jpg")
- * )
- */
-
 
 class HomeController extends Controller
 {
 
-    
+
     public function index()
     {
         $banner = $this->banner();
@@ -104,24 +78,30 @@ class HomeController extends Controller
     protected function topdeals()
     {
         $topdeals = SanPhamModel::where('trangthai', 'Công khai')
-            // --- THÊM ĐIỀU KIỆN LỌC MỚI ---
+            // --- CẬP NHẬT ĐIỀU KIỆN LỌC ---
             ->whereHas('bienthe', function ($query) {
-                // Chỉ lấy các biến thể có ID nằm trong bảng tham gia quà tặng
+                // Chỉ lấy biến thể có ID nằm trong bảng tham gia quà tặng
+                // VÀ chương trình quà tặng đó phải đang "Hiển thị"
                 $query->whereIn('id', function ($subQuery) {
-                    $subQuery->select('id_bienthe')->from('sanphamthamgia_quatang');
+                    $subQuery->select('sanphamthamgia_quatang.id_bienthe')
+                        ->from('sanphamthamgia_quatang')
+                        // Join sang bảng quatang để check trạng thái
+                        ->join('quatang', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang.id')
+                        ->where('quatang.trangthai', 'Hiển thị');
                 });
             })
             // --------------------------------
             ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
-            ->withSum('bienthe', 'luotban') // Tính tổng lượt bán của tất cả biến thể
-            ->orderBy('bienthe_sum_luotban', 'desc') // Sắp xếp giảm dần theo tổng lượt bán
+            ->withSum('bienthe', 'luotban')
+            ->orderBy('bienthe_sum_luotban', 'desc')
             ->limit(10)
             ->get()
-            // Giữ nguyên phần xử lý giá hiển thị
+
+            // --- XỬ LÝ GIÁ HIỂN THỊ (GIỮ NGUYÊN) ---
             ->tap(function ($collection) {
                 $collection->each(function ($sanpham) {
                     if ($sanpham->bienthe->isNotEmpty()) {
-                        // Lấy biến thể giá thấp nhất để hiển thị giá "từ..."
+                        // Lấy biến thể giá thấp nhất
                         $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
                         $sanpham->bienthe = $cheapestVariant;
 
