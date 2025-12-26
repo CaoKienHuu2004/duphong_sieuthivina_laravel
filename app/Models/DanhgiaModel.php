@@ -12,7 +12,7 @@ class DanhgiaModel extends Model
     protected $table = 'danhgia';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id_sanpham',
+        'id_bienthe',
         'id_nguoidung',
         'id_chitietdonhang',
         'diem',
@@ -24,9 +24,9 @@ class DanhgiaModel extends Model
     // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
     // ===========================================================================================================================
-    public function sanpham()
+    public function bienthe()
     {
-        return $this->belongsTo(SanphamModel::class, 'id_sanpham', 'id');
+        return $this->belongsTo(BientheModel::class, 'id_bienthe', 'id');
     }
     public function nguoidung()
     {

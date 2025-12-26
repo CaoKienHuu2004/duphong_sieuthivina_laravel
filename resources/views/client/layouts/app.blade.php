@@ -624,7 +624,7 @@
   <!-- main js -->
   <script src="{{asset('assets/client')}}/js/main.js"></script>
 
-  
+  @yield('scripts')
 </body>
 
 </html>

@@ -91,66 +91,48 @@ class NguoidungController extends Controller
     // 1. Chuyển hướng sang Google
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->redirectUrl('https://sieuthivina.com/auth/google/callback')->redirect();
     }
 
     // 2. Xử lý khi Google trả về
     public function handleGoogleCallback()
     {
         try {
-            // Lấy thông tin từ Google
+            // Lấy thông tin user từ Google
             $googleUser = Socialite::driver('google')->user();
-            $email = $googleUser->getEmail();
+            
+            // Tìm người dùng trong DB theo Email
+            $user = NguoidungModel::where('email', $googleUser->getEmail())->first();
 
-            if (!$email) {
-                return redirect()->route('login')->withErrors(['username' => 'Không lấy được Email từ Google.']);
-            }
-
-            // A. Tìm xem email này đã có trong DB chưa
-            $user = NguoidungModel::where('email', $email)->first();
-
-            // B. Nếu chưa có -> Tự động tạo tài khoản mới
-            if (!$user) {
-                // Tự sinh username từ email (ví dụ: nguyenvan@gmail -> nguyenvan)
-                $newUsername = explode('@', $email)[0];
-
-                // Kiểm tra nếu username đã tồn tại thì nối thêm số ngẫu nhiên
-                if (NguoidungModel::where('username', $newUsername)->exists()) {
-                    $newUsername .= '_' . rand(100, 999);
+            // --- TRƯỜNG HỢP 1: ĐÃ CÓ TÀI KHOẢN ---
+            if ($user) {
+                // Kiểm tra trạng thái khóa
+                if ($user->trangthai == 'Tạm khóa' || $user->trangthai == 0) {
+                    return redirect()->route('login')->with('error', 'Tài khoản của bạn đã bị khóa.');
                 }
-
+            } 
+            // --- TRƯỜNG HỢP 2: CHƯA CÓ TÀI KHOẢN -> TẠO MỚI ---
+            else {
                 $user = NguoidungModel::create([
-                    'username'    => $newUsername, // Bắt buộc phải có vì DB bạn yêu cầu
-                    'email'       => $email,
-                    'hoten'       => $googleUser->getName() ?? $newUsername,
-                    'password'    => Hash::make(Str::random(16)), // Mật khẩu ngẫu nhiên bảo mật
-                    'sodienthoai' => null, // Google ko trả về SĐT, chấp nhận null hoặc cập nhật sau
-                    'avatar'      => null, // Có thể lưu $googleUser->getAvatar() nếu muốn
-                    'vaitro'      => 'client',
-                    'trangthai'   => 'Hoạt động', // Theo code cũ của bạn
+                    'hoten'      => $googleUser->getName() ?? $googleUser->getNickname() ?? 'Google User',
+                    'email'     => $googleUser->getEmail(),
+                    'password'  => Hash::make(Str::random(16)), // Pass ngẫu nhiên
+                    'vaitro'    => 'client', // Hoặc 0 tùy quy ước DB
+                    'trangthai' => 'Hoạt động', // Hoặc 1 tùy quy ước DB
+                    'avatar'    => $googleUser->getAvatar(), // (Tùy chọn) Lưu ảnh Google
                 ]);
             }
 
-            // C. Kiểm tra trạng thái khóa (Logic giống handleLogin cũ)
-            // Lưu ý: Code cũ bạn check (!$user->trangthai) nên mình giữ nguyên logic đó
-            if (!$user->trangthai || $user->trangthai == 'Khóa') { // Check thêm trường hợp string nếu cần
-                return redirect()->route('client.login')->withErrors(['username' => 'Tài khoản của bạn đã bị khóa.']);
-            }
-
-            // D. Đăng nhập
+            // --- QUAN TRỌNG: ĐĂNG NHẬP SESSION ---
             Auth::login($user);
 
-            // E. Chuyển hướng (Logic giống handleLogin cũ)
-            if ($user->vaitro === 'admin') {
-                return redirect()->intended(route('quan-tri-vien.trang-chu'));
-            } elseif ($user->vaitro === 'seller') {
-                return redirect()->intended(route('nguoi-ban-hang.trang-chu'));
-            } else {
-                return redirect()->intended(route('trang-chu'));
-            }
+            // Chuyển hướng về trang chủ hoặc trang trước đó
+            return redirect()->route('trang-chu')->with('success', 'Đăng nhập bằng Google thành công!');
+
         } catch (\Exception $e) {
-            // Log lỗi ra để debug nếu cần
-            return redirect()->route('client.login')->withErrors(['username' => 'Lỗi đăng nhập Google: ' . $e->getMessage()]);
+            // Log lỗi để debug
+            \Log::error('Lỗi đăng nhập Google: ' . $e->getMessage());
+            return redirect()->route('login')->with('error', 'Lỗi đăng nhập Google. Vui lòng thử lại.');
         }
     }
 

@@ -28,38 +28,27 @@ class DiachiController extends Controller
     }
 
     public function taodiachi()
-    {
-        $tinhThanhs = collect([]);
-        $apiUrl = 'https://provinces.open-api.vn/api/v1/'; // API mẫu
+{
+    $tinhThanhs = collect([]);
+    // URL lấy tất cả tỉnh thành
+    $apiUrl = 'https://provinces.open-api.vn/api/p/'; 
 
-        try {
-            // *** BƯỚC 1: GỌI API LẤY DANH SÁCH TỈNH/THÀNH PHỐ ***
-            $response = Http::timeout(5)->get($apiUrl);
+    try {
+        $response = Http::timeout(5)->get($apiUrl);
 
-            if ($response->successful()) {
-                // Giả định API trả về JSON chứa mảng các tỉnh thành
-                $tinhThanhs = collect($response->json());
-                
-                // Sắp xếp theo tên (nếu cần)
-                $tinhThanhs = $tinhThanhs->sortBy('name'); 
-            } else {
-                 // Xử lý lỗi API (ví dụ: API trả về mã lỗi 4xx, 5xx)
-                 // Trong thực tế, bạn nên log lỗi hoặc hiển thị thông báo thân thiện hơn
-                 \Log::error('API Tỉnh/Thành phố trả về lỗi: ' . $response->status());
-            }
-
-        } catch (\Exception $e) {
-            // Xử lý lỗi kết nối (timeout, mạng,...)
-            \Log::error('Lỗi kết nối API Tỉnh/Thành phố: ' . $e->getMessage());
-            // Có thể gán mảng rỗng để form vẫn tải nhưng không có dữ liệu
+        if ($response->successful()) {
+            $tinhThanhs = collect($response->json());
+            // Sắp xếp theo code hoặc tên tùy ý
+            $tinhThanhs = $tinhThanhs->sortBy('code'); 
+        } else {
+            \Log::error('Lỗi API Tỉnh thành: ' . $response->status());
         }
-
-        // return response()->json([
-        //     'tinhThanhs' => $tinhThanhs,
-        // ]);
-        // trả về trang back() trước
-        return view('client.nguoidung.taodiachi',compact('tinhThanhs'));
+    } catch (\Exception $e) {
+        \Log::error('Exception API Tỉnh thành: ' . $e->getMessage());
     }
+
+    return view('client.nguoidung.taodiachi', compact('tinhThanhs'));
+}
 
     public function khoitaodiachi(Request $request)
     {

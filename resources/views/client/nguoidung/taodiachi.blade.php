@@ -214,3 +214,71 @@
         </section>
     </div>
 @endsection
+
+@section('scripts')
+    <script>
+    $(document).ready(function() {
+        // Base URL của API
+        const apiBase = 'https://provinces.open-api.vn/api';
+
+        // --- 1. KHI CHỌN TỈNH ---
+        $('#province').change(function() {
+            let provinceCode = $(this).val();
+            let provinceName = $("#province option:selected").text();
+            
+            // Gán tên tỉnh vào input ẩn
+            $('#province_name').val(provinceName);
+
+            // Reset Quận và Xã
+            $('#district').html('<option value="">-- Chọn Quận/Huyện --</option>').prop('disabled', true);
+            $('#ward').html('<option value="">-- Chọn Phường/Xã --</option>').prop('disabled', true);
+
+            if (provinceCode) {
+                // Gọi API lấy Quận/Huyện theo Tỉnh (depth=2 để lấy con cấp 2)
+                $.get(`${apiBase}/p/${provinceCode}?depth=2`, function(data) {
+                    let districts = data.districts;
+                    let html = '<option value="">-- Chọn Quận/Huyện --</option>';
+                    
+                    $.each(districts, function(key, item) {
+                        html += `<option value="${item.code}">${item.name}</option>`;
+                    });
+
+                    $('#district').html(html).prop('disabled', false);
+                });
+            }
+        });
+
+        // --- 2. KHI CHỌN QUẬN ---
+        $('#district').change(function() {
+            let districtCode = $(this).val();
+            let districtName = $("#district option:selected").text();
+
+            // Gán tên quận vào input ẩn
+            $('#district_name').val(districtName);
+
+            // Reset Xã
+            $('#ward').html('<option value="">-- Chọn Phường/Xã --</option>').prop('disabled', true);
+
+            if (districtCode) {
+                // Gọi API lấy Phường/Xã theo Quận (depth=2 để lấy con của quận)
+                $.get(`${apiBase}/d/${districtCode}?depth=2`, function(data) {
+                    let wards = data.wards;
+                    let html = '<option value="">-- Chọn Phường/Xã --</option>';
+
+                    $.each(wards, function(key, item) {
+                        html += `<option value="${item.code}">${item.name}</option>`;
+                    });
+
+                    $('#ward').html(html).prop('disabled', false);
+                });
+            }
+        });
+
+        // --- 3. KHI CHỌN XÃ (Lấy tên) ---
+        $('#ward').change(function() {
+            let wardName = $("#ward option:selected").text();
+            $('#ward_name').val(wardName);
+        });
+    });
+</script>
+@endsection
