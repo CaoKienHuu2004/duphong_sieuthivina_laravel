@@ -9,6 +9,7 @@ use App\Models\ThuonghieuModel;
 use App\Models\DanhmucModel;
 use App\Models\TukhoaModel;
 use App\Models\QuangcaoModel;
+use App\Models\QuatangsukienModel;
 use App\Models\BientheModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -335,16 +336,18 @@ class SanphamController extends Controller
 
     public function show($slug)
     {
-        $sanpham = SanPhamModel::where('slug', $slug)
-            ->where('trangthai', 'Công khai')
+        // 1. Lấy thông tin sản phẩm (như cũ)
+        $sanpham = SanphamModel::where('slug', $slug)
+            ->where('trangthai', 'Công khai') // hoặc 'Công khai' tùy enum của bạn
             ->with([
                 'danhmuc',
                 'hinhanhsanpham',
-                'bienthe',
+                'bienthe', // Để lấy ID các biến thể check quà
                 'thuonghieu'
             ])
             ->firstOrFail();
 
+        // Xử lý giá (như cũ)
         $sanpham->bienthe->each(function ($bienthe) use ($sanpham) {
             $giagoc = $bienthe->giagoc;
             $giamgiaPercent = $sanpham->giamgia / 100;
@@ -354,19 +357,35 @@ class SanphamController extends Controller
 
         $sanpham->increment('luotxem');
 
+        // 2. [LOGIC MỚI] LẤY DANH SÁCH QUÀ TẶNG
+        // Bước A: Lấy danh sách ID các biến thể của sản phẩm này
+        $variantIds = $sanpham->bienthe->pluck('id')->toArray();
+
+        // Bước B: Tìm các chương trình khuyến mãi KHẢ DỤNG mà các biến thể trên có tham gia
+        // Dùng whereHas: Chỉ cần 1 trong các biến thể tham gia là lấy chương trình đó ra (Tự động loại bỏ trùng lặp)
+        $danhSachQuaTang = QuatangsukienModel::where('trangthai', 'Hiển thị')
+            ->where('ngaybatdau', '<=', now())
+            ->where('ngayketthuc', '>=', now())
+            ->whereHas('sanphamthamgia', function ($query) use ($variantIds) {
+                // Điều kiện: Trong bảng tham gia có chứa ID của biến thể sản phẩm này
+                $query->whereIn('id_bienthe', $variantIds);
+            })
+            ->with([
+                // Lấy thông tin chi tiết món quà sẽ được tặng
+                'sanphamduoctang.sanpham.hinhanhsanpham'
+            ])
+            ->get();
+
+        // 3. Lấy sản phẩm liên quan (như cũ)
         $relatedProducts = $this->fetchRelatedProducts($sanpham);
-
-
-        // return response()->json([
-        //     'sanpham' => $sanpham,
-        //     'relatedProducts' => $relatedProducts,
-        // ]);
 
         return view('client.sanpham.chitiet', [
             'sanpham' => $sanpham,
             'relatedProducts' => $relatedProducts,
+            'danhSachQuaTang' => $danhSachQuaTang, // Truyền biến này sang View
         ]);
     }
+
     protected function fetchRelatedProducts($sanpham)
     {
 

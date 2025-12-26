@@ -35,6 +35,8 @@
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/aos.css" />
   <!-- Main css -->
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/main.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   {{--
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
   <!-- Google tag (gtag.js) -->
@@ -623,6 +625,8 @@
   <script src="{{asset('assets/client')}}/js/counter.min.js"></script>
   <!-- main js -->
   <script src="{{asset('assets/client')}}/js/main.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
   @yield('scripts')
 </body>

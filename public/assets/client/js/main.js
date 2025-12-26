@@ -372,6 +372,83 @@
     // ========================= hot deals Slider Js End ===================
 
     // ========================= hot deals Slider Js Start ==============
+    $(".gift-product-detail-wrapper").slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 3500,
+      speed: 1500,
+      dots: false,
+      pauseOnHover: true,
+      arrows: true,
+      draggable: true,
+      rtl: $("html").attr("dir") === "rtl" ? true : false,
+      speed: 900,
+      infinite: true,
+      nextArrow: "#gift-product-detail-wrapper-next",
+      prevArrow: "#gift-product-detail-wrapper-prev",
+      responsive: [
+        {
+          breakpoint: 1699,
+          settings: {
+            slidesToShow: 1,
+            arrows: true,
+          },
+        },
+        {
+          breakpoint: 1599,
+          settings: {
+            slidesToShow: 1,
+            arrows: true,
+          },
+        },
+        {
+          breakpoint: 1399,
+          settings: {
+            slidesToShow: 1,
+            arrows: true,
+          },
+        },
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 1,
+            arrows: true,
+          },
+        },
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 1,
+            arrows: true,
+          },
+        },
+        {
+          breakpoint: 575,
+          settings: {
+            slidesToShow: 1,
+            arrows: true,
+          },
+        },
+        {
+          breakpoint: 424,
+          settings: {
+            slidesToShow: 1,
+            arrows: true,
+          },
+        },
+        {
+          breakpoint: 359,
+          settings: {
+            slidesToShow: 1,
+            arrows: true,
+          },
+        },
+      ],
+    });
+    // ========================= hot deals Slider Js End ===================
+
+    // ========================= hot deals Slider Js Start ==============
     $(".feature-item-mobile-wrapper").slick({
       slidesToShow: 10,
       slidesToScroll: 1,
@@ -890,6 +967,48 @@
           breakpoint: 1199,
           settings: {
             slidesToShow: 2,
+            arrows: false,
+          },
+        },
+        {
+          breakpoint: 575,
+          settings: {
+            slidesToShow: 1,
+            arrows: false,
+          },
+        },
+      ],
+    });
+    // ========================= hot deals Slider Js End ===================
+
+    // ========================= quatang chi tiết sản phẩm Slider Js Start ==============
+    $(".product-detail-gift-slider").slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 3200,
+      speed: 1500,
+      dots: false,
+      pauseOnHover: false,
+      arrows: true,
+      draggable: true,
+      rtl: $("html").attr("dir") === "rtl" ? true : false,
+      speed: 900,
+      infinite: true,
+      nextArrow: "#top-brand-next",
+      prevArrow: "#top-brand-prev",
+      responsive: [
+        {
+          breakpoint: 1399,
+          settings: {
+            slidesToShow: 1,
+            arrows: true,
+          },
+        },
+        {
+          breakpoint: 1199,
+          settings: {
+            slidesToShow: 1,
             arrows: false,
           },
         },
