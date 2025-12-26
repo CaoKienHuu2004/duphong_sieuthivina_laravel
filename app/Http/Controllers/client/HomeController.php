@@ -86,8 +86,8 @@ class HomeController extends Controller
                     $subQuery->select('sanphamthamgia_quatang.id_bienthe')
                         ->from('sanphamthamgia_quatang')
                         // Join sang bảng quatang để check trạng thái
-                        ->join('quatang', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang.id')
-                        ->where('quatang.trangthai', 'Hiển thị');
+                        ->join('quatang_sukien', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang_sukien.id')
+                        ->where('quatang_sukien.trangthai', 'Hiển thị');
                 });
             })
             // --------------------------------
