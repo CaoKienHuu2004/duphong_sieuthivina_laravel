@@ -91,7 +91,7 @@ class NguoidungController extends Controller
     // 1. Chuyển hướng sang Google
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirectUrl('https://sieuthivina.com/auth/google/callback')->redirect();
+        return Socialite::driver('google')->redirect();
     }
 
     // 2. Xử lý khi Google trả về
@@ -114,12 +114,12 @@ class NguoidungController extends Controller
             // --- TRƯỜNG HỢP 2: CHƯA CÓ TÀI KHOẢN -> TẠO MỚI ---
             else {
                 $user = NguoidungModel::create([
+                    'username'  => $googleUser->getNickname() ?? 'Google User',
                     'hoten'      => $googleUser->getName() ?? $googleUser->getNickname() ?? 'Google User',
                     'email'     => $googleUser->getEmail(),
                     'password'  => Hash::make(Str::random(16)), // Pass ngẫu nhiên
                     'vaitro'    => 'client', // Hoặc 0 tùy quy ước DB
-                    'trangthai' => 'Hoạt động', // Hoặc 1 tùy quy ước DB
-                    'avatar'    => $googleUser->getAvatar(), // (Tùy chọn) Lưu ảnh Google
+                    'trangthai' => 'Hoạt động', // Hoặc 1 tùy quy ước DB // (Tùy chọn) Lưu ảnh Google
                 ]);
             }
 
