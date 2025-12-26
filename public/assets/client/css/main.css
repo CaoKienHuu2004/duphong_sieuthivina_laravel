@@ -9772,6 +9772,8 @@ input:focus-visible {
         rgba(0, 0, 0, 0) 50%,   
         rgba(0, 0, 0, 0.7) 100%   
     );
+    backdrop-filter: blur(0px); 
+    -webkit-backdrop-filter: blur(0px); /* Hỗ trợ Safari */
     z-index: 2; /* Đặt trên ảnh nền, dưới nội dung */
     transition: opacity 0.2s linear, backdrop-filter 0.4s ease;
 }
