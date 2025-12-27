@@ -17,6 +17,7 @@ use App\Http\Controllers\client\api\DanhgiaController;
 use App\Http\Controllers\client\api\GlobalController;
 use App\Http\Controllers\client\api\ThongbaoController;
 use App\Http\Controllers\client\api\YeuthichController;
+use App\Http\Controllers\client\ChatboxController;
 
 
 /*
@@ -32,6 +33,7 @@ use App\Http\Controllers\client\api\YeuthichController;
 
 
 Route::prefix('v1')->group(function () {
+    Route::post('/chat', [ChatboxController::class, 'sendMessage']);
     Route::get('/header-data', [GlobalController::class, 'getHeaderData']);
 
     Route::get('/trang-chu', [HomeController::class, 'index']);

@@ -21,6 +21,11 @@
   <!-- Favicon -->
   <link rel="shortcut icon" href="{{asset('assets/client')}}/images/logo/icon_nguyenban.png" />
 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+<script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+  
+
   <!-- Bootstrap -->
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/bootstrap.min.css" />
   <!-- select 2 -->
@@ -452,6 +457,576 @@
   <!-- ======================= Middle Header Two End ========================= -->
 
   @yield('content')
+  
+
+  <button id="chatbot-toggler">
+      <span class="material-symbols-outlined">mode_comment</span>
+      <span class="material-symbols-rounded">close</span>
+    </button>
+
+    <div class="chatbot-popup">
+      <!-- Chatbot Header -->
+      <div class="chat-header bg-main-600">
+        <div class="header-info">
+          <svg 
+            class="chatbot-logo"
+            xmlns="http://www.w3.org/2000/svg"
+            width="50"
+            height="50"
+            viewBox="0 0 1024 1024"
+          >
+            <path
+              d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"
+            ></path>
+          </svg>
+
+          <h3 class="logo-text mb-0">Trợ lý Siêu Thị Vina</h3>
+        </div>
+        <button id="close-chatbot"
+        class="material-symbols-rounded"><i class="ph ph-x text-2xl"></i></button>
+      </div>
+
+      <!-- Chatbot Body -->
+      <div class="chat-body">
+        <div class="message bot-message">
+          <svg 
+            class="bot-avatar"
+            xmlns="http://www.w3.org/2000/svg"
+            width="50"
+            height="50"
+            viewBox="0 0 1024 1024"
+          >
+          <path
+              d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"
+            ></path>
+          </svg>
+          <div class="message-text">
+            Xin chào bạn 👋 <br />
+            Mình có thể giúp gì cho bạn nhỉ ? ^_^
+          </div>
+        </div>
+      </div>
+      
+
+      <!-- Chatbot Footer -->
+      <div class="chat-footer">
+        <form action="#" class="chat-form">
+          <textarea placeholder="Nhập tin nhắn..." class="message-input" style="height: 47px !important" required></textarea>
+          <div class="chat-controls">
+            <button type="submit" id="send-message" class="material-symbols-rounded"><i class="ph ph-paper-plane-right"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap");
+
+      #chatbot-toggler {
+        position: fixed;
+        bottom: 90px;
+        right: 25px;
+        height: 64px;
+        width: 65px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+        background: #ff6a00;
+        transition: all 0.2s ease;
+      }
+
+      body.show-chatbot #chatbot-toggler {
+        transform: rotate(90deg);
+      }
+
+      #chatbot-toggler span {
+        color: #fff;
+        position: absolute;
+      }
+
+      body.show-chatbot #chatbot-toggler span:first-child, #chatbot-toggler span:last-child{
+        opacity: 0;
+      }
+
+      body.show-chatbot #chatbot-toggler span:last-child{
+        opacity: 1;
+      }
+
+      .chatbot-popup {
+        position: fixed;
+        right: 25px;
+        bottom: 160px;
+        width: 350px;
+        background: #fff;
+        overflow: hidden;
+        border-radius: 15px;
+        opacity: 0;
+        transform: scale(0.2);
+        transform-origin: bottom right;
+        pointer-events: none;
+        box-shadow: 0 0 128px rgba(0, 0, 0, 0.1), 0 32px 64px -48px rgba(0, 0, 0, 0.5);
+        transition: all 0.1s ease;
+        z-index: 9999;
+      }
+
+      body.show-chatbot .chatbot-popup {
+        opacity: 1;
+        pointer-events: auto;
+          transform: scale(1);
+      }
+
+      .chat-header {
+        display: flex;
+        align-items: center;
+        background: #ff6a00;
+        padding: 15px 22px;
+        justify-content: space-between;
+      }
+
+      .chat-header .header-info {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .header-info .chatbot-logo {
+        height: 35px;
+        width: 35px;
+        padding: 6px;
+        fill: #007f80;
+        flex-shrink: 0;
+        background: #fff;
+        border-radius: 50%;
+      }
+
+      .header-info .logo-text {
+        color: #fff;
+        font-size: 1.31rem;
+        font-weight: 600;
+      }
+
+      .chat-header #close-chatbot {
+        border: none;
+        color: #fff;
+        height: 40px;
+        width: 40px;
+        font-size: 1.9rem;
+        margin-right: -10px;
+        cursor: pointer;
+        border-radius: 50%;
+        background: none;
+        transition: 0.2s ease;
+      }
+
+      .chat-body {
+        padding: 25px 22px;
+        display: flex;
+        gap: 20px;
+        height: 350px;
+        margin-bottom: 82px;
+        overflow-y: auto;
+        flex-direction: column;
+        scrollbar-width: thin;
+        scrollbar-color: #ccccf5 transparent;
+        
+      }
+
+      .chat-body .message {
+        display: flex;
+        gap: 11px;
+        align-items: center;
+      }
+
+      .chat-body .bot-message .bot-avatar {
+        height: 35px;
+        width: 35px;
+        padding: 6px;
+        fill: #fff;
+        flex-shrink: 0;
+        margin-bottom: 2px;
+        align-self: flex-end;
+        background: #007f80;
+        border-radius: 50%;
+      }
+
+      .chat-body .user-message {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .chat-body .message .message-text {
+        padding: 12px 16px;
+        max-width: 75%;
+        font-size: 0.95rem;
+        background: #f2f2ff;
+      }
+
+      .chat-body .bot-message.thinking .message-text {
+        padding: 2px 16px;
+      }
+
+      .chat-body .bot-message .message-text {
+        background-color: #f2f2ff;
+        border-radius: 13px 13px 13px 3px;
+      }
+
+      .chat-body .user-message .message-text {
+        color: #fff;
+        background-color: #ff6a00;
+        border-radius: 13px 13px 3px 13px;
+      }
+
+      .chat-body .bot-message .thinking-indicator {
+        display: flex;
+        gap: 4px;
+        padding-block: 15px;
+      }
+
+      .chat-body .bot-message .thinking-indicator .dot:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+
+      .chat-body .bot-message .thinking-indicator .dot:nth-child(2) {
+        animation-delay: 0.3s;
+      }
+
+      .chat-body .bot-message .thinking-indicator .dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      .chat-body .bot-message .thinking-indicator .dot {
+        height: 7px;
+        width: 7px;
+        opacity: 0.7;
+        border-radius: 50%;
+        background: #007f80;
+        animation: dotPulse 1.8s ease-in-out infinite;
+      }
+
+      @keyframes dotPulse {
+        0%,
+        44% {
+          transform: translateY(0);
+        }
+
+        28% {
+          opacity: 0.4;
+          transform: translateY(-4px);
+        }
+
+        44% {
+          opacity: 0.2;
+        }
+      }
+
+      .chat-footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: white;
+        padding: 15px 22px 20px;
+      }
+
+      .chat-footer .chat-form {
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 32px;
+        outline: 1px solid #cccce5;
+      }
+
+      .chat-footer .chat-form:focus-within {
+        outline: 2px solid #007f80;
+      }
+
+      .chat-form .message-input {
+        border: none;
+        outline: none;
+        height: 47px;
+        width: 100%;
+        resize: none;
+        max-height: 180px;
+        white-space: pre-line;
+        font-size: 1rem;
+        padding: 13px;
+        border-radius: inherit;
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+      }
+
+      .chat-form .message-input::hover {
+        scrollbar-color: #ccccf5 transparent;
+      }
+
+      .chat-form .chat-controls {
+        display: flex;
+        height: 47px;
+        gap: 3px;
+        align-items: center;
+        align-self: flex-end;
+        padding-right: 6px;
+      }
+
+      .chat-form .chat-controls button {
+        height: 35px;
+        width: 35px;
+        border: none;
+        font-size: 1.15rem;
+        cursor: pointer;
+        color: #ff6a00;
+        background: none;
+        border-radius: 50%;
+        transition: 0.2s ease;
+      }
+
+      .chat-form .chat-controls #send-message {
+        color: #fff;
+        display: none;
+        background: #ff6a00;
+      }
+
+      .chat-form .message-input:valid ~ .chat-controls #send-message {
+        display: block;
+      }
+
+      .chat-form .chat-controls #send-message:hover {
+        background: #007f80;
+      }
+
+      .chat-form .chat-controls button:hover {
+        background: #f1f1f1;
+      }
+
+      .chat-body .user-message .attachment {
+        width: 50%;
+        margin-top: -7px;
+        border-radius: 13px 3px 13px 3px;
+      }
+
+      em-emoji-picker {
+        position: absolute;
+        left: 50%;
+        top: -337px;
+        width: 100%;
+        max-width: 350px;
+        max-height: 330px;
+        visibility: hidden;
+        transform: translateX(-50%);
+      }
+
+      body.show-emoji-picker em-emoji-picker {
+        visibility: visible;
+      }
+      /* Responsive for mobile screen */
+      @media screen and (max-width: 600px) {
+        .chatbot-popup {
+          width: 100%;
+          right: 0;
+          bottom: 0;
+          border-radius: 0;
+          height: 100%;
+        }
+
+        .chat-header .header-info .logo-text {
+          font-size: 1.1rem;
+        }
+
+        .chat-body {
+          height: 100%;
+          margin-bottom: 0;
+        }
+
+        .chat-body .message .message-text {
+          max-width: 85%;
+        }
+
+        .chat-footer .chat-form {
+          border-radius: 0;
+          border-radius: 25px;
+        }
+
+        .chat-footer .chat-form .message-input {
+          border-radius: 0;
+        }
+
+        .chat-footer .chat-form .chat-controls {
+          padding-right: 10px;
+        }
+
+        .chat-footer .chat-form .chat-controls button {
+          height: 40px;
+          width: 40px;
+        }
+      } 
+    </style>
+
+    <script>
+    const chatBody = document.querySelector(".chat-body");
+    const messageInput = document.querySelector(".message-input");
+    const sendMessageButton = document.querySelector("#send-message");
+    const fileInput = document.querySelector("#file-input");
+    const chatbotToggler = document.querySelector("#chatbot-toggler");
+    const closeChatbot = document.querySelector("#close-chatbot");
+
+    // Biến lưu dữ liệu người dùng
+    const userData = {
+        message: null,
+        file: null // Hiện tại backend chỉ xử lý text, file sẽ tính sau
+    };
+
+    const initialInputHeight = messageInput.scrollHeight;
+
+    // Tạo phần tử tin nhắn HTML
+    const createMessageElement = (content, ...classes) => {
+        const div = document.createElement("div");
+        div.classList.add("message", ...classes);
+        div.innerHTML = content;
+        return div;
+    };
+
+    // Hàm gọi API về Laravel Backend
+    const generateBotResponse = async (incomingMessageDiv) => {
+        const messageElement = incomingMessageDiv.querySelector(".message-text");
+
+        try {
+            // Lấy CSRF Token từ thẻ meta để Laravel cho phép gửi request
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            // Gửi tin nhắn đến Route API của Laravel (/api/chat)
+            const response = await fetch('/api/v1/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({
+                    message: userData.message
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) throw new Error(data.message || "Lỗi kết nối Server");
+
+            // Hiển thị câu trả lời từ Laravel (data.reply)
+            // Thay thế các ký tự xuống dòng \n bằng thẻ <br> để đẹp hơn
+            const formattedReply = data.reply.replace(/\n/g, '<br>');
+            messageElement.innerHTML = formattedReply;
+
+        } catch (error) {
+            console.error(error);
+            messageElement.innerText = "Xin lỗi, hệ thống đang bận. Vui lòng thử lại sau.";
+            messageElement.style.color = "#ff0000";
+        } finally {
+            incomingMessageDiv.classList.remove("thinking");
+            chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
+        }
+    };
+
+    // Xử lý khi người dùng gửi tin nhắn
+    const handleOutgoingMessage = (e) => {
+        e.preventDefault();
+        userData.message = messageInput.value.trim();
+        if(!userData.message) return; // Không gửi nếu rỗng
+
+        messageInput.value = "";
+        messageInput.style.height = `${initialInputHeight}px`; // Reset chiều cao input
+
+        // 1. Hiển thị tin nhắn của người dùng lên màn hình
+        const messageContent = `<div class="message-text"></div>`;
+        const outgoingMessageDiv = createMessageElement(messageContent, "user-message");
+        outgoingMessageDiv.querySelector(".message-text").textContent = userData.message;
+        chatBody.appendChild(outgoingMessageDiv);
+        chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
+
+        // 2. Hiển thị trạng thái Bot đang suy nghĩ (loading...)
+        setTimeout(() => {
+            const botHtml = `
+            <svg class="bot-avatar" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
+                <path d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"></path>
+            </svg>
+            <div class="message-text">
+                <div class="thinking-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>`;
+            
+            const incomingMessageDiv = createMessageElement(botHtml, "bot-message", "thinking");
+            chatBody.appendChild(incomingMessageDiv);
+            chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
+            
+            // 3. Gọi hàm xử lý backend
+            generateBotResponse(incomingMessageDiv);
+        }, 600);
+    };
+
+    // Xử lý sự kiện nhấn Enter
+    messageInput.addEventListener("keydown", (e) => {
+        const userMessage = e.target.value.trim();
+        // Sửa lỗi chính tả innerWidth và logic Enter
+        if (e.key === "Enter" && userMessage && !e.shiftKey && window.innerWidth > 768) {
+            handleOutgoingMessage(e);
+        }
+    });
+
+    // Tự động chỉnh độ cao khung nhập liệu
+    messageInput.addEventListener("input", () => {
+        messageInput.style.height = `47px`;
+        messageInput.style.height = `${messageInput.scrollHeight}px`;
+        
+        // Sửa lỗi selector thiếu dấu chấm (.)
+        const chatForm = document.querySelector(".chat-form");
+        if(chatForm) {
+            chatForm.style.borderRadius = messageInput.scrollHeight > initialInputHeight ? "15px" : "32px";
+        }
+    });
+
+    // Khởi tạo Emoji Picker
+    // Kiểm tra xem thư viện đã load chưa để tránh lỗi
+    if (typeof EmojiMart !== 'undefined') {
+        const picker = new EmojiMart.Picker({
+            theme: "light",
+            skinTonePosition: "none",
+            preview: "none",
+            onEmojiSelect: (emoji) => {
+                const { selectionStart: start, selectionEnd: end } = messageInput;
+                messageInput.setRangeText(emoji.native, start, end, "end");
+                messageInput.focus();
+            },
+            onClickOutside: (e) => {
+                if (e.target.id === "emoji-picker") {
+                    document.body.classList.toggle("show-emoji-picker");
+                } else {
+                    document.body.classList.remove("show-emoji-picker");
+                }
+            }
+        });
+        document.querySelector(".chat-form").appendChild(picker);
+    }
+
+    // Gán sự kiện click cho các nút
+    sendMessageButton.addEventListener("click", (e) => handleOutgoingMessage(e));
+    
+    // Tạm thời tắt tính năng upload ảnh vì backend chưa xử lý
+    // document.querySelector("#file-upload").addEventListener("click", () => fileInput.click());
+
+    chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
+    closeChatbot.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+    
+    // Nút emoji toggle
+    const emojiBtn = document.querySelector("#emoji-picker");
+    if(emojiBtn) {
+        emojiBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            document.body.classList.toggle("show-emoji-picker");
+        });
+    }
+</script>
 
 
   <!-- ==================== Footer Two Start Here ==================== -->

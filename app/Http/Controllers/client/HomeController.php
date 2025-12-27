@@ -223,7 +223,7 @@ class HomeController extends Controller
     }
     protected function sanphamhangdau()
     {
-        $topProducts = SanPhamModel::where('trangthai', 'Công khai')
+        $topProducts = SanphamModel::where('trangthai', 'Công khai')
             ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
             ->withSum('bienthe', 'luotban')
             ->orderBy('bienthe_sum_luotban', 'desc')

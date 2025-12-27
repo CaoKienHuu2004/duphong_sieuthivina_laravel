@@ -111,6 +111,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/cap-nhat-mac-dinh', [client\DiachiController::class, 'updateDefaultAddress'])->name('cap-nhat-mac-dinh');
         Route::get('/vnpay-return', [client\ThanhtoanController::class, 'vnpayReturn'])->name('vnpay.return');
     });
+
+    
+
+    
 });
 
 /*
