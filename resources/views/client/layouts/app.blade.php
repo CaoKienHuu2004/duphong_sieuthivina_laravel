@@ -23,6 +23,7 @@
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
   
 
@@ -913,8 +914,8 @@
 
             // Hiển thị câu trả lời từ Laravel (data.reply)
             // Thay thế các ký tự xuống dòng \n bằng thẻ <br> để đẹp hơn
-            const formattedReply = data.reply.replace(/\n/g, '<br>');
-            messageElement.innerHTML = formattedReply;
+            const rawHtml = marked.parse(data.reply);
+            messageElement.innerHTML = rawHtml;
 
         } catch (error) {
             console.error(error);
