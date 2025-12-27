@@ -2,25 +2,17 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http; // <--- Dùng cái này thay vì OpenAI
-use Illuminate\Support\Facades\Log;
-use App\Models\BientheModel;
 use App\Models\SanphamModel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ChatbotService
 {
-    /**
-     * Hàm lấy dữ liệu (GIỮ NGUYÊN, KHÔNG CẦN SỬA)
-     */
     public function getSystemContext()
     {
-        // ... (Giữ nguyên code lấy sản phẩm/sự kiện ở câu trả lời trước) ...
-        // Copy lại đoạn code getSystemContext() từ câu trả lời trước vào đây
-        
-        // Để ngắn gọn tôi viết tóm tắt lại đoạn này, bạn nhớ copy full nhé:
-        // --- PHẦN 1: LẤY TOP 5 SẢN PHẨM BÁN CHẠY NHẤT ---
-        // Logic: Join 3 bảng (sanpham, bienthe, loaibienthe) để lấy đầy đủ tên, giá và đơn vị
+        // 1. Lấy sản phẩm kèm Mô Tả (Quan trọng)
+        // Dùng DB::table cho nhanh và khớp với file SQL bạn gửi (khỏi lo thiếu Model)
         $products = SanphamModel::where('trangthai', 'Công khai')
             ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
             ->withSum('bienthe', 'luotban')
@@ -41,70 +33,70 @@ class ChatbotService
                 });
             });
 
-        $context = "Dưới đây là dữ liệu sản phẩm:\n";
+        $context = "Dưới đây là thông tin chi tiết sản phẩm (Học kỹ phần công dụng để tư vấn):\n";
+        
         foreach ($products as $p) {
-             $price = number_format($p->giadagiam, 0, ',', '.') . ' đ';
-             $context .= "- {$p->ten} | Giá: {$price}\n";
+            // Tính giá
+            $price = number_format($p->giagoc, 0, ',', '.') . 'đ';
+            $salePrice = ($p->giamgia > 0) ? number_format($p->giadagiam, 0, ',', '.') . 'đ' : null;
+            $finalPrice = $salePrice ? "Giá gốc $price giảm còn $salePrice" : "Giá $price";
+            
+            // Xử lý mô tả: Xóa tag HTML thừa để AI dễ đọc
+            $desc = strip_tags($p->mota); 
+            // Cắt ngắn nếu mô tả quá dài (tránh tốn token)
+            $desc = \Illuminate\Support\Str::limit($desc, 150); 
+            
+            $variant = $p->loai ? "({$p->loai} {$p->donvi})" : "";
+
+            // Nạp dữ liệu vào context
+            $context .= "--- \n";
+            $context .= "Tên: {$p->ten} {$variant}\n";
+            $context .= "Giá bán: {$finalPrice}\n";
+            $context .= "Công dụng/Đặc điểm: {$desc}\n"; // <--- AI sẽ dựa vào dòng này để tư vấn
         }
+
         return $context;
     }
 
-    /**
-     * Hàm gọi sang Google Gemini (SỬA ĐOẠN NÀY)
-     */
     public function askAI($userMessage)
     {
         try {
             $apiKey = env('GEMINI_API_KEY');
             $dataContext = $this->getSystemContext();
 
-            // 1. Chuẩn bị Prompt
-            // Gemini API cấu trúc hơi khác OpenAI, ta nên gộp System Prompt vào nội dung
-            $finalPrompt = "Bạn là nhân viên tư vấn của Siêu Thị Vina. " .
-                           "Hãy trả lời ngắn gọn, thân thiện Gen Z bằng tiếng Việt.\n" .
-                           "Chỉ dựa vào dữ liệu sau (đề xuất 5 dữ liệu liên quan gửi đến khách hàng) để trả lời (nếu không có thì bảo khách gọi hotline):\n" .
-                           "--- DỮ LIỆU CỬA HÀNG ---\n" . 
+            // Prompt định hướng phong cách
+            $finalPrompt = "Bạn là nhân viên tư vấn 'có tâm' của Siêu Thị Vina. \n" .
+                           "Phong cách: Gen Z, thân thiện, dùng icon dễ thương (✨, 🌿, ☕).\n" .
+                           "Nhiệm vụ: Dựa vào 'Công dụng/Đặc điểm' trong dữ liệu để tư vấn lợi ích cho khách, đừng chỉ báo giá không.\n\n" .
+                           "--- DỮ LIỆU SẢN PHẨM ---\n" . 
                            $dataContext . 
                            "\n------------------------\n" .
-                           "Câu hỏi của khách: " . $userMessage;
+                           "Khách hỏi: " . $userMessage;
 
-            // 2. Gọi API Gemini qua HTTP
-            // Sử dụng model 'gemini-1.5-flash' vì nó nhanh và rẻ (hoặc miễn phí)
+            // SỬA URL API: Dùng bản 1.5 Flash chuẩn (Bản 3 chưa ra mắt public đâu)
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
+            ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key={$apiKey}", [
                 'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => $finalPrompt]
-                        ]
-                    ]
+                    ['parts' => [['text' => $finalPrompt]]]
                 ],
                 'generationConfig' => [
-                    'temperature' => 0.7,
-                    'maxOutputTokens' => 500,
+                    'temperature' => 0.7, 
+                    'maxOutputTokens' => 800,
                 ]
             ]);
 
-            // 3. Xử lý kết quả trả về
             if ($response->successful()) {
                 $data = $response->json();
-                
-                // Gemini trả về cấu trúc JSON khá sâu, cần trỏ đúng chỗ
-                if (isset($data['candidates'][0]['content']['parts'][0]['text'])) {
-                    return $data['candidates'][0]['content']['parts'][0]['text'];
-                } else {
-                    // Trường hợp bị chặn nội dung (Safety filter)
-                    return "Xin lỗi, tôi không thể trả lời câu hỏi này do chính sách an toàn.";
-                }
+                return $data['candidates'][0]['content']['parts'][0]['text'] ?? 'Xin lỗi, mình chưa load được thông tin.';
             } else {
-                Log::error('Gemini API Error: ' . $response->body());
-                return "Đang có lỗi kết nối đến AI. Mã lỗi: " . $response->status();
+                Log::error('Gemini Error: ' . $response->body());
+                return "Hệ thống đang bảo trì xíu nha!";
             }
 
         } catch (\Exception $e) {
             Log::error("Chatbot Error: " . $e->getMessage());
-            return "Xin lỗi, hệ thống đang bận.";
+            return "Lỗi hệ thống rồi bạn ơi.";
         }
     }
 }
