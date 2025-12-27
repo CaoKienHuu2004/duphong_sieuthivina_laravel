@@ -589,7 +589,7 @@
               <div class="section-heading mb-24">
                 <div class="flex-between flex-wrap gap-2">
                   <h6 class="mb-0 wow fadeInLeft"><i class="ph-bold ph-package text-main-600"></i> Sản phẩm hàng đầu</h6>
-                  <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 55%;"></div>
+                  <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 50%;"></div>
                   <div class="flex-align gap-16 wow fadeInRight">
                     <a href="{{ url('san-pham?sortby=sanphamhangdau') }}"
                       class="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline">
