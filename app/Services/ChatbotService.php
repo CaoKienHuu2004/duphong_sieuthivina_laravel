@@ -25,7 +25,6 @@ class ChatbotService
             ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
             ->withSum('bienthe', 'luotban')
             ->orderBy('bienthe_sum_luotban', 'desc')
-            ->limit(10)
             ->get()
             ->tap(function ($collection) {
                 $collection->each(function ($sanpham) {
@@ -63,7 +62,7 @@ class ChatbotService
             // Gemini API cấu trúc hơi khác OpenAI, ta nên gộp System Prompt vào nội dung
             $finalPrompt = "Bạn là nhân viên tư vấn của Siêu Thị Vina. " .
                            "Hãy trả lời ngắn gọn, thân thiện Gen Z bằng tiếng Việt.\n" .
-                           "Chỉ dựa vào dữ liệu sau để trả lời (nếu không có thì bảo khách gọi hotline):\n" .
+                           "Chỉ dựa vào dữ liệu sau (đề xuất 5 dữ liệu liên quan gửi đến khách hàng) để trả lời (nếu không có thì bảo khách gọi hotline):\n" .
                            "--- DỮ LIỆU CỬA HÀNG ---\n" . 
                            $dataContext . 
                            "\n------------------------\n" .
