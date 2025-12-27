@@ -481,7 +481,7 @@
             ></path>
           </svg>
 
-          <h3 class="logo-text mb-0">Trợ lý Siêu Thị Vina</h3>
+          <h3 class="logo-text mb-0">Bé Vivi</h3>
         </div>
         <button id="close-chatbot"
         class="material-symbols-rounded"><i class="ph ph-x text-2xl"></i></button>
