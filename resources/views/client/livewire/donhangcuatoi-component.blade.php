@@ -115,27 +115,27 @@
                                         // Các trạng thái thanh toán khác (Đã thanh toán, Chưa thanh toán) sẽ hiển thị trạng thái xử lý ($donHang->trangthai)
                                     @endphp
                             @if ($donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Thanh toán khi nhận hàng'||$donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Chờ thanh toán'||$donHang->trangthai === 'Chờ xác nhận' && $donHang->trangthaithanhtoan === 'Đã thanh toán')
-                                <span class="fw-medium text-xs text-warning-700 bg-warning-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="top">
+                                <span class="fw-medium text-xs text-warning-700 bg-warning-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="left">
                                     <i class="ph-bold ph-clock-countdown"></i> {{ $statusText }}
                                 </span>
                             @elseif($donHang->trangthai === 'Chờ thanh toán' && $donHang->trangthaithanhtoan === 'Chờ thanh toán')
-                                <span class="fw-medium text-xs text-gray-700 bg-gray-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="top">
+                                <span class="fw-medium text-xs text-gray-700 bg-gray-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="left">
                                     <i class="ph-bold ph-wallet"></i> {{ $statusText }}
                                 </span>
                             @elseif($donHang->trangthai === 'Đang đóng gói')
-                                <span class="fw-medium text-xs text-primary-700 bg-primary-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="top">
+                                <span class="fw-medium text-xs text-primary-700 bg-primary-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="left">
                                     <i class="ph-bold ph-package"></i> {{ $statusText }}
                                 </span>
                             @elseif ($donHang->trangthai === 'Đang giao hàng')
-                                <span class="fw-medium text-xs text-info-700 bg-info-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="top">
+                                <span class="fw-medium text-xs text-info-700 bg-info-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="left">
                                     <i class="ph-bold ph-truck"></i> {{ $statusText }}
                                 </span>
                             @elseif ($donHang->trangthai === 'Đã giao hàng')
-                                <span class="fw-medium text-xs text-success-700 bg-success-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="top">
+                                <span class="fw-medium text-xs text-success-700 bg-success-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="left">
                                     <i class="ph-bold ph-check-fat"></i> {{ $statusText }}
                                 </span>
                             @else
-                                <span class="fw-medium text-xs text-main-700 bg-main-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="top">
+                                <span class="fw-medium text-xs text-main-700 bg-main-100 px-6 py-4 rounded-4 flex-align gap-8" data-c-tooltip="Cập nhật: {{ $donHang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="left">
                                     <i class="ph-bold ph-prohibit"></i> {{ $statusText }}
                                 </span>
                             @endif
