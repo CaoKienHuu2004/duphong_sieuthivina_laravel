@@ -172,7 +172,7 @@ Route::middleware(['auth', 'vaitro:admin']) // Kiểm tra đăng nhập và role
             Route::post('/luu', [admin\ThuonghieuController::class, 'store'])->name('luu-thuong-hieu');
 
             Route::get('/{slug}/chinh-sua', [admin\ThuonghieuController::class, 'edit'])->name('chinh-sua-thuong-hieu');
-            Route::post('/{slug}/cap-nhat', [admin\ThuonghieuController::class, 'update'])->name('cap-nhat-thuong-hieu');
+            Route::put('/{slug}/cap-nhat', [admin\ThuonghieuController::class, 'update'])->name('cap-nhat-thuong-hieu');
 
             Route::get('/{id}/xoa', [admin\ThuonghieuController::class, 'destroy'])->name('xoa-thuong-hieu');
         });
