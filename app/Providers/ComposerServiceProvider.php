@@ -41,7 +41,7 @@ class ComposerServiceProvider extends ServiceProvider
 
                 // 2. Lấy Từ khóa Placeholder ngẫu nhiên từ TOP 15
                 $tukhoaplaceholder = null;
-                $top15tukhoa = TukhoaModel::orderBy('luottruycap', 'desc')->take(15)->get();
+                $top15tukhoa = TukhoaModel::orderBy('luottruycap', 'asc')->take(15)->get();
                 if ($top15tukhoa->isNotEmpty()) {
                     $tukhoaplaceholder = $top15tukhoa->random()->tukhoa;
                 }
