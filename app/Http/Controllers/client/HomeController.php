@@ -77,34 +77,38 @@ class HomeController extends Controller
 
     protected function topdeals()
     {
+        // Lấy thời điểm hiện tại
+        $now = now();
+
         $topdeals = SanPhamModel::where('trangthai', 'Công khai')
-            // --- CẬP NHẬT ĐIỀU KIỆN LỌC ---
-            ->whereHas('bienthe', function ($query) {
-                // Chỉ lấy biến thể có ID nằm trong bảng tham gia quà tặng
-                // VÀ chương trình quà tặng đó phải đang "Hiển thị"
-                $query->whereIn('id', function ($subQuery) {
+            ->whereHas('bienthe', function ($query) use ($now) { // Nhớ truyền biến $now vào
+                $query->whereIn('id', function ($subQuery) use ($now) {
                     $subQuery->select('sanphamthamgia_quatang.id_bienthe')
                         ->from('sanphamthamgia_quatang')
-                        // Join sang bảng quatang để check trạng thái
                         ->join('quatang_sukien', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang_sukien.id')
-                        ->where('quatang_sukien.trangthai', 'Hiển thị');
+
+                        // 1. Check trạng thái hiển thị
+                        ->where('quatang_sukien.trangthai', 'Hiển thị')
+
+                        // 2. Check ngày bắt đầu: Phải diễn ra rồi (nhỏ hơn hoặc bằng giờ hiện tại)
+                        ->where('quatang_sukien.ngaybatdau', '<=', $now)
+
+                        // 3. Check ngày kết thúc: Chưa kết thúc (lớn hơn hoặc bằng giờ hiện tại)
+                        ->where('quatang_sukien.ngayketthuc', '>=', $now);
                 });
             })
-            // --------------------------------
             ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
             ->withSum('bienthe', 'luotban')
             ->orderBy('bienthe_sum_luotban', 'desc')
             ->limit(10)
             ->get()
 
-            // --- XỬ LÝ GIÁ HIỂN THỊ (GIỮ NGUYÊN) ---
+            // --- GIỮ NGUYÊN PHẦN XỬ LÝ GIÁ BÊN DƯỚI ---
             ->tap(function ($collection) {
                 $collection->each(function ($sanpham) {
                     if ($sanpham->bienthe->isNotEmpty()) {
-                        // Lấy biến thể giá thấp nhất
                         $cheapestVariant = $sanpham->bienthe->sortBy('giagoc')->first();
                         $sanpham->bienthe = $cheapestVariant;
-
                         $giagoc = $cheapestVariant->giagoc;
                         $giamgiaPercent = $sanpham->giamgia / 100;
                         $sanpham->giadagiam = $giagoc * (1 - $giamgiaPercent);
