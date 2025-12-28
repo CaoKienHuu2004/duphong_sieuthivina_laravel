@@ -98,7 +98,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label>Mô tả chi tiết</label>
-                                        <textarea class="form-control" id="mota"
+                                        <textarea class="form-control"
                                             name="mota">{{ old('mota', $program->thongtin) }}</textarea>
                                     </div>
                                 </div>
