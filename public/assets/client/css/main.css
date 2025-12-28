@@ -10747,7 +10747,7 @@ input:focus-visible {
 [data-c-tooltip]:after {
   z-index: 1000;
   padding: 8px;
-  width: 160px;
+  width: 260px;
   background-color: #000;
   background-color: rgba(51, 51, 51, 0.9);
   color: #fff;
