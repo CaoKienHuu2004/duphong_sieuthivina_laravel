@@ -111,8 +111,27 @@ class SanphamController extends Controller
                 break;
 
             case 'topdeals':
-                $query->where('giamgia', '>', 0)
-                    ->orderByDesc('bienthe_sum_luotban');
+                // Lấy thời điểm hiện tại
+                $now = now();
+                    $query->whereHas('bienthe', function ($query1) use ($now) { // Nhớ truyền biến $now vào
+                        $query1->whereIn('id', function ($subQuery) use ($now) {
+                            $subQuery->select('sanphamthamgia_quatang.id_bienthe')
+                                ->from('sanphamthamgia_quatang')
+                                ->join('quatang_sukien', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang_sukien.id')
+
+                                // 1. Check trạng thái hiển thị
+                                ->where('quatang_sukien.trangthai', 'Hiển thị')
+
+                                // 2. Check ngày bắt đầu: Phải diễn ra rồi (nhỏ hơn hoặc bằng giờ hiện tại)
+                                ->where('quatang_sukien.ngaybatdau', '<=', $now)
+
+                                // 3. Check ngày kết thúc: Chưa kết thúc (lớn hơn hoặc bằng giờ hiện tại)
+                                ->where('quatang_sukien.ngayketthuc', '>=', $now);
+                        });
+                    })
+                    ->with(['hinhanhsanpham', 'thuonghieu', 'danhmuc', 'bienthe'])
+                    ->withSum('bienthe', 'luotban')
+                    ->orderBy('bienthe_sum_luotban', 'desc');
                 $title = 'TOP DEAL - SIÊU RẺ';
                 break;
 
