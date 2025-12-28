@@ -302,7 +302,7 @@
                         <th class="text-start" style="width: 20px !important;">Địa chỉ giao
                           hàng</th>
                         <th class="text-start">Tổng cộng</th>
-                        <th class="text-start">Ngày giao hàng</th>
+                        <th class="text-start">Ngày vận chuyển</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
                         <th class="text-center" colspan="3">Action</th>
