@@ -22,7 +22,7 @@ class DonhangController extends Controller
     // Danh sách đơn hàng
     public function index()
     {
-        $donhangs = Donhang::orderByDesc('created_at')->get();
+        $donhangs = Donhang::orderByDesc('updated_at')->get();
 
         return view('admin.donhang.index', compact('donhangs'));
     }
