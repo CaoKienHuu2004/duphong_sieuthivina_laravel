@@ -211,7 +211,7 @@ class HomeController extends Controller
             ->selectRaw('SUM(bienthe.luotban) as total_sales')
             ->groupBy('thuonghieu.id')
             ->orderByDesc('total_sales')
-            ->limit(5)
+            ->limit(10)
             ->get();
 
         $topBrandIds = $topBrandSales->pluck('id')->toArray();
