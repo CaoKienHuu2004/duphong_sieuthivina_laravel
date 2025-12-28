@@ -191,7 +191,7 @@
                         <th class="text-start" style="width: 20px !important;">Địa chỉ giao
                           hàng</th>
                         <th class="text-start">Tổng cộng</th>
-                        <th class="text-start">Thời gian đóng gói</th>
+                        <th class="text-start">Ngày đóng gói</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
                         <th class="text-center" colspan="3">Action</th>
@@ -302,7 +302,7 @@
                         <th class="text-start" style="width: 20px !important;">Địa chỉ giao
                           hàng</th>
                         <th class="text-start">Tổng cộng</th>
-                        <th class="text-start">Ngày đặt hàng</th>
+                        <th class="text-start">Ngày giao hàng</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
                         <th class="text-center" colspan="3">Action</th>
@@ -320,7 +320,7 @@
                           </td>
                           <td class="text-start text-black fw-bold"><span class="text-danger">{{ number_format($donhang->thanhtien,0,',','.') }} đ</span></td>
                           <td class="text-start text-black" style="width: 50px;">
-                            {{ $donhang->created_at->format('d/m/Y - H:i') }}
+                            {{ $donhang->updated_at->format('d/m/Y - H:i') }}
                           </td>
                           <td class="text-center">
                             <span class="badges bg-lightblue">{{ $donhang->trangthai }}</span>
@@ -413,7 +413,7 @@
                         <th class="text-start" style="width: 20px !important;">Địa chỉ giao
                           hàng</th>
                         <th class="text-start">Tổng cộng</th>
-                        <th class="text-start">Ngày đặt hàng</th>
+                        <th class="text-start">Ngày nhận hàng</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
                         <th class="text-center" colspan="2">Action</th>
@@ -431,7 +431,7 @@
                           </td>
                           <td class="text-start text-black fw-bold"><span class="text-danger">{{ number_format($donhang->thanhtien,0,',','.') }} đ</span></td>
                           <td class="text-start text-black" style="width: 50px;">
-                            {{ $donhang->created_at->format('d/m/Y - H:i') }}
+                            {{ $donhang->updated_at->format('d/m/Y - H:i') }}
                           </td>
                           <td class="text-center">
                             <span class="badges bg-lightgreen">{{ $donhang->trangthai }}</span>
@@ -507,7 +507,7 @@
                         <th class="text-start" style="width: 20px !important;">Địa chỉ giao
                           hàng</th>
                         <th class="text-start">Tổng cộng</th>
-                        <th class="text-start">Ngày đặt hàng</th>
+                        <th class="text-start">Ngày hoàn thành</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
                         <th class="text-center">Action</th>
@@ -525,7 +525,7 @@
                           </td>
                           <td class="text-start text-black fw-bold"><span class="text-danger">{{ number_format($donhang->thanhtien,0,',','.') }} đ</span></td>
                           <td class="text-start text-black" style="width: 50px;">
-                            {{ $donhang->created_at->format('d/m/Y - H:i') }}
+                            {{ $donhang->updated_at->format('d/m/Y - H:i') }}
                           </td>
                           <td class="text-center">
                             <span class="badges bg-lightgreen">{{ $donhang->trangthai }}</span>
@@ -575,7 +575,7 @@
                         <th class="text-start" style="width: 20px !important;">Địa chỉ giao
                           hàng</th>
                         <th class="text-start">Tổng cộng</th>
-                        <th class="text-start">Ngày đặt hàng</th>
+                        <th class="text-start">Ngày hủy đơn</th>
                         <th class="text-center">Trạng thái đơn hàng</th>
                         <th class="text-center">Trạng thái thanh toán</th>
                         <th class="text-center">Action</th>
@@ -593,7 +593,7 @@
                           </td>
                           <td class="text-start text-black fw-bold"><span class="text-danger">{{ number_format($donhang->thanhtien,0,',','.') }} đ</span></td>
                           <td class="text-start text-black" style="width: 50px;">
-                            {{ $donhang->created_at->format('d/m/Y - H:i') }}
+                            {{ $donhang->updated_at->format('d/m/Y - H:i') }}
                           </td>
                           <td class="text-center">
                             <span class="badges bg-lightred">{{ $donhang->trangthai }}</span>
