@@ -68,7 +68,7 @@
                                     <div class="form-group">
                                         <label>Ngày bắt đầu <span class="text-danger">*</span></label>
                                         {{-- Format datetime-local cần định dạng Y-m-d\TH:i --}}
-                                        <input type="datetime-local" name="ngaybatdau" class="form-control"
+                                        <input type="text" name="ngaybatdau" class="form-control datetime-picker" placeholder="chọn ngày giờ..."
                                             value="{{ old('ngaybatdau', $program->ngaybatdau ? date('Y-m-d\TH:i', strtotime($program->ngaybatdau)) : '') }}"
                                             required>
                                     </div>
@@ -76,7 +76,7 @@
                                 <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
                                         <label>Ngày kết thúc <span class="text-danger">*</span></label>
-                                        <input type="datetime-local" name="ngayketthuc" class="form-control"
+                                        <input type="text" name="ngayketthuc" class="form-control datetime-picker" placeholder="chọn ngày giờ..."
                                             value="{{ old('ngayketthuc', $program->ngayketthuc ? date('Y-m-d\TH:i', strtotime($program->ngayketthuc)) : '') }}"
                                             required>
                                     </div>
@@ -236,6 +236,20 @@
 @endsection
 
 @section('scripts')
+    <script>
+    flatpickr(".datetime-picker", {
+        enableTime: true,
+        time_24hr: true,
+        allowInput: true, // Cho phép gõ
+        
+        // 👇 CẤU HÌNH ĐỂ NGƯỜI DÙNG GÕ/NHÌN KIỂU VIỆT NAM 👇
+        altInput: true,
+        altFormat: "d/m/Y H:i", // Người dùng gõ: 28/12/2025 14:30
+        
+        // 👇 CẤU HÌNH ĐỂ GỬI VỀ LARAVEL/MYSQL 👇
+        dateFormat: "Y-m-d H:i", // Server nhận: 2025-12-28 14:30
+    });
+</script>
     {{-- CKEditor --}}
     <script>
         if (document.querySelector('#mota')) {

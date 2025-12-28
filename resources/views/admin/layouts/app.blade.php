@@ -21,6 +21,9 @@
       href="{{asset('assets/client/images/logo/icon_nguyenban.png')}}"
     />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <link rel="stylesheet" href="{{asset('assets/admin/css/bootstrap.min.css')}}" />
 
     <link rel="stylesheet" href="{{asset('assets/admin/css/animate.css')}}" />
