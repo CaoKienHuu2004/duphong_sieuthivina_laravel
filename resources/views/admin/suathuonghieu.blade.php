@@ -57,7 +57,7 @@
                                     <div class="form-group">
                                         <label>Tên thương hiệu <span class="text-danger">*</span></label>
                                         {{-- 3. Đổ dữ liệu tên cũ: $thuonghieu->ten --}}
-                                        <input class="text-black" type="text" name="tendm"
+                                        <input class="text-black" type="text" name="ten"
                                             placeholder="Nhập tên thương hiệu sản phẩm..." id="slug-source"
                                             onkeyup="ChangeToSlug();" value="{{ old('ten', $thuonghieu->ten) }}" />
                                         <label>Đường dẫn: <span class="fst-italic form-text text-muted" id="slug-text">{{ $thuonghieu->slug }}</span></label>
