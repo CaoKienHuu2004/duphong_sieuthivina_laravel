@@ -108,7 +108,7 @@
                             <div class="flex-between gap-16 flex-wrap">
                                 <h6 class="mb-20 text-gray-600 text-md fw-medium flex-align gap-12">Mã đơn: #{{ $donhang->madon }} 
                                     <span class="
-                                    @if($donhang->trangthai == 'Đã giao hàng') bg-success-200 text-success-900 @elseif($donhang->trangthai == 'Chờ xác nhận') bg-warning-200 text-warning-900 @elseif($donhang->trangthai == 'Đang giao hàng') bg-info-200 text-info-900 @elseif($donhang->trangthai == 'Đã hủy đơn') bg-danger-200 text-danger-900 @else bg-info-200 text-info-900 @endif p-4 fw-semibold text-sm rounded-4" data-c-tooltip="Cập nhật: {{ $donhang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="bottom">{{ $donhang->trangthai }}</span>
+                                    @if($donhang->trangthai == 'Đã giao hàng') bg-success-200 text-success-900 @elseif($donhang->trangthai == 'Chờ xác nhận') bg-warning-200 text-warning-900 @elseif($donhang->trangthai == 'Đang giao hàng') bg-info-200 text-info-900 @elseif($donhang->trangthai == 'Đã hủy đơn') bg-danger-200 text-danger-900 @else bg-info-200 text-info-900 @endif p-4 fw-semibold text-sm rounded-4" data-c-tooltip="Cập nhật: {{ $donhang->updated_at->format('d/m/Y - H:i') }}" tooltip-position="top">{{ $donhang->trangthai }}</span>
                                 </h6>
                                 <div class="flex-align gap-8 mb-20">
                                     <i class="ph-bold ph-clock-countdown text-gray-600 text-md"></i>
