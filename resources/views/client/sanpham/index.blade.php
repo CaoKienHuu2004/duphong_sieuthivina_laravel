@@ -46,6 +46,19 @@
                                     </ul>
                                 </div>
                                 <div class="shop-sidebar__box border border-gray-100 rounded-8 p-26 pb-0 mb-32">
+                                    <h6 class="text-xl border-bottom border-gray-100 pb-16 mb-24">Lọc theo thương hiệu</h6>
+                                    <ul class="max-h-540 overflow-y-auto scroll-sm">
+                                        @foreach ($danhsachthuonghieu as $thuonghieu)
+                                            <li class="mb-16">
+                                                <div class="form-check common-check common-radio">
+                                                    <input class="form-check-input" type="radio" name="thuonghieu" id="thuonghieu{{ $thuonghieu->id }}" value="{{ $thuonghieu->slug }}" onchange="this.form.submit()" {{ (request('thuonghieu') == $thuonghieu->slug) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="thuonghieu{{ $thuonghieu->id }}">{{ $thuonghieu->ten }}</label>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <div class="shop-sidebar__box border border-gray-100 rounded-8 p-26 pb-0 mb-32">
                                     <h6 class="text-xl border-bottom border-gray-100 pb-16 mb-24">Lọc theo giá tiền</h6>
                                     <ul class="max-h-540 overflow-y-auto scroll-sm">
                                         <li class="mb-24">
@@ -99,19 +112,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="shop-sidebar__box border border-gray-100 rounded-8 p-26 pb-0 mb-32">
-                                    <h6 class="text-xl border-bottom border-gray-100 pb-16 mb-24">Lọc theo thương hiệu</h6>
-                                    <ul class="max-h-540 overflow-y-auto scroll-sm">
-                                        @foreach ($danhsachthuonghieu as $thuonghieu)
-                                            <li class="mb-16">
-                                                <div class="form-check common-check common-radio">
-                                                    <input class="form-check-input" type="radio" name="thuonghieu" id="thuonghieu{{ $thuonghieu->id }}" value="{{ $thuonghieu->slug }}" onchange="this.form.submit()" {{ (request('thuonghieu') == $thuonghieu->slug) ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="thuonghieu{{ $thuonghieu->id }}">{{ $thuonghieu->ten }}</label>
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                                
                                 <div class="shop-sidebar__box rounded-8 flex-align justify-content-between mb-32">
                                     <a href="{{ route('danhsachsanpham') }}"- class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 w-100">
                                         Xóa bộ lọc
@@ -143,6 +144,21 @@
                                 <div class="col-xxl-3 col-xl-3 col-lg-4 col-xs-6">
                                     <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
                                     <a href="{{ route('chi-tiet-san-pham', $product->slug) }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                                        @php
+                                            // Kiểm tra xem sản phẩm này có biến thể nào đang được tặng quà và quà đó đang hiển thị không
+                                            $hasGift = \Illuminate\Support\Facades\DB::table('bienthe')
+                                                ->join('sanphamthamgia_quatang', 'bienthe.id', '=', 'sanphamthamgia_quatang.id_bienthe')
+                                                ->join('quatang_sukien', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang_sukien.id')
+                                                ->where('bienthe.id_sanpham', $product->id)
+                                                ->where('quatang_sukien.trangthai', 'Hiển thị')
+                                                ->exists(); // Hàm này trả về true/false
+                                        @endphp
+
+                                        @if ($hasGift)
+                                            <span class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0" style="border-radius: 6px 0px 10px 0px">
+                                                <i class="ph-bold ph-gift text-white"></i> Quà tặng
+                                            </span>
+                                        @endif
                                         <img src="{{ asset('assets/client') }}/images/thumbs/{{ $product->hinhanhsanpham->first()->hinhanh }}" alt="{{ $product->ten }}" class="w-100 rounded-top-2">
                                     </a>
                                     <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">

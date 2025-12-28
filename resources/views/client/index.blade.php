@@ -450,6 +450,21 @@
                           class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
                           <a href="{{ route('chi-tiet-san-pham', $product->slug) }}"
                             class="flex-center rounded-8 bg-gray-50 position-relative">
+                            @php
+                                // Kiểm tra xem sản phẩm này có biến thể nào đang được tặng quà và quà đó đang hiển thị không
+                                $hasGift = \Illuminate\Support\Facades\DB::table('bienthe')
+                                    ->join('sanphamthamgia_quatang', 'bienthe.id', '=', 'sanphamthamgia_quatang.id_bienthe')
+                                    ->join('quatang_sukien', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang_sukien.id')
+                                    ->where('bienthe.id_sanpham', $product->id)
+                                    ->where('quatang_sukien.trangthai', 'Hiển thị')
+                                    ->exists(); // Hàm này trả về true/false
+                            @endphp
+
+                            @if ($hasGift)
+                                <span class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0" style="border-radius: 6px 0px 10px 0px">
+                                    <i class="ph-bold ph-gift text-white"></i> Quà tặng
+                                </span>
+                            @endif
                             <img src="{{ asset('assets/client/images/thumbs/' . $product->hinhanhsanpham->first()->hinhanh) }}"
                               alt="{{ $product->ten }}" class="w-100 rounded-top-2" />
                           </a>
@@ -539,10 +554,6 @@
               </h6>
               <div class="border-bottom border-2 border-main-600 mb-3 mt-4" style="width: 70%;"></div>
               <div class="flex-align gap-16 wow fadeInRight">
-                <a href="shop.html"
-                  class="text-sm fw-semibold text-gray-700 hover-text-main-600 hover-text-decoration-underline">
-                  Xem đầy đủ
-                </a>
                 <div class="flex-align gap-8">
                   <button type="button" id="top-brand-prev"
                     class="slick-prev slick-arrow flex-center rounded-circle border border-gray-100 hover-border-neutral-600 text-xl hover-bg-neutral-600 hover-text-white transition-1">
@@ -564,7 +575,7 @@
                     <div data-aos="fade-up" data-aos-duration="200">
                       <div
                         class="product-card hover-card-shadows h-100 p-5 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2 bg-white  justify-content-center">
-                        <a href="{{ $topbrand->slug }}" class="flex-center rounded-8 position-relative"
+                        <a href="{{ url('san-pham?thuonghieu=' . $topbrand->slug)}}" class="flex-center rounded-8 position-relative"
                           style="width: 100%; height: 150px; object-fit: cover;">
                           <img src="{{asset('assets/client')}}/images/brands/{{ $topbrand->logo }}"
                             alt="{{ $topbrand->logo }}" class="object-fit-cover" style="width: 60%;" />
@@ -619,6 +630,21 @@
                             class="mt-24 product-card d-flex gap-16 p-0 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                             <a href="{{ route('chi-tiet-san-pham', $sp->slug) }}"
                               class="flex-center rounded-8 position-relative w-unset flex-shrink-0 " tabindex="0">
+                              @php
+                                  // Kiểm tra xem sản phẩm này có biến thể nào đang được tặng quà và quà đó đang hiển thị không
+                                  $hasGift = \Illuminate\Support\Facades\DB::table('bienthe')
+                                      ->join('sanphamthamgia_quatang', 'bienthe.id', '=', 'sanphamthamgia_quatang.id_bienthe')
+                                      ->join('quatang_sukien', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang_sukien.id')
+                                      ->where('bienthe.id_sanpham', $sp->id)
+                                      ->where('quatang_sukien.trangthai', 'Hiển thị')
+                                      ->exists(); // Hàm này trả về true/false
+                              @endphp
+
+                              @if ($hasGift)
+                                  <span class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0" style="border-radius: 15px 0px 10px 0px">
+                                      <i class="ph-bold ph-gift text-white"></i> Quà tặng
+                                  </span>
+                              @endif
                               <img
                                 src="{{ asset('assets/client') }}/images/thumbs/{{ $sp->hinhanhsanpham->first()->hinhanh }}"
                                 alt="{{ $sp->hinhanhsanpham->first()->hinhanh }}" class="rounded-start-4"
@@ -717,6 +743,21 @@
                       class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
                       <a href="{{ route('chi-tiet-san-pham', $product->slug) }}"
                         class="flex-center rounded-8 bg-gray-50 position-relative">
+                        @php
+                                // Kiểm tra xem sản phẩm này có biến thể nào đang được tặng quà và quà đó đang hiển thị không
+                                $hasGift = \Illuminate\Support\Facades\DB::table('bienthe')
+                                    ->join('sanphamthamgia_quatang', 'bienthe.id', '=', 'sanphamthamgia_quatang.id_bienthe')
+                                    ->join('quatang_sukien', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang_sukien.id')
+                                    ->where('bienthe.id_sanpham', $product->id)
+                                    ->where('quatang_sukien.trangthai', 'Hiển thị')
+                                    ->exists(); // Hàm này trả về true/false
+                            @endphp
+
+                            @if ($hasGift)
+                                <span class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0" style="border-radius: 6px 0px 10px 0px">
+                                    <i class="ph-bold ph-gift text-white"></i> Quà tặng
+                                </span>
+                            @endif
                         <img src="{{ asset('assets/client/images/thumbs/' . $product->hinhanhsanpham->first()->hinhanh) }}"
                           alt="{{ $product->ten }}" class="w-100 rounded-top-2" />
                       </a>
@@ -803,6 +844,21 @@
                       class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
                       <a href="{{ route('chi-tiet-san-pham', $product->slug) }}"
                         class="flex-center rounded-8 bg-gray-50 position-relative">
+                        @php
+                                // Kiểm tra xem sản phẩm này có biến thể nào đang được tặng quà và quà đó đang hiển thị không
+                                $hasGift = \Illuminate\Support\Facades\DB::table('bienthe')
+                                    ->join('sanphamthamgia_quatang', 'bienthe.id', '=', 'sanphamthamgia_quatang.id_bienthe')
+                                    ->join('quatang_sukien', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang_sukien.id')
+                                    ->where('bienthe.id_sanpham', $product->id)
+                                    ->where('quatang_sukien.trangthai', 'Hiển thị')
+                                    ->exists(); // Hàm này trả về true/false
+                            @endphp
+
+                            @if ($hasGift)
+                                <span class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0" style="border-radius: 6px 0px 10px 0px">
+                                    <i class="ph-bold ph-gift text-white"></i> Quà tặng
+                                </span>
+                            @endif
                         <img src="{{ asset('assets/client/images/thumbs/' . $product->hinhanhsanpham->first()->hinhanh) }}"
                           alt="{{ $product->ten }}" class="w-100 rounded-top-2" />
                       </a>
@@ -1602,7 +1658,7 @@
                     <div data-aos="fade-up" data-aos-duration="200">
                       <div
                         class="product-card hover-card-shadows h-100 p-5 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2 bg-white justify-content-center">
-                        <a href="{{ $topbrand->slug }}" class="product-card__thumb flex-center rounded-8 position-relative"
+                        <a href="{{ url('san-pham?thuonghieu=' . $topbrand->slug)}}" class="product-card__thumb flex-center rounded-8 position-relative"
                           style="height: 120px;">
                           <img src="{{asset('assets/client')}}/images/brands/{{ $topbrand->logo }}"
                             alt="{{ $topbrand->logo }}" class="object-fit-cover" style="width: 50%;" />

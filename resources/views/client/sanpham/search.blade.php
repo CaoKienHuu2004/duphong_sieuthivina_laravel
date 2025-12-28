@@ -38,58 +38,11 @@
                                         @foreach($danhsachdanhmuc as $danhmuc)
                                         <li class="mb-20">
                                             <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="danhmuc" id="danhmuc-{{ $danhmuc->id }}" value="{{ $danhmuc->slug }}">
+                                                <input class="form-check-input" type="radio" name="danhmuc" id="danhmuc-{{ $danhmuc->id }}" value="{{ $danhmuc->slug }}" onchange="this.form.submit()">
                                                 <label class="form-check-label" for="danhmuc-{{ $danhmuc->id }}">{{ $danhmuc->ten }} ({{ $danhmuc->sanpham_count }})</label>
                                             </div>         
                                         </li>
                                         @endforeach
-                                    </ul>
-                                </div>
-                                <div class="shop-sidebar__box border border-gray-100 rounded-8 p-26 pb-0 mb-32">
-                                    <h6 class="text-xl border-bottom border-gray-100 pb-16 mb-24">Lọc theo giá tiền</h6>
-                                    <ul class="max-h-540 overflow-y-auto scroll-sm">
-                                        <li class="mb-24">
-                                            <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="low100" id="low100">
-                                                <label class="form-check-label" for="low100">Dưới 100.000đ</label>
-                                            </div>
-                                        </li>
-                                        <li class="mb-24">
-                                            <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="to200" id="100-200">
-                                                <label class="form-check-label" for="100-200">100.000đ - 200.000đ</label>
-                                            </div>
-                                        </li>
-                                        <li class="mb-24">
-                                            <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="to300" id="200-300">
-                                                <label class="form-check-label" for="200-300">200.000đ - 300.000đ</label>
-                                            </div>
-                                        </li>
-                                        <li class="mb-24">
-                                            <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="to500" id="300-500">
-                                                <label class="form-check-label" for="300-500">300.000đ - 500.000đ</label>
-                                            </div>
-                                        </li>
-                                        <li class="mb-24">
-                                            <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="to700" id="500-700">
-                                                <label class="form-check-label" for="500-700">500.000đ - 700.000đ</label>
-                                            </div>
-                                        </li>
-                                        <li class="mb-24">
-                                            <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="to1000" id="700-1000">
-                                                <label class="form-check-label" for="700-1000">700.000đ - 1.000.000đ</label>
-                                            </div>
-                                        </li>
-                                        <li class="mb-24">
-                                            <div class="form-check common-check common-radio">
-                                                <input class="form-check-input" type="radio" name="locgia" value="high1000" id="high1000">
-                                                <label class="form-check-label" for="high1000">Trên 1.000.000đ</label>
-                                            </div>
-                                        </li>
                                     </ul>
                                 </div>
                                 <div class="shop-sidebar__box border border-gray-100 rounded-8 p-26 pb-0 mb-32">
@@ -98,17 +51,65 @@
                                         @foreach ($danhsachthuonghieu as $thuonghieu)
                                             <li class="mb-16">
                                                 <div class="form-check common-check common-radio">
-                                                    <input class="form-check-input" type="radio" name="thuonghieu" id="thuonghieu{{ $thuonghieu->id }}" value="{{ $thuonghieu->slug }}">
+                                                    <input class="form-check-input" type="radio" name="thuonghieu" id="thuonghieu{{ $thuonghieu->id }}" value="{{ $thuonghieu->slug }}" onchange="this.form.submit()">
                                                     <label class="form-check-label" for="thuonghieu{{ $thuonghieu->id }}">{{ $thuonghieu->ten }}</label>
                                                 </div>
                                             </li>
                                         @endforeach
                                     </ul>
                                 </div>
+                                <div class="shop-sidebar__box border border-gray-100 rounded-8 p-26 pb-0 mb-32">
+                                    <h6 class="text-xl border-bottom border-gray-100 pb-16 mb-24">Lọc theo giá tiền</h6>
+                                    <ul class="max-h-540 overflow-y-auto scroll-sm">
+                                        <li class="mb-24">
+                                            <div class="form-check common-check common-radio">
+                                                <input class="form-check-input" type="radio" name="locgia" value="low100" id="low100" onchange="this.form.submit()">
+                                                <label class="form-check-label" for="low100">Dưới 100.000đ</label>
+                                            </div>
+                                        </li>
+                                        <li class="mb-24">
+                                            <div class="form-check common-check common-radio">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to200" id="100-200" onchange="this.form.submit()">
+                                                <label class="form-check-label" for="100-200">100.000đ - 200.000đ</label>
+                                            </div>
+                                        </li>
+                                        <li class="mb-24">
+                                            <div class="form-check common-check common-radio">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to300" id="200-300" onchange="this.form.submit()">
+                                                <label class="form-check-label" for="200-300">200.000đ - 300.000đ</label>
+                                            </div>
+                                        </li>
+                                        <li class="mb-24">
+                                            <div class="form-check common-check common-radio">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to500" id="300-500" onchange="this.form.submit()">
+                                                <label class="form-check-label" for="300-500">300.000đ - 500.000đ</label>
+                                            </div>
+                                        </li>
+                                        <li class="mb-24">
+                                            <div class="form-check common-check common-radio">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to700" id="500-700" onchange="this.form.submit()">
+                                                <label class="form-check-label" for="500-700">500.000đ - 700.000đ</label>
+                                            </div>
+                                        </li>
+                                        <li class="mb-24">
+                                            <div class="form-check common-check common-radio">
+                                                <input class="form-check-input" type="radio" name="locgia" value="to1000" id="700-1000" onchange="this.form.submit()">
+                                                <label class="form-check-label" for="700-1000">700.000đ - 1.000.000đ</label>
+                                            </div>
+                                        </li>
+                                        <li class="mb-24">
+                                            <div class="form-check common-check common-radio">
+                                                <input class="form-check-input" type="radio" name="locgia" value="high1000" id="high1000" onchange="this.form.submit()">
+                                                <label class="form-check-label" for="high1000">Trên 1.000.000đ</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
                                 <div class="shop-sidebar__box rounded-8 flex-align justify-content-between mb-32">
-                                    <button title="Lọc sản phẩm trong bộ lọc của bạn" type="submit" class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 w-100">
-                                        Lọc sản phẩm
-                                    </button>
+                                    <a href="{{ route('danhsachsanpham') }}"- class="btn border-main-600 text-main-600 hover-bg-main-600 hover-border-main-600 hover-text-white rounded-8 px-32 py-12 w-100">
+                                        Xóa bộ lọc
+                                    </a>
                                 </div>
                                 <div class="shop-sidebar__box rounded-8">
                                     <a href="{{ $bannerquangcao->first()->lienket }}">
@@ -136,7 +137,22 @@
                                 @foreach ($products as $product)
                                 <div class="col-xxl-3 col-xl-3 col-lg-4 col-xs-6">
                                     <div class="product-card h-100 border border-gray-100 hover-border-main-600 rounded-6 position-relative transition-2">
-                                    <a href="hat-dieu-rang-muoi-loai-1-con-vo-lua-happy-nuts-500g" class="flex-center rounded-8 bg-gray-50 position-relative">
+                                    <a href="{{ route('chi-tiet-san-pham',$product->slug) }}" class="flex-center rounded-8 bg-gray-50 position-relative">
+                                        @php
+                                            // Kiểm tra xem sản phẩm này có biến thể nào đang được tặng quà và quà đó đang hiển thị không
+                                            $hasGift = \Illuminate\Support\Facades\DB::table('bienthe')
+                                                ->join('sanphamthamgia_quatang', 'bienthe.id', '=', 'sanphamthamgia_quatang.id_bienthe')
+                                                ->join('quatang_sukien', 'sanphamthamgia_quatang.id_quatang', '=', 'quatang_sukien.id')
+                                                ->where('bienthe.id_sanpham', $product->id)
+                                                ->where('quatang_sukien.trangthai', 'Hiển thị')
+                                                ->exists(); // Hàm này trả về true/false
+                                        @endphp
+
+                                        @if ($hasGift)
+                                            <span class="product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0" style="border-radius: 6px 0px 10px 0px">
+                                                <i class="ph-bold ph-gift text-white"></i> Quà tặng
+                                            </span>
+                                        @endif
                                         <img src="{{ asset('assets/client') }}/images/thumbs/{{ $product->hinhanhsanpham->first()->hinhanh }}" alt="{{ $product->ten }}" class="w-100 rounded-top-2">
                                     </a>
                                     <div class="product-card__content w-100 h-100 align-items-stretch flex-column justify-content-between d-flex mt-10 px-10 pb-8">

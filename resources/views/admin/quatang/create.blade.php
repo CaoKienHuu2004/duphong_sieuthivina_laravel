@@ -87,7 +87,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Mô tả chi tiết</label>
-                                    <textarea class="form-control" id="mota" name="mota">{{ old('mota') }}</textarea>
+                                    <textarea class="form-control" id="mo_ta" name="mota">{{ old('mota') }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -331,4 +331,9 @@
         }
     }
 </script>
+<script>
+    if(document.querySelector('#mo_ta')) {
+         ClassicEditor.create(document.querySelector('#mo_ta'), editorConfig);
+    }
+  </script>
 @endsection
