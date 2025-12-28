@@ -37,7 +37,7 @@ class ComposerServiceProvider extends ServiceProvider
             ],
             function ($view) {
                 // 1. Lấy danh sách Danh mục
-                $danhmuc = DanhmucModel::select('ten', 'logo','slug')->get();
+                $danhmuc = DanhmucModel::select('ten', 'logo','slug')->orderBy('sapxep', 'desc')->get();
 
                 // 2. Lấy Từ khóa Placeholder ngẫu nhiên từ TOP 15
                 $tukhoaplaceholder = null;
