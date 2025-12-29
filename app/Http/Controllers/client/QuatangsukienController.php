@@ -38,7 +38,8 @@ class QuatangsukienController extends Controller
             'sanphamduoctang.sanpham.hinhanhsanpham' 
         ])
         ->where('trangthai', 'Hiển thị')
-        ->where('deleted_at', null);
+        ->where('ngaybatdau', '<=', now())
+        ->where('ngayketthuc', '>=', now());
 
         // Lọc theo Nhà cung cấp (Lấy các sự kiện có quà thuộc thương hiệu này)
         if ($request->filled('provider')) {

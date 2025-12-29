@@ -109,7 +109,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dat-hang-thanh-cong', [client\ThanhtoanController::class, 'orderSuccess'])->name('dat-hang-thanh-cong');
         Route::get('/thay-doi-dia-chi', [client\DiachiController::class, 'selectAddress'])->name('thay-doi-dia-chi');
         Route::post('/cap-nhat-mac-dinh', [client\DiachiController::class, 'updateDefaultAddress'])->name('cap-nhat-mac-dinh');
-        Route::get('/vnpay-return', [client\ThanhtoanController::class, 'vnpayReturn'])->name('vnpay.return');
+        Route::get('/thanh-toan-qr-code/{madon}', [client\ThanhtoanController::class, 'sepayCheckout'])->name('thanh-toan-qr-code');
     });
 
     

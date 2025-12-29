@@ -24,6 +24,8 @@ use App\Models\MagiamgiaModel;
 use App\Models\BientheModel;
 use App\Livewire\GiohangComponent;
 use App\Mail\DathangthanhcongMail;
+use SePay\SePayClient;
+use SePay\Builders\CheckoutBuilder;
 
 class ThanhtoanController extends Controller
 {
@@ -32,7 +34,7 @@ class ThanhtoanController extends Controller
         // 1. Chuẩn hóa tên tỉnh thành để kiểm tra (chỉ cần kiểm tra "hồ chí minh")
         $tinhThanhLower = Str::lower(trim($tinhThanh));
         $isHoChiMinh = Str::contains($tinhThanhLower, 'hồ chí minh');
-        
+
         // 2. Xác định tên phí cần tìm trong Model dựa trên kết quả kiểm tra
         if ($isHoChiMinh) {
             // Tên phí dựa trên bảng của bạn (id=1)
@@ -45,9 +47,9 @@ class ThanhtoanController extends Controller
         // 3. Lấy Phí vận chuyển từ Model bằng cú pháp where() rõ ràng
         // Lưu ý: Đã sửa trạng thái từ 'Hoạt động' sang 'Hiển thị'
         $phivanchuyen = PhivanchuyenModel::where('ten', $tenPhiCanTim)
-                                        ->where('trangthai', 'Hiển thị') // <== Đã sửa trạng thái
-                                        ->first();
-        
+            ->where('trangthai', 'Hiển thị') // <== Đã sửa trạng thái
+            ->first();
+
         // 4. Trả về kết quả
         return [
             'model' => $phivanchuyen, // Model phí vận chuyển
@@ -75,8 +77,8 @@ class ThanhtoanController extends Controller
 
         // 2. Lấy Địa chỉ MẶC ĐỊNH (Không dùng Scope MacDinh)
         $diachiMacDinh = DiachinguoidungModel::where('id_nguoidung', Auth::id())
-                                        ->where('trangthai', 'Mặc định')
-                                        ->first();
+            ->where('trangthai', 'Mặc định')
+            ->first();
 
         if (!$diachiMacDinh) {
             return redirect()->route('so-dia-chi')->with('error', 'Vui lòng chọn địa chỉ mặc định nhận hàng.');
@@ -93,14 +95,14 @@ class ThanhtoanController extends Controller
 
         // 5. Chuẩn bị dữ liệu trả về View
         $phuongthucs = PhuongthucModel::where('trangthai', 'Hoạt động') // <== Thay thế cho ->HoatDong()
-                                      ->get();
-        
+            ->get();
+
         $cartData = [
             'giohang' => $giohangComponent->giohang,
             'tamtinh' => $giohangComponent->tamtinh,
             'giamgiaVoucher' => $giohangComponent->giamgiaVoucher,
-            'tonggiatri_sau_giamgia' => $giohangComponent->tonggiatri, 
-            'tong_thanh_toan' => $tongThanhTien, 
+            'tonggiatri_sau_giamgia' => $giohangComponent->tonggiatri,
+            'tong_thanh_toan' => $tongThanhTien,
             'appliedVoucher' => $giohangComponent->appliedVoucher,
             'tongsoquatang' => $giohangComponent->tongsoquatang,
             'tietkiem' => $giohangComponent->tietkiem,
@@ -110,8 +112,8 @@ class ThanhtoanController extends Controller
 
         return view('client.thanhtoan.thanhtoan', compact(
             'cartData',
-            'diachiMacDinh', 
-            'phuongthucs', 
+            'diachiMacDinh',
+            'phuongthucs',
             'phivanchuyenModel',
             'phiVanChuyen',
             'diachis',
@@ -127,14 +129,14 @@ class ThanhtoanController extends Controller
         $request->validate([
             'id_phuongthuc' => 'required|exists:phuongthuc,id',
         ]);
-        
+
         DB::beginTransaction();
 
         try {
             // TÁI TẠO LOGIC TÍNH TOÁN
             $giohangComponent = new GiohangComponent();
             $giohangComponent->mount();
-            
+
             $cartItems = $giohangComponent->giohang;
             $tamtinh = $giohangComponent->tamtinh;
             $giamgiaVoucher = $giohangComponent->giamgiaVoucher;
@@ -147,14 +149,14 @@ class ThanhtoanController extends Controller
 
             // Lấy Địa chỉ MẶC ĐỊNH (Không dùng Scope MacDinh)
             $diachi = DiachinguoidungModel::where('id_nguoidung', Auth::id())
-                                        ->where('trangthai', 'Mặc định')
-                                        ->first();
-                        
+                ->where('trangthai', 'Mặc định')
+                ->first();
+
             if (!$diachi) {
-                 DB::rollBack();
-                 return redirect()->route('thay-doi-dia-chi')->with('error', 'Vui lòng chọn địa chỉ nhận hàng trước khi đặt.');
+                DB::rollBack();
+                return redirect()->route('thay-doi-dia-chi')->with('error', 'Vui lòng chọn địa chỉ nhận hàng trước khi đặt.');
             }
-            
+
             // Lấy Phương thức thanh toán
             $phuongthuc = PhuongthucModel::find($request->id_phuongthuc);
 
@@ -165,7 +167,7 @@ class ThanhtoanController extends Controller
 
             // Tính toán Thành tiền cuối cùng
             $tongThanhTien = $tamtinh - $giamgiaVoucher + $phiVanChuyen;
-            if ($tongThanhTien < 0) $tongThanhTien = 0; 
+            if ($tongThanhTien < 0) $tongThanhTien = 0;
 
             $currentDateTime = Carbon::now()->format('ymd');
             // 2. TẠO ĐƠN HÀNG (DonhangModel)
@@ -173,18 +175,18 @@ class ThanhtoanController extends Controller
             $order = new DonhangModel();
             $order->id_nguoidung = Auth::id();
             $order->id_phuongthuc = $phuongthuc->id;
-            $order->id_diachinguoidung = $diachi->id; 
+            $order->id_diachinguoidung = $diachi->id;
             $order->id_phivanchuyen = $phivanchuyenModel->id ?? null;
 
             // Sửa lỗi Foreign Key: Lấy ID mã giảm giá, nếu không có thì là NULL
             $voucherId = $appliedVoucher['id'] ?? null;
-            if($voucherId == null){
+            if ($voucherId == null) {
                 $order->id_magiamgia = null;
-            }else{
-                $magiamgiaModel = MagiamgiaModel::where('id',$voucherId)->firstOrFail();
+            } else {
+                $magiamgiaModel = MagiamgiaModel::where('id', $voucherId)->firstOrFail();
                 $order->id_magiamgia = $voucherId;
             }
-            
+
 
             // Mã đơn hàng ban đầu là một giá trị tạm thời (TEMP)
             $order->madon = 'TEMP';
@@ -200,8 +202,8 @@ class ThanhtoanController extends Controller
             // $order->tongsoluong = collect($cartItems)->sum('soluong');
             $order->tamtinh = $tamtinh;
             $order->thanhtien = $tongThanhTien;
-            $order->trangthai = 'Chờ xác nhận'; 
-            if($phuongthuc->maphuongthuc == 'COD') {
+            $order->trangthai = 'Chờ xác nhận';
+            if ($phuongthuc->maphuongthuc == 'COD') {
                 $order->trangthaithanhtoan = 'Thanh toán khi nhận hàng';
             } else {
                 $order->trangthaithanhtoan = 'Chờ thanh toán';
@@ -212,13 +214,13 @@ class ThanhtoanController extends Controller
             $order->madon = 'STV' . $currentDateTime . $order->id;
             $order->save();
 
-            
+
 
             foreach ($cartItems as $item) {
                 $bientheId = $item['id_bienthe'];
-                $bientheModel = BientheModel::where('id',$bientheId)->firstOrFail();
+                $bientheModel = BientheModel::where('id', $bientheId)->firstOrFail();
                 $soluong = $item['soluong'];
-                $dongia = $item['thanhtien']; 
+                $dongia = $item['thanhtien'];
 
                 ChitietdonhangModel::create([
                     'id_bienthe' => $bientheId,
@@ -231,43 +233,43 @@ class ThanhtoanController extends Controller
 
                 // CHỈ TRỪ TỒN KHO CHO SẢN PHẨM MUA (thanhtien > 0)
                 // TRƯỜNG HỢP QUÀ TẶNG (thanhtien = 0) VẪN CẦN TRỪ TỒN KHO NHƯ BÌNH THƯỜNG VÀ CÒN TRỪ SỐ LƯỢNG TẶNG (LUOTTANG)
-                if ($item['thanhtien'] > 0) { 
+                if ($item['thanhtien'] > 0) {
                     $bienthe = BientheModel::find($bientheId);
                     if ($bienthe) {
                         $bienthe->soluong -= $soluong;
                         if ($bienthe->soluong < 0) {
-                             DB::rollBack();
-                             return redirect()->back()->with('error', 'Lỗi: Sản phẩm **' . ($bienthe->sanpham->ten ?? '') . '** không đủ số lượng tồn kho.');
+                            DB::rollBack();
+                            return redirect()->back()->with('error', 'Lỗi: Sản phẩm **' . ($bienthe->sanpham->ten ?? '') . '** không đủ số lượng tồn kho.');
                         }
-                        $bienthe->luotban += $soluong; 
+                        $bienthe->luotban += $soluong;
                         $bienthe->save();
                     }
-                }elseif ($item['thanhtien'] == 0) { 
+                } elseif ($item['thanhtien'] == 0) {
                     $bienthe = BientheModel::find($bientheId);
                     if ($bienthe) {
                         $bienthe->luottang -= $soluong;
                         if ($bienthe->luottang < 0) {
-                             DB::rollBack();
-                             return redirect()->back()->with('error', 'Lỗi: Sản phẩm **' . ($bienthe->sanpham->ten ?? '') . '** không đủ số lượng tồn kho.');
+                            DB::rollBack();
+                            return redirect()->back()->with('error', 'Lỗi: Sản phẩm **' . ($bienthe->sanpham->ten ?? '') . '** không đủ số lượng tồn kho.');
                         }
                         $bienthe->luotban += $soluong;
                         $bienthe->save();
                     }
                 }
             }
-            
+
             // 4. DỌN DẸP
             GiohangModel::where('id_nguoidung', Auth::id())->delete();
             Session::forget('cart');
             Session::forget('applied_voucher');
 
             // Mail::to(Auth::user()->email)->send(new Xacnhandonhang($order, Auth::user()));
-            
+
             // 5. Kết thúc Transaction
             DB::commit();
 
             $user = Auth::user();
-            
+
 
             ThongbaoModel::khoitaothongbao(
                 $order->id_nguoidung,
@@ -283,7 +285,7 @@ class ThanhtoanController extends Controller
             try {
                 // Nạp quan hệ chi tiết đơn hàng để hiển thị trong Mail View
                 $order->load('chitietdonhang');
-                
+
                 // Gửi mail đến email của user đang đăng nhập
                 Mail::to($user->email)->send(new DathangthanhcongMail($order));
             } catch (\Exception $e) {
@@ -293,14 +295,41 @@ class ThanhtoanController extends Controller
             // ================================================================
 
             return redirect()->route('dat-hang-thanh-cong', ['madon' => $order->madon])
-                             ->with('success', 'Đơn hàng **' . $order->madon . '** của bạn đã được đặt thành công!');
-
+                ->with('success', 'Đơn hàng **' . $order->madon . '** của bạn đã được đặt thành công!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Lỗi đặt hàng: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Đã xảy ra lỗi trong quá trình đặt hàng. (Chi tiết lỗi: ' . $e->getMessage() . ').');
         }
     }
+
+    public function sepayCheckout($madon)
+    {
+        // Tìm đơn hàng
+        $order = DonhangModel::where('madon', $madon)
+            ->where('id_nguoidung', Auth::id())
+            ->firstOrFail();
+
+        // Nếu đơn hàng đã thanh toán rồi -> Đá về trang thành công luôn
+        if ($order->trangthaithanhtoan == 'Đã thanh toán') {
+            return redirect()->route('dat-hang-thanh-cong', ['madon' => $madon]);
+        }
+
+        // Tạo link QR Code VietQR (SePay / VietQR.io)
+        // Cấu trúc: https://qr.sepay.vn/img?acc=[SO_TK]&bank=[MA_NH]&amount=[TIEN]&des=[NOI_DUNG]
+
+        $bankAcc = '0987654321'; // Số TK của bạn
+        $bankCode = 'MB';        // Mã Ngân hàng (MB, VCB, ACB...)
+        $amount = intval($order->thanhtien);
+        $content = $order->madon; // Nội dung chuyển khoản là Mã đơn hàng
+
+        $qrUrl = "https://qr.sepay.vn/img?acc=$bankAcc&bank=$bankCode&amount=$amount&des=$content";
+
+        return view('frontend.payment.qr_scan', compact('order', 'qrUrl'));
+    }
+
+
+
     public function orderSuccess(Request $request)
     {
         if (!Auth::check()) {
@@ -310,14 +339,14 @@ class ThanhtoanController extends Controller
         $madon = $request->query('madon');
         $donhang = DonhangModel::with([
             'chitietdonhang.bienthe.sanpham.hinhanhsanpham',
-            'phuongthuc', 
-            'diachinguoidung', 
-            'phivanchuyen', 
-            'magiamgia' 
+            'phuongthuc',
+            'diachinguoidung',
+            'phivanchuyen',
+            'magiamgia'
         ])
-        ->where('madon', $madon) 
-        ->where('id_nguoidung', Auth::id()) 
-        ->first(); 
+            ->where('madon', $madon)
+            ->where('id_nguoidung', Auth::id())
+            ->first();
 
         if (!$donhang) {
             return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
@@ -327,20 +356,20 @@ class ThanhtoanController extends Controller
         $qrCodeUrl = null;
 
         if ($donhang->trangthaithanhtoan !== 'Đã thanh toán') {
-            
-            $bankId = 'TPB'; 
-            $accountNo = '00117137001'; 
-            $accountName = 'TRAN BA HO'; 
-            $template = 'compact2'; 
+
+            $bankId = 'TPB';
+            $accountNo = '00117137001';
+            $accountName = 'TRAN BA HO';
+            $template = 'compact2';
 
             $amount = $donhang->thanhtien;
-            
+
             // CẬP NHẬT: Nội dung có dấu cách và thêm tiền tố
             $rawContent = "Thanh toan don hang " . $donhang->madon;
-            
+
             // MÃ HÓA URL (URL Encode) để xử lý khoảng trắng
             $description = urlencode($rawContent);
-            
+
             // Mã hóa cả tên tài khoản cho an toàn (phòng trường hợp có ký tự lạ)
             $encodedAccountName = urlencode($accountName);
 
