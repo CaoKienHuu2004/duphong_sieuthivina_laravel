@@ -12,7 +12,7 @@ class DanhmucModel extends Model
     use HasFactory; // thiếu xóa mềm rồi
     protected $table = 'danhmuc';
     protected $primaryKey = 'id';
-    protected $fillable = ['ten', 'slug','logo','parent'];
+    protected $fillable = ['ten', 'slug','logo','sapxep','parent'];
     public $timestamps = false;
 
     // ===========================================================================================================================
