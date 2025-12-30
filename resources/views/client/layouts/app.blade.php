@@ -1048,7 +1048,7 @@
             <span
               class="text-white w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0"><i
                 class="ph-fill ph-phone-call text-white"></i></span>
-            <a href="tel:+886911975996" class="text-md  hover-text-main-600 text-white">+886 0911 975 996</a>
+            <a href="tel:+840918326706" class="text-md  hover-text-main-600 text-white">+84 0918 326 706</a>
           </div>
           <div class="text-white flex-align gap-16 mb-16">
             <span
