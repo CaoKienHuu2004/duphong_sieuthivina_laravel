@@ -279,8 +279,9 @@
           @endguest
 
           <li class="flex-align">
-            <a href="" class="text-white text-sm hover-text-white pe-1"><i class="ph-bold ph-info text-white"></i>
-              Giới thiệu về Siêu Thị Vina </a>
+            <a href="{{ route('tra-cuu-don-hang') }}" class="text-white text-sm hover-text-white">
+              <i class="ph-bold ph-notepad"></i>
+              Tra cứu đơn hàng</a>
           </li>
           <li class="flex-align">
             <a href="" class="text-white text-sm hover-text-white">
@@ -324,11 +325,36 @@
             </div>
 
           </li>
+          <li class=" d-block on-hover-item text-white-6 flex-shrink-0">
+            <button class="category__button flex-align gap-4 text-sm text-white rounded-top">
+              <span class="icon text-sm d-md-flex d-none"><i class="ph ph-storefront"></i></span>
+              <span class="d-sm-flex d-none">Thương hiệu</span>
+            </button>
 
-          <li class="flex-align">
-            <a href="{{ route('tra-cuu-don-hang') }}" class="text-white text-sm hover-text-white">
-              <i class="ph-bold ph-notepad"></i>
-              Tra cứu đơn hàng</a>
+            <div class="responsive-dropdown on-hover-dropdown common-dropdown nav-submenu p-0 submenus-submenu-wrapper">
+              <button
+                class="close-responsive-dropdown rounded-circle text-xl position-absolute inset-inline-end-0 inset-block-start-0 mt-4 me-8 d-lg-none d-flex">
+                <i class="ph ph-x"></i> </button>
+              <div class="logo px-16 d-lg-none d-block">
+                <a href="{{ route('trang-chu') }}" class="link">
+                  <img src="{{asset('assets/client')}}/images/logo/logo_nguyenban.png" alt="Logo">
+                </a>
+              </div>
+              <ul class="scroll-sm p-0 py-8 w-300 max-h-400 overflow-y-auto">
+                @foreach ($thuonghieu as $th)
+                  <li class="has-submenus-submenu">
+                    <a href="{{ url('san-pham?thuonghieu=' . $th->slug) }}"
+                      class="text-gray-600 text-15 py-12 px-16 flex-align gap-4 rounded-0">
+                      <span class="text-xl d-flex">
+                        <img src="{{asset('assets/client')}}/images/brands/{{ $th->logo }}"
+                          alt="{{ $th->ten }}" style="width: 60px; height: 100%; object-fit: cover;">
+                        </span>
+                      <span class="ms-10">{{ $th->ten }}</span>
+                    </a>
+                  </li>
+                @endforeach
+              </ul>
+            </div>
           </li>
 
           <li class="flex-align">

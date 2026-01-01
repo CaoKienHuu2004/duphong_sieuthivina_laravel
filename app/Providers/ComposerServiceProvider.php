@@ -8,6 +8,7 @@ use App\Models\DanhmucModel;
 use App\Models\DonhangModel;
 use App\Models\TukhoaModel;
 use App\Models\NguoidungModel;
+use App\Models\ThuonghieuModel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Listeners\MergeCartOnLogin;
@@ -37,7 +38,8 @@ class ComposerServiceProvider extends ServiceProvider
             ],
             function ($view) {
                 // 1. Lấy danh sách Danh mục
-                $danhmuc = DanhmucModel::select('ten', 'logo','slug')->orderBy('sapxep', 'desc')->get();
+                $danhmuc = DanhmucModel::select('ten', 'logo','slug')->orderBy('sapxep', 'asc')->get();
+                $thuonghieu = ThuonghieuModel::orderBy('ten', 'desc')->get();
 
                 // 2. Lấy Từ khóa Placeholder ngẫu nhiên từ TOP 15
                 $tukhoaplaceholder = null;
@@ -55,7 +57,7 @@ class ComposerServiceProvider extends ServiceProvider
                 
 
                 // 4. Truyền dữ liệu vào View
-                $view->with(compact('danhmuc', 'tukhoaplaceholder', 'tukhoaphobien', 'giohangauth', 'giohangsession'));
+                $view->with(compact('danhmuc', 'tukhoaplaceholder', 'tukhoaphobien', 'giohangauth', 'giohangsession', 'thuonghieu'));
             }
         );
 
