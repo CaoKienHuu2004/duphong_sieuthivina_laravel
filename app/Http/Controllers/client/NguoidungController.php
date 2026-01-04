@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
 // use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Validator;
 use App\Models\ThongbaoModel;
+use App\Rules\RecaptchaV3; // Nhớ import
 
 class NguoidungController extends Controller
 {
@@ -162,6 +163,7 @@ class NguoidungController extends Controller
             'email' => 'required|email:rfc,dns|unique:nguoidung,email',
             'sodienthoai' => 'required|string|max:20|unique:nguoidung,sodienthoai',
             'password' => 'required|string|min:6|confirmed',
+            'g-recaptcha-response' => ['required', new RecaptchaV3],
         ], [
             // Username (Tên tài khoản)
             'username.required' => 'Vui lòng nhập tên tài khoản.',

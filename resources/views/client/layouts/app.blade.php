@@ -26,6 +26,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="{{asset('assets/client')}}/css/bootstrap.min.css" />
