@@ -55,6 +55,13 @@
 
     gtag('config', 'G-K0PMTZKMC1');
   </script>
+  <style>
+    /* Ẩn cái logo reCAPTCHA treo lủng lẳng */
+    .grecaptcha-badge {
+        visibility: hidden;
+        opacity: 0;
+    }
+  </style>
 </head>
 
 <body>
