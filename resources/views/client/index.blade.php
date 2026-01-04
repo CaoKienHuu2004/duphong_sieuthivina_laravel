@@ -181,8 +181,8 @@
     <!-- ============================ BANNER End =============================== -->
 
 
-
     <!-- ========================= TOP DEALS * SIÊU RẺ ================================ -->
+    @if($topdeals && $topdeals->isNotEmpty())
     <section class="top-selling-products overflow-hidden fix-scale-30">
       <div class="container container-lg px-0">
         <div class="border border-gray-100 pr-20 p-16 rounded-10 bg-hotsales">
@@ -270,9 +270,11 @@
         </div>
       </div>
     </section>
+    @endif
     <!-- ========================= TOP DEALS * SIÊU RẺ End ================================ -->
 
     <!-- ========================= QUÀ TẶNG ================================ -->
+    @if ($quatang && $quatang->isNotEmpty())
     <section class="deals-weeek pt-10 overflow-hidden fix-scale-30">
       <div class="container container-lg px-0">
         <div class="">
@@ -376,6 +378,7 @@
         </div>
       </div>
     </section>
+    @endif
     <!-- ========================= QUÀ TẶNG End ================================ -->
 
     <div class="container container-lg mt-10 mb-70 px-0">
