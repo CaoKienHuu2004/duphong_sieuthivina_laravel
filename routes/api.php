@@ -1,23 +1,23 @@
 <?php
 
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\client\api\ChatController;
-use App\Http\Controllers\client\api\HomeController;
-use App\Http\Controllers\client\api\SanphamController;
-use App\Http\Controllers\client\api\NguoidungController;
-use App\Http\Controllers\client\api\QuatangsukienController;
-use App\Http\Controllers\client\api\BaivietController;
-use App\Http\Controllers\client\api\GiohangController;
-use App\Http\Controllers\client\api\ThanhtoanController;
-use App\Http\Controllers\client\api\DonhangController;
-use App\Http\Controllers\client\api\DiachiController;
-use App\Http\Controllers\client\api\DanhgiaController;
-use App\Http\Controllers\client\api\GlobalController;
-use App\Http\Controllers\client\api\ThongbaoController;
-use App\Http\Controllers\client\api\YeuthichController;
-use App\Http\Controllers\client\ChatboxController;
+// use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Route;
+// use App\Http\Controllers\client\api\ChatController;
+// use App\Http\Controllers\client\api\HomeController;
+// use App\Http\Controllers\client\api\SanphamController;
+// use App\Http\Controllers\client\api\NguoidungController;
+// use App\Http\Controllers\client\api\QuatangsukienController;
+// use App\Http\Controllers\client\api\BaivietController;
+// use App\Http\Controllers\client\api\GiohangController;
+// use App\Http\Controllers\client\api\ThanhtoanController;
+// use App\Http\Controllers\client\api\DonhangController;
+// use App\Http\Controllers\client\api\DiachiController;
+// use App\Http\Controllers\client\api\DanhgiaController;
+// use App\Http\Controllers\client\api\GlobalController;
+// use App\Http\Controllers\client\api\ThongbaoController;
+// use App\Http\Controllers\client\api\YeuthichController;
+// use App\Http\Controllers\client\ChatboxController;
 
 
 /*
