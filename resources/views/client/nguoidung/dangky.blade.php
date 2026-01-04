@@ -105,8 +105,25 @@
                             <p class="text-gray-500">Dữ liệu cá nhân của bạn sẽ được lưu trữ bảo mật, khi bạn nhấn vào <strong>Đăng ký</strong> cũng như đồng ý với các nội dung điều khoản và
                                 <a href="#" class="text-main-600 text-decoration-underline"> chính sách bảo mật</a> từ nền tảng.</p>
                         </div>
-                        
+
                         <input type="hidden" name="g-recaptcha-response" id="recaptcha_token">
+                        <script>
+                            // Khi form submit, chặn lại để lấy token trước
+                            document.getElementById('registerForm').addEventListener('submit', function(event) {
+                                event.preventDefault(); // Ngừng submit mặc định
+                                
+                                grecaptcha.ready(function() {
+                                    grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'register'})
+                                    .then(function(token) {
+                                        // Gán token vào input ẩn
+                                        document.getElementById('recaptcha_token').value = token;
+                                        
+                                        // Sau đó mới submit form thật
+                                        document.getElementById('registerForm').submit();
+                                    });
+                                });
+                            });
+                        </script>
 
                         <div class="mt-20">
                             <div class="d-flex gap-3">
@@ -145,21 +162,5 @@
             }
         }
     </script>
-    <script>
-    // Khi form submit, chặn lại để lấy token trước
-    document.getElementById('registerForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Ngừng submit mặc định
-        
-        grecaptcha.ready(function() {
-            grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'register'})
-            .then(function(token) {
-                // Gán token vào input ẩn
-                document.getElementById('recaptcha_token').value = token;
-                
-                // Sau đó mới submit form thật
-                document.getElementById('registerForm').submit();
-            });
-        });
-    });
-</script>
+    
 @endsection
