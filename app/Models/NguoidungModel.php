@@ -39,7 +39,7 @@ class NguoidungModel extends Authenticatable
         'ngaysinh' => 'date',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)

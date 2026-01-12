@@ -26,7 +26,7 @@ class SanphamModel extends Model
         'giamgia',
         'luotxem',
     ];
-    public $timestamps = false;
+    public $timestamps = true;
 
     // ===========================================================================================================================
     // CÁC MỐI QUAN HỆ (RELATIONSHIPS)
