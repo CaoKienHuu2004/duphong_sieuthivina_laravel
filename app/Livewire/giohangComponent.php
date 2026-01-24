@@ -551,6 +551,6 @@ class GiohangComponent extends Component
 
     public function render()
     {
-        return view('client.livewire.giohangComponent');
+        return view('client.livewire.giohang-component');
     }
 }
