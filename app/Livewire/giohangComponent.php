@@ -27,7 +27,7 @@ class GiohangComponent extends Component
 
     public function mount()
     {
-        // 1. Tải dữ liệu ban đầu
+        // 1. Tải dữ liệu ban đầu 
         $this->loadgiohang();
         
         // 2. Reset quà tặng để tính toán lại từ đầu (tránh cộng dồn sai)
